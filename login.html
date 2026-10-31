@@ -258,7 +258,9 @@ details p{font-weight:600;color:var(--muted)}
 (()=>{
 const $=s=>document.querySelector(s);
 const esc=t=>String(t).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
-const DOMAIN='myworld.games',GAME='https://claude.ai/artifact/YU5fMxcV9Y5qeW9obR8Tov';
+const DOMAIN='myworld.games',GAME='play.html';
+const playLink=g=>{const c={};['name','style','acc','skin','hair','cap','hood','jog','shoe','worlds','slug'].forEach(k=>{if(g[k]!==undefined)c[k]=g[k]});c.paid=true;
+  return GAME+'?w='+btoa(unescape(encodeURIComponent(JSON.stringify(c)))).replace(/\+/g,'-').replace(/\//g,'_').replace(/=+$/,'')};
 const TRIPS={woolwich:['Woolwich','ui_card_woolwich.webp','#6d3fc0'],brixton:['Brixton','ui_card_brixton.webp','#e8701c'],greenwich:['Greenwich','ui_card_greenwich.webp','#00a4a7'],canarywharf:['Canary Wharf','ui_card_canarywharf.webp','#1f62b4'],
   heathrow:['Airport Rush','ui_card_heathrow.webp','#2b7fd0'],olddubai:['Old Dubai','ui_card_olddubai.webp','#d98a2b'],downtown:['Downtown','ui_card_downtown.webp','#7a4fd0'],palm:['The Palm','ui_card_palm.webp','#0aa3b8'],marina:['Marina','ui_card_marina.webp','#e0a020'],desert:['Desert Race','ui_card_desert.webp','#e07a20']};
 const NEWEST=['desert','marina','palm','heathrow']; // most recent trips first (mock)
@@ -324,7 +326,7 @@ function vOverview(a){
   const cards=a.games.map(g=>{const st=stats(g),n=(g.worlds||[]).length,first=TRIPS[(g.worlds||[])[0]]||TRIPS.woolwich,url=`${g.slug}.${DOMAIN}`;
     return `<div class="dw ${g.paused?'paused':''}"><div class="pic" style="background-image:url(${first[1]})"><span class="chip ${g.paused?'off':''}">${g.paused?'Paused':'Playing'}</span><h4>${esc(g.name)}<span class="s">’s</span> World</h4></div>
       <div class="b"><span class="lk">${esc(url)}</span><div class="meta"><span>Trips finished</span><span>${st.done} of ${n}</span></div><div class="pbar"><i style="width:${n?Math.round(st.done/n*100):0}%"></i></div>
-      <div class="btns"><a class="pill" href="${GAME}" target="_blank" rel="noopener">Play ▸</a><a class="pill ghost" href="builder.html?edit=${encodeURIComponent(g.slug)}&step=1">Edit</a>
+      <div class="btns"><a class="pill" href="${playLink(g)}">Play ▸</a><a class="pill ghost" href="builder.html?edit=${encodeURIComponent(g.slug)}&step=1">Edit</a>
         <button class="pill ghost" data-sharelink="https://${esc(url)}" data-name="${esc(g.name)}">Share</button><a class="pill ghost" href="#worlds" aria-label="More options for ${esc(g.name)}’s World">•••</a></div></div></div>`}).join('');
   const add=room>0?`<a class="addw" href="builder.html?fresh=1"><div><span class="plus">+</span><b>Add a world</b><p>${room} ${room>1?'spaces':'space'} left on your plan</p></div></a>`
     :a.plan==='one'?`<a class="addw" href="builder.html?fresh=1"><div><span class="plus">+</span><b>Add a world</b><p>Switch to Family for up to 4 worlds</p></div></a>`:'';
@@ -359,7 +361,7 @@ function vWorlds(a){
     return `<article class="game ${g.paused?'paused':''}">
       <div class="pic" style="background-image:url(${first[1]})"><span class="chip ${g.paused?'off':''}">${g.paused?'Paused':'Playing'}</span><h3 class="outline">${nm}<span class="s">’s</span> World</h3></div>
       <div class="body">
-        <div class="row2"><a class="pill" href="${GAME}" target="_blank" rel="noopener">Play ▸</a>
+        <div class="row2"><a class="pill" href="${playLink(g)}">Play ▸</a>
           <div class="linkrow"><code>${esc(url)}</code><button class="pill" data-copy="https://${esc(url)}">Copy</button><button class="pill ghost" data-sharelink="https://${esc(url)}" data-name="${nm}">Share</button></div></div>
         <div class="stats"><div><b>${st.done}/${(g.worlds||[]).length}</b><span>trips finished</span></div><div><b>${st.coins}</b><span>coins</span></div><div><b style="font-size:17px;line-height:1.45">${esc(st.fav)}</b><span>favourite trip</span></div></div>
         <div><p class="kicker" style="margin-bottom:8px">Their trips</p><div class="trips">${(g.worlds||[]).map((id,i)=>`<span><b>${i+1}</b>${esc((TRIPS[id]||['?'])[0])}</span>`).join('')}</div></div>
