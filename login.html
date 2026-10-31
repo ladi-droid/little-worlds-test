@@ -372,7 +372,7 @@ function vWorlds(a){
         ${open.rename===g.slug?`<form class="inline" data-form="rename" data-slug="${sl}"><b>New name</b><div class="box sm"><input name="v" maxlength="14" value="${nm}" aria-label="Their first name"></div>
           <p class="fine">The new name shows on the title screen and their coins.</p><div class="two"><button class="pill ghost" type="button" data-close>Cancel</button><button class="pill" type="submit">Save name</button></div></form>`:''}
         <details><summary>Put it on the home screen</summary><ol>
-          <li><b>iPhone or iPad:</b> open the link in Safari, tap Share, then Add to Home Screen.</li>
+          <li><b>iPhone or iPad:</b> open the link in Safari, tap the ••• button next to the address bar, tap Share, then Add to Home Screen.</li>
           <li><b>Android:</b> open the link in Chrome, tap the ⋮ menu, then Add to Home screen.</li></ol></details>
         <div class="more">
           <button data-act="pause" data-slug="${sl}">${g.paused?'Resume this world':'Pause this world'}</button>
@@ -461,7 +461,7 @@ function vHelp(){
   const q=(t,b)=>`<details><summary>${t}</summary><p>${b}</p></details>`;
   return `<div><p class="kicker">Help</p><h2 class="ph">How can we <span class="hl">help?</span></h2></div>
     <div class="stack">
-      ${q('How do I put the game on the home screen?','On an iPhone or iPad, open the link in Safari, tap Share, then Add to Home Screen. On Android, open it in Chrome, tap the ⋮ menu, then Add to Home screen. The game gets its own icon.')}
+      ${q('How do I put the game on the home screen?','On an iPhone or iPad, open the link in Safari, tap the ••• button next to the address bar, tap Share, then Add to Home Screen. On Android, open it in Chrome, tap the ⋮ menu, then Add to Home screen. The game gets its own icon.')}
       ${q('How do I change their trips or look?','Open the Worlds tab and tap Change trips or Change their look. They see the changes the next time the game opens.')}
       ${q('The game won’t load. What can I try?','Check you have internet, then close the game and open it again from the home screen. If that doesn’t work, delete the icon and add it again from the link.')}
       ${q('I made it for someone else’s child. How do I give it to them?','On the Worlds tab, tap Send to another parent. We email them the link and the home-screen steps. You keep the account and pay for it.')}
