@@ -3,6 +3,7 @@
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <link rel="apple-touch-icon" href="icon.png">
+<link rel="apple-touch-icon" media="(prefers-color-scheme: dark)" href="icon.png" data-dark>
 <link rel="icon" href="icon.png">
 <style>
 /* home-screen web app: drop the claude.ai page padding, fill the whole screen to the bottom edge,
@@ -15,7 +16,7 @@ html,body{height:100%;min-height:100lvh}
   html{background:#f6f0e3}
 }
 </style>
-<script>window.LW_SITE_MODE=1;(function(){var n='';try{var w=new URLSearchParams(location.search).get('w');if(w)n=JSON.parse(decodeURIComponent(escape(atob(w.replace(/-/g,'+').replace(/_/g,'/'))))).name||'';if(!n)n=(JSON.parse(localStorage.getItem('lw.config')||'null')||{}).name||''}catch(e){}var c=(n.trim().charAt(0)||'').toUpperCase();if(/^[A-Z]$/.test(c)){document.querySelectorAll('link[rel=apple-touch-icon],link[rel=icon]').forEach(function(l){l.href='icons/'+c+'.png'})}})()</script>
+<script>window.LW_SITE_MODE=1;(function(){var n='';try{var w=new URLSearchParams(location.search).get('w');if(w)n=JSON.parse(decodeURIComponent(escape(atob(w.replace(/-/g,'+').replace(/_/g,'/'))))).name||'';if(!n)n=(JSON.parse(localStorage.getItem('lw.config')||'null')||{}).name||''}catch(e){}var c=(n.trim().charAt(0)||'').toUpperCase();if(/^[A-Z]$/.test(c)){document.querySelectorAll('link[rel=apple-touch-icon],link[rel=icon]').forEach(function(l){l.href='icons/'+(l.hasAttribute('data-dark')?'dark/':'')+c+'.png'})}})()</script>
 </head><body>
 <meta charset="utf-8">
 <title>A's World</title>
