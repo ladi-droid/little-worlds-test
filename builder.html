@@ -580,6 +580,12 @@ V.done=()=>{return `
     <p class="fine">We also emailed the link to ${esc((getAcct()||{}).email||'you')}. To change their trips, look or link, <a href="login.html">log in to your account</a>. We email you a one-tap login link, so you never need a password.</p>
   </section>`};
 
+function qrSvg(t){const q=qrcode(0,'L');q.addData(t);q.make();return q.createSvgTag({cellSize:4,margin:0,scalable:true})}
+function tryPractice(){const link=gameLink(false);
+  if(matchMedia('(pointer:coarse)').matches||!window.qrcode){window.open(link,'_blank','noopener');return}
+  sheet(`<h2>Try it on your phone</h2><p>Scan this with your phone or tablet camera to play ${esc(nm())}’s practice street.</p>
+    <div class="qr">${qrSvg(link)}</div>
+    <a class="pill wide" href="${esc(link)}" target="_blank" rel="noopener">Play here instead</a><button class="textbtn" data-close>Close</button>`)}
 function drawQR(){const el=$('#qr');if(!el||!window.qrcode)return;
   const q=qrcode(0,'L');q.addData(gameLink(true));q.make();el.innerHTML=q.createSvgTag({cellSize:4,margin:0,scalable:true})}
 function stageFor(){
@@ -663,7 +669,7 @@ document.addEventListener('click',e=>{
     Object.assign(S,{step:0,paid:false,added:false,slug:'',name:'',worlds:[]});save();updateName();render();scrollTo({top:0});return}
   if(d.act==='addacct'){addToAccount();return}
   if(d.act==='upgrade'){upgradeSheet('add');return}
-  if(d.act==='try'){window.open(gameLink(false),'_blank','noopener');return;sheet(`<h2>Practice street</h2><p>On the real site this opens a short practice street where ${esc(nm())} learns to run, jump and lean, in the look you picked. You don’t pay anything to try it.</p><p class="fine">This mock-up doesn’t include the game. You can play A’s version here: <a href="${GAME}" target="_blank" rel="noopener">A’s World</a>.</p><button class="pill wide" data-close>OK</button>`);return}
+  if(d.act==='try'){tryPractice();return;sheet(`<h2>Practice street</h2><p>On the real site this opens a short practice street where ${esc(nm())} learns to run, jump and lean, in the look you picked. You don’t pay anything to try it.</p><p class="fine">This mock-up doesn’t include the game. You can play A’s version here: <a href="${GAME}" target="_blank" rel="noopener">A’s World</a>.</p><button class="pill wide" data-close>OK</button>`);return}
   if(d.act==='pay'){signupSheet();return}
   if(d.act==='later'){sheet(`<h2>Finish later</h2><p>We’ll email you a link back to ${esc(nm())}’s World, so you can pick up where you left off.</p>
     <form class="stack" id="laterForm" novalidate><div class="box"><input id="em2" type="email" inputmode="email" autocomplete="email" placeholder="you@example.com" aria-label="Your email"></div>
