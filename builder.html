@@ -302,6 +302,10 @@ const okEmail=v=>/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(v);
   n=n.replace(/[^A-Za-zÀ-ž' -]/g,'').replace(/\s+/g,' ').slice(0,14).trim();
   if(n&&n.toLowerCase()!==S.name.trim().toLowerCase()){S.name=n;S.step=0;S.paid=false;try{localStorage.setItem('wb_draft2',JSON.stringify(S))}catch(e){}}
   try{localStorage.removeItem('lw_name')}catch(e){}})();
+(()=>{let w;try{w=new URLSearchParams(location.search).get('w')}catch(e){}if(!w)return;
+  try{const c=JSON.parse(decodeURIComponent(escape(atob(w.replace(/-/g,'+').replace(/_/g,'/')))));
+    GAME_KEYS.forEach(k=>{if(c[k]!==undefined)S[k]=c[k]});S.step=4;S.paid=false;S.edit=false;
+    try{localStorage.setItem('wb_draft2',JSON.stringify(S))}catch(e){}history.replaceState(null,'',location.pathname)}catch(e){}})();
 const save=()=>{if(S.edit)return;try{localStorage.setItem('wb_draft2',JSON.stringify(S))}catch(e){}};
 
 const $=s=>document.querySelector(s);
@@ -582,10 +586,10 @@ V.done=()=>{return `
 
 function qrSvg(t){const q=qrcode(0,'L');q.addData(t);q.make();return q.createSvgTag({cellSize:4,margin:0,scalable:true})}
 function tryPractice(){const link=gameLink(false);
-  if(matchMedia('(pointer:coarse)').matches||!window.qrcode){window.open(link,'_blank','noopener');return}
+  if(matchMedia('(pointer:coarse)').matches||!window.qrcode){window.open(link,'_blank');return}
   sheet(`<h2>Try it on your phone</h2><p>Scan this with your phone or tablet camera to play ${esc(nm())}’s practice street.</p>
     <div class="qr">${qrSvg(link)}</div>
-    <a class="pill wide" href="${esc(link)}" target="_blank" rel="noopener">Play here instead</a><button class="textbtn" data-close>Close</button>`)}
+    <button class="pill wide" onclick="window.open(this.dataset.l,'_blank')" data-l="${esc(link)}">Play here instead</button><button class="textbtn" data-close>Close</button>`)}
 function drawQR(){const el=$('#qr');if(!el||!window.qrcode)return;
   const q=qrcode(0,'L');q.addData(gameLink(true));q.make();el.innerHTML=q.createSvgTag({cellSize:4,margin:0,scalable:true})}
 function stageFor(){

@@ -202,6 +202,7 @@ h1 em{display:block;font-style:normal;color:var(--amber)}
 .endcard .btn::after{content:"";position:absolute;left:12%;top:16%;width:10%;height:18%;border-radius:50%;background:rgba(255,255,255,.55);transform:rotate(-25deg)}
 .endcard .btn:active{transform:translateY(3px);box-shadow:0 2px 0 var(--ink2)}
 .endcard .btn[hidden]{display:none}
+.endbtns.join{flex-direction:column;gap:12px}.endbtns.join .btn{flex:none;width:100%;white-space:normal;line-height:1.1}
 .endcard .ghost{color:#3b4a80;font:700 16px var(--body);text-decoration:underline;text-decoration-thickness:2px;text-underline-offset:4px}
 
 /* feel panel */
@@ -965,7 +966,15 @@ $('restartBtn').addEventListener('click', () => startLevel(levelIndex));
 $('quitBtn').addEventListener('click', toMenu);
 $('muteBtn').addEventListener('click', () => { save.mute = !save.mute; persist(); $('muteBtn').textContent = 'Sound: ' + (save.mute ? 'off' : 'on'); });
 $('retryBtn').addEventListener('click', () => startLevel(levelIndex));
-$('nextBtn').addEventListener('click', () => { if (levelIndex + 1 < ARun.LEVELS.length) startLevel(levelIndex + 1); else toMenu(); });
+// practice street, not joined yet: go back to the builder's last step.
+// If the builder opened this tab, close it and show the builder again; otherwise open the builder with this child's world filled in.
+let lwJoinEnd = false;
+function lwBackToBuilder() {
+  const url = 'builder.html?w=' + lwEncode(LW);
+  try { if (window.opener && !window.opener.closed && /builder\.html/.test(window.opener.location.pathname)) { window.opener.focus(); window.close(); setTimeout(() => { location.href = url; }, 400); return; } } catch (e) {}
+  location.href = url;
+}
+$('nextBtn').addEventListener('click', () => { if (lwJoinEnd) return lwBackToBuilder(); if (levelIndex + 1 < ARun.LEVELS.length) startLevel(levelIndex + 1); else toMenu(); });
 $('endLevels').addEventListener('click', toMenu);
 function toMenu() { state = 'menu'; G = null; $('hud').hidden = true; renderMenu(); showOnly('menu'); }
 
@@ -1101,6 +1110,9 @@ function finish() {
   $('endBest').textContent = (prevBest && prevBest < G.time ? prevBest : G.time).toFixed(1) + 's';
   $('nextBtn').textContent = levelIndex + 1 < ARun.LEVELS.length ? 'Next trip' : 'All trips';
   $('nextBtn').hidden = false; $('retryBtn').textContent = 'Run again';
+  lwJoinEnd = !!(LW && !LW.paid && ARun.LEVELS[levelIndex].practice);
+  if (lwJoinEnd) $('nextBtn').textContent = `Join to open ${LW.name}’s trips`;
+  $('nextBtn').parentElement.classList.toggle('join', lwJoinEnd);
   $('hud').hidden = true;
   showOnly('endScreen');
 }
