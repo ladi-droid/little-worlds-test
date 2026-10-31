@@ -1,0 +1,524 @@
+<!doctype html>
+<html lang="en"><head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Log In</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bowlby+One&family=Figtree:wght@500;600;700;800&display=swap">
+<style>
+/* Layout: rooftop scene strip with a torn edge on top, one column below. States: log in, check your email, and the account area with four tabs (Worlds, Plan, You, Help). */
+:root{
+  color-scheme:light;
+  --paper:#f6efe3; --card:#fbf7ee; --ink:#0b0b0e; --sun:#ffd23a; --navy:#1c2a5e; --muted:#5d5a66; --green:#2f6b47; --bad:#b8321f;
+  --display:"Bowlby One","Arial Black",Impact,sans-serif;
+  --body:"Figtree",system-ui,-apple-system,"Segoe UI",sans-serif;
+}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--body);font-size:17px;line-height:1.5;overflow-x:hidden}
+button,input{font:inherit;color:inherit}
+button{cursor:pointer;border:0;background:none;touch-action:manipulation}
+a{color:inherit}
+:focus-visible{outline:3px solid var(--navy);outline-offset:3px}
+h1,h2,h3{font-family:var(--display);font-weight:400;letter-spacing:.02em;line-height:1.02;margin:0;text-wrap:balance}
+p{margin:0}
+.outline{color:#fff;-webkit-text-stroke:7px var(--ink);paint-order:stroke fill}
+.hl{background:linear-gradient(transparent 62%,var(--sun) 62%,var(--sun) 92%,transparent 92%)}
+.kicker{font-weight:800;font-size:13px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+.fine{font-size:14px;font-weight:600;color:var(--muted)}
+
+nav.top{position:sticky;top:0;z-index:20;background:var(--paper);box-shadow:0 3px 0 rgba(11,11,14,.12)}
+nav.top .in{max-width:1100px;margin:0 auto;height:60px;display:flex;align-items:center;justify-content:space-between;gap:12px;padding-inline:max(18px,env(safe-area-inset-left,0px)) max(18px,env(safe-area-inset-right,0px))}
+.mark{display:flex;align-items:center;gap:4px;font-family:var(--display);font-size:20px;text-decoration:none;white-space:nowrap}
+.mark .tile{display:inline-grid;place-items:center;width:34px;height:34px;background:var(--sun);border:3px solid var(--ink);border-radius:10px;transform:rotate(-6deg);font-size:18px}
+.pill{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:14px 24px;border-radius:999px;background:var(--sun);border:3px solid var(--ink);
+  font-family:var(--display);font-size:17px;letter-spacing:.03em;text-decoration:none;box-shadow:0 5px 0 var(--ink);transition:transform .08s,box-shadow .08s;white-space:nowrap}
+.pill:hover{transform:translateY(-1px)}
+.pill:active{transform:translateY(3px);box-shadow:0 2px 0 var(--ink)}
+.pill.sm{padding:9px 16px;font-size:14px;box-shadow:0 3px 0 var(--ink)}
+@media (max-width:440px){nav.top .pill.sm{display:none}}
+.pill.ghost{background:#fff}
+.pill.wide{width:100%}
+.pill.danger{background:#fff;color:var(--bad);border-color:var(--bad);box-shadow:0 5px 0 var(--bad)}
+.sso{width:100%;font-family:var(--body);font-weight:800;font-size:17px;letter-spacing:0}
+.sso.apple{background:var(--ink);color:#fff}
+.sso .g{display:inline-grid;place-items:center;width:24px;height:24px;border-radius:50%;border:2px solid var(--ink);font-family:var(--display);font-size:12px}
+.or{display:flex;align-items:center;gap:10px;font-size:14px;font-weight:700;color:var(--muted)}
+.or::before,.or::after{content:"";flex:1;height:2px;background:rgba(11,11,14,.15)}
+.textbtn{align-self:center;font-weight:800;text-decoration:underline;text-decoration-thickness:3px;text-decoration-color:var(--sun);text-underline-offset:4px;padding:6px}
+
+.strip{position:relative;height:clamp(200px,30vw,300px);background:#f7c99a url(hero_scene.webp) 46% 82%/cover no-repeat;display:grid;place-items:center;filter:drop-shadow(0 6px 0 rgba(11,11,14,.9))}
+.strip .torn{position:absolute;inset:0;background:inherit;clip-path:var(--tear-b)}
+.strip h1{position:relative;font-size:clamp(40px,8vw,72px);transform:rotate(-2.5deg);-webkit-text-stroke:clamp(8px,1.3vw,12px) var(--ink);text-align:center;padding-inline:12px}
+.strip h1 .s{color:var(--sun)}
+.wrap{max-width:560px;margin:0 auto;padding:34px max(18px,env(safe-area-inset-right,0px)) 70px max(18px,env(safe-area-inset-left,0px));display:flex;flex-direction:column;gap:22px}
+.card{background:#fff;border:4px solid var(--ink);border-radius:26px;padding:22px;box-shadow:0 6px 0 var(--ink);display:flex;flex-direction:column;gap:14px}
+.card h2{font-size:clamp(26px,5vw,32px)}
+.box{display:flex;align-items:center;background:#fff;border:3px solid var(--ink);border-radius:999px;box-shadow:0 5px 0 var(--ink);padding:4px 6px 4px 22px}
+.box:focus-within{outline:3px solid var(--navy);outline-offset:4px}
+.box input{flex:1;min-width:0;border:0;outline:0;background:transparent;font-weight:800;font-size:19px;padding:10px 0}
+.hint{font-size:15px;font-weight:700;color:var(--muted);min-height:1.5em}
+.hint.bad{color:var(--bad)}
+.stack{display:flex;flex-direction:column;gap:12px}
+.mail{font-size:64px;line-height:1;align-self:center}
+
+/* account */
+.wrap.wide{max-width:680px}
+.tabs{position:sticky;top:60px;z-index:15;background:var(--paper);padding:12px 0 10px;margin:-12px 0 -6px;display:flex;gap:8px;overflow-x:auto;scrollbar-width:none}
+.tabs::-webkit-scrollbar{display:none}
+.tabs a{flex:1 0 auto;text-align:center;padding:9px 16px;border:3px solid var(--ink);border-radius:999px;background:#fff;font-weight:800;font-size:15px;text-decoration:none;white-space:nowrap;box-shadow:0 3px 0 var(--ink)}
+.tabs a[aria-current="page"]{background:var(--ink);color:#fff}
+.sample{font-size:14px;font-weight:700;background:var(--card);border:2px dashed var(--ink);border-radius:14px;padding:8px 12px}
+.banner{font-weight:700;background:var(--sun);border:3px solid var(--ink);border-radius:16px;padding:10px 14px;display:flex;justify-content:space-between;gap:10px;align-items:center}
+.banner button{font-weight:800;text-decoration:underline}
+.ph{font-size:clamp(32px,6vw,44px);margin-top:6px}
+.game{background:#fff;border:4px solid var(--ink);border-radius:26px;overflow:hidden;box-shadow:0 6px 0 var(--ink)}
+.game .pic{position:relative;aspect-ratio:16/7;background:#89b6e0 center/cover no-repeat;display:grid;place-items:center;border-bottom:4px solid var(--ink)}
+.game.paused .pic{filter:grayscale(.85)}
+.game .pic h3{font-size:clamp(28px,7vw,42px);-webkit-text-stroke:7px var(--ink);transform:rotate(-2deg);text-align:center;padding-inline:10px}
+.game .pic h3 .s{color:var(--sun)}
+.game .pic .chip{position:absolute;left:12px;top:12px}
+.chip{display:inline-block;font-size:13px;font-weight:800;border-radius:99px;padding:2px 10px;border:2px solid var(--ink);background:var(--sun)}
+.chip.off{background:#fff}
+.chip.bad{background:#fff;color:var(--bad);border-color:var(--bad)}
+.game .body{padding:18px;display:flex;flex-direction:column;gap:16px}
+.row2{display:grid;grid-template-columns:auto 1fr;gap:10px;align-items:center}
+@media (max-width:520px){.row2{grid-template-columns:1fr}}
+.row2>*{min-width:0}
+.linkrow{display:flex;align-items:center;gap:6px;background:var(--card);border:3px solid var(--ink);border-radius:999px;padding:5px 5px 5px 16px}
+.linkrow code{flex:1;min-width:0;font:800 15px/1.3 var(--body);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.linkrow .pill{padding:7px 12px;font-size:13px;box-shadow:none}
+.stats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+.stats div{background:var(--card);border:3px solid var(--ink);border-radius:16px;padding:10px;text-align:center}
+.stats b{display:block;font-family:var(--display);font-weight:400;font-size:24px;line-height:1.1}
+.stats span{font-size:13px;font-weight:700;color:var(--muted)}
+.trips{display:flex;flex-wrap:wrap;gap:8px}
+.trips span{background:#fff;border:2px solid var(--ink);border-radius:99px;padding:3px 11px;font-weight:800;font-size:14px}
+.trips b{display:inline-grid;place-items:center;width:19px;height:19px;border-radius:50%;background:var(--sun);border:2px solid var(--ink);font-size:10px;margin-right:6px;vertical-align:1px}
+.acts{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.acts .pill{padding:11px 8px;font-size:14px;box-shadow:0 4px 0 var(--ink);white-space:normal;text-align:center;line-height:1.1}
+.more{border-top:3px dashed rgba(11,11,14,.18);padding-top:12px;display:flex;flex-wrap:wrap;gap:6px 16px}
+.more button{font-weight:800;font-size:15px;text-decoration:underline;text-decoration-thickness:2px;text-underline-offset:3px;padding:4px 0}
+.more button.del{color:var(--bad)}
+details{border:3px solid var(--ink);border-radius:18px;background:var(--card);padding:0 14px}
+details summary{cursor:pointer;font-weight:800;padding:12px 0;list-style-position:inside}
+details[open]{padding-bottom:14px}
+details ol{margin:0;padding-left:22px;display:flex;flex-direction:column;gap:6px;font-weight:600}
+details p{font-weight:600;color:var(--muted)}
+.inline{background:var(--card);border:3px dashed var(--ink);border-radius:18px;padding:14px;display:flex;flex-direction:column;gap:12px}
+.inline.danger{border-color:var(--bad)}
+.box.sm input{font-size:17px;padding:8px 0}
+.newtrips{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.nt{border:4px solid var(--ink);border-radius:18px;overflow:hidden;background:var(--c);box-shadow:0 4px 0 var(--ink);position:relative}
+.nt img{display:block;width:100%;aspect-ratio:5/4;object-fit:cover;border-bottom:4px solid var(--ink)}
+.nt b{display:block;padding:8px 10px;color:#fff;font-family:var(--display);font-weight:400;font-size:16px;-webkit-text-stroke:4px var(--ink);paint-order:stroke fill}
+.nt .new{position:absolute;left:8px;top:8px}
+.planrow{display:flex;align-items:baseline;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.price{font-family:var(--display);font-size:34px;line-height:1;font-variant-numeric:tabular-nums}
+.price small{font-family:var(--body);font-weight:700;font-size:15px;color:var(--muted)}
+.opts{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.opt{text-align:left;border:3px solid var(--ink);border-radius:20px;background:#fff;padding:14px;display:flex;flex-direction:column;gap:4px;box-shadow:0 4px 0 var(--ink)}
+.opt.on{background:var(--sun)}
+.opt h3{font-size:18px}
+.opt span{font-weight:700;font-size:15px}
+.opt small{font-weight:600;color:var(--muted);font-size:13px}
+.toggle{display:inline-grid;grid-template-columns:1fr 1fr;border:3px solid var(--ink);border-radius:999px;background:#fff;padding:4px;align-self:flex-start}
+.toggle button{padding:8px 18px;border-radius:999px;font-weight:800}
+.toggle button.on{background:var(--ink);color:#fff}
+.list{display:flex;flex-direction:column}
+.list>div{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:12px 0;border-bottom:2px solid rgba(11,11,14,.1)}
+.list>div:last-child{border-bottom:0}
+.list b{font-weight:800}
+.list small{display:block;font-weight:600;color:var(--muted);font-size:14px}
+.list .pill{padding:7px 14px;font-size:13px;box-shadow:0 3px 0 var(--ink);flex:0 0 auto}
+.sw{position:relative;flex:0 0 auto;width:54px;height:32px;border-radius:99px;border:3px solid var(--ink);background:#e4dccd}
+.sw::after{content:"";position:absolute;top:3px;left:3px;width:20px;height:20px;border-radius:50%;background:#fff;border:2px solid var(--ink);transition:transform .15s}
+.sw[aria-checked="true"]{background:var(--sun)}
+.sw[aria-checked="true"]::after{transform:translateX(22px)}
+.reasons{display:flex;flex-wrap:wrap;gap:8px}
+.reasons button{border:2px solid var(--ink);border-radius:99px;padding:5px 12px;font-weight:700;font-size:14px;background:#fff}
+.reasons button.on{background:var(--sun)}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.card .lede{font-weight:600;color:var(--muted)}
+@media (max-width:440px){.two,.opts{grid-template-columns:1fr}.stats b{font-size:20px}}
+/* desktop dashboard: left panel + main panel */
+.side{display:none}
+.wgrid{display:flex;flex-direction:column;gap:22px}
+@media (min-width:1000px){
+  body.dash nav.top,body.dash .strip,body.dash .tabs{display:none}
+  body.dash .side{display:flex;position:fixed;inset:0 auto 0 0;width:240px;background:var(--ink);color:#fff;padding:22px 16px;flex-direction:column;gap:6px;z-index:30}
+  .side .logo{font-family:var(--display);font-size:21px;color:var(--sun);margin:2px 10px 24px;text-decoration:none}
+  .side a.nav{display:flex;align-items:center;gap:12px;padding:11px 12px;border-radius:14px;font-weight:700;color:#d9d6de;text-decoration:none}
+  .side a.nav:hover{background:#1f1f25}
+  .side a.nav[aria-current="page"]{background:var(--sun);color:var(--ink)}
+  .side a.nav i{font-style:normal;width:22px;text-align:center}
+  .side .me{margin-top:auto;border-top:1px solid #34343c;padding:16px 10px 0;font-size:13px;color:#b9b6c0;display:flex;flex-direction:column;gap:2px;overflow-wrap:anywhere}
+  .side .me b{color:#fff;font-size:14px}
+  .side .me button{align-self:flex-start;margin-top:10px;color:#fff;font-weight:800;text-decoration:underline;text-decoration-color:var(--sun);text-decoration-thickness:2px;text-underline-offset:3px}
+  body.dash main.wrap{max-width:none;margin:0 0 0 240px;padding:28px 34px 60px}
+  body.dash #acctBody{max-width:1180px}
+  body.dash .narrow{max-width:760px}
+  body.dash .wgrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));align-items:start}
+  body.dash .game .pic{aspect-ratio:16/6}
+}
+.dtop{display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap}
+.dtop h2{font-size:clamp(30px,3vw,38px)}
+.dtop p{font-weight:600;color:var(--muted)}
+.tiles{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px}
+.tile{background:#fff;border:3px solid var(--ink);border-radius:20px;padding:14px 16px;box-shadow:0 4px 0 var(--ink);text-decoration:none;display:block}
+.tile span{font-size:12px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+.tile b{display:block;font-family:var(--display);font-weight:400;font-size:28px;line-height:1.1;margin-top:4px}
+.tile small{font-weight:600;color:var(--muted);font-size:14px}
+.tile.y{background:var(--sun)}
+.dgrid{display:grid;grid-template-columns:minmax(0,1fr) 320px;gap:24px;align-items:start}
+.dsec{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}
+.dsec h3{font-size:22px}
+.dworlds{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
+.dw{background:#fff;border:3px solid var(--ink);border-radius:22px;overflow:hidden;box-shadow:0 4px 0 var(--ink)}
+.dw .pic{height:120px;background:#89b6e0 center/cover;position:relative;border-bottom:3px solid var(--ink);display:grid;place-items:center}
+.dw.paused .pic{filter:grayscale(.85)}
+.dw .pic h4{margin:0;font-family:var(--display);font-weight:400;color:#fff;-webkit-text-stroke:6px var(--ink);paint-order:stroke fill;font-size:24px;transform:rotate(-2deg);text-align:center;padding-inline:8px}
+.dw .pic h4 .s{color:var(--sun)}
+.dw .pic .chip{position:absolute;left:10px;top:10px;font-size:11px;padding:1px 8px}
+.dw .b{padding:12px 14px;display:flex;flex-direction:column;gap:10px}
+.dw .lk{font-weight:800;font-size:13px;color:var(--muted);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.pbar{height:10px;border-radius:99px;background:#eee4d2;border:2px solid var(--ink);overflow:hidden}.pbar i{display:block;height:100%;background:var(--green)}
+.meta{display:flex;justify-content:space-between;font-size:13px;font-weight:700;color:var(--muted)}
+.btns{display:flex;gap:6px;flex-wrap:wrap}
+.btns .pill{padding:6px 10px;font-size:12px;box-shadow:0 3px 0 var(--ink)}
+.addw{border:3px dashed var(--ink);border-radius:22px;display:grid;place-items:center;text-align:center;padding:20px;background:var(--card);min-height:230px;text-decoration:none}
+.addw b{font-family:var(--display);font-weight:400;font-size:20px;display:block;margin:10px 0 4px}
+.addw .plus{width:52px;height:52px;border-radius:50%;background:var(--sun);border:3px solid var(--ink);display:inline-grid;place-items:center;font-family:var(--display);font-size:26px}
+.addw p{color:var(--muted);font-weight:600}
+.rcol{display:flex;flex-direction:column;gap:16px}
+.panel{background:#fff;border:3px solid var(--ink);border-radius:20px;padding:16px;box-shadow:0 4px 0 var(--ink);display:flex;flex-direction:column;gap:12px}
+.panel h3{font-size:18px}
+.panel .pill{align-self:flex-start;padding:6px 12px;font-size:12px;box-shadow:0 3px 0 var(--ink)}
+.feed div{display:flex;gap:10px;align-items:flex-start;padding:8px 0;border-bottom:2px solid #f0e8da;font-weight:600;font-size:14px}
+.feed div:last-child{border:0}
+.feed em{font-style:normal;flex:0 0 auto;width:30px;height:30px;border-radius:50%;background:var(--card);border:2px solid var(--ink);display:grid;place-items:center;font-size:14px}
+.feed small{display:block;color:var(--muted)}
+.nts{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.nts div{border:3px solid var(--ink);border-radius:12px;height:72px;background:center/cover;position:relative}
+.nts span{position:absolute;left:4px;bottom:4px;background:#fff;border:2px solid var(--ink);border-radius:99px;font-size:10px;font-weight:800;padding:0 6px}
+.toast{position:fixed;left:50%;bottom:calc(18px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);z-index:50;background:var(--ink);color:#fff;font-weight:700;border-radius:99px;padding:10px 18px;max-width:calc(100% - 32px);text-align:center;box-shadow:0 4px 0 rgba(0,0,0,.25)}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head><body>
+
+<nav class="top"><div class="in">
+  <a class="mark" href="index.html">Little Worlds</a>
+  <a class="pill sm" href="builder.html?fresh=1">Build their world</a>
+</div></nav>
+
+<header class="strip"><div class="torn" id="torn"></div><h1 class="outline" id="headline">Welcome <span class="s">back</span></h1></header>
+
+<aside class="side" id="side" aria-label="Account">
+  <a class="logo" href="index.html">Little Worlds</a>
+  <a class="nav" href="#account"><i>⌂</i>Overview</a><a class="nav" href="#worlds"><i>★</i>Worlds</a><a class="nav" href="#plan"><i>£</i>Plan &amp; billing</a><a class="nav" href="#you"><i>⚙</i>Settings</a><a class="nav" href="#help"><i>?</i>Help</a>
+  <div class="me" id="sideMe"></div>
+</aside>
+<main class="wrap">
+  <!-- 1. log in -->
+  <section class="card" id="vLogin">
+    <div><p class="kicker">Your account</p><h2>Log in</h2></div>
+    <p class="fine" style="font-size:16px">Use the email you joined with. We send you a one-tap login link, so you don’t need a password.</p>
+    <button class="pill sso apple" data-auth="apple"> Continue with Apple</button>
+    <button class="pill ghost sso" data-auth="google"><span class="g">G</span> Continue with Google</button>
+    <div class="or">or use your email</div>
+    <form class="stack" id="loginForm" novalidate>
+      <div class="box"><input id="em" type="email" inputmode="email" autocomplete="email" placeholder="you@example.com" aria-label="Your email"></div>
+      <p class="hint" id="emHint" aria-live="polite"></p>
+      <button class="pill wide" type="submit">Email me a login link</button>
+    </form>
+  </section>
+
+  <!-- 2. check email -->
+  <section class="card" id="vCheck" hidden>
+    <div class="mail" aria-hidden="true">✉️</div>
+    <h2 style="text-align:center">Check your email</h2>
+    <p style="text-align:center;font-weight:600;color:var(--muted)">We sent a login link to <b id="sentTo" style="color:var(--ink)"></b>. Tap it on this phone or tablet to log in.</p>
+    <button class="pill wide" data-act="open">Open the login link</button>
+    <p class="fine" style="text-align:center">Mock-up: nothing was sent. The button above stands in for the link.</p>
+    <button class="textbtn" data-act="back">Use a different email</button>
+  </section>
+
+  <!-- 3. account -->
+  <section id="vAccount" class="stack" style="gap:22px" hidden>
+    <nav class="tabs" aria-label="Account sections">
+      <a href="#account">Worlds</a><a href="#plan">Plan</a><a href="#you">You</a><a href="#help">Help</a>
+    </nav>
+    <div id="acctBody" class="stack" style="gap:22px"></div>
+  </section>
+</main>
+<div class="toast" id="toast" role="status" hidden></div>
+
+<script>
+(()=>{
+const $=s=>document.querySelector(s);
+const esc=t=>String(t).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const DOMAIN='myworld.games',GAME='https://claude.ai/artifact/YU5fMxcV9Y5qeW9obR8Tov';
+const TRIPS={woolwich:['Woolwich','ui_card_woolwich.webp','#6d3fc0'],brixton:['Brixton','ui_card_brixton.webp','#e8701c'],greenwich:['Greenwich','ui_card_greenwich.webp','#00a4a7'],canarywharf:['Canary Wharf','ui_card_canarywharf.webp','#1f62b4'],
+  heathrow:['Airport Rush','ui_card_heathrow.webp','#2b7fd0'],olddubai:['Old Dubai','ui_card_olddubai.webp','#d98a2b'],downtown:['Downtown','ui_card_downtown.webp','#7a4fd0'],palm:['The Palm','ui_card_palm.webp','#0aa3b8'],marina:['Marina','ui_card_marina.webp','#e0a020'],desert:['Desert Race','ui_card_desert.webp','#e07a20']};
+const NEWEST=['desert','marina','palm','heathrow']; // most recent trips first (mock)
+const PRICES={one:{m:3,y:30,label:'One game',max:1,desc:'1 world (1 child)'},family:{m:6,y:60,label:'Family',max:4,desc:'Up to 4 worlds (up to 4 children)'}};
+const KEY='lw_account',SESSION='lw_session';
+const get=k=>{try{return JSON.parse(localStorage.getItem(k)||'null')}catch(e){return null}};
+const put=(k,v)=>{try{v===null?localStorage.removeItem(k):localStorage.setItem(k,JSON.stringify(v))}catch(e){}};
+const okEmail=v=>/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(v);
+const fmt=d=>d.toLocaleDateString('en-GB',{day:'numeric',month:'long',year:'numeric'});
+const addMonths=(d,n)=>{const x=new Date(d);x.setMonth(x.getMonth()+n);return x};
+
+/* torn edge */
+(()=>{let s=41;const rnd=()=>{s=(s*9301+49297)%233280;return s/233280};const pts=['0% 0%','100% 0%'];const bot=[];
+  for(let i=0;i<=36;i++)bot.push(`${(i/36*100).toFixed(2)}% calc(100% - ${(rnd()*14).toFixed(1)}px)`);
+  $('#torn').style.setProperty('--tear-b',`polygon(${pts.concat(bot.reverse()).join(',')})`)})();
+
+/* ---------- account data (mock: lives in this browser) ---------- */
+let sample=null;
+function normalise(a){
+  a.games=a.games||[];a.plan=a.plan||'one';a.prefs=a.prefs||{newtrips:true,receipts:true,updates:true};
+  a.card=a.card||{brand:'Visa',last4:'4242',exp:'08/28'};
+  a.joined=a.joined||new Date().toISOString();
+  a.devices=a.devices||[{name:'iPhone',app:'Safari',when:'Now',me:true},{name:'iPad',app:'Safari',when:'2 days ago'}];
+  return a}
+function acct(){const a=get(KEY);if(a)return normalise(a);
+  if(!sample)sample=normalise({sample:true,email:'you@example.com',via:'email',plan:'one',yearly:false,games:[{name:'Amare',worlds:['brixton','marina','palm'],slug:'amare-runs'}]});
+  return sample}
+const store=a=>{if(a.sample)sample=a;else put(KEY,a)};
+const nextPay=a=>addMonths(new Date(a.joined),a.yearly?12:1);
+function stats(g){let h=0;for(const c of g.name+g.slug)h=(h*31+c.charCodeAt(0))>>>0;const n=(g.worlds||[]).length||1;
+  return{done:Math.min(n,1+h%n),coins:120+h%880,fav:(TRIPS[(g.worlds||[])[h%n]]||['?'])[0]}}
+
+/* ---------- views ---------- */
+let pendingEmail='',open={};// open = which inline panel is showing, e.g. {del:'slug'}
+const toast=m=>{const t=$('#toast');t.textContent=m;t.hidden=false;clearTimeout(toast.t);toast.t=setTimeout(()=>t.hidden=true,2600)};
+function show(view){
+  ['vLogin','vCheck','vAccount'].forEach(id=>$('#'+id).hidden=id!==view);
+  $('main').classList.toggle('wide',view==='vAccount');
+  document.body.classList.toggle('dash',view==='vAccount'&&DESK.matches);
+  const head=$('#headline');
+  if(view==='vAccount'){const a=acct();const n=a.games.length===1?a.games[0].name:'';head.innerHTML=n?`${esc(n)}<span class="s">’s</span> World`:'Your <span class="s">account</span>';renderAccount()}
+  else head.innerHTML='Welcome <span class="s">back</span>';
+}
+const DESK=matchMedia('(min-width:1000px)');
+DESK.addEventListener&&DESK.addEventListener('change',()=>route());
+const tab=()=>{const h=location.hash.slice(1);if(h==='account'||!h)return DESK.matches?'overview':'worlds';return({worlds:'worlds',plan:'plan',you:'you',help:'help'})[h]||'worlds'};
+
+function renderAccount(){
+  const a=acct(),t=tab();
+  document.querySelectorAll('.tabs a').forEach(x=>x.setAttribute('aria-current',({worlds:'#account',overview:'#account',plan:'#plan',you:'#you',help:'#help'})[t]===x.getAttribute('href')?'page':'false'));
+  document.querySelectorAll('.side a.nav').forEach(x=>x.setAttribute('aria-current',({overview:'#account',worlds:'#worlds',plan:'#plan',you:'#you',help:'#help'})[t]===x.getAttribute('href')?'page':'false'));
+  $('#sideMe').innerHTML=`<b>Signed in</b>${esc(a.via==='apple'?'with Apple':a.via==='google'?'with Google':a.email)}<button data-act="logout">Log out</button>`;
+  const top=(a.sample?'<p class="sample">Sample account. Build a world and “pay” in the builder to see your own here.</p>':'')
+    +(a.cancelled?`<div class="banner"><span>Your plan ends on ${fmt(nextPay(a))}. Their worlds stay saved.</span><button data-act="rejoin">Rejoin</button></div>`:'');
+  const body=({overview:vOverview,worlds:vWorlds,plan:vPlan,you:vYou,help:vHelp})[t](a);
+  $('#acctBody').innerHTML=top+(t==='overview'||t==='worlds'?body:`<div class="narrow stack" style="gap:22px">${body}</div>`);
+}
+
+/* Overview (desktop dashboard) */
+function vOverview(a){
+  const p=PRICES[a.plan],room=p.max-a.games.length;let done=0,coins=0,total=0;
+  a.games.forEach(g=>{const st=stats(g);done+=st.done;coins+=st.coins;total+=(g.worlds||[]).length});
+  const cards=a.games.map(g=>{const st=stats(g),n=(g.worlds||[]).length,first=TRIPS[(g.worlds||[])[0]]||TRIPS.woolwich,url=`${g.slug}.${DOMAIN}`;
+    return `<div class="dw ${g.paused?'paused':''}"><div class="pic" style="background-image:url(${first[1]})"><span class="chip ${g.paused?'off':''}">${g.paused?'Paused':'Playing'}</span><h4>${esc(g.name)}<span class="s">’s</span> World</h4></div>
+      <div class="b"><span class="lk">${esc(url)}</span><div class="meta"><span>Trips finished</span><span>${st.done} of ${n}</span></div><div class="pbar"><i style="width:${n?Math.round(st.done/n*100):0}%"></i></div>
+      <div class="btns"><a class="pill" href="${GAME}" target="_blank" rel="noopener">Play ▸</a><a class="pill ghost" href="builder.html?edit=${encodeURIComponent(g.slug)}&step=1">Edit</a>
+        <button class="pill ghost" data-sharelink="https://${esc(url)}" data-name="${esc(g.name)}">Share</button><a class="pill ghost" href="#worlds" aria-label="More options for ${esc(g.name)}’s World">•••</a></div></div></div>`}).join('');
+  const add=room>0?`<a class="addw" href="builder.html?fresh=1"><div><span class="plus">+</span><b>Add a world</b><p>${room} ${room>1?'spaces':'space'} left on your plan</p></div></a>`
+    :a.plan==='one'?`<a class="addw" href="builder.html?fresh=1"><div><span class="plus">+</span><b>Add a world</b><p>Switch to Family for up to 4 worlds</p></div></a>`:'';
+  const g0=a.games[0],g1=a.games[1]||a.games[0];
+  const feed=g0?[['🏁',`${esc(g0.name)} finished ${esc(stats(g0).fav)}`,'Today, 4:12pm'],['🪙',`${esc(g1.name)} collected 60 coins`,'Yesterday'],['✏️',`You changed ${esc(g1.name)}’s trips`,'Monday']]:[];
+  return `<div class="dtop"><div><h2>Welcome back</h2><p>Here’s what’s happening in your worlds.</p></div><a class="pill" href="builder.html?fresh=1">+ Build a new world</a></div>
+    <div class="tiles">
+      <a class="tile y" href="#worlds"><span>Worlds</span><b>${a.games.length} of ${p.max}</b><small>${p.label} plan</small></a>
+      <a class="tile" href="#plan"><span>${a.cancelled?'Plan ends':'Next payment'}</span><b>${a.cancelled?fmt(nextPay(a)).split(' ').slice(0,2).join(' '):'£'+(a.yearly?p.y:p.m)}</b><small>${a.cancelled?'Worlds stay saved':fmt(nextPay(a))}</small></a>
+      <div class="tile"><span>Trips finished</span><b>${done} of ${total}</b><small>across all worlds</small></div>
+      <div class="tile"><span>Coins</span><b>${coins.toLocaleString('en-GB')}</b><small>collected so far</small></div>
+    </div>
+    <div class="dgrid">
+      <div><div class="dsec"><h3>Your worlds</h3><a class="pill ghost" style="padding:6px 12px;font-size:12px;box-shadow:0 3px 0 var(--ink)" href="#worlds">Manage worlds</a></div>
+        <div class="dworlds">${cards}${add}</div></div>
+      <div class="rcol">
+        ${feed.length?`<div class="panel"><h3>Recent activity</h3><div class="feed">${feed.map(f=>`<div><em>${f[0]}</em><p>${f[1]}<small>${f[2]}</small></p></div>`).join('')}</div></div>`:''}
+        <div class="panel"><h3>New trips</h3><div class="nts">${NEWEST.slice(0,2).map(id=>`<div style="background-image:url(${TRIPS[id][1]})"><span>New</span></div>`).join('')}</div><a class="pill ghost" href="${g0?`builder.html?edit=${encodeURIComponent(g0.slug)}&step=2`:'builder.html?fresh=1'}">Swap trips</a></div>
+        <div class="panel"><h3>Your plan</h3><p><b style="font-family:var(--display);font-weight:400;font-size:22px">${p.label}</b> £${a.yearly?p.y+' a year':p.m+' a month'}</p>
+          <p class="fine">${a.cancelled?`Ends ${fmt(nextPay(a))}.`:`Next payment ${fmt(nextPay(a))}.`} ${esc(a.card.brand)} ending ${esc(a.card.last4)}.</p><a class="pill ghost" href="#plan">Manage plan</a></div>
+      </div>
+    </div>
+    <p class="fine">Mock-up: the activity and progress numbers are made up.</p>`;
+}
+
+/* Worlds */
+function vWorlds(a){
+  const p=PRICES[a.plan],room=p.max-a.games.length;
+  const games=a.games.map(g=>{
+    const first=TRIPS[(g.worlds||[])[0]]||TRIPS.woolwich,url=`${g.slug}.${DOMAIN}`,st=stats(g),sl=esc(g.slug),nm=esc(g.name);
+    const edit=n=>`builder.html?edit=${encodeURIComponent(g.slug)}&step=${n}`;
+    return `<article class="game ${g.paused?'paused':''}">
+      <div class="pic" style="background-image:url(${first[1]})"><span class="chip ${g.paused?'off':''}">${g.paused?'Paused':'Playing'}</span><h3 class="outline">${nm}<span class="s">’s</span> World</h3></div>
+      <div class="body">
+        <div class="row2"><a class="pill" href="${GAME}" target="_blank" rel="noopener">Play ▸</a>
+          <div class="linkrow"><code>${esc(url)}</code><button class="pill" data-copy="https://${esc(url)}">Copy</button><button class="pill ghost" data-sharelink="https://${esc(url)}" data-name="${nm}">Share</button></div></div>
+        <div class="stats"><div><b>${st.done}/${(g.worlds||[]).length}</b><span>trips finished</span></div><div><b>${st.coins}</b><span>coins</span></div><div><b style="font-size:17px;line-height:1.45">${esc(st.fav)}</b><span>favourite trip</span></div></div>
+        <div><p class="kicker" style="margin-bottom:8px">Their trips</p><div class="trips">${(g.worlds||[]).map((id,i)=>`<span><b>${i+1}</b>${esc((TRIPS[id]||['?'])[0])}</span>`).join('')}</div></div>
+        <div class="acts">
+          <a class="pill ghost" href="${edit(2)}">Change trips</a><a class="pill ghost" href="${edit(1)}">Change their look</a>
+          <a class="pill ghost" href="${edit(3)}">Change the link</a><button class="pill ghost" data-open="rename" data-slug="${sl}">Rename</button>
+        </div>
+        ${open.rename===g.slug?`<form class="inline" data-form="rename" data-slug="${sl}"><b>New name</b><div class="box sm"><input name="v" maxlength="14" value="${nm}" aria-label="Their first name"></div>
+          <p class="fine">The new name shows on the title screen and their coins.</p><div class="two"><button class="pill ghost" type="button" data-close>Cancel</button><button class="pill" type="submit">Save name</button></div></form>`:''}
+        <details><summary>Put it on the home screen</summary><ol>
+          <li><b>iPhone or iPad:</b> open the link in Safari, tap Share, then Add to Home Screen.</li>
+          <li><b>Android:</b> open the link in Chrome, tap the ⋮ menu, then Add to Home screen.</li></ol></details>
+        <div class="more">
+          <button data-act="pause" data-slug="${sl}">${g.paused?'Resume this world':'Pause this world'}</button>
+          <button data-open="send" data-slug="${sl}">Send to another parent</button>
+          <button class="del" data-open="del" data-slug="${sl}">Delete this world</button>
+        </div>
+        ${open.pause===g.slug?'':''}
+        ${open.send===g.slug?`<form class="inline" data-form="send" data-slug="${sl}"><b>Send ${nm}’s link</b><p class="fine">Making one for someone else’s child? We email the link and the home-screen steps to their parent.</p>
+          <div class="box sm"><input name="v" type="email" placeholder="their@email.com" aria-label="Their email"></div><p class="hint" data-hint></p>
+          <div class="two"><button class="pill ghost" type="button" data-close>Cancel</button><button class="pill" type="submit">Send link</button></div></form>`:''}
+        ${open.del===g.slug?`<form class="inline danger" data-form="del" data-slug="${sl}"><b>Delete ${nm}’s World?</b><p class="fine">We delete their look, trips, progress and link. You can’t undo this. To confirm, type <b>${nm}</b> below.</p>
+          <div class="box sm"><input name="v" autocomplete="off" aria-label="Type their name to confirm"></div><p class="hint" data-hint></p>
+          <div class="two"><button class="pill ghost" type="button" data-close>Keep it</button><button class="pill danger" type="submit">Delete world</button></div></form>`:''}
+      </div></article>`}).join('');
+  const nt=NEWEST.map(id=>`<div class="nt" style="--c:${TRIPS[id][2]}"><span class="chip new">New</span><img src="${TRIPS[id][1]}" alt=""><b>${TRIPS[id][0]}</b></div>`).join('');
+  const swapTo=a.games[0]?`builder.html?edit=${encodeURIComponent(a.games[0].slug)}&step=2`:'builder.html?fresh=1';
+  return `<div><p class="kicker">Logged in as ${esc(a.via==='apple'?'your Apple ID':a.via==='google'?'your Google account':a.email)}</p><h2 class="ph">Your <span class="hl">worlds</span></h2></div>
+    <div class="wgrid">${games||'<div class="card"><h2>No worlds yet</h2><p class="lede">Build one to see it here.</p></div>'}</div>
+    <div class="card"><p class="kicker">Add a world</p>
+      ${room>0?`<p class="lede">Your plan has room for ${room} more ${room>1?'worlds':'world'}.</p><a class="pill wide" href="builder.html?fresh=1">Build another world ▸</a>`
+        :a.plan==='one'?`<p class="lede">The Family plan gives you up to 4 worlds (up to 4 children) for £6 a month.</p><a class="pill wide" href="builder.html?fresh=1">Add a world ▸</a>`
+        :'<p class="lede">Your Family plan is full, with 4 worlds. Delete one to make room.</p>'}</div>
+    <div class="card"><div><p class="kicker">Just landed</p><h2>New trips</h2></div><p class="lede">Swap any of these into their world. They keep their coins and progress.</p>
+      <div class="newtrips">${nt}</div><a class="pill ghost wide" href="${swapTo}">Swap trips ▸</a></div>`;
+}
+
+/* Plan */
+function vPlan(a){
+  const p=PRICES[a.plan],price=a.yearly?`£${p.y}<small> /year</small>`:`£${p.m}<small> /month</small>`;
+  const tooMany=a.games.length>1;
+  const receipts=(a.sample?[0,1,2]:[0]).map(i=>{const d=addMonths(new Date(a.joined),a.yearly?-12*i:-i);return `<div><div><b>${fmt(d)}</b><small>${p.label}, ${a.yearly?'yearly':'monthly'}</small></div><div style="display:flex;gap:10px;align-items:center"><b>£${a.yearly?p.y:p.m}.00</b><button class="pill ghost" data-act="receipt">PDF</button></div></div>`}).join('');
+  return `<div><p class="kicker">Plan and billing</p><h2 class="ph">Your <span class="hl">plan</span></h2></div>
+    <div class="card">
+      <div class="planrow"><div><h2>${p.label}</h2><p class="lede">${p.desc}</p></div><span class="price">${price}</span></div>
+      <p>${a.cancelled?`<span class="chip bad">Ends ${fmt(nextPay(a))}</span>`:`<span class="chip">Active</span> <span class="fine" style="margin-left:6px">Next payment: £${a.yearly?p.y:p.m} on ${fmt(nextPay(a))}</span>`}</p>
+    </div>
+    <div class="card"><p class="kicker">Change plan</p>
+      <div class="opts">${['one','family'].map(k=>`<button class="opt ${a.plan===k?'on':''}" data-planto="${k}" aria-pressed="${a.plan===k}"><h3>${PRICES[k].label}</h3><span>£${a.yearly?PRICES[k].y+' a year':PRICES[k].m+' a month'}</span><small>${PRICES[k].desc}</small></button>`).join('')}</div>
+      ${open.down?`<div class="inline danger"><b>Keep one world?</b><p class="fine">One game has room for 1 world. Pick the world to keep. We pause the others, and you can bring them back if you switch to Family again.</p>
+        <div class="two">${a.games.map(g=>`<button class="pill ghost" data-keep="${esc(g.slug)}">Keep ${esc(g.name)}</button>`).join('')}</div><button class="textbtn" data-close>Cancel</button></div>`:''}
+      <div class="toggle" role="group" aria-label="Billing"><button class="${a.yearly?'':'on'}" data-bill="m">Monthly</button><button class="${a.yearly?'on':''}" data-bill="y">Yearly</button></div>
+      <p class="fine">${a.yearly?'You pay once a year: 12 months for the price of 10.':'Pay yearly and get 12 months for the price of 10.'} We charge the difference on your next payment.</p>
+    </div>
+    <div class="card"><p class="kicker">Payment</p>
+      <div class="list"><div><div><b>${esc(a.card.brand)} ending ${esc(a.card.last4)}</b><small>Expires ${esc(a.card.exp)}</small></div><button class="pill ghost" data-act="card">Change card</button></div></div>
+      <p class="fine">Payments go through Stripe. We never see your full card number.</p></div>
+    <div class="card"><p class="kicker">Receipts</p><div class="list">${receipts}</div><p class="fine">We also email a receipt each time you pay.</p></div>
+    <div class="card"><p class="kicker">Cancel</p>
+      ${a.cancelled?`<p class="lede">You cancelled. ${esc(a.games.map(g=>g.name).join(' and ')||'They')} can play until ${fmt(nextPay(a))}. After that we lock their worlds and keep them saved.</p><button class="pill wide" data-act="rejoin">Rejoin</button>`
+      :open.cancel?`<div class="inline danger"><b>Cancel your plan?</b><p class="fine">${esc(a.games.map(g=>g.name).join(' and ')||'They')} can keep playing until ${fmt(nextPay(a))}. We keep their worlds safe, so if you come back, they pick up where they left off.</p>
+          <p class="fine" style="color:var(--ink)">Can you tell us why? (optional)</p>
+          <div class="reasons">${['Too expensive','They got bored','We want more trips','Technical problems','Something else'].map(r=>`<button type="button" data-reason="${r}" class="${open.reason===r?'on':''}">${r}</button>`).join('')}</div>
+          <div class="two"><button class="pill ghost" data-close>Keep my plan</button><button class="pill danger" data-act="docancel">Cancel plan</button></div></div>`
+      :`<p class="lede">You can cancel any time. They keep playing until the end of the period you paid for.</p><button class="pill danger" data-open="cancel">Cancel plan</button>`}
+    </div>`;
+}
+
+/* You */
+function vYou(a){
+  const sw=(k,label,sub)=>`<div><div><b>${label}</b><small>${sub}</small></div><button class="sw" role="switch" aria-checked="${!!a.prefs[k]}" data-pref="${k}" aria-label="${label}"></button></div>`;
+  return `<div><p class="kicker">Your details</p><h2 class="ph">About <span class="hl">you</span></h2></div>
+    <div class="card"><p class="kicker">Login</p>
+      <div class="list"><div><div><b>${esc(a.email)}</b><small>${a.via==='apple'?'You log in with Apple':a.via==='google'?'You log in with Google':'We email you a one-tap login link'}</small></div><button class="pill ghost" data-open="email">Change</button></div></div>
+      ${open.email?`<form class="inline" data-form="email"><b>New email</b><div class="box sm"><input name="v" type="email" placeholder="you@example.com" aria-label="New email"></div><p class="hint" data-hint></p>
+        <p class="fine">We send a link to the new email. Your login changes when you tap it.</p><div class="two"><button class="pill ghost" type="button" data-close>Cancel</button><button class="pill" type="submit">Send link</button></div></form>`:''}
+    </div>
+    <div class="card"><p class="kicker">Where you’re logged in</p>
+      <div class="list">${a.devices.map((d,i)=>`<div><div><b>${esc(d.name)}${d.me?' (this one)':''}</b><small>${esc(d.app)} · ${esc(d.when)}</small></div>${d.me?'':`<button class="pill ghost" data-logoutdev="${i}">Log out</button>`}</div>`).join('')}</div>
+      <button class="pill ghost" data-act="logoutall">Log out everywhere else</button>
+      <p class="fine">This logs you out of the account. The game links keep working, so the children can still play.</p></div>
+    <div class="card"><p class="kicker">Emails from us</p>
+      <div class="list">${sw('newtrips','New trips','When we finish a new place to run through')}${sw('updates','World updates','When someone changes a world on your account')}${sw('receipts','Receipts','After each payment')}</div></div>
+    <div class="card"><p class="kicker">Your data</p>
+      <p class="lede">Download everything we keep about you and the children: names, looks, trips, progress and payments.</p>
+      <button class="pill ghost" data-act="download">Download my data</button>
+      ${open.delacct?`<form class="inline danger" data-form="delacct"><b>Delete your account?</b><p class="fine">We cancel your plan, delete every world and link, and delete your details. You can’t undo this. To confirm, type <b>DELETE</b>.</p>
+        <div class="box sm"><input name="v" autocomplete="off" aria-label="Type DELETE to confirm"></div><p class="hint" data-hint></p>
+        <div class="two"><button class="pill ghost" type="button" data-close>Keep my account</button><button class="pill danger" type="submit">Delete account</button></div></form>`
+      :'<button class="pill danger" data-open="delacct">Delete my account</button>'}
+    </div>
+    <button class="textbtn" data-act="logout">Log out</button>`;
+}
+
+/* Help */
+function vHelp(){
+  const q=(t,b)=>`<details><summary>${t}</summary><p>${b}</p></details>`;
+  return `<div><p class="kicker">Help</p><h2 class="ph">How can we <span class="hl">help?</span></h2></div>
+    <div class="stack">
+      ${q('How do I put the game on the home screen?','On an iPhone or iPad, open the link in Safari, tap Share, then Add to Home Screen. On Android, open it in Chrome, tap the ⋮ menu, then Add to Home screen. The game gets its own icon.')}
+      ${q('How do I change their trips or look?','Open the Worlds tab and tap Change trips or Change their look. They see the changes the next time the game opens.')}
+      ${q('The game won’t load. What can I try?','Check you have internet, then close the game and open it again from the home screen. If that doesn’t work, delete the icon and add it again from the link.')}
+      ${q('I made it for someone else’s child. How do I give it to them?','On the Worlds tab, tap Send to another parent. We email them the link and the home-screen steps. You keep the account and pay for it.')}
+      ${q('What happens if I cancel?','They keep playing until the end of the period you paid for. Then we lock their world and keep it saved, so if you rejoin, they pick up where they left off.')}
+      ${q('Is it safe for children?','There are no ads, no chat and nothing to buy inside the game. Only people with the link can open it.')}
+    </div>
+    <div class="card"><p class="kicker">Still stuck?</p><p class="lede">Email us and a person replies within one working day.</p><a class="pill" href="mailto:hello@littleworlds.example">Email us</a><p class="fine">Mock-up: the email address is a placeholder.</p></div>`;
+}
+
+/* ---------- routing ---------- */
+function route(){const h=location.hash.slice(1);
+  if(['account','worlds','plan','you','help'].includes(h)){if(get(SESSION))show('vAccount');else{location.hash='';show('vLogin')}}
+  else if(h==='check'&&pendingEmail)show('vCheck');else show('vLogin')}
+addEventListener('hashchange',()=>{open={};route();if(!$('#vAccount').hidden&&!document.body.classList.contains('dash'))scrollTo({top:Math.min(scrollY,$('.strip').offsetHeight-60)});else scrollTo({top:0})});
+
+$('#loginForm').addEventListener('submit',e=>{e.preventDefault();const v=$('#em').value.trim(),h=$('#emHint');
+  if(!okEmail(v)){h.textContent='Enter an email like name@example.com.';h.className='hint bad';return}
+  h.textContent='';pendingEmail=v;$('#sentTo').textContent=v;location.hash='check'});
+
+/* forms inside the account */
+document.addEventListener('submit',e=>{const f=e.target.closest('[data-form]');if(!f)return;e.preventDefault();
+  const a=acct(),v=(f.elements.v?f.elements.v.value:'').trim(),hint=f.querySelector('[data-hint]'),bad=m=>{if(hint){hint.textContent=m;hint.className='hint bad'}};
+  const g=a.games.find(x=>x.slug===f.dataset.slug);
+  if(f.dataset.form==='rename'){const n=v.replace(/[^A-Za-zÀ-ž' -]/g,'').slice(0,14);if(!n)return;g.name=n[0].toUpperCase()+n.slice(1);store(a);open={};show('vAccount');toast(`Saved. The game now says ${g.name}’s World.`)}
+  if(f.dataset.form==='send'){if(!okEmail(v))return bad('Enter an email like name@example.com.');open={};renderAccount();toast(`We sent ${g.name}’s link to ${v}. (Mock-up: nothing was sent.)`)}
+  if(f.dataset.form==='del'){if(v.toLowerCase()!==g.name.toLowerCase())return bad(`Type ${g.name} to confirm.`);a.games=a.games.filter(x=>x!==g);store(a);open={};show('vAccount');toast(`We deleted ${g.name}’s World.`)}
+  if(f.dataset.form==='email'){if(!okEmail(v))return bad('Enter an email like name@example.com.');open={};renderAccount();toast(`Check ${v} for a link to confirm the change. (Mock-up)`)}
+  if(f.dataset.form==='delacct'){if(v!=='DELETE')return bad('Type DELETE in capitals to confirm.');put(KEY,null);put(SESSION,null);sample=null;open={};location.hash='';toast('We deleted your account.')}
+});
+
+document.addEventListener('click',e=>{
+  const t=e.target.closest('button');if(!t)return;const d=t.dataset;
+  if(d.auth){put(SESSION,{via:d.auth});location.hash='account';return}
+  if(d.act==='open'){put(SESSION,{email:pendingEmail});location.hash='account';return}
+  if(d.act==='back'){location.hash='';return}
+  if(d.copy){navigator.clipboard&&navigator.clipboard.writeText(d.copy).then(()=>toast('Link copied'),()=>toast(d.copy));return}
+  if(d.sharelink){if(navigator.share)navigator.share({title:`${d.name}’s World`,url:d.sharelink}).catch(()=>{});else{navigator.clipboard&&navigator.clipboard.writeText(d.sharelink);toast('Link copied, ready to paste')}return}
+  if(t.closest('form')&&t.type==='submit')return;
+  const a=acct();const save=()=>{store(a);renderAccount()};
+  if(d.open){open={[d.open]:d.slug||true};renderAccount();const el=document.querySelector('.inline');el&&el.scrollIntoView({block:'center',behavior:'smooth'});const i=el&&el.querySelector('input');i&&i.focus({preventScroll:true});return}
+  if('close' in d){open={};renderAccount();return}
+  if(d.act==='pause'){const g=a.games.find(x=>x.slug===d.slug);g.paused=!g.paused;save();toast(g.paused?`We paused ${g.name}’s World. The link shows a “back soon” screen.`:`${g.name}’s World is back on.`);return}
+  if(d.planto){if(d.planto===a.plan)return;
+    if(d.planto==='one'&&a.games.filter(g=>!g.paused).length>1){open={down:true};renderAccount();return}
+    a.plan=d.planto;save();toast(`You’re on ${PRICES[a.plan].label} now.`);return}
+  if(d.keep){a.games.forEach(g=>g.paused=g.slug!==d.keep);a.plan='one';open={};save();toast('You’re on One game now.');return}
+  if(d.bill){a.yearly=d.bill==='y';save();return}
+  if(d.reason){open.reason=d.reason;renderAccount();return}
+  if(d.act==='docancel'){a.cancelled=true;a.reason=open.reason||'';open={};store(a);show('vAccount');scrollTo({top:0});toast('We cancelled your plan.');return}
+  if(d.act==='rejoin'){a.cancelled=false;save();toast('Welcome back. Your plan is active again.');return}
+  if(d.act==='card'){toast('This opens Stripe’s secure card page. (Mock-up)');return}
+  if(d.act==='receipt'){toast('This downloads the receipt. (Mock-up)');return}
+  if(d.pref){a.prefs[d.pref]=!a.prefs[d.pref];save();return}
+  if(d.logoutdev){a.devices.splice(+d.logoutdev,1);save();toast('Logged out of that device.');return}
+  if(d.act==='logoutall'){a.devices=a.devices.filter(x=>x.me);save();toast('Logged out everywhere else.');return}
+  if(d.act==='download'){const blob=new Blob([JSON.stringify(a,null,2)],{type:'application/json'});const u=URL.createObjectURL(blob);const l=document.createElement('a');l.href=u;l.download='little-worlds-data.json';document.body.appendChild(l);l.click();l.remove();setTimeout(()=>URL.revokeObjectURL(u),1000);return}
+  if(d.act==='logout'){put(SESSION,null);location.hash='';return}
+});
+route();
+})();
+</script>
+</body></html>
