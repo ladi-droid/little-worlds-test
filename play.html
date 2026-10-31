@@ -395,7 +395,7 @@ h1 em{display:block;font-style:normal;color:var(--amber)}
   </div>
 </section>
 
-<script src="game.js"></script>
+<script src="game.js?v=1793472646"></script>
 <script>
 (() => {
 'use strict';
@@ -984,7 +984,7 @@ $('retryBtn').addEventListener('click', () => startLevel(levelIndex));
 // If the builder opened this tab, close it and show the builder again; otherwise open the builder with this child's world filled in.
 let lwJoinEnd = false;
 function lwBackToBuilder() {
-  const url = 'builder.html?w=' + lwEncode(LW);
+  const url = 'builder.html?v=1793472646&w=' + lwEncode(LW);
   try { if (window.opener && !window.opener.closed && /builder\.html/.test(window.opener.location.pathname)) { window.opener.focus(); window.close(); setTimeout(() => { location.href = url; }, 400); return; } } catch (e) {}
   location.href = url;
 }
