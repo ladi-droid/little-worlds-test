@@ -177,12 +177,12 @@ function makeBuilder(area) {
     },
     ceiling(x0, x1, bottom) { L.solids.push({ kind: 'block', x: x0, y: bottom, w: x1 - x0, h: 40, style: 'ceiling' }); },
     // new riverside tower: ground floor, n floors with balconies, roof terrace (82.5px per unit)
-    tower(x, n) {
+    tower(x, n, simple) {                           // simple: only the floor slabs and roof (a drop goes straight to the street)
       L.props.push({ kind: 'tower', x, n });
       const ledge = (x0, y, w) => L.oneways.push({ kind: 'ledge', x: x + x0, y, w });
-      ledge(8.7, 3.1, 6.0);                        // coffee shop canopy
+      if (!simple) ledge(8.7, 3.1, 6.0);           // coffee shop canopy
       ledge(0.2, 3.6, 16.1);                       // first-floor slab
-      for (let i = 0; i < n; i++) { const y = 3.6 + 3.6 * i + 0.57; ledge(2.3, y, 5.5); ledge(8.6, y, 5.5); }
+      if (!simple) for (let i = 0; i < n; i++) { const y = 3.6 + 3.6 * i + 0.57; ledge(2.3, y, 5.5); ledge(8.6, y, 5.5); }
       ledge(0.3, 3.6 + 3.6 * n + 0.64, 15.9);       // roof terrace
     },
     dialArch(x) {
@@ -492,7 +492,7 @@ const ALL_LEVELS = [
     b.cwSolid('cw_sq_bin', 272.3, 0.97, 1.6);
     b.cwSolid('cw_sq_bin', 282, 0.97, 1.6);
     // hold to jump higher: the first floor of a smaller block, then swipe down to drop back to the street
-    b.tower(286, 1);
+    b.tower(286, 1, true);                  // (no canopy or balcony ledges: swipe down lands on the street)
     b.coins(287, 4.6, 6, 1.4);
     b.special(290.4, 5.2);                  // 1: on the first floor
     b.special(300.0, 0.9);                  // 2: under the end of the floor, for a child who drops down
@@ -500,9 +500,9 @@ const ALL_LEVELS = [
     b.planterTall(305.5);
     b.coins(305.7, 3.2, 2, 0.8);
     // land on a pigeon, then another, then dodge a fox
-    b.pigeon(315);
-    b.coins(314.6, 2.6, 2, 0.8);
-    b.pigeon(322);
+    b.pigeon(318);
+    b.coins(317.6, 2.6, 2, 0.8);
+    b.pigeon(325);
     b.fox(332, 327, 337);
     b.planter(339);
     b.special(340.6, 3.6);                  // 3: jump from the planter
@@ -533,7 +533,7 @@ const ALL_LEVELS = [
       { x: 255.5, until: 261.5, text: 'Tap to jump', pause: true },
       { x: 276.5, until: 286, text: 'Hold to jump higher', pause: true },
       { x: 292.5, until: 299.5, text: 'Swipe down to drop', y: 3, pause: true },
-      { x: 308, until: 315, text: 'Land on the pigeon', pause: true },
+      { x: 308, until: 318, text: 'Land on the pigeon', pause: true },
       { x: 357.8, until: 363, text: 'Hold for the high coin' },
       { x: 371.5, until: 378, text: 'Climb up for the last coin', pause: true },
       { x: 417.5, until: 424.5, text: 'Jump high at the flag', pause: true },
