@@ -531,7 +531,7 @@ const ALL_LEVELS = [
     L.tips = [
       { x: 249.5, until: 252, text: 'Small things? You hop them' },
       { x: 255.5, until: 261.5, text: 'Tap to jump', pause: true },
-      { x: 279.5, until: 286, text: 'Hold to jump higher', pause: true },
+      { x: 276.5, until: 286, text: 'Hold to jump higher', pause: true },
       { x: 292.5, until: 299.5, text: 'Swipe down to drop', y: 3, pause: true },
       { x: 308, until: 315, text: 'Land on the pigeon', pause: true },
       { x: 357.8, until: 363, text: 'Hold for the high coin' },

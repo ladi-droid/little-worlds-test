@@ -909,8 +909,9 @@ function tipTick() {
 function tipOff() { tipOn = null; $('tip').classList.remove('show'); $('tipCard').classList.remove('show'); }
 function tipResume() {
   if (state !== 'tip' || performance.now() - tipT < 350) return;   // (a moment's wait, so a tap already on its way doesn't skip it)
-  $('tipCard').classList.remove('show'); state = 'play'; input.held = false; input.pressed = false;
+  $('tipCard').classList.remove('show'); state = 'play'; input.held = false; input.pressed = false; tipResumeT = performance.now();
 }
+let tipResumeT = 0;
 $('tipCard').addEventListener('pointerdown', e => { e.preventDefault(); tipResume(); });
 $('joinOk').addEventListener('click', () => $('joinBox').hidden = true);
 // children's games: no code. Unpaid -> join message; paid -> finish the trip before first.
@@ -1158,7 +1159,9 @@ function frame(now) {
     }
     if (state === 'ready') { readyT -= dt; if (G.intro && readyT < 0.75 && !G.introToast) { G.introToast = true; showToast('Ready…', 600); } if (readyT <= 0) { state = 'play'; G.intro = false; showToast('Go!', 450); if (G.L.race) SFX.lampGo(); } }
     if (state === 'play') {
-      ARun.step(G, dt, input); input.pressed = false; input.down = false;
+      // after a tip card, the game eases back in (slow, then full speed) so the child has a moment before the move
+      let k = 1; if (tipResumeT) { const e = (now - tipResumeT) / 1000; if (e >= 1.1) tipResumeT = 0; else k = e < 0.45 ? 0.3 : 0.3 + 0.7 * (e - 0.45) / 0.65; }
+      ARun.step(G, dt * k, input); input.pressed = false; input.down = false;
       handleEvents();
       tipTick();
       if (G.p.onGround && !G.p.blocked) runPhase += Math.abs(G.p.vx) * dt;
