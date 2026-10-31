@@ -1,0 +1,10 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Start fresh</title>
+<style>body{margin:0;min-height:100vh;display:grid;place-items:center;background:#f6efe3;color:#111;font:600 18px/1.4 system-ui,sans-serif;text-align:center;padding:16px}</style></head>
+<body><p>Clearing test data…</p>
+<script>
+// Test site only: forget the pretend account, drafts, saved children and progress on this device.
+try{localStorage.clear();sessionStorage.clear()}catch(e){}
+location.replace('./');
+</script></body></html>
