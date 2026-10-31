@@ -1111,7 +1111,7 @@ function finish() {
   $('nextBtn').textContent = levelIndex + 1 < ARun.LEVELS.length ? 'Next trip' : 'All trips';
   $('nextBtn').hidden = false; $('retryBtn').textContent = 'Run again';
   lwJoinEnd = !!(LW && !LW.paid && ARun.LEVELS[levelIndex].practice);
-  if (lwJoinEnd) $('nextBtn').textContent = `Join to open ${LW.name}’s trips`;
+  if (lwJoinEnd) $('nextBtn').textContent = 'Continue setting up';
   $('nextBtn').parentElement.classList.toggle('join', lwJoinEnd);
   $('hud').hidden = true;
   showOnly('endScreen');
