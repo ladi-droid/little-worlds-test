@@ -259,7 +259,7 @@ details p{font-weight:600;color:var(--muted)}
 const $=s=>document.querySelector(s);
 const esc=t=>String(t).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 const DOMAIN='myworld.games',GAME='play.html?v=1793472646';
-const playLink=g=>{const c={};['name','style','acc','skin','hair','cap','hood','jog','shoe','worlds','slug'].forEach(k=>{if(g[k]!==undefined)c[k]=g[k]});c.paid=true;
+const playLink=g=>{const c={};['name','kid','style','acc','skin','hair','hood','jog','shoe','worlds','slug'].forEach(k=>{if(g[k]!==undefined)c[k]=g[k]});c.paid=true;
   return GAME+'&w='+btoa(unescape(encodeURIComponent(JSON.stringify(c)))).replace(/\+/g,'-').replace(/\//g,'_').replace(/=+$/,'')};
 const TRIPS={woolwich:['Woolwich','ui_card_woolwich.webp','#6d3fc0'],brixton:['Brixton','ui_card_brixton.webp','#e8701c'],greenwich:['Greenwich','ui_card_greenwich.webp','#00a4a7'],canarywharf:['Canary Wharf','ui_card_canarywharf.webp','#1f62b4'],
   heathrow:['Airport Rush','ui_card_heathrow.webp','#2b7fd0'],olddubai:['Old Dubai','ui_card_olddubai.webp','#d98a2b'],downtown:['Downtown','ui_card_downtown.webp','#7a4fd0'],palm:['The Palm','ui_card_palm.webp','#0aa3b8'],marina:['Marina','ui_card_marina.webp','#e0a020'],desert:['Desert Race','ui_card_desert.webp','#e07a20']};

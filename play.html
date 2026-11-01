@@ -395,6 +395,8 @@ h1 em{display:block;font-style:normal;color:var(--amber)}
   </div>
 </section>
 
+<script src="kids/kids-meta.js"></script>
+<script src="kids/kids.js"></script>
 <script src="game.js?v=1793472646"></script>
 <script>
 (() => {
@@ -434,7 +436,9 @@ function lwClean(c) {
   if (!name) return null;
   const ids = ARun.ALL_LEVELS.map(l => l.id);
   const worlds = (Array.isArray(c.worlds) ? c.worlds : []).filter((id, i, a) => ids.includes(id) && id !== 'practice' && id !== 'towerbridge' && a.indexOf(id) === i).slice(0, LW_MAX_TRIPS);
-  const out = { name, style: LW_STYLES.some(s => s[0] === c.style) ? c.style : 'curls', acc: typeof c.acc === 'string' ? c.acc : 'none', worlds,
+  const kid = c.kid === 'girl' || c.kid === 'boy' ? c.kid : null;
+  const kidStyles = kid && window.KidArt ? KidArt.styles(kid === 'girl' ? 'G' : 'B') : [];
+  const out = { name, kid, style: kid ? (kidStyles.includes(c.style) ? c.style : kidStyles[0]) : LW_STYLES.some(s => s[0] === c.style) ? c.style : 'curls', acc: typeof c.acc === 'string' ? c.acc : 'none', worlds,
     slug: String(c.slug || name).toLowerCase().replace(/[^a-z0-9-]/g, '').slice(0, 24) || 'child', paid: c.paid !== false };
   for (const k in LW_LISTS) {
     const v = c[k];
@@ -643,7 +647,16 @@ const AREAS = {
 const ATLAS_OF = {}; for (const f in ATLAS) for (const k in ATLAS[f]) ATLAS_OF[k] = f;
 const atlasPics = {};
 function atlasPic(f) { return atlasPics[f] || (atlasPics[f] = new Promise(res => { const im = new Image(); im.onload = () => res(im); im.onerror = () => res(null); im.src = f; })); }
+// the boy or girl: T-shirt, bottoms and trainers use the hoodie, joggers and trainer colours
+function lwKidCfg() {
+  if (!LW || !LW.kid || !window.KidArt) return null;
+  return { kid: LW.kid, style: LW.style, acc: LW.acc, skin: lwColour('skin'), hair: lwColour('hair'),
+    tee: lwColour('hood') || [28, 42, 94], bottom: lwColour('jog') || [42, 42, 46], shoe: lwColour('shoe') || [242, 240, 234] };
+}
+function lwKidCar(key) { const kc = lwKidCfg(), e = kc && KidArt.info(kc, key); return e && e.car; }
 function loadImg(key, src) {
+  const kc = lwKidCfg();
+  if (kc && KidArt.has(kc, key)) return KidArt.build(kc, key).then(c => { if (c) IMG[key] = c; });
   const f = ATLAS_OF[key];
   if (f) return atlasPic(f).then(im => {
     if (!im) return; const [x, y, w, h] = ATLAS[f][key], c = document.createElement('canvas');
@@ -1935,7 +1948,8 @@ function drawSprite(key, fi, cx, by, hUnits, flip, opts = {}) {
   ctx.save(); ctx.translate(cx, by);
   if (opts.rot) ctx.rotate(opts.rot);
   ctx.scale((flip ? -1 : 1) * (opts.sx || 1), opts.sy || 1);
-  ctx.drawImage(im, fi * sp.fw, 0, sp.fw, sp.fh, -w / 2, opts.center ? -h / 2 : -h, w, h);
+  const pt = im.lwPT || 0, px = im.lwPX || 0, cw = sp.fw + 2 * px;
+  ctx.drawImage(im, fi * cw, 0, cw, sp.fh + pt, -w / 2 - w * px / sp.fw, (opts.center ? -h / 2 : -h) - h * pt / sp.fh, w * cw / sp.fw, h * (sp.fh + pt) / sp.fh);
   ctx.restore();
   return true;
 }
@@ -3154,9 +3168,9 @@ function drawGwMid() {
 const SC_PXU = 427, INTRO_T = 2.6;          // art px per world unit; Greenwich intro length (s)
 function drawScooterAt(key, x, y, tilt, alpha) {   // x: scooter's back end, y: ground
   const im = IMG[key]; if (!im) return;
-  const k = U / SC_PXU, w = im.width * k, h = im.height * k, X = sx(x), Y = sy(y);
+  const k = U / SC_PXU, pt = im.lwPT || 0, px = im.lwPX || 0, w = (im.width - 2 * px) * k, h = (im.height - pt) * k, X = sx(x), Y = sy(y);
   ctx.save(); if (alpha !== undefined) ctx.globalAlpha = alpha;
-  ctx.translate(X + w * 0.5, Y); ctx.rotate(tilt || 0); ctx.drawImage(im, -w * 0.5, -h + 0.02 * U, w, h); ctx.restore();
+  ctx.translate(X + w * 0.5, Y); ctx.rotate(tilt || 0); ctx.drawImage(im, -w * 0.5 - px * k, -h - pt * k + 0.02 * U, im.width * k, im.height * k); ctx.restore();
 }
 function drawParkedScooters() {
   if (!G) return;
@@ -4522,7 +4536,7 @@ function drawHwMood() {
 }
 /* the wake-up: asleep on the seats, the board flips to FINAL CALL, he jolts awake and grabs his bag */
 const HW_APX = 234;   // wake art pixels per unit
-function hwWakeImg(key, cx, yb) { const im = IMG[key]; if (!im) return; const w = im.width / HW_APX * U, h = im.height / HW_APX * U; ctx.drawImage(im, sx(cx) - w / 2, sy(yb) - h, w, h); }
+function hwWakeImg(key, cx, yb) { const im = IMG[key]; if (!im) return; const k = U / HW_APX, pt = im.lwPT || 0, px = im.lwPX || 0, w = (im.width - 2 * px) * k, h = (im.height - pt) * k; ctx.drawImage(im, sx(cx) - w / 2 - px * k, sy(yb) - h - pt * k, im.width * k, im.height * k); }
 function hwSleepScene() {
   const t = sleepT(), S = G.L.sleepStart;
   if (t < 3.1) bxImg('hw_bag_floor', S - 0.75, 0, 0.55);
@@ -5659,7 +5673,8 @@ const DS_CLIMB = 1.2;   // seconds A takes to climb into his buggy at the end of
 const dsIntroT = () => DS_INTRO - readyT;
 // one car: its body picture lined up on two wheels. mid = halfway between the wheels (world x), gy = ground under it, ang = tilt
 function dsCar(key, wheelKey, wb, r, mid, gy, ang, roll, opts = {}) {
-  const im = IMG[key], wh = IMG[wheelKey], C = DS_CAR[key]; if (!im || !C) return;
+  const im = IMG[key], wh = IMG[wheelKey], KC = lwKidCar(key), C = KC || DS_CAR[key]; if (!im || !C) return;
+  if (KC && KC.rk) r *= KC.rk;
   const s = wb / ((C.a[1] - C.a[0]) * C.w);          // this picture's scale so its wheelbase matches
   const w = C.w * s, h = C.h * s, left = -wb / 2 - C.a[0] * w;
   const X = sx(mid), Y = sy(gy);
@@ -5672,7 +5687,8 @@ function dsCar(key, wheelKey, wb, r, mid, gy, ang, roll, opts = {}) {
   // arch top (cr * h down from the picture's top) sits just inside the tyre top (2r * 0.96 above the ground)
   const top = 2 * r * 0.96 + C.cr * h;   // height of the picture's top edge above the ground
   if (opts.clipBelow !== undefined) { ctx.beginPath(); ctx.rect(left * U - 2, -(top) * U + opts.clipBelow * h * U, w * U + 4, h * U); ctx.clip(); }
-  ctx.drawImage(im, left * U, -top * U, w * U, h * U);
+  if (im.lwPT || im.lwPX) { const k = w * U / im.lwW; ctx.drawImage(im, left * U - im.lwPX * k, -top * U - im.lwPT * k, im.width * k, im.height * k); }   // the child's hair can reach above the picture
+  else ctx.drawImage(im, left * U, -top * U, w * U, h * U);
   ctx.restore();
 }
 function dsPose(c, isA) {
