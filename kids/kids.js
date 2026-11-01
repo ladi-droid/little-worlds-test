@@ -28,12 +28,13 @@
     const l = canvas(lab.width, lab.height), lx = l.getContext('2d', { willReadFrequently: true }); lx.drawImage(lab, 0, 0);
     let d, L;
     try { d = x.getImageData(0, 0, c.width, c.height); L = lx.getImageData(0, 0, l.width, l.height).data; } catch (e) { return c; }
-    const p = d.data, T = {}, O = {};
+    const p = d.data, T = {}, O = {}, ink = [];
     for (const k in PARTS) { if ((!only || only.includes(+k)) && cols[PARTS[k]]) T[k] = cols[PARTS[k]]; O[k] = T[k] || orig[k]; }
     for (let i = 0; i < p.length; i += 4) {
       if (p[i + 3] < 8) continue;
       const k = Math.round(L[i] / 40); if (!k) continue;
       const share = L[i + 1] / 255, n = Math.round(L[i + 2] / 25), lum = .3 * p[i] + .59 * p[i + 1] + .11 * p[i + 2];
+      if (k === 6) { p[i] = p[i + 1] = p[i + 2] = lum; continue; }   // outline, white, grey: no colour
       if (!n) {   // all one part
         const t = T[k]; if (!t) continue;
         let f = lum / base[k]; if (f > 1) f = Math.min(1.5, 1 + (f - 1) * .5);   // highlights lighten gently, so light colours don't glare
@@ -42,9 +43,32 @@
       }
       const ck = O[k], cn = FIXED[n] || O[n];
       if (!ck || !cn || !(T[k] || T[n])) continue;
+      if (n === 6 && T[k]) { ink.push(i); continue; }   // fading into the outline: coloured after, from its neighbours
+      if ((k === 5 && n === 4) || (k === 4 && n === 5)) {   // hair fading into skin: hair at its usual brightness over the skin as shaded here
+        const h = k === 5 ? share : 1 - share, ch = k === 5 ? ck : cn, cs = k === 5 ? cn : ck;
+        const hf = META.kids[K].hf || .9, ss = h > .95 ? 1 : Math.max(.6, Math.min(1.15, (lum - h * base[5] * 1.05) / ((1 - h) * base[4])));
+        for (let j = 0; j < 3; j++) p[i + j] = Math.min(255, h * ch[j] * hf + (1 - h) * cs[j] * ss);
+        continue;
+      }
       const ok = orig[k] || ck, on = FIXED[n] || orig[n] || cn;
       const was = share * lumOf(ok) + (1 - share) * lumOf(on), f = Math.max(.7, Math.min(1.05, was > 1 ? lum / was : 1));
       for (let j = 0; j < 3; j++) p[i + j] = Math.min(255, (share * ck[j] + (1 - share) * cn[j]) * f);
+    }
+    // a pixel fading into the black outline takes the colour of the part right beside it (its shading, a fade's mix),
+    // so lines stay clean whatever the colours
+    const W = c.width, H = c.height, B = FIXED[6];
+    for (const i of ink) {
+      const k = Math.round(L[i] / 40), share = L[i + 1] / 255, px = (i >> 2) % W, py = (i >> 2) / W | 0;
+      let r = 0, g = 0, b = 0, w = 0;
+      for (let dy = -2; dy <= 2; dy++) for (let dx = -2; dx <= 2; dx++) {
+        const X = px + dx, Y = py + dy; if (X < 0 || Y < 0 || X >= W || Y >= H) continue;
+        const j = (Y * W + X) * 4;
+        if (p[j + 3] < 200 || Math.round(L[j] / 40) !== k || Math.round(L[j + 2] / 25) === 6) continue;
+        const q = 1 / (1 + dx * dx + dy * dy); r += p[j] * q; g += p[j + 1] * q; b += p[j + 2] * q; w += q;
+      }
+      const t = T[k], f = w ? 0 : Math.max(.7, Math.min(1.05, base[k] > 1 ? (.3 * p[i] + .59 * p[i + 1] + .11 * p[i + 2] - (1 - share) * lumOf(B)) / (share * base[k]) : 1));
+      const fc = w ? [r / w, g / w, b / w] : [t[0] * f, t[1] * f, t[2] * f];
+      for (let j = 0; j < 3; j++) p[i + j] = Math.min(255, share * fc[j] + (1 - share) * B[j]);
     }
     x.putImageData(d, 0, 0);
     return c;
