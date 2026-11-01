@@ -220,7 +220,7 @@ ol.how b{font-weight:800}
 @media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
 </style>
 <style>.who{display:flex;gap:12px}.who button{flex:1;max-width:150px;border:3px solid var(--ink);border-radius:18px;background:var(--card);padding:6px 4px 0;cursor:pointer;display:grid;place-items:center}
-.who button.on{background:var(--sun);box-shadow:0 4px 0 var(--ink)}.who canvas{height:120px;width:auto;display:block}
+.who button.on{background:var(--sun);box-shadow:0 4px 0 var(--ink)}.who button{padding:10px 4px}.who canvas{height:110px;width:auto;display:block;margin:auto}
 .chips.pics .chip{display:inline-flex;flex-direction:column;align-items:center;gap:0;padding:4px 10px 8px;border-radius:18px}.chips.pics canvas{height:64px;width:64px;display:block}</style>
 <script src="qr.js"></script>
 <script src="kids/kids-meta.js"></script>
@@ -288,6 +288,7 @@ const KIDS={
        acc:[['none','None'],['crown','Crown'],['clips','Flower clips'],['bow','Bow'],['glasses','Glasses'],['headphones','Headphones']],
        bottom:'Dungarees',look:{hood:'#f2f0ea',jog:'#9bb08a',shoe:'#f2f0ea'}},
 };
+for(const k in KIDS)KIDS[k].styles.sort((a,b)=>a[1].localeCompare(b[1]));   // A to Z
 const KID=()=>KIDS[S.kid]||KIDS.boy;
 const STYLES=[],ACC=[];
 const TAKEN=['bob','bobsworld','sam','samsworld','amara','amaresworld','leo','mia','zara','test','a','asworld'];
@@ -404,7 +405,10 @@ const thumbs={};
 function thumb(cfg,head){const id=JSON.stringify(cfg)+head;return thumbs[id]||(thumbs[id]=KidArt.build(cfg,'a_side').then(c=>{
   if(!c)return null;const o=document.createElement('canvas');
   if(head){const s=190,y=c.lwPT-95;o.width=s;o.height=s;o.getContext('2d').drawImage(c,(c.width-s)/2,Math.max(0,y),s,s,0,0,s,s)}
-  else{o.width=c.width;o.height=c.height;o.getContext('2d').drawImage(c,0,0)}return o}))}
+  else{const b=bounds(c);o.width=b[2];o.height=b[3];o.getContext('2d').drawImage(c,b[0],b[1],b[2],b[3],0,0,b[2],b[3])}return o}))}
+function bounds(c){const d=c.getContext('2d').getImageData(0,0,c.width,c.height).data;let x0=c.width,y0=c.height,x1=0,y1=0;
+  for(let y=0;y<c.height;y++)for(let x=0;x<c.width;x++)if(d[(y*c.width+x)*4+3]>20){if(x<x0)x0=x;if(x>x1)x1=x;if(y<y0)y0=y;if(y>y1)y1=y}
+  return x1<x0?[0,0,c.width,c.height]:[x0,y0,x1-x0+1,y1-y0+1]}
 function drawPicks(){
   if(!window.KidArt)return;
   document.querySelectorAll('canvas[data-pick]').forEach(cv=>{

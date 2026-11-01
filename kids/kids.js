@@ -16,21 +16,35 @@
     if (typeof v === 'string' && /^#[0-9a-f]{6}$/i.test(v)) return [parseInt(v.slice(1, 3), 16), parseInt(v.slice(3, 5), 16), parseInt(v.slice(5, 7), 16)];
     return null;
   }
-  // repaint each part in its new colour, keeping the shading (brightness compared with the part's usual brightness)
-  function recolour(im, lab, cols, base, only) {
+  // repaint each part in its new colour, keeping the shading. The part map's red says which part a pixel is, green how much
+  // of it is that part, and blue what the rest is (another part, the black outline or white), so edges blend cleanly.
+  const FIXED = { 6: [24, 20, 24], 7: [248, 246, 240] };
+  const lumOf = c => .3 * c[0] + .59 * c[1] + .11 * c[2];
+  function recolour(im, lab, cols, K, only) {
     const c = canvas(im.width, im.height), x = c.getContext('2d', { willReadFrequently: true });
     x.drawImage(im, 0, 0);
     if (!lab) return c;
+    const base = META.kids[K].base, orig = META.kids[K].rgb || {};
     const l = canvas(lab.width, lab.height), lx = l.getContext('2d', { willReadFrequently: true }); lx.drawImage(lab, 0, 0);
     let d, L;
     try { d = x.getImageData(0, 0, c.width, c.height); L = lx.getImageData(0, 0, l.width, l.height).data; } catch (e) { return c; }
-    const p = d.data, T = {};
-    for (const k in PARTS) if ((!only || only.includes(+k)) && cols[PARTS[k]]) T[k] = cols[PARTS[k]];
-    for (let i = 0, j = 0; i < p.length; i += 4, j += 4) {
+    const p = d.data, T = {}, O = {};
+    for (const k in PARTS) { if ((!only || only.includes(+k)) && cols[PARTS[k]]) T[k] = cols[PARTS[k]]; O[k] = T[k] || orig[k]; }
+    for (let i = 0; i < p.length; i += 4) {
       if (p[i + 3] < 8) continue;
-      const k = Math.round(L[j] / 40), t = T[k]; if (!t) continue;
-      const f = (.3 * p[i] + .59 * p[i + 1] + .11 * p[i + 2]) / base[k];
-      p[i] = Math.min(255, t[0] * f); p[i + 1] = Math.min(255, t[1] * f); p[i + 2] = Math.min(255, t[2] * f);
+      const k = Math.round(L[i] / 40); if (!k) continue;
+      const share = L[i + 1] / 255, n = Math.round(L[i + 2] / 25), lum = .3 * p[i] + .59 * p[i + 1] + .11 * p[i + 2];
+      if (!n) {   // all one part
+        const t = T[k]; if (!t) continue;
+        let f = lum / base[k]; if (f > 1) f = Math.min(1.5, 1 + (f - 1) * .5);   // highlights lighten gently, so light colours don't glare
+        p[i] = Math.min(255, t[0] * f); p[i + 1] = Math.min(255, t[1] * f); p[i + 2] = Math.min(255, t[2] * f);
+        continue;
+      }
+      const ck = O[k], cn = FIXED[n] || O[n];
+      if (!ck || !cn || !(T[k] || T[n])) continue;
+      const ok = orig[k] || ck, on = FIXED[n] || orig[n] || cn;
+      const was = share * lumOf(ok) + (1 - share) * lumOf(on), f = Math.max(.7, Math.min(1.05, was > 1 ? lum / was : 1));
+      for (let j = 0; j < 3; j++) p[i + j] = Math.min(255, (share * ck[j] + (1 - share) * cn[j]) * f);
     }
     x.putImageData(d, 0, 0);
     return c;
@@ -42,7 +56,7 @@
     const name = cfg.style, at = META.kids[K].keys._hair[name]; if (!at) return Promise.resolve(null);
     const id = K + name + JSON.stringify([cols.skin, cols.hair]);
     return pieces[id] || (pieces[id] = Promise.all([load(`${K}_hair_${name}.webp`), load(`${K}_hair_${name}_lab.png`)]).then(([im, lab]) =>
-      im && { c: recolour(im, lab, cols, META.kids[K].base, [4, 5]), x: at[0] - PAD, y: at[1] - PAD }));
+      im && { c: recolour(im, lab, cols, K, [4, 5]), x: at[0] - PAD, y: at[1] - PAD }));
   }
   function accPiece(K, cfg) {
     const name = cfg.acc, at = name && META.kids[K].keys._acc[name]; if (!at) return Promise.resolve(null);
@@ -62,7 +76,7 @@
       const cols = colours(cfg);
       const [im, lab, front] = await Promise.all([load(`${K}_${key}.webp`), load(`${K}_${key}_lab.png`), e.front ? load(`${K}_${key}_front.png`) : null]);
       if (!im) return null;
-      const body = recolour(im, lab, cols, META.kids[K].base, e.parts);
+      const body = recolour(im, lab, cols, K, e.parts);
       const head = e.head && cfg.style;
       const [hp, ap] = head ? await Promise.all([hairPiece(K, cfg, cols), accPiece(K, cfg)]) : [null, null];
       const n = e.n, fw = e.w / n, fh = e.h, pt = head ? PT : 0, px = head ? PX : 0, cw = fw + 2 * px;
