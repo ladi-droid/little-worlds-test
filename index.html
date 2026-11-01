@@ -61,7 +61,7 @@ nav.top .in{display:flex;align-items:center;justify-content:space-between;gap:12
 @keyframes swing{0%{transform:rotate(0)}25%{transform:rotate(-2.2deg)}55%{transform:rotate(1.2deg)}80%{transform:rotate(-.4deg)}100%{transform:rotate(0)}}
 .hero .board{position:absolute;left:5%;right:13%;top:4%;height:21%;display:grid;place-items:center;text-align:center}
 .hero .board span{font-family:var(--display);color:var(--ink);line-height:.95;letter-spacing:.02em;white-space:nowrap}
-.hero canvas.child{position:absolute;bottom:4%;left:66%;height:34%;width:auto;aspect-ratio:578/1158;animation:breathe 3.6s ease-in-out infinite;transform-origin:50% 100%}
+.hero canvas.child{position:absolute;bottom:4%;left:66%;height:34%;width:auto;aspect-ratio:500/790;animation:breathe 3.6s ease-in-out infinite;transition:opacity .22s;transform-origin:50% 100%}
 @keyframes breathe{50%{transform:scaleY(1.012)}}
 .hero .copy{position:relative;z-index:3;padding-top:calc(env(safe-area-inset-top,0px) + 92px);display:flex;flex-direction:column;align-items:center;gap:16px;text-align:center;width:100%}
 .hero h1{font-size:clamp(46px,10vw,104px);transform:rotate(-2.5deg);-webkit-text-stroke:clamp(8px,1.5vw,14px) var(--ink)}
@@ -123,7 +123,7 @@ section.block{padding-block:clamp(56px,9vw,110px)}
 .combos h2{font-size:clamp(34px,6.5vw,64px)}
 .combos p{font-weight:700;max-width:52ch}
 .strip{display:flex;gap:clamp(10px,3vw,34px);align-items:flex-end;justify-content:center;width:100%;padding-block:22px 6px}
-.strip canvas{height:clamp(130px,20vw,220px);width:auto;transition:transform .35s cubic-bezier(.3,1.6,.5,1)}
+.strip canvas{height:clamp(120px,24vw,270px);width:auto;transition:transform .35s cubic-bezier(.3,1.6,.5,1)}
 .strip canvas.big{transform:scale(1.22)}
 .strip canvas:nth-child(n+6){display:none}
 @media (min-width:700px){.strip canvas:nth-child(n+6){display:block}}
@@ -176,7 +176,7 @@ section.block{padding-block:clamp(56px,9vw,110px)}
 .finale{min-height:clamp(480px,70vw,640px);background:linear-gradient(#3b3f8f 0%,#c4508a 38%,#ff9a5a 66%,#ffd38a 100%);display:flex;flex-direction:column;align-items:center}
 .finale .far{bottom:18%;height:30%;background-image:url(ds_far.webp)}
 .finale .mid{bottom:0;height:30%;background-image:url(ds_mid.webp)}
-.finale canvas.runner{bottom:4%;height:22%;left:46%}
+.finale canvas.runner{bottom:4%;height:26%;left:46%}
 .finale .copy{position:relative;z-index:3;text-align:center;padding-top:clamp(70px,10vw,110px);display:flex;flex-direction:column;align-items:center;gap:16px}
 .finale h2{font-size:clamp(40px,8vw,86px);transform:rotate(-2deg);-webkit-text-stroke:clamp(7px,1.3vw,12px) var(--ink)}
 .finale p{font-weight:700;color:#fff;max-width:36ch;text-shadow:0 2px 0 rgba(0,0,0,.35)}
@@ -225,22 +225,22 @@ footer .cols a{text-decoration:none}
 #loader{position:fixed;inset:0;z-index:50;background:var(--paper);display:grid;place-items:center;transition:opacity .4s}
 #loader.go{opacity:0;pointer-events:none}
 #loader div{display:flex;flex-direction:column;align-items:center;gap:14px;font-weight:700;color:var(--muted)}
-#loader canvas{height:140px;width:auto}
+#loader canvas{height:170px;width:auto}
 @media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}html{scroll-behavior:auto}.rv.lift{transform:none}}
 </style>
 
-<div id="loader" aria-hidden="true"><div><canvas id="loadKid" width="218" height="300"></canvas><span>Lacing up trainers…</span></div></div>
+<div id="loader" aria-hidden="true"><div><canvas id="loadKid" width="200" height="370"></canvas><span>Lacing up trainers…</span></div></div>
 
 <nav class="top" id="nav"><div class="in">
   <a class="mark" href="#top" aria-label="Home"><span class="tile" id="tile">A</span>’s World</a>
-  <div class="links"><a href="#how">How it works</a><a href="#worlds">Trips</a><a href="#prices">Prices</a><a href="login.html?v=1793544029">Log in</a></div>
-  <a class="pill sm" href="builder.html?v=1793544029" data-build>Build their world</a>
+  <div class="links"><a href="#how">How it works</a><a href="#worlds">Trips</a><a href="#prices">Prices</a><a href="login.html?v=1793544838">Log in</a></div>
+  <a class="pill sm" href="builder.html?v=1793544838" data-build>Build their world</a>
 </div></nav>
 
 <header class="scene hero torn-b" id="top">
   <div class="stage">
     <canvas class="props" id="heroProps" aria-hidden="true"></canvas>
-    <canvas class="child" id="heroChild" width="578" height="1158" aria-hidden="true"></canvas>
+    <canvas class="child" id="heroChild" width="500" height="790" aria-hidden="true"></canvas>
   </div>
   <div class="copy in">
     <h1 class="outline" id="heroLogo" aria-label="Their own World"><span id="tw">Amare</span><span class="s">’s</span><br>World</h1>
@@ -268,7 +268,7 @@ footer .cols a{text-decoration:none}
       <div><span class="num">2</span><h3>Pick their trips</h3><p>Choose up to five places to run through, from busy market streets to desert dunes. Swap them whenever you like.</p></div>
     </div>
     <div class="row rv">
-      <div class="pic phonepic torn-tb"><div class="ph"><img src="ui_splash_wide.webp" alt=""></div><div class="ipad"><img src="ui_card_palm.webp" alt=""></div></div>
+      <div class="pic phonepic torn-tb"><div class="ph"><img id="phoneSplash" src="ui_splash_empty.webp" alt=""></div><div class="ipad"><img src="ui_card_palm.webp" alt=""></div></div>
       <div><span class="num">3</span><h3>Play on your phone or the family tablet</h3><p>Add your link to your home screen and it gets its own icon. <b class="hl">Nothing to download.</b></p></div>
     </div>
     <div class="row rv">
@@ -315,11 +315,11 @@ footer .cols a{text-decoration:none}
   <div class="sun"></div>
   <div class="layer far" data-speed="4"></div>
   <div class="layer mid" data-speed="20"></div>
-  <canvas class="runner" data-run="finale" width="218" height="300"></canvas>
+  <canvas class="runner" data-run="finale" width="200" height="370"></canvas>
   <div class="copy in">
     <h2 class="outline">Ready, set,<br>build</h2>
     <p>It takes about two minutes. They could be running through a new city before dinner.</p>
-    <a class="pill" href="builder.html?v=1793544029" data-build>Build their world ▸</a>
+    <a class="pill" href="builder.html?v=1793544838" data-build>Build their world ▸</a>
   </div>
 </section>
 
@@ -327,13 +327,15 @@ footer .cols a{text-decoration:none}
   <a class="mark" href="#top">Little Worlds</a>
   <div class="cols">
     <div><b>Game</b><a href="#how">How it works</a><a href="#worlds">Trips</a><a href="#prices">Prices</a></div>
-    <div><b>Account</b><a href="login.html?v=1793544029">Log in</a><a href="login.html?v=1793544029">Change trips or look</a></div>
+    <div><b>Account</b><a href="login.html?v=1793544838">Log in</a><a href="login.html?v=1793544838">Change trips or look</a></div>
     <div><b>Help</b><a href="#prices">Cancelling</a><a href="#how">Add to home screen</a></div>
   </div>
   <form class="sub-form" id="subForm"><b>Hear when new trips land</b><div class="r"><input id="subEmail" type="email" placeholder="Your email" aria-label="Your email"><button class="pill sm" type="submit">Tell me</button></div><small id="subMsg" aria-live="polite"></small></form>
   <p class="small">Mock-up. Prices, links and the sign-up form are placeholders.</p>
 </div></footer>
 
+<script src="kids/kids-meta.js"></script>
+<script src="kids/kids.js"></script>
 <script>
 (()=>{
 const BUILDER='builder.html';
@@ -418,11 +420,10 @@ const tile=$('#tile');const LET='ABMZLJSKTRO';let typed='';
   requestAnimationFrame(draw);
 })();
 /* hero child */
-(()=>{const cv=$('#heroChild'),img=new Image();img.onload=()=>{cv.width=img.width;cv.height=img.height;cv.getContext('2d').drawImage(img,0,0)};img.src='hero_child.webp'})();
 /* typewriter names in the title */
 const NAMES=['Amare','Zara','Kofi','Mia','Arjun','Isla','Tobi','Sofia','Leo','Ada'];
 const tw=$('#tw');let ni=0,timer=null;
-function setTile(n){if(n&&tile.textContent!==n[0]){tile.classList.add('flip');setTimeout(()=>{tile.textContent=n[0];tile.classList.remove('flip')},150)}}
+function setTile(n){if(n)window.__heroKid&&window.__heroKid(n);if(n&&tile.textContent!==n[0]){tile.classList.add('flip');setTimeout(()=>{tile.textContent=n[0];tile.classList.remove('flip')},150)}}
 function typeLoop(){
   if(typed)return;const name=NAMES[ni];let i=tw.textContent.length,del=tw.textContent!==name.slice(0,i)||i===name.length;
   // phases: type up to the full name, hold, delete to empty, next name
@@ -457,87 +458,101 @@ if('IntersectionObserver' in window&&!reduce){
   rvs.forEach(el=>{const r=el.getBoundingClientRect();if(r.top>innerHeight){el.classList.add('lift');io.observe(el)}});
 }
 
-/* ---------- child sprites, recoloured in code ---------- */
-const hexRGB=h=>[parseInt(h.slice(1,3),16),parseInt(h.slice(3,5),16),parseInt(h.slice(5,7),16)];
-const BASE={cap:95,skin:133,hair:22,hood:192,jog:200};const KEYS=[null,'cap','skin','hair','hood','jog'];
-function classify(r,g,b,yf){
-  const mx=Math.max(r,g,b),mn=Math.min(r,g,b),v=mx/255,s=mx?(mx-mn)/mx:0;let h=0;
-  if(mx!==mn){if(mx===r)h=((g-b)/(mx-mn))%6;else if(mx===g)h=(b-r)/(mx-mn)+2;else h=(r-g)/(mx-mn)+4;h*=60;if(h<0)h+=360}
-  if(h>=80&&h<=175&&s>.2&&v>.15&&yf<.42)return 1;
-  if(h>=12&&h<=40&&s>.42&&v>.5)return 2;
-  if(v<.36&&mx>22&&r>b+8&&r>=g&&yf<.5)return 3;
-  if(s<.09&&v>.5&&yf>.3&&yf<.7)return 4;
-  if(h>=18&&h<=50&&s>=.09&&s<.42&&v>.55&&yf>.5)return 5;
-  return 0;
-}
-function loadSprite(src){return new Promise(res=>{const img=new Image();img.onload=()=>{
-  const c=document.createElement('canvas');c.width=img.width;c.height=img.height;const x=c.getContext('2d');x.drawImage(img,0,0);
-  const sp={img,w:c.width,h:c.height};
-  try{sp.orig=x.getImageData(0,0,c.width,c.height);const d=sp.orig.data,n=d.length/4;sp.cls=new Uint8Array(n);sp.lum=new Float32Array(n);
-    for(let i=0;i<n;i++){const k=i*4;if(d[k+3]<20)continue;sp.cls[i]=classify(d[k],d[k+1],d[k+2],Math.floor(i/c.width)/c.height);sp.lum[i]=.3*d[k]+.59*d[k+1]+.11*d[k+2]}}catch(e){}
-  res(sp)};img.onerror=()=>res(null);img.src=src})}
-function paint(sp,C){
-  const c=document.createElement('canvas');c.width=sp.w;c.height=sp.h;const x=c.getContext('2d');
-  if(!sp.orig||!C){x.drawImage(sp.img,0,0);return c}
-  const out=new ImageData(new Uint8ClampedArray(sp.orig.data),sp.w,sp.h),d=out.data;
-  for(let i=0;i<sp.cls.length;i++){const cl=sp.cls[i];if(!cl)continue;const key=KEYS[cl],t=C[key];if(!t)continue;const k=sp.lum[i]/BASE[key],j=i*4;d[j]=t[0]*k;d[j+1]=t[1]*k;d[j+2]=t[2]*k}
-  x.putImageData(out,0,0);return c;
-}
-const SKIN=['#f1cfae','#dfa877',null,'#9a5f34','#6e4026','#4a2a1a'];
-const HAIR=[null,'#141010','#6a2c14','#c99a4a','#b0522a'];
-const CAPS=[null,'#c8283c','#1c2a5e','#151518','#f2f0ea','#7a4fd0','#e8701c','#e85b9c'];
-const HOODS=[null,'#1c2a5e','#151518','#c8283c','#3f7fd6','#f3b6cf','#f4d35e','#6aa86c'];
-const JOGS=[null,'#2a2a2e','#7d7d84','#1c2a5e','#556b3c','#f2f0ea'];
+/* ---------- children: random boys and girls from the new art (LW_LANDING_KIDS) ---------- */
+(()=>{
+if(!window.KidArt)return;
 const pick=a=>a[Math.floor(Math.random()*a.length)];
-const toC=o=>{const r={};for(const k in o)r[k]=o[k]?hexRGB(o[k]):null;return r};
-const randomLook=()=>toC({skin:pick(SKIN),hair:pick(HAIR),cap:pick(CAPS),hood:pick(HOODS),jog:pick(JOGS)});
-const PRESETS=[
-  {}, // A
-  {skin:'#f1cfae',hair:'#c99a4a',cap:'#c8283c',hood:'#3f7fd6',jog:'#1c2a5e'},
-  {skin:'#4a2a1a',hair:'#141010',cap:'#e85b9c',hood:'#f3b6cf',jog:'#f2f0ea'},
-  {skin:'#dfa877',hair:'#b0522a',cap:'#151518',hood:'#f4d35e',jog:'#2a2a2e'},
-  {skin:'#6e4026',hair:'#141010',cap:'#7a4fd0',hood:'#6aa86c',jog:'#556b3c'},
-].map(toC);
+const SKIN=['#f1cfae','#dfa877','#c47a3c','#9a5f34','#6e4026','#4a2a1a'];
+const HAIR=['#3a1c10','#141010','#6a2c14','#c99a4a','#b0522a'];
+const TEE=['#1c2a5e','#f2f0ea','#151518','#c8283c','#3f7fd6','#f3b6cf','#f4d35e','#6aa86c','#7a4fd0','#e8701c'];
+const BOT=['#2a2a2e','#7d7d84','#1c2a5e','#4a6fa5','#556b3c','#9bb08a','#e89bb8','#c8283c','#f2f0ea'];
+const SHOE=['#f2f0ea','#151518','#c8283c','#3f7fd6','#e85b9c','#f4d35e','#6aa86c'];
+const STY={boy:KidArt.styles('B'),girl:KidArt.styles('G')};
+const ACC={boy:['glasses','headphones','sweatband'],girl:['crown','clips','bow','glasses','headphones']};
+const AFRO=['afro','bantu','braids','puffs','locs','curls','fade'];
+// one random child; "seen" keeps a row from repeating hairstyles and skin tones
+function kid(sex,seen){
+  sex=sex||pick(['boy','girl']);seen=seen||{};
+  const fresh=(a,k)=>{const f=a.filter(v=>!(seen[k]||[]).includes(v));const v=pick(f.length?f:a);(seen[k]=seen[k]||[]).push(v);return v};
+  const style=fresh(STY[sex],sex),skin=fresh(SKIN,'skin');
+  const dark=SKIN.indexOf(skin)>=3||AFRO.includes(style);
+  const hair=dark&&Math.random()<.65?pick(['#141010','#3a1c10']):pick(HAIR);
+  const tee=fresh(TEE,'tee');let bottom=pick(BOT);while(bottom===tee)bottom=pick(BOT);
+  return {kid:sex,style,acc:Math.random()<.45?'none':pick(ACC[sex]),skin,hair,tee,bottom,shoe:pick(SHOE)};
+}
+// each picture is cut to a fixed window, so every child is drawn at the same body size whatever their hair
+const WIN={a_side:{x:36,y:30,w:200,h:460},a_run:{x:80,y:60,w:200,h:370},hero_back:{x:0,y:40,w:500,h:790}};
+const build=(cfg,key)=>KidArt.build(cfg,key).catch(()=>null);
+function drawFrame(g,sheet,key,i,dx,dy,dw,dh){
+  if(!sheet)return;const W=WIN[key],n=KidArt.info({kid:'boy'},key).n||1,cw=sheet.width/n;
+  if(key==='hero_back'){const ox=(W.w-cw)/2;g.drawImage(sheet,0,W.y,cw,sheet.height-W.y,dx+ox*dw/W.w,dy,cw*dw/W.w,dh);return}
+  g.drawImage(sheet,i*cw+W.x,W.y,W.w,W.h,dx,dy,dw,dh);
+}
 
-Promise.all([loadSprite('a_side.webp'),loadSprite('a_run.webp')]).then(([SIDE,RUN])=>{
-  if(!SIDE||!RUN)return;
-  const runA=paint(RUN,null);
-  const runners=[...document.querySelectorAll('canvas[data-run]')];
-  const loadKid=$('#loadKid');
-  /* combos strip */
-  const strip=$('#strip');
-  function fillStrip(rand){
-    strip.innerHTML='';
-    for(let i=0;i<7;i++){const C=rand?randomLook():PRESETS[i%PRESETS.length];const cv=paint(SIDE,C);cv.className=i===2?'big':'';strip.appendChild(cv)}
+/* hero: a new child for each name the title types (boy and girl names) */
+const SEX={Amare:'boy',Zara:'girl',Kofi:'boy',Mia:'girl',Arjun:'boy',Isla:'girl',Tobi:'boy',Sofia:'girl',Leo:'boy',Ada:'girl'};
+const hc=$('#heroChild'),hx=hc.getContext('2d');let heroN=0,heroSeen={};
+const showHero=sheet=>{if(!sheet)return;hx.clearRect(0,0,500,790);drawFrame(hx,sheet,'hero_back',0,0,0,500,790);hc.style.opacity=1};
+build(kid('boy',heroSeen),'hero_back').then(showHero);
+window.__heroKid=name=>{
+  if(!SEX[name])return;const n=++heroN;if(heroN>4)heroSeen={};
+  build(kid(SEX[name],heroSeen),'hero_back').then(sh=>{if(n!==heroN||!sh)return;hc.style.opacity=0;setTimeout(()=>{if(n===heroN)showHero(sh)},230)});
+};
+
+/* combos strip: seven different children; "Mix them up" makes seven more */
+const strip=$('#strip');let stripN=0;
+function fillStrip(){
+  const n=++stripN,seen={},old=[...strip.children];
+  for(let i=0;i<7;i++){
+    const cv=old[i]||strip.appendChild(document.createElement('canvas'));cv.width=200;cv.height=460;cv.className=i===2?'big':'';
+    build(kid(i%2?'boy':'girl',seen),'a_side').then(sh=>{if(n!==stripN)return;const g=cv.getContext('2d');g.clearRect(0,0,200,460);drawFrame(g,sh,'a_side',0,0,0,200,460)});
   }
-  fillStrip(false);
-  $('#shuffle').addEventListener('click',()=>fillStrip(true));
-  /* look row: three children side by side on cream */
-  const lc=$('#lookCanvas'),lx=lc.getContext('2d');
-  [PRESETS[1],PRESETS[0],PRESETS[2]].forEach((C,i)=>{const cv=paint(SIDE,C);const h=i===1?420:360,w=cv.width*h/cv.height;lx.drawImage(cv,200+i*200-w/2+(i-1)*30,480-h,w,h)});
-  lx.fillStyle='rgba(11,11,14,.12)';[200,400,600].forEach((x,i)=>{lx.beginPath();lx.ellipse(x+(i-1)*30,482,60,10,0,0,7);lx.fill()});
-  /* trial row: practice street drawn from scene layers, child running */
-  const tc=$('#trialCanvas'),tx=tc.getContext('2d');const trialRun=paint(RUN,PRESETS[3]);
-  const sqImg=new Image();sqImg.src='sq_new.webp';
-  /* worlds picture: square + child */
-  let t0=performance.now();
-  function frame(now){
-    const t=(now-t0)/1000,f=Math.floor(t*11)%6,fw=RUN.w/6;
-    runners.forEach(cv=>{const x=cv.getContext('2d');x.clearRect(0,0,cv.width,cv.height);x.drawImage(runA,(reduce?0:f)*fw,0,fw,RUN.h,0,0,cv.width,cv.height)});
-    if(loadKid&&loadKid.isConnected){const x=loadKid.getContext('2d');x.clearRect(0,0,218,300);x.drawImage(runA,f*fw,0,fw,RUN.h,0,0,218,300)}
-    // trial canvas
-    tx.fillStyle='#9fd0f6';tx.fillRect(0,0,800,500);
-    if(sqImg.complete&&sqImg.naturalWidth){const h=380,w=sqImg.naturalWidth*h/sqImg.naturalHeight,off=reduce?0:(t*60)%w;for(let x=-off;x<800;x+=w)tx.drawImage(sqImg,x,40,w,h)}
-    tx.fillStyle='#c9c2b3';tx.fillRect(0,420,800,80);tx.fillStyle='#b3ab9b';tx.fillRect(0,420,800,8);
-    // practice markers
-    tx.fillStyle='#0b0b0e';tx.font='800 22px Figtree, sans-serif';
-    const bx=reduce?520:560-((t*60)%700);tx.fillStyle='#ffd23a';tx.strokeStyle='#0b0b0e';tx.lineWidth=4;tx.beginPath();tx.roundRect(bx,370,150,50,10);tx.fill();tx.stroke();
-    tx.fillStyle='#0b0b0e';tx.fillText('TAP TO JUMP',bx+12,403);
-    tx.drawImage(trialRun,(reduce?0:f)*fw,0,fw,RUN.h,250,250,fw*0.6*1.06,RUN.h*0.6*1.06);
-    requestAnimationFrame(frame);
-  }
-  requestAnimationFrame(frame);
+}
+fillStrip();
+$('#shuffle').addEventListener('click',fillStrip);
+
+/* step 1 picture: three children side by side */
+const lc=$('#lookCanvas'),lx=lc.getContext('2d'),lseen={};
+lx.fillStyle='rgba(11,11,14,.12)';[170,400,630].forEach(x=>{lx.beginPath();lx.ellipse(x,482,60,10,0,0,7);lx.fill()});
+Promise.all(['girl','boy','girl'].map(s=>build(kid(s,lseen),'a_side'))).then(sh=>{
+  [0,2,1].forEach(i=>{const h=i===1?470:400,w=200*h/460;drawFrame(lx,sh[i],'a_side',0,170+i*230-w/2,486-h,w,h)});
 });
+
+/* step 3 picture: the game's start screen with a child on the steps */
+const ps=$('#phoneSplash');
+if(ps){const pk=kid(),plate=new Image();
+  Promise.all([new Promise(r=>{plate.onload=r;plate.onerror=r;plate.src='ui_splash_empty.webp'}),build(pk,'splash_sit')]).then(([,k])=>{
+    if(!k||!plate.naturalWidth)return;const e=KidArt.info(pk,'splash_sit');if(!e||!e.box)return;const [x0,y0,x1,y1]=e.box;
+    const c=document.createElement('canvas');c.width=plate.naturalWidth;c.height=plate.naturalHeight;const g=c.getContext('2d');g.drawImage(plate,0,0);
+    const s=(y1-y0)/(k.lwH-20),w=k.width*s,h=k.height*s;g.drawImage(k,(x0+x1)/2-w/2,y1-h,w,h);
+    try{ps.src=c.toDataURL('image/webp',.88)}catch(err){}
+  });
+}
+
+/* runners: finale, loader and the practice street, each a different child */
+const runners=[...document.querySelectorAll('canvas[data-run]')],loadKid=$('#loadKid');
+let runA=null,loadRun=null,trialRun=null;const rseen={};
+build(kid(null,rseen),'a_run').then(s=>runA=s);
+build(kid(null,rseen),'a_run').then(s=>loadRun=s);
+build(kid(null,rseen),'a_run').then(s=>trialRun=s);
+const tc=$('#trialCanvas'),tx=tc.getContext('2d');
+const sqImg=new Image();sqImg.src='sq_new.webp';
+let t0=performance.now();
+function frame(now){
+  const t=(now-t0)/1000,f=reduce?0:Math.floor(t*11)%6;
+  runners.forEach(cv=>{const x=cv.getContext('2d');x.clearRect(0,0,cv.width,cv.height);drawFrame(x,runA,'a_run',f,0,0,cv.width,cv.height)});
+  if(loadKid&&loadKid.isConnected){const x=loadKid.getContext('2d');x.clearRect(0,0,200,370);drawFrame(x,loadRun,'a_run',f,0,0,200,370)}
+  tx.fillStyle='#9fd0f6';tx.fillRect(0,0,800,500);
+  if(sqImg.complete&&sqImg.naturalWidth){const h=380,w=sqImg.naturalWidth*h/sqImg.naturalHeight,off=reduce?0:(t*60)%w;for(let x=-off;x<800;x+=w)tx.drawImage(sqImg,x,40,w,h)}
+  tx.fillStyle='#c9c2b3';tx.fillRect(0,420,800,80);tx.fillStyle='#b3ab9b';tx.fillRect(0,420,800,8);
+  tx.font='800 22px Figtree, sans-serif';
+  const bx=reduce?520:560-((t*60)%700);tx.fillStyle='#ffd23a';tx.strokeStyle='#0b0b0e';tx.lineWidth=4;tx.beginPath();tx.roundRect(bx,370,150,50,10);tx.fill();tx.stroke();
+  tx.fillStyle='#0b0b0e';tx.fillText('TAP TO JUMP',bx+12,403);
+  drawFrame(tx,trialRun,'a_run',f,250,432-237,128,237);
+  requestAnimationFrame(frame);
+}
+requestAnimationFrame(frame);
+})();
 
 
 /* ---------- word-by-word headings ---------- */
