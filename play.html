@@ -1007,21 +1007,21 @@ const LOCK_CODE = '0000';   // a locked world opens early with this code (rememb
 function lvOpen(i) {
   if (LW) { const lv = ARun.LEVELS[i]; if (lv.practice) return true; if (!LW.paid) return false; return lvSave(lv.id).done || (i > 0 && lvSave(ARun.LEVELS[i - 1].id).done); }
   return (save.codeOpen || {})[ARun.LEVELS[i].id] || i === 0 || lvSave(ARun.LEVELS[i].id).done || lvSave(ARun.LEVELS[i - 1].id).done; }
-/* the child on the trip cards: key = the child's picture, f = frame, x = middle and y = feet as a share of the card
-   picture, h = the frame's height as a share of the picture, flip = facing left. empty = the picture without A, for
+/* the child on the trip cards: key = the child's picture, f = frame, x, y = where the frame's point ax, ay (shares of the frame; default middle of the feet) lands, as a share of the card
+   picture, h = the frame's height as a share of the picture, rot = degrees, flip = facing left. empty = the picture without A, for
    cards whose own picture shows A (the child is only drawn once that file exists) */
 const CARD_KID = {
   practice: { key: 'a_run', f: 1, x: .42, y: .93, h: .30 },
-  woolwich: { key: 'a_run', f: 1, x: .45, y: .93, h: .30, empty: 'ui_card_woolwich_empty.webp' },
+  woolwich: { key: 'a_run', f: 1, x: .4, y: .9, h: .3, empty: 'ui_card_woolwich_empty.webp' },
   brixton: { key: 'a_run', f: 1, x: .42, y: .875, h: .28 },
   greenwich: { key: 'a_jump', f: 2, x: .42, y: .9, h: .30 },
   canarywharf: { key: 'a_jump', f: 2, x: .62, y: .8, h: .30 },
-  heathrow: { key: 'hw_wake0', f: 0, x: .4, y: .88, h: .22, empty: 'ui_card_heathrow_empty.webp' },
-  olddubai: { key: 'a_jump_dxb', f: 2, x: .48, y: .7, h: .36, empty: 'ui_card_olddubai_empty.webp' },
-  downtown: { key: 'hero_back', f: 0, x: .5, y: .95, h: .42, empty: 'ui_card_downtown_empty.webp' },
+  heathrow: { key: 'hw_wake0', f: 0, x: .36, y: .76, h: .26, empty: 'ui_card_heathrow_empty.webp' },
+  olddubai: { key: 'a_jump_dxb', f: 2, x: .46, y: .66, h: .38, empty: 'ui_card_olddubai_empty.webp' },
+  downtown: { key: 'hero_back', f: 0, x: .5, y: .95, h: .4, empty: 'ui_card_downtown_empty.webp' },
   palm: { key: 'a_run_dxb', f: 1, x: .4, y: .93, h: .28 },
-  marina: { key: 'a_zip_dxb', f: 2, x: .5, y: .62, h: .34, empty: 'ui_card_marina_empty.webp' },
-  desert: { key: 'ds_b_drive', f: 0, x: .48, y: .9, h: .36, empty: 'ui_card_desert_empty.webp' },
+  marina: { key: 'a_zip_dxb', f: 0, x: .6, y: .284, ax: .43, ay: .045, rot: 17, h: .42, empty: 'ui_card_marina_empty.webp' },
+  desert: { key: 'ds_b_drive', f: 0, x: .4, y: .88, h: .46, empty: 'ui_card_desert_empty.webp' },
 };
 const lwCardPic = {};   // world id -> finished picture (data URL); false while drawing, null when it can't be made yet
 function lwCardKid(id, pic) {
@@ -1035,8 +1035,9 @@ function lwCardKid(id, pic) {
     const c = document.createElement('canvas'); c.width = bg.naturalWidth; c.height = bg.naturalHeight;
     const x = c.getContext('2d'); x.drawImage(bg, 0, 0);
     const s = ck.h * c.height / (fh - pt), w = fw * s, h = fh * s, cx = ck.x * c.width, by = ck.y * c.height;
-    x.save(); x.translate(cx, 0); if (ck.flip) x.scale(-1, 1);
-    x.drawImage(kid, ck.f * fw, 0, fw, fh, -w / 2, by - h, w, h); x.restore();
+    const ax = (ck.ax ?? .5) * w, ay = (pt + (ck.ay ?? 1) * (fh - pt)) * s;   // the point of the frame placed at x, y
+    x.save(); x.translate(cx, by); if (ck.rot) x.rotate(ck.rot * Math.PI / 180); if (ck.flip) x.scale(-1, 1);
+    x.drawImage(kid, ck.f * fw, 0, fw, fh, -ax, -ay, w, h); x.restore();
     lwCardPic[id] = c.toDataURL('image/webp', 0.9);
     document.querySelectorAll(`.world[data-id="${id}"] .pic`).forEach(el => { el.style.backgroundImage = `url(${lwCardPic[id]})`; });
   });
