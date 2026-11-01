@@ -233,8 +233,8 @@ footer .cols a{text-decoration:none}
 
 <nav class="top" id="nav"><div class="in">
   <a class="mark" href="#top" aria-label="Home"><span class="tile" id="tile">A</span>’s World</a>
-  <div class="links"><a href="#how">How it works</a><a href="#worlds">Trips</a><a href="#prices">Prices</a><a href="login.html?v=1793547525">Log in</a></div>
-  <a class="pill sm" href="builder.html?v=1793547525" data-build>Build their world</a>
+  <div class="links"><a href="#how">How it works</a><a href="#worlds">Trips</a><a href="#prices">Prices</a><a href="login.html?v=1793552958">Log in</a></div>
+  <a class="pill sm" href="builder.html?v=1793552958" data-build>Build their world</a>
 </div></nav>
 
 <header class="scene hero torn-b" id="top">
@@ -319,7 +319,7 @@ footer .cols a{text-decoration:none}
   <div class="copy in">
     <h2 class="outline">Ready, set,<br>build</h2>
     <p>It takes about two minutes. They could be running through a new city before dinner.</p>
-    <a class="pill" href="builder.html?v=1793547525" data-build>Build their world ▸</a>
+    <a class="pill" href="builder.html?v=1793552958" data-build>Build their world ▸</a>
   </div>
 </section>
 
@@ -327,7 +327,7 @@ footer .cols a{text-decoration:none}
   <a class="mark" href="#top">Little Worlds</a>
   <div class="cols">
     <div><b>Game</b><a href="#how">How it works</a><a href="#worlds">Trips</a><a href="#prices">Prices</a></div>
-    <div><b>Account</b><a href="login.html?v=1793547525">Log in</a><a href="login.html?v=1793547525">Change trips or look</a></div>
+    <div><b>Account</b><a href="login.html?v=1793552958">Log in</a><a href="login.html?v=1793552958">Change trips or look</a></div>
     <div><b>Help</b><a href="#prices">Cancelling</a><a href="#how">Add to home screen</a></div>
   </div>
   <form class="sub-form" id="subForm"><b>Hear when new trips land</b><div class="r"><input id="subEmail" type="email" placeholder="Your email" aria-label="Your email"><button class="pill sm" type="submit">Tell me</button></div><small id="subMsg" aria-live="polite"></small></form>
@@ -423,7 +423,7 @@ const tile=$('#tile');const LET='ABMZLJSKTRO';let typed='';
 /* typewriter names in the title */
 const NAMES=['Amare','Zara','Kofi','Mia','Arjun','Isla','Tobi','Sofia','Leo','Ada'];
 const tw=$('#tw');let ni=0,timer=null;
-function setTile(n){if(n)window.__heroKid&&window.__heroKid(n);if(n&&tile.textContent!==n[0]){tile.classList.add('flip');setTimeout(()=>{tile.textContent=n[0];tile.classList.remove('flip')},150)}}
+function setTile(n){if(n&&tile.textContent!==n[0]){tile.classList.add('flip');setTimeout(()=>{tile.textContent=n[0];tile.classList.remove('flip')},150)}}
 function typeLoop(){
   if(typed)return;const name=NAMES[ni];let i=tw.textContent.length,del=tw.textContent!==name.slice(0,i)||i===name.length;
   // phases: type up to the full name, hold, delete to empty, next name
@@ -489,15 +489,15 @@ function drawFrame(g,sheet,key,i,dx,dy,dw,dh){
   g.drawImage(sheet,i*cw+W.x,W.y,W.w,W.h,dx,dy,dw,dh);
 }
 
-/* hero: a new child for each name the title types (boy and girl names) */
-const SEX={Amare:'boy',Zara:'girl',Kofi:'boy',Mia:'girl',Arjun:'boy',Isla:'girl',Tobi:'boy',Sofia:'girl',Leo:'boy',Ada:'girl'};
-const hc=$('#heroChild'),hx=hc.getContext('2d');let heroN=0,heroSeen={};
-const showHero=sheet=>{if(!sheet)return;hx.clearRect(0,0,500,790);drawFrame(hx,sheet,'hero_back',0,0,0,500,790);hc.style.opacity=1};
-build(kid('boy',heroSeen),'hero_back').then(showHero);
-window.__heroKid=name=>{
-  if(!SEX[name])return;const n=++heroN;if(heroN>4)heroSeen={};
-  build(kid(SEX[name],heroSeen),'hero_back').then(sh=>{if(n!==heroN||!sh)return;hc.style.opacity=0;setTimeout(()=>{if(n===heroN)showHero(sh)},230)});
-};
+/* hero: A in his Dubai outfit, waving (LW_HERO_A) */
+const hc=$('#heroChild'),hx=hc.getContext('2d');
+const A_DXB={kid:'boy',style:'afro',acc:'none',skin:'#c47a3c',hair:'#5a3a1a',tee:'#553417',bottom:'#f2f0ea',shoe:'#151518'};
+build(A_DXB,'hero_back').then(sh=>{if(!sh)return;
+  try{const g=sh.getContext('2d'),y0=sh.lwPT+560,y1=sh.lwPT+598,im=g.getImageData(0,y0,sh.width,y1-y0),d=im.data,S=[109,58,20];   // brown socks
+    for(let i=0;i<d.length;i+=4){if(d[i+3]<20)continue;const r=d[i],q=d[i+1],v=d[i+2],mx=Math.max(r,q,v),mn=Math.min(r,q,v);if(mx-mn>30||mx<110)continue;
+      const k=Math.min(1.25,(.3*r+.59*q+.11*v)/235);d[i]=S[0]*k;d[i+1]=S[1]*k;d[i+2]=S[2]*k}
+    g.putImageData(im,0,y0)}catch(e){}
+  hx.clearRect(0,0,500,790);drawFrame(hx,sh,'hero_back',0,0,0,500,790)});
 
 /* combos strip: seven different children; "Mix them up" makes seven more */
 const strip=$('#strip');let stripN=0;
