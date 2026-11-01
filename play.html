@@ -425,8 +425,8 @@ html.lw-loading .splash{visibility:hidden}
 
 <script src="kids/kids-meta.js"></script>
 <script src="kids/kids.js"></script>
-<script src="sfx.js?v=1793543538"></script>
-<script src="game.js?v=1793543538"></script>
+<script src="sfx.js?v=1793543877"></script>
+<script src="game.js?v=1793543877"></script>
 <script>
 (() => {
 'use strict';
@@ -769,7 +769,7 @@ const SFX = {
 
 /* ---------- recorded sounds (ElevenLabs takes in sfx.js; sounds/game/*.mp3) ---------- */
 const SND = {}, SND_LOOP = {};
-const SND_VOL = { airport_chime: 0.3, all_five: 0.36, boarding_pass: 0.81, boat: 0.4, bonk: 0.44, bubble_pop: 0.25, buggy_boost: 0.16, buggy_engine: 0.25, bus: 0.31, button: 0.21, car_door: 1.0, car_drive: 0.23, clock_tick: 0.39, coin: 0.38, crab: 0.2, dive: 0.4, escalator: 0.21, firework: 0.45, flag: 0.33, fountain: 0.33, fox: 0.14, gull: 0.25, hurt: 0.15, jeep_rumble: 0.14, jump: 0.42, jump_big: 0.38, land: 0.35, land_hard: 0.5, lift: 0.14, pigeon: 0.16, plane: 0.24, raven: 0.26, scanner: 0.16, scooter: 0.1, sneeze: 0.26, snore: 0.27, special: 0.78, splash: 0.54, star: 0.31, start_lights: 0.23, stomp: 0.45, swim: 0.31, train_doors: 0.99, unlock: 1.0, wall_jump: 0.22, water_slide: 0.38, zipline: 0.26 };
+const SND_VOL = { airport_chime: 0.3, all_five: 0.36, boarding_pass: 0.81, boat: 0.4, bonk: 0.44, bubble_pop: 0.25, buggy_boost: 0.16, buggy_engine: 0.25, bus: 0.31, button: 0.21, car_door: 1.0, car_drive: 0.23, clock_tick: 0.39, coin: 0.38, crab: 0.2, dive: 0.4, escalator: 0.21, firework: 0.45, flag: 0.33, fountain: 0.33, fox: 0.14, gull: 0.25, hurt: 0.15, jeep_rumble: 0.14, jump: 0.42, jump_big: 0.38, land: 0.35, land_hard: 0.5, lift: 0.14, pigeon: 0.16, plane: 0.24, raven: 0.26, scanner: 0.16, scooter: 0.1, sneeze: 0.26, snore: 0.27, special: 0.89, splash: 0.54, star: 0.31, start_lights: 0.23, stomp: 0.45, swim: 0.31, train_doors: 0.99, unlock: 1.0, wall_jump: 0.22, water_slide: 0.38, zipline: 0.26 };
 let sndBus = null;
 function sndLoad() {
   if (sndBus || !AC || !window.LW_SFX) return;
@@ -812,12 +812,12 @@ const SFX_REC = { jump: 'jump', wjump: 'wall_jump', coin: 'coin', special: 'spec
   chime: 'airport_chime', pass: 'boarding_pass', mist: 'sneeze', boost: 'buggy_boost', rumble: 'jeep_rumble' };
 for (const k in SFX_REC) SFX[k] = () => { if (!snd(SFX_REC[k])) BEEP[k](); };
 // coins grabbed close together climb a happy scale, so a row of coins plays a little tune
-const COIN_STEPS = [0, 2, 4, 7, 9, 12, 14, 16];
+const COIN_STEPS = [0, 2, 4, 7];   // gentle: one step every 2 coins, tops out at the 5th
 let coinRun = 0, coinLast = -9;
 SFX.coin = () => {
   if (!SND.coin) return BEEP.coin();
   const t = AC.currentTime; coinRun = t - coinLast < 0.9 ? coinRun + 1 : 0; coinLast = t;
-  snd('coin', { rate: Math.pow(2, COIN_STEPS[Math.min(coinRun, COIN_STEPS.length - 1)] / 12) });
+  snd('coin', { rate: Math.pow(2, COIN_STEPS[Math.min(coinRun >> 1, COIN_STEPS.length - 1)] / 12) });
 };
 SFX.vault = () => {}; SFX.land = () => {};   // no landing sound (Ladi)
    // no sound for hopping a low wall (Ladi)
@@ -1193,7 +1193,7 @@ $('retryBtn').addEventListener('click', () => startLevel(levelIndex));
 // If the builder opened this tab, close it and show the builder again; otherwise open the builder with this child's world filled in.
 let lwJoinEnd = false;
 function lwBackToBuilder() {
-  const url = 'builder.html?v=1793543538&w=' + lwEncode(LW);
+  const url = 'builder.html?v=1793543877&w=' + lwEncode(LW);
   try { if (window.opener && !window.opener.closed && /builder\.html/.test(window.opener.location.pathname)) { window.opener.focus(); window.close(); setTimeout(() => { location.href = url; }, 400); return; } } catch (e) {}
   location.href = url;
 }
