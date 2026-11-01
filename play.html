@@ -425,8 +425,8 @@ html.lw-loading .splash{visibility:hidden}
 
 <script src="kids/kids-meta.js"></script>
 <script src="kids/kids.js"></script>
-<script src="sfx.js"></script>
-<script src="game.js?v=1793544838"></script>
+<script src="sfx.js?v=1793546134"></script>
+<script src="game.js?v=1793546134"></script>
 <script>
 (() => {
 'use strict';
@@ -683,8 +683,24 @@ function lwKidCfg() {
     tee: lwColour('hood') || [28, 42, 94], bottom: lwColour('jog') || [42, 42, 46], shoe: lwColour('shoe') || [242, 240, 234] };
 }
 function lwKidCar(key) { const kc = lwKidCfg(), e = kc && KidArt.info(kc, key); return e && e.car; }
+// the child from behind, for the Downtown fireworks: null for A, false while it is being drawn
+let lwBack = null;
+function lwKidBack() {
+  const kc = lwKidCfg(); if (!kc || !KidArt.has(kc, 'hero_back')) return null;
+  if (lwBack === null) {
+    lwBack = false;
+    KidArt.build(kc, 'hero_back').then(c => {
+      if (!c) return;
+      c.lwEar = KidArt.info(kc, 'hero_back').back.earY - KIDS_META.pad;   // ear line, in the picture
+      c.lwFeet = kc.kid === 'girl' ? 139 : 146;                           // middle of the feet, in the picture
+      lwBack = c;
+    });
+  }
+  return lwBack;
+}
 function loadImg(key, src) {
   const kc = lwKidCfg();
+  if (key === 'dt_aback') lwKidBack();
   if (kc && KidArt.has(kc, key)) return KidArt.build(kc, key).then(c => { if (c) IMG[key] = c; });
   const f = ATLAS_OF[key];
   if (f) return atlasPic(f).then(im => {
@@ -1193,7 +1209,7 @@ $('retryBtn').addEventListener('click', () => startLevel(levelIndex));
 // If the builder opened this tab, close it and show the builder again; otherwise open the builder with this child's world filled in.
 let lwJoinEnd = false;
 function lwBackToBuilder() {
-  const url = 'builder.html?v=1793544838&w=' + lwEncode(LW);
+  const url = 'builder.html?v=1793546134&w=' + lwEncode(LW);
   try { if (window.opener && !window.opener.closed && /builder\.html/.test(window.opener.location.pathname)) { window.opener.focus(); window.close(); setTimeout(() => { location.href = url; }, 400); return; } } catch (e) {}
   location.href = url;
 }
@@ -5011,6 +5027,13 @@ function drawDxRideA(cx, by, RUN_H, JUMP_H) {
   if (L.finale !== undefined && F && F.slid && (G.mode === 'flag' || G.done)) {   // walks up to the lake railing, then turns to face the Burj Khalifa
     if (F.t2 < 0.3) return false;
     if (F.ride === undefined) { drawSprite('a_run', Math.floor(F.t2 * 9) % 6, cx, by + 0.04 * U, RUN_H, false); return true; }
+    const kb = lwKidBack();
+    if (kb !== null) {   // the child, sized so ears-to-feet matches A's
+      if (!kb) return true;
+      const s = 1.16 * U / (kb.lwH - kb.lwEar);
+      ctx.drawImage(kb, cx - (kb.lwPX + kb.lwFeet) * s, by + 0.04 * U - kb.height * s, kb.width * s, kb.height * s);
+      return true;
+    }
     const im = IMG.dt_aback; if (!im) return false;
     const fw = im.width / 2, h = 1.62 * U, w = h * fw / im.height, fi = F.ride > 2.8 ? 1 : 0;
     ctx.drawImage(im, fi * fw, 0, fw, im.height, cx - w / 2, by + 0.04 * U - h, w, h);
