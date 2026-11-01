@@ -425,8 +425,8 @@ html.lw-loading .splash{visibility:hidden}
 
 <script src="kids/kids-meta.js"></script>
 <script src="kids/kids.js"></script>
-<script src="sfx.js?v=1793547027"></script>
-<script src="game.js?v=1793547027"></script>
+<script src="sfx.js?v=1793547525"></script>
+<script src="game.js?v=1793547525"></script>
 <script>
 (() => {
 'use strict';
@@ -785,7 +785,7 @@ const SFX = {
 
 /* ---------- recorded sounds (ElevenLabs takes in sfx.js; sounds/game/*.mp3) ---------- */
 const SND = {}, SND_LOOP = {};
-const SND_VOL = { airport_chime: 0.3, all_five: 0.36, boarding_pass: 0.81, boat: 0.4, bonk: 0.44, bubble_pop: 0.25, buggy_boost: 0.16, buggy_engine: 0.25, bus: 0.31, button: 0.21, car_door: 1.0, car_drive: 0.23, clock_tick: 0.39, coin: 0.38, crab: 0.2, dive: 0.4, escalator: 0.21, firework: 0.15, firework2: 0.25, flag: 0.33, fountain: 0.33, fox: 0.14, gull: 0.25, hurt: 0.15, jeep_rumble: 0.14, jump: 0.42, jump_big: 0.38, land: 0.35, land_hard: 0.5, lift: 0.14, pigeon: 0.16, plane: 0.24, raven: 0.26, scanner: 0.16, scooter: 0.1, sneeze: 0.26, snore: 0.27, special: 0.89, splash: 0.54, star: 0.31, start_lights: 0.23, stomp: 0.45, swim: 0.31, train_doors: 0.99, unlock: 1.0, wall_jump: 0.22, water_slide: 0.38, zipline: 0.26 };
+const SND_VOL = { airport_chime: 0.3, all_five: 0.36, boarding_pass: 0.81, boat: 0.4, bonk: 0.44, bubble_pop: 0.25, buggy_boost: 0.16, buggy_engine: 0.25, bus: 0.31, button: 0.21, car_door: 1.0, car_drive: 0.23, clock_tick: 0.39, coin: 0.38, crab: 0.2, dive: 0.4, escalator: 0.21, fireworks_show: 1.0, flag: 0.33, fountain: 0.33, fox: 0.14, gull: 0.25, hurt: 0.15, jeep_rumble: 0.14, jump: 0.42, jump_big: 0.38, land: 0.35, land_hard: 0.5, lift: 0.14, pigeon: 0.16, plane: 0.24, raven: 0.26, scanner: 0.16, scooter: 0.1, sneeze: 0.26, snore: 0.27, special: 0.89, splash: 0.54, star: 0.31, start_lights: 0.23, stomp: 0.45, swim: 0.31, train_doors: 0.99, unlock: 1.0, wall_jump: 0.22, water_slide: 0.38, zipline: 0.26 };
 let sndBus = null;
 function sndLoad() {
   if (sndBus || !AC || !window.LW_SFX) return;
@@ -841,16 +841,8 @@ SFX.big = () => { if (!snd('jump_big')) BEEP.wjump(); };
 SFX.rev = () => { if (!snd('jeep_rumble', { rate: 1.15 })) BEEP.rev(); };
 SFX.lamp = () => { if (!SND.start_lights) return BEEP.lamp(); if (!G || G.lamps <= 1) snd('start_lights'); };   // one 3-beep countdown, not a beep per lamp
 SFX.unlock = () => { if (!snd('unlock')) BEEP.lamp(); };
-// fireworks: the whistle/fuse starts as a rocket leaves, so its pop lands when the shell bursts.
-// Every 2nd rocket gets a sound, switching between the two takes Ladi picked (D4, E3).
-const FW_POP = { firework: 0.57, firework2: 0.25 };   // seconds into each sound where it pops
-let sndFwN = 0, sndFwT = -9;
-function sndRocket(dur) {
-  if (!AC) return; const k = sndFwN++; if (k % 2) return;
-  if (AC.currentTime - sndFwT < 0.5) return; sndFwT = AC.currentTime;   // no pile-up after a pause
-  const n = (k >> 1) % 2 ? 'firework2' : 'firework';
-  snd(n, { delay: Math.max(0, dur - FW_POP[n]), vol: 0.85 + Math.random() * 0.3, rate: 0.95 + Math.random() * 0.1 });
-}
+// fireworks: Ladi's fireworks-show recording loops for the whole Burj show (see sndTick), so rockets make no sound of their own
+function sndRocket() {}
 function sndStars() { const n = document.querySelectorAll('#endSpecials .star.on').length; for (let i = 0; i < n; i++) snd('star', { delay: 0.35 + i * 0.3, rate: 1 + i * 0.06 }); }
 // extra sounds for game events that had none
 function sndEvent(e) {
@@ -885,6 +877,7 @@ function sndTick() {
   sndLoop('boat', !!(gr && gr.kind === 'boat'));
   sndLoop('zipline', play && !!p.zip);
   sndLoop('buggy_engine', play && !!L.race && !!G.race && !G.race.won);
+  sndLoop('fireworks_show', L.finale !== undefined && !!G.flag && G.flag.ride !== undefined);
   sndLoop('snore', state === 'ready' && L.sleepStart !== undefined && sleepT() < 1.2);
   if (L.timed && play && !G.flag) { const left = L.timed + G.bonus - G.time; sndLoop('clock_tick', left > 0 && left < 6); } else sndLoop('clock_tick', false);
   if (!play) { if (L.jeepStop !== undefined && !L.pmStation && G.intro) {   // the Dubai drop-off: plane lands, Jeep / taxi in, door, away
@@ -1219,7 +1212,7 @@ $('retryBtn').addEventListener('click', () => startLevel(levelIndex));
 // If the builder opened this tab, close it and show the builder again; otherwise open the builder with this child's world filled in.
 let lwJoinEnd = false;
 function lwBackToBuilder() {
-  const url = 'builder.html?v=1793547027&w=' + lwEncode(LW);
+  const url = 'builder.html?v=1793547525&w=' + lwEncode(LW);
   try { if (window.opener && !window.opener.closed && /builder\.html/.test(window.opener.location.pathname)) { window.opener.focus(); window.close(); setTimeout(() => { location.href = url; }, 400); return; } } catch (e) {}
   location.href = url;
 }
