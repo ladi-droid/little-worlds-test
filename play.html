@@ -425,8 +425,8 @@ html.lw-loading .splash{visibility:hidden}
 
 <script src="kids/kids-meta.js"></script>
 <script src="kids/kids.js"></script>
-<script src="sfx.js?v=1793540590"></script>
-<script src="game.js?v=1793540590"></script>
+<script src="sfx.js?v=1793541415"></script>
+<script src="game.js?v=1793541415"></script>
 <script>
 (() => {
 'use strict';
@@ -769,7 +769,7 @@ const SFX = {
 
 /* ---------- recorded sounds (ElevenLabs takes in sfx.js; sounds/game/*.mp3) ---------- */
 const SND = {}, SND_LOOP = {};
-const SND_VOL = { jump: 0.3, wall_jump: 0.5, jump_big: 0.55, land: 0.3, land_hard: 0.55, vault: 0.5, coin: 0.3, special: 0.7, all_five: 0.8, flag: 0.85,
+const SND_VOL = { jump: 0.35, wall_jump: 0.5, jump_big: 0.55, land: 0.3, land_hard: 0.55, vault: 0.5, coin: 0.35, special: 0.7, all_five: 0.8, flag: 0.85,
   hurt: 0.6, stomp: 0.6, bonk: 0.6, drop: 0.5, splash: 0.6, bubble_pop: 0.6, star: 0.6, button: 0.6, unlock: 0.7,
   pigeon: 0.35, gull: 0.35, fox: 0.25, raven: 0.25, crab: 0.25,
   scooter: 0.2, bus: 0.6, train_doors: 0.55, lift: 0.5, escalator: 0.3, zipline: 0.45, boat: 0.35, car_door: 0.6, car_drive: 0.55, plane: 0.7,
@@ -1189,7 +1189,7 @@ $('retryBtn').addEventListener('click', () => startLevel(levelIndex));
 // If the builder opened this tab, close it and show the builder again; otherwise open the builder with this child's world filled in.
 let lwJoinEnd = false;
 function lwBackToBuilder() {
-  const url = 'builder.html?v=1793540590&w=' + lwEncode(LW);
+  const url = 'builder.html?v=1793541415&w=' + lwEncode(LW);
   try { if (window.opener && !window.opener.closed && /builder\.html/.test(window.opener.location.pathname)) { window.opener.focus(); window.close(); setTimeout(() => { location.href = url; }, 400); return; } } catch (e) {}
   location.href = url;
 }
