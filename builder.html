@@ -64,7 +64,7 @@ nav.top .in{max-width:1320px;margin:0 auto;height:var(--navh);display:flex;align
 .stage{position:relative;overflow:hidden;isolation:isolate;height:300px;background:#f7c99a url(hero_scene.webp) 46% bottom/cover no-repeat;clip-path:var(--tear-b);transition:height .3s ease}
 .stage canvas.props{position:absolute;inset:0;width:100%;height:100%;z-index:1;pointer-events:none}
 .stage canvas.kid{position:absolute;z-index:2;bottom:4.5%;transform:translateX(-50%);transform-origin:50% 100%;width:auto}
-.stage canvas.kid.back{left:52%;height:42%;animation:breathe 3.6s ease-in-out infinite}
+.stage canvas.kid.back{left:52%;height:calc(42% * var(--k,1));animation:breathe 3.6s ease-in-out infinite}
 .stage canvas.kid.side{left:52%;height:calc(50% * var(--k,1))}
 @keyframes breathe{50%{transform:translateX(-50%) scaleY(1.012)}}
 .stage .title{position:absolute;z-index:3;left:0;right:0;top:9%;text-align:center;white-space:nowrap;font-size:40px;transform:rotate(-2.5deg);-webkit-text-stroke:8px var(--ink)}
@@ -80,7 +80,7 @@ nav.top .in{max-width:1320px;margin:0 auto;height:var(--navh);display:flex;align
 @media (min-width:900px){
   .stagewrap{position:sticky;top:calc(env(safe-area-inset-top,0px) + var(--navh) + 18px)}
   .stage{height:calc(100vh - var(--navh) - 52px);min-height:520px;max-height:860px;clip-path:var(--tear-tb);background-position:center bottom}
-  .stage canvas.kid.back{left:58%;height:34%}
+  .stage canvas.kid.back{left:58%;height:calc(34% * var(--k,1))}
   .stage canvas.kid.side{left:58%;height:calc(38% * var(--k,1))}
   .stage .title{top:8%;font-size:clamp(48px,5.6vw,88px);-webkit-text-stroke:clamp(9px,1.1vw,13px) var(--ink);white-space:normal}
   .stage .title br{display:inline}
@@ -393,7 +393,8 @@ const kidCfg=(o)=>Object.assign({kid:S.kid,style:S.style,acc:S.acc,skin:S.skin,h
 const SIDE={},RUN={};let paintN=0;
 async function repaint(){
   if(!window.KidArt)return;const n=++paintN,cfg=kidCfg();
-  const [side,run]=await Promise.all([KidArt.build(cfg,'a_side'),KidArt.build(cfg,'a_run')]);
+  const [side,run,back]=await Promise.all([KidArt.build(cfg,'a_side'),KidArt.build(cfg,'a_run'),KidArt.build(cfg,'hero_back')]);
+  if(back){kidBack.width=back.width;kidBack.height=back.height;const bx=kidBack.getContext('2d');bx.clearRect(0,0,back.width,back.height);bx.drawImage(back,0,0);kidBack.style.setProperty('--k',(back.height/back.lwH).toFixed(3))}
   if(n!==paintN)return;
   Object.assign(SIDE,{cv:side,ready:!!side});Object.assign(RUN,{cv:run,ready:!!run,n:6});
   if(side){kidSide.width=side.width;kidSide.height=side.height;const x=kidSide.getContext('2d');x.clearRect(0,0,side.width,side.height);x.drawImage(side,0,0);
@@ -640,7 +641,7 @@ function drawQR(){const el=$('#qr');if(!el||!window.qrcode)return;
   const q=qrcode(0,'L');q.addData(gameLink(true));q.make();el.innerHTML=q.createSvgTag({cellSize:4,margin:0,scalable:true})}
 function stageFor(){
   const look=!S.paid&&S.step===1;
-  kidBack.hidden=true;kidSide.hidden=false;
+  kidBack.hidden=!(S.step===0&&!S.paid);kidSide.hidden=!kidBack.hidden;
   $('#stageWrap').classList.toggle('stick',look);
 }
 function render(){

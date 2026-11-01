@@ -52,14 +52,20 @@
   const kidOf = cfg => cfg && (cfg.kid === 'girl' ? 'G' : cfg.kid === 'boy' ? 'B' : null);
   function colours(cfg) { return { tee: rgb(cfg.tee), bottom: rgb(cfg.bottom), shoe: rgb(cfg.shoe), skin: rgb(cfg.skin), hair: rgb(cfg.hair) }; }
   const pieces = {};
-  function hairPiece(K, cfg, cols) {
-    const name = cfg.style, at = META.kids[K].keys._hair[name]; if (!at) return Promise.resolve(null);
-    const id = K + name + JSON.stringify([cols.skin, cols.hair]);
-    return pieces[id] || (pieces[id] = Promise.all([load(`${K}_hair_${name}.webp`), load(`${K}_hair_${name}_lab.png`)]).then(([im, lab]) =>
+  function hairPiece(K, cfg, cols, kind = 'hair') {
+    const name = cfg.style, at = (META.kids[K].keys['_' + kind] || {})[name]; if (!at) return Promise.resolve(null);
+    const id = K + kind + name + JSON.stringify([cols.skin, cols.hair]);
+    return pieces[id] || (pieces[id] = Promise.all([load(`${K}_${kind}_${name}.webp`), load(`${K}_${kind}_${name}_lab.png`)]).then(([im, lab]) =>
       im && { c: recolour(im, lab, cols, K, [4, 5]), x: at[0] - PAD, y: at[1] - PAD }));
   }
-  function accPiece(K, cfg) {
-    const name = cfg.acc, at = name && META.kids[K].keys._acc[name]; if (!at) return Promise.resolve(null);
+  function accPiece(K, cfg, back) {
+    const kind = back ? 'accb' : 'acc', name = cfg.acc, at = name && (META.kids[K].keys['_' + kind] || {})[name]; if (!at) return Promise.resolve(null);
+    if (back) {   // the extras from behind were drawn on a big afro: squash them to the ear line to sit on this hairstyle
+      const [sy0, dy, top] = back.fit[cfg.style] || [1, 0, at[1]];
+      // headphones: the band rests on top of the hair; the crown moves to the top of the head; the rest squash to the ear line
+      const sy = name === 'crown' ? 1 : name === 'headphones' ? (back.earY - top + 3) / (back.earY - at[1]) : sy0;
+      return load(`${K}_accb_${name}.webp`).then(im => im && { c: im, x: at[0] - PAD, y: at[1] - PAD, sy, dy: name === 'crown' ? dy : 0, ey: back.earY - PAD });
+    }
     const lift = name === 'crown' ? (META.kids[K].crownLift[cfg.style] || 0) : 0;
     return load(`${K}_acc_${name}.webp`).then(im => im && { c: im, x: at[0] - PAD, y: at[1] - PAD + lift });
   }
@@ -78,7 +84,7 @@
       if (!im) return null;
       const body = recolour(im, lab, cols, K, e.parts);
       const head = e.head && cfg.style;
-      const [hp, ap] = head ? await Promise.all([hairPiece(K, cfg, cols), accPiece(K, cfg)]) : [null, null];
+      const [hp, ap] = head ? await Promise.all([hairPiece(K, cfg, cols, e.back ? 'hairb' : 'hair'), accPiece(K, cfg, e.back)]) : [null, null];
       const n = e.n, fw = e.w / n, fh = e.h, pt = head ? PT : 0, px = head ? PX : 0, cw = fw + 2 * px;
       const out = canvas(n * cw, fh + pt), x = out.getContext('2d');
       let fr = null;
@@ -92,6 +98,7 @@
           for (const pc of [hp, ap]) {
             if (!pc) continue;
             x.setTransform(m[0], m[3], m[1], m[4], m[2] + ox, m[5] + pt);
+            if (pc.sy) { x.translate(0, pc.ey + pc.dy); x.scale(1, pc.sy); x.translate(0, -pc.ey); }
             x.drawImage(pc.c, pc.x, pc.y);
           }
           x.setTransform(1, 0, 0, 1, 0, 0);

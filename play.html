@@ -971,7 +971,20 @@ if (LW) {
   const t = document.querySelector('#lgShape text'); t.textContent = LW_INITIAL; t.setAttribute('textLength', wide[LW_INITIAL] || 218);
   document.querySelector('.splash .logo').setAttribute('aria-label', LW_INITIAL + '’s World');
   const art = document.querySelector('.splash-art'); art.alt = `${LW.name} sits on the steps by the station`;
+  const kc = lwKidCfg();
+  if (kc && KidArt.has(kc, 'splash_sit')) {   // the empty steps, then the child sitting where A sat
+    const plate = new Image();
+    Promise.all([new Promise(r => { plate.onload = r; plate.onerror = r; plate.src = 'ui_splash_empty.webp'; }), KidArt.build(kc, 'splash_sit')]).then(([, kid]) => {
+      if (!kid || !plate.naturalWidth) return;
+      const e = KidArt.info(kc, 'splash_sit'), [x0, y0, x1, y1] = e.box, c = document.createElement('canvas'); c.width = plate.naturalWidth; c.height = plate.naturalHeight;
+      const x = c.getContext('2d'); x.drawImage(plate, 0, 0);
+      const k = (y1 - y0) / (kid.lwH - 20), w = kid.width * k, h = kid.height * k;
+      x.drawImage(kid, (x0 + x1) / 2 - w / 2, y1 - h, w, h);
+      art.src = c.toDataURL('image/webp', 0.9);
+    });
+  } else {
   const im = new Image(); im.onload = () => { const c = lwRecolour(im, LW_ALL, [560, 640, 240, 262], true); if (c !== im) art.src = c.toDataURL('image/webp', 0.9); }; im.src = 'ui_splash_wide.webp';
+  }
 }
 const SU_ORIG = { skin: '#c47a3c', hair: '#3a1c10', cap: '#2f6b47', hood: '#c4c4c4', jog: '#e3d2b8', shoe: '#1f5a3c' };
 let su = null;
