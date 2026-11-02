@@ -85,7 +85,7 @@ nav.arrows button:disabled{opacity:.35;cursor:default}
 </style>
 </head><body>
 <header>
-  <div class="in"><a class="mark" href="login.html?v=1793641720#account">Little Worlds</a><a class="close" href="login.html?v=1793641720#account" id="closeLink">Save and close</a></div>
+  <div class="in"><a class="mark" href="login.html?v=1793641970#account">Little Worlds</a><a class="close" href="login.html?v=1793641970#account" id="closeLink">Save and close</a></div>
   <div class="bar" aria-hidden="true"><i id="bar"></i></div>
 </header>
 <main id="stage" aria-live="polite"></main>
@@ -96,6 +96,9 @@ nav.arrows button:disabled{opacity:.35;cursor:default}
 /* Paste the Google Apps Script web app URL here. Empty = answers stay in this browser only. */
 const ENDPOINT='';
 const STORE='lw_feedback_v1';
+/* Opened from a shared link without being logged in: close and back go to the front page instead of the login screen. */
+let HOME=document.querySelector('.close').getAttribute('href'),loggedIn=true;try{loggedIn=!!localStorage.getItem('lw_session')}catch(e){}
+if(!loggedIn){HOME='index.html';document.querySelectorAll('header a').forEach(x=>x.href=HOME)}
 
 /* type: intro | choice | text | long | money | statement | end
    key: the column name in the sheet (numbered so the columns stay in question order).
@@ -177,7 +180,7 @@ function view(x){
   if(x.type==='end')return `<p class="kicker">All done</p><h1>Thank <span class="hl">you</span></h1>
     <p class="lede">Your answers are with us now. We use them to decide what to build next.</p>
     ${ENDPOINT?'':'<p class="note">Test version: the answers are saved in this browser only.</p>'}
-    <div class="row"><a class="pill" href="login.html?v=1793641720#account">Back to your account</a><button class="skip" data-act="again">Change an answer</button></div>`;
+    <div class="row"><a class="pill" href="${HOME}">${loggedIn?'Back to your account':'Back to Little Worlds'}</a><button class="skip" data-act="again">Change an answer</button></div>`;
   const head=`<p class="kicker"><span class="n">${x.type==='statement'?'£':numOf(x)}</span>${esc(x.sec)}</p>`;
   if(x.type==='statement')return head+`<h2>Here are the prices we’re thinking about.</h2>
     <div class="reveal"><div><b>£3</b><span>a month for one child</span></div><div><b>£6</b><span>a month for up to four children</span></div>
