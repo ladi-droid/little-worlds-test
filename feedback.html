@@ -85,7 +85,7 @@ nav.arrows button:disabled{opacity:.35;cursor:default}
 </style>
 </head><body>
 <header>
-  <div class="in"><a class="mark" href="login.html?v=1793642301#account">Little Worlds</a><a class="close" href="login.html?v=1793642301#account" id="closeLink">Save and close</a></div>
+  <div class="in"><a class="mark" href="login.html?v=1793651039#account">Little Worlds</a><a class="close" href="login.html?v=1793651039#account" id="closeLink">Save and close</a></div>
   <div class="bar" aria-hidden="true"><i id="bar"></i></div>
 </header>
 <main id="stage" aria-live="polite"></main>
@@ -111,20 +111,17 @@ const WHO={sec:'About you',key:'A00 Who played',type:'choice',q:'Who played the 
 const AGE={sec:'About you',key:'A01 Player age',type:'choice',q:'How old is the player?',opts:['Under 4','4 or 5','6 or 7','8 or 9','10 to 12','13 to 17','18 or older']};
 const FIRST=[
   WHO,AGE,
-  {sec:'About you',key:'A02 Games they play now',type:'text',q:'Which games or apps does the player play most at the moment?',ph:'Type the names'},
   {sec:'Setting it up',key:'A03 Where stuck in set-up',type:'long',q:'Where did you get stuck, slow down or feel unsure while setting up?',help:'If nowhere, write “nowhere”.'},
   {sec:'Setting it up',key:'A04 Set-up time',type:'choice',q:'How long did set-up take?',opts:['Under 2 minutes','2 to 5 minutes','5 to 10 minutes','Over 10 minutes','I gave up']},
   {sec:'Setting it up',key:'A05 Confusing or pointless',type:'long',q:'Which part of the page felt confusing or pointless?',help:'Skip this if none did.'},
   {sec:'The character',key:'A06 First reaction',type:'long',q:'When the player first saw the character, what did they say or do?',help:'Write their words if you remember them.'},
   {sec:'The character',key:'A07 Looks like player',type:'choice',q:'How close was the character to the player’s real look?',opts:['Not close','A bit close','Close','Very close']},
   {sec:'The character',key:'A08 Looked for, not found',type:'long',q:'Which look did you search for and not find?',help:'A hairstyle, an outfit, a colour, something to wear. Skip this if you found it all.'},
-  {sec:'The character',key:'A09 Choices nobody used',type:'text',q:'Which choices did nobody use?',help:'Skip this if you used them all.'},
   {sec:'Home screen',key:'A10 On home screen',type:'choice',q:'Is the game on your home screen now?',opts:['Yes','I tried and gave up','I didn’t try']},
   {sec:'Home screen',key:'A11 What got in the way',type:'long',q:'What got in the way of adding it?',show:a=>a['A10 On home screen']&&a['A10 On home screen']!=='Yes'},
   {sec:'Home screen',key:'A12 Device',type:'choice',q:'Which device does the player play on?',opts:['Apple phone','Android phone','Apple tablet','Android tablet','Something else']},
   {sec:'The first go',key:'A13 First go length',type:'choice',q:'How long did the first go last?',opts:['Under 5 minutes','5 to 15 minutes','15 to 30 minutes','Over 30 minutes']},
   {sec:'The first go',key:'A14 What ended first go',type:'choice',q:'What ended the first go?',opts:['They got bored','They got stuck','Time ran out (bedtime, dinner, school)','They finished the trips that were open','Something else']},
-  {sec:'The first go',key:'A15 Stuck in first go',type:'long',q:'Where did the player get stuck or ask for help?',help:'Skip this if they didn’t.'},
   {sec:'The first go',key:'A16 Anything else first go',type:'long',q:'Anything else you noticed during the first go?',help:'Skip this if not.'},
 ];
 const LATER=[
@@ -132,11 +129,8 @@ const LATER=[
   Object.assign({},AGE,{show:a=>!a['A01 Player age']}),
   {sec:'Playing',key:'B01 Times asked to play',type:'choice',q:'Over the past few days, how many times did the player ask to play without someone suggesting it?',opts:['None','1 or 2','3 to 5','6 or more'],show:a=>!ADULT(a)},
   {sec:'Playing',key:'B02 Times went back',type:'choice',q:'Over the past few days, how many times did you go back to the game?',opts:['None','1 or 2','3 to 5','6 or more'],show:ADULT},
-  {sec:'Playing',key:'B03 Who opens the game',type:'choice',q:'The last time the player played, who opened the game?',opts:['The player','Someone else'],show:a=>!ADULT(a)},
-  {sec:'Playing',key:'B04 Least fun part',type:'long',q:'Which part was the least fun? When did the player stop playing, and why?'},
   {sec:'Playing',key:'B05 Stuck or needed help',type:'long',q:'Where did the player get stuck or ask for help?',help:'Skip this if they didn’t.'},
   {sec:'Playing',key:'B06 Talked about after',type:'long',q:'Which part did the player talk about afterwards?',help:'Skip this if they didn’t.'},
-  {sec:'Playing',key:'B07 Compared with their games',type:'choice',q:'Compared with the games the player plays now, this game was:',opts:['Less fun','About the same','More fun']},
   {sec:'Playing',key:'B08 Sound turned off',type:'choice',q:'Did anyone turn the sound off?',opts:['No','Yes']},
   {sec:'Playing',key:'B09 Why sound off',type:'text',q:'Why did they turn the sound off?',show:a=>a['B08 Sound turned off']==='Yes'},
   {sec:'Trips',key:'B10 Places wanted next',type:'text',q:'Name up to three places the player would want to run through next.',ph:'Places, cities or countries'},
@@ -150,7 +144,6 @@ const LATER=[
   {sec:'Price',key:'B17 With these prices',type:'choice',q:'With these prices, what would you do?',opts:['Join, paying monthly','Join, paying yearly','Wait until there are more trips','Not join']},
   {sec:'Price',key:'B18 Plan',type:'choice',q:'Which plan would you pick?',opts:['One game','Family plan, for 2 games','Family plan, for 3 games','Family plan, for 4 games'],show:a=>/^Join/.test(a['B17 With these prices']||'')},
   {sec:'Price',key:'B19 Buy as a present',type:'choice',q:'Would you buy one as a present for someone else?',opts:['Yes','Maybe','No']},
-  {sec:'Last questions',key:'B20 If it disappeared',type:'choice',q:'If the game disappeared tomorrow, how would you feel?',opts:['Very disappointed','A bit disappointed','Not disappointed']},
   {sec:'Last questions',key:'B21 One sentence to a friend',type:'long',q:'Describe the game to a friend in one sentence.'},
   {sec:'Last questions',key:'B22 Change worth paying',type:'long',q:'Name one change that would make it worth paying for.'},
   {sec:'Last questions',key:'B23 Told anyone',type:'choice',q:'Have you told anyone about the game yet?',opts:['Yes','No']},
@@ -186,7 +179,7 @@ const numOf=x=>NUMBERED.filter(y=>!y.show||y.show(S.answers)).indexOf(x)+1;
 const total=()=>NUMBERED.filter(y=>!y.show||y.show(S.answers)).length;
 
 function view(x){
-  if(x.type==='intro')return `<p class="kicker">${PART===2?'Feedback, part 2 · about 6 minutes':'Feedback, part 1 · about 4 minutes'}</p>
+  if(x.type==='intro')return `<p class="kicker">${PART===2?'Feedback, part 2 · about 5 minutes':'Feedback, part 1 · about 3 minutes'}</p>
     <h1>Help us decide <span class="hl">what happens next</span></h1>
     <p class="lede">We haven’t decided whether Little Worlds is worth building further. Your answers decide that.</p>
     <p class="lede">${PART===2?'These questions cover the last few days of play, and what you’d pay.':'These questions cover set-up and the first go, while you still remember them. We’ll ask a few more in 3 days.'}</p>
