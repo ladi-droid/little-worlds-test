@@ -85,7 +85,7 @@ nav.arrows button:disabled{opacity:.35;cursor:default}
 </style>
 </head><body>
 <header>
-  <div class="in"><a class="mark" href="login.html?v=1793651039#account">Little Worlds</a><a class="close" href="login.html?v=1793651039#account" id="closeLink">Save and close</a></div>
+  <div class="in"><a class="mark" href="login.html?v=1793651166#account">Little Worlds</a><a class="close" href="login.html?v=1793651166#account" id="closeLink">Save and close</a></div>
   <div class="bar" aria-hidden="true"><i id="bar"></i></div>
 </header>
 <main id="stage" aria-live="polite"></main>
@@ -144,6 +144,7 @@ const LATER=[
   {sec:'Price',key:'B17 With these prices',type:'choice',q:'With these prices, what would you do?',opts:['Join, paying monthly','Join, paying yearly','Wait until there are more trips','Not join']},
   {sec:'Price',key:'B18 Plan',type:'choice',q:'Which plan would you pick?',opts:['One game','Family plan, for 2 games','Family plan, for 3 games','Family plan, for 4 games'],show:a=>/^Join/.test(a['B17 With these prices']||'')},
   {sec:'Price',key:'B19 Buy as a present',type:'choice',q:'Would you buy one as a present for someone else?',opts:['Yes','Maybe','No']},
+  {sec:'Last questions',key:'B20 If it disappeared',type:'choice',q:'If the game disappeared tomorrow, how would you feel?',opts:['Very disappointed','A bit disappointed','Not disappointed']},
   {sec:'Last questions',key:'B21 One sentence to a friend',type:'long',q:'Describe the game to a friend in one sentence.'},
   {sec:'Last questions',key:'B22 Change worth paying',type:'long',q:'Name one change that would make it worth paying for.'},
   {sec:'Last questions',key:'B23 Told anyone',type:'choice',q:'Have you told anyone about the game yet?',opts:['Yes','No']},
