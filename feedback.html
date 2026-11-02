@@ -85,7 +85,7 @@ nav.arrows button:disabled{opacity:.35;cursor:default}
 </style>
 </head><body>
 <header>
-  <div class="in"><a class="mark" href="login.html?v=1793641970#account">Little Worlds</a><a class="close" href="login.html?v=1793641970#account" id="closeLink">Save and close</a></div>
+  <div class="in"><a class="mark" href="login.html?v=1793642301#account">Little Worlds</a><a class="close" href="login.html?v=1793642301#account" id="closeLink">Save and close</a></div>
   <div class="bar" aria-hidden="true"><i id="bar"></i></div>
 </header>
 <main id="stage" aria-live="polite"></main>
@@ -95,75 +95,90 @@ nav.arrows button:disabled{opacity:.35;cursor:default}
 (()=>{
 /* Paste the Google Apps Script web app URL here. Empty = answers stay in this browser only. */
 const ENDPOINT='';
-const STORE='lw_feedback_v1';
+const STORE='lw_feedback_v2';
 /* Opened from a shared link without being logged in: close and back go to the front page instead of the login screen. */
 let HOME=document.querySelector('.close').getAttribute('href'),loggedIn=true;try{loggedIn=!!localStorage.getItem('lw_session')}catch(e){}
 if(!loggedIn){HOME='index.html';document.querySelectorAll('header a').forEach(x=>x.href=HOME)}
 
-/* type: intro | choice | text | long | money | statement | end
-   key: the column name in the sheet (numbered so the columns stay in question order).
-   show: only ask when this returns true. */
-const QS=[
-  {type:'intro'},
-  {sec:'About you',key:'00 Who played',type:'choice',q:'Who played the game?',help:'If you didn’t see them play, ask the adult who did before you answer.',opts:['Me','My child','My grandchild','My niece or nephew','My godchild','A friend’s child','Another adult','Someone else']},
-  {sec:'About you',key:'01 Player age',type:'choice',q:'How old is the player?',opts:['Under 4','4 or 5','6 or 7','8 or 9','10 to 12','13 to 17','18 or older']},
-  {sec:'About you',key:'02 Games they play now',type:'text',q:'Which games or apps does the player play most at the moment?',ph:'Type the names'},
-  {sec:'Setting it up',key:'03 Where stuck in set-up',type:'long',q:'Where did you get stuck, slow down or feel unsure while setting up?',help:'If nowhere, write “nowhere”.'},
-  {sec:'Setting it up',key:'04 Set-up time',type:'choice',q:'How long did set-up take?',opts:['Under 2 minutes','2 to 5 minutes','5 to 10 minutes','Over 10 minutes','I gave up']},
-  {sec:'Setting it up',key:'05 Confusing or pointless',type:'long',q:'Which part of the page felt confusing or pointless?',help:'Skip this if none did.'},
-  {sec:'The character',key:'06 First reaction',type:'long',q:'When the player first saw the character, what did they say or do?',help:'Write their words if you remember them.'},
-  {sec:'The character',key:'07 Looks like player',type:'choice',q:'How close was the character to the player’s real look?',opts:['Not close','A bit close','Close','Very close']},
-  {sec:'The character',key:'08 Looked for, not found',type:'long',q:'Which look did you search for and not find?',help:'A hairstyle, an outfit, a colour, something to wear. Skip this if you found it all.'},
-  {sec:'The character',key:'09 Choices nobody used',type:'text',q:'Which choices did nobody use?',help:'Skip this if you used them all.'},
-  {sec:'Home screen',key:'10 On home screen',type:'choice',q:'Is the game on your home screen now?',opts:['Yes','I tried and gave up','I didn’t try']},
-  {sec:'Home screen',key:'11 What got in the way',type:'long',q:'What got in the way of adding it?',show:a=>a['10 On home screen']&&a['10 On home screen']!=='Yes'},
-  {sec:'Home screen',key:'12 Device',type:'choice',q:'Which device does the player play on?',opts:['Apple phone','Android phone','Apple tablet','Android tablet','Something else']},
-  {sec:'Home screen',key:'13 Who opens the game',type:'choice',q:'The last time the player played, who opened the game?',opts:['The player','Someone else'],show:a=>!['Me','Another adult'].includes(a['00 Who played'])},
-  {sec:'Playing',key:'14 Times asked to play',type:'choice',q:'Over the past few days, how many times did the player ask to play without someone suggesting it?',opts:['None','1 or 2','3 to 5','6 or more']},
-  {sec:'Playing',key:'15 Least fun part',type:'long',q:'Which part was the least fun? When did the player stop playing, and why?'},
-  {sec:'Playing',key:'16 Stuck or needed help',type:'long',q:'Where did the player get stuck or ask for help?',help:'Skip this if they didn’t.'},
-  {sec:'Playing',key:'17 Talked about after',type:'long',q:'Which part did the player talk about afterwards?',help:'Skip this if they didn’t.'},
-  {sec:'Playing',key:'18 Compared with their games',type:'choice',q:'Compared with the games the player plays now, this game was:',opts:['Less fun','About the same','More fun']},
-  {sec:'Playing',key:'19 Sound turned off',type:'choice',q:'Did anyone turn the sound off?',opts:['No','Yes']},
-  {sec:'Playing',key:'20 Why sound off',type:'text',q:'Why did they turn the sound off?',show:a=>a['19 Sound turned off']==='Yes'},
-  {sec:'Trips',key:'21 Places wanted next',type:'text',q:'Name up to three places the player would want to run through next.',ph:'Places, cities or countries'},
-  {sec:'Trips',key:'22 After last trip',type:'choice',q:'When the player reached the last trip, how did they feel?',opts:['They wanted more','They’d had enough','They haven’t reached it yet']},
-  {sec:'Trips',key:'23 Five trips feels',type:'choice',q:'Five trips per player feels:',opts:['Too few','About right','Too many','Not sure yet']},
-  {sec:'Price',key:'24 Expected price per month',type:'money',q:'A game like this, made for one player: how much per month would you expect it to cost?'},
-  {sec:'Price',key:'25 Too expensive at',type:'money',q:'At what monthly price would it feel too expensive to consider?'},
-  {sec:'Price',key:'26 Too cheap at',type:'money',q:'At what monthly price would it feel so cheap you’d doubt the quality?'},
-  {sec:'Price',key:'27 What stops other parents',type:'long',q:'Think of families you know. What would stop them paying for this?'},
-  {sec:'Price',type:'statement'},
-  {sec:'Price',key:'28 With these prices',type:'choice',q:'With these prices, what would you do?',opts:['Join, paying monthly','Join, paying yearly','Wait until there are more trips','Not join']},
-  {sec:'Price',key:'29 Plan',type:'choice',q:'Which plan would you pick?',opts:['One game','Family plan, for 2 games','Family plan, for 3 games','Family plan, for 4 games'],show:a=>/^Join/.test(a['28 With these prices']||'')},
-  {sec:'Price',key:'30 Buy as a present',type:'choice',q:'Would you buy one as a present for someone else?',opts:['Yes','Maybe','No']},
-  {sec:'Last questions',key:'31 If it disappeared',type:'choice',q:'If the game disappeared tomorrow, how would you feel?',opts:['Very disappointed','A bit disappointed','Not disappointed']},
-  {sec:'Last questions',key:'32 One sentence to a parent',type:'long',q:'Describe the game to a friend in one sentence.'},
-  {sec:'Last questions',key:'33 Change worth paying',type:'long',q:'Name one change that would make it worth paying for.'},
-  {sec:'Last questions',key:'34 Told anyone',type:'choice',q:'Have you told anyone about the game yet?',opts:['Yes','No']},
-  {type:'end'}
+/* Two forms, one row per person in the sheet (they share the response id on the same phone or tablet).
+   Part 1 (feedback.html): the first go, sent the same day, while set-up is fresh.
+   Part 2 (feedback.html?part=2): after 3 to 5 days of play.
+   type: intro | choice | text | long | money | statement | end
+   key: the column name in the sheet. show: only ask when this returns true. */
+const PART=new URLSearchParams(location.search).get('part')==='2'?2:1;
+const ADULT=a=>['Me','Another adult'].includes(a['A00 Who played']);
+const WHO={sec:'About you',key:'A00 Who played',type:'choice',q:'Who played the game?',help:'If you didn’t see them play, ask the adult who did before you answer.',opts:['Me','My child','My grandchild','My niece or nephew','My godchild','A friend’s child','Another adult','Someone else']};
+const AGE={sec:'About you',key:'A01 Player age',type:'choice',q:'How old is the player?',opts:['Under 4','4 or 5','6 or 7','8 or 9','10 to 12','13 to 17','18 or older']};
+const FIRST=[
+  WHO,AGE,
+  {sec:'About you',key:'A02 Games they play now',type:'text',q:'Which games or apps does the player play most at the moment?',ph:'Type the names'},
+  {sec:'Setting it up',key:'A03 Where stuck in set-up',type:'long',q:'Where did you get stuck, slow down or feel unsure while setting up?',help:'If nowhere, write “nowhere”.'},
+  {sec:'Setting it up',key:'A04 Set-up time',type:'choice',q:'How long did set-up take?',opts:['Under 2 minutes','2 to 5 minutes','5 to 10 minutes','Over 10 minutes','I gave up']},
+  {sec:'Setting it up',key:'A05 Confusing or pointless',type:'long',q:'Which part of the page felt confusing or pointless?',help:'Skip this if none did.'},
+  {sec:'The character',key:'A06 First reaction',type:'long',q:'When the player first saw the character, what did they say or do?',help:'Write their words if you remember them.'},
+  {sec:'The character',key:'A07 Looks like player',type:'choice',q:'How close was the character to the player’s real look?',opts:['Not close','A bit close','Close','Very close']},
+  {sec:'The character',key:'A08 Looked for, not found',type:'long',q:'Which look did you search for and not find?',help:'A hairstyle, an outfit, a colour, something to wear. Skip this if you found it all.'},
+  {sec:'The character',key:'A09 Choices nobody used',type:'text',q:'Which choices did nobody use?',help:'Skip this if you used them all.'},
+  {sec:'Home screen',key:'A10 On home screen',type:'choice',q:'Is the game on your home screen now?',opts:['Yes','I tried and gave up','I didn’t try']},
+  {sec:'Home screen',key:'A11 What got in the way',type:'long',q:'What got in the way of adding it?',show:a=>a['A10 On home screen']&&a['A10 On home screen']!=='Yes'},
+  {sec:'Home screen',key:'A12 Device',type:'choice',q:'Which device does the player play on?',opts:['Apple phone','Android phone','Apple tablet','Android tablet','Something else']},
+  {sec:'The first go',key:'A13 First go length',type:'choice',q:'How long did the first go last?',opts:['Under 5 minutes','5 to 15 minutes','15 to 30 minutes','Over 30 minutes']},
+  {sec:'The first go',key:'A14 What ended first go',type:'choice',q:'What ended the first go?',opts:['They got bored','They got stuck','Time ran out (bedtime, dinner, school)','They finished the trips that were open','Something else']},
+  {sec:'The first go',key:'A15 Stuck in first go',type:'long',q:'Where did the player get stuck or ask for help?',help:'Skip this if they didn’t.'},
+  {sec:'The first go',key:'A16 Anything else first go',type:'long',q:'Anything else you noticed during the first go?',help:'Skip this if not.'},
 ];
-const COLUMNS=QS.filter(x=>x.key).map(x=>x.key);
+const LATER=[
+  Object.assign({},WHO,{show:a=>!a['A00 Who played']}),
+  Object.assign({},AGE,{show:a=>!a['A01 Player age']}),
+  {sec:'Playing',key:'B01 Times asked to play',type:'choice',q:'Over the past few days, how many times did the player ask to play without someone suggesting it?',opts:['None','1 or 2','3 to 5','6 or more'],show:a=>!ADULT(a)},
+  {sec:'Playing',key:'B02 Times went back',type:'choice',q:'Over the past few days, how many times did you go back to the game?',opts:['None','1 or 2','3 to 5','6 or more'],show:ADULT},
+  {sec:'Playing',key:'B03 Who opens the game',type:'choice',q:'The last time the player played, who opened the game?',opts:['The player','Someone else'],show:a=>!ADULT(a)},
+  {sec:'Playing',key:'B04 Least fun part',type:'long',q:'Which part was the least fun? When did the player stop playing, and why?'},
+  {sec:'Playing',key:'B05 Stuck or needed help',type:'long',q:'Where did the player get stuck or ask for help?',help:'Skip this if they didn’t.'},
+  {sec:'Playing',key:'B06 Talked about after',type:'long',q:'Which part did the player talk about afterwards?',help:'Skip this if they didn’t.'},
+  {sec:'Playing',key:'B07 Compared with their games',type:'choice',q:'Compared with the games the player plays now, this game was:',opts:['Less fun','About the same','More fun']},
+  {sec:'Playing',key:'B08 Sound turned off',type:'choice',q:'Did anyone turn the sound off?',opts:['No','Yes']},
+  {sec:'Playing',key:'B09 Why sound off',type:'text',q:'Why did they turn the sound off?',show:a=>a['B08 Sound turned off']==='Yes'},
+  {sec:'Trips',key:'B10 Places wanted next',type:'text',q:'Name up to three places the player would want to run through next.',ph:'Places, cities or countries'},
+  {sec:'Trips',key:'B11 After last trip',type:'choice',q:'When the player reached the last trip, how did they feel?',opts:['They wanted more','They’d had enough','They haven’t reached it yet']},
+  {sec:'Trips',key:'B12 Five trips feels',type:'choice',q:'Five trips per player feels:',opts:['Too few','About right','Too many','Not sure yet']},
+  {sec:'Price',key:'B13 Expected price per month',type:'money',q:'A game like this, made for one player: how much per month would you expect it to cost?'},
+  {sec:'Price',key:'B14 Too expensive at',type:'money',q:'At what monthly price would it feel too expensive to consider?'},
+  {sec:'Price',key:'B15 Too cheap at',type:'money',q:'At what monthly price would it feel so cheap you’d doubt the quality?'},
+  {sec:'Price',key:'B16 What stops other families',type:'long',q:'Think of families you know. What would stop them paying for this?'},
+  {sec:'Price',type:'statement'},
+  {sec:'Price',key:'B17 With these prices',type:'choice',q:'With these prices, what would you do?',opts:['Join, paying monthly','Join, paying yearly','Wait until there are more trips','Not join']},
+  {sec:'Price',key:'B18 Plan',type:'choice',q:'Which plan would you pick?',opts:['One game','Family plan, for 2 games','Family plan, for 3 games','Family plan, for 4 games'],show:a=>/^Join/.test(a['B17 With these prices']||'')},
+  {sec:'Price',key:'B19 Buy as a present',type:'choice',q:'Would you buy one as a present for someone else?',opts:['Yes','Maybe','No']},
+  {sec:'Last questions',key:'B20 If it disappeared',type:'choice',q:'If the game disappeared tomorrow, how would you feel?',opts:['Very disappointed','A bit disappointed','Not disappointed']},
+  {sec:'Last questions',key:'B21 One sentence to a friend',type:'long',q:'Describe the game to a friend in one sentence.'},
+  {sec:'Last questions',key:'B22 Change worth paying',type:'long',q:'Name one change that would make it worth paying for.'},
+  {sec:'Last questions',key:'B23 Told anyone',type:'choice',q:'Have you told anyone about the game yet?',opts:['Yes','No']},
+];
+const QS=[{type:'intro'}].concat(PART===2?LATER:FIRST,[{type:'end'}]);
+const DONEKEY=['','First go form finished','After a few days form finished'];
+const COLUMNS=[...new Set(FIRST.concat(LATER).filter(x=>x.key).map(x=>x.key))].concat(DONEKEY[1],DONEKEY[2]);
 const NUMBERED=QS.filter(x=>x.key);
 
 const $=s=>document.querySelector(s);
 const esc=t=>String(t).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 const touch=matchMedia('(hover:none)').matches;
-let S={id:'',answers:{},i:0,done:false};
+let S={id:'',answers:{},parts:{}};
 try{Object.assign(S,JSON.parse(localStorage.getItem(STORE)||'{}'))}catch(e){}
 if(!S.id)S.id=Date.now().toString(36)+Math.random().toString(36).slice(2,8);
+const P=S.parts[PART]=S.parts[PART]||{i:0,done:false};
 const save=()=>{try{localStorage.setItem(STORE,JSON.stringify(S))}catch(e){}};
-if(S.done)S.i=QS.length-1;
+if(P.done)P.i=QS.length-1;
 
 /* Send all answers so far. The sheet keeps one row per id and overwrites it, so a parent who stops halfway still counts. */
 let sending=Promise.resolve();
 function send(finished){
   if(!ENDPOINT)return;
-  const body=JSON.stringify({id:S.id,columns:COLUMNS,answers:S.answers,finished:!!finished,page:location.pathname});
+  const body=JSON.stringify({id:S.id,columns:COLUMNS,answers:S.answers,finished:!!(S.parts[2]&&S.parts[2].done),page:location.pathname});
   sending=sending.then(()=>fetch(ENDPOINT,{method:'POST',mode:'no-cors',headers:{'Content-Type':'text/plain;charset=utf-8'},body,keepalive:true})
     .then(()=>{S.unsent=false;save()}).catch(()=>{S.unsent=true;save()}));
 }
-if(S.unsent)send(S.done);
+if(S.unsent)send();
 
 const visible=i=>{const x=QS[i];return !x.show||x.show(S.answers)};
 const step=(i,d)=>{do{i+=d}while(i>0&&i<QS.length-1&&!visible(i));return Math.max(0,Math.min(QS.length-1,i))};
@@ -171,14 +186,15 @@ const numOf=x=>NUMBERED.filter(y=>!y.show||y.show(S.answers)).indexOf(x)+1;
 const total=()=>NUMBERED.filter(y=>!y.show||y.show(S.answers)).length;
 
 function view(x){
-  if(x.type==='intro')return `<p class="kicker">Feedback · about 8 minutes</p>
+  if(x.type==='intro')return `<p class="kicker">${PART===2?'Feedback, part 2 · about 6 minutes':'Feedback, part 1 · about 4 minutes'}</p>
     <h1>Help us decide <span class="hl">what happens next</span></h1>
     <p class="lede">We haven’t decided whether Little Worlds is worth building further. Your answers decide that.</p>
+    <p class="lede">${PART===2?'These questions cover the last few days of play, and what you’d pay.':'These questions cover set-up and the first go, while you still remember them. We’ll ask a few more in 3 days.'}</p>
     <p class="lede">A harsh answer helps us more than a kind one. If something bored you, confused you or put you off, please say so.</p>
     <p class="note">We don’t attach your name, email or account to your answers, so we can’t see who wrote what.</p>
     <div class="row"><button class="pill" data-next>Start</button><span class="hint">${touch?'':'or press Enter ↵'}</span></div>`;
   if(x.type==='end')return `<p class="kicker">All done</p><h1>Thank <span class="hl">you</span></h1>
-    <p class="lede">Your answers are with us now. We use them to decide what to build next.</p>
+    <p class="lede">Your answers are with us now. ${PART===2?'We use them to decide what to build next.':'In 3 days we’ll ask a few more questions, once the player has had time with the game.'}</p>
     ${ENDPOINT?'':'<p class="note">Test version: the answers are saved in this browser only.</p>'}
     <div class="row"><a class="pill" href="${HOME}">${loggedIn?'Back to your account':'Back to Little Worlds'}</a><button class="skip" data-act="again">Change an answer</button></div>`;
   const head=`<p class="kicker"><span class="n">${x.type==='statement'?'£':numOf(x)}</span>${esc(x.sec)}</p>`;
@@ -201,7 +217,7 @@ function view(x){
 
 let cur=null,busy=false;
 function render(dir){
-  const x=QS[S.i];
+  const x=QS[P.i];
   const el=document.createElement('section');el.className='q '+(dir>0?'below':dir<0?'above':'');
   el.innerHTML=`<div class="box">${view(x)}</div>`;
   $('#stage').appendChild(el);
@@ -212,27 +228,27 @@ function render(dir){
   }));
   const f=el.querySelector('.field');
   if(f){f.addEventListener('keydown',onFieldKey);if(f.tagName==='TEXTAREA')autoGrow(f),f.addEventListener('input',()=>autoGrow(f));if(!touch)setTimeout(()=>f.focus({preventScroll:true}),dir?420:0)}
-  const n=total(),k=x.key?numOf(x):x.type==='end'?n:x.type==='intro'?0:numOf(QS[step(S.i,-1)]);
+  const n=total(),k=x.key?numOf(x):x.type==='end'?n:x.type==='intro'?0:numOf(QS[step(P.i,-1)]);
   $('#bar').style.width=(x.type==='end'?100:Math.round(k/n*100))+'%';
-  $('#up').disabled=S.i===0;$('#down').disabled=x.type==='end'||x.type==='intro';
+  $('#up').disabled=P.i===0;$('#down').disabled=x.type==='end'||x.type==='intro';
   $('#closeLink').textContent=x.type==='end'?'Close':'Save and close';
 }
 const autoGrow=t=>{t.style.height='auto';t.style.height=Math.min(t.scrollHeight,260)+'px'};
 
 function go(d){
-  if(busy)return;const to=step(S.i,d);if(to===S.i)return;
+  if(busy)return;const to=step(P.i,d);if(to===P.i)return;
   busy=true;setTimeout(()=>busy=false,450);
-  S.i=to;
-  if(QS[to].type==='end'&&!S.done){S.done=true;send(true)}
+  P.i=to;
+  if(QS[to].type==='end'&&!P.done){P.done=true;P.at=Date.now();S.answers[DONEKEY[PART]]='Yes';send()}
   save();render(d);
 }
 function answer(val){
-  const x=QS[S.i];if(!x.key)return go(1);
+  const x=QS[P.i];if(!x.key)return go(1);
   if(val===''||val==null)delete S.answers[x.key];else S.answers[x.key]=val;
-  save();send(false);go(1);
+  save();send();go(1);
 }
 function readField(){
-  const x=QS[S.i],f=cur.querySelector('.field');if(!f)return null;
+  const x=QS[P.i],f=cur.querySelector('.field');if(!f)return null;
   let v=f.value.trim();
   if(x.type==='money'&&v!==''){const n=parseFloat(v.replace(/[£,\s]/g,''));if(isNaN(n)||n<0){f.setCustomValidity('x');shake(f);return undefined}v=Math.round(n*100)/100}
   return v;
@@ -247,24 +263,24 @@ document.addEventListener('click',e=>{
   if(o){if(busy)return;cur.querySelectorAll('.opt').forEach(b=>b.setAttribute('aria-pressed',b===o));const v=o.dataset.opt;setTimeout(()=>answer(v),260);return}
   if(e.target.closest('[data-next]'))return go(1);
   if(e.target.closest('[data-ok]')){const v=readField();if(v!==undefined)answer(v);return}
-  if(e.target.closest('[data-skip]')){const x=QS[S.i];if(x.key&&!(x.key in S.answers)){S.answers[x.key]='(skipped)';save();send(false)}return go(1)}
-  if(e.target.closest('[data-act="again"]')){S.done=false;S.i=step(QS.length-1,-1);save();render(-1);return}
+  if(e.target.closest('[data-skip]')){const x=QS[P.i];if(x.key&&!(x.key in S.answers)){S.answers[x.key]='(skipped)';save();send()}return go(1)}
+  if(e.target.closest('[data-act="again"]')){P.done=false;delete S.answers[DONEKEY[PART]];P.i=step(QS.length-1,-1);save();render(-1);return}
 });
 $('#up').onclick=()=>go(-1);
 $('#down').onclick=()=>go(1);
 document.addEventListener('keydown',e=>{
   if(e.target.closest('.field'))return;
-  const x=QS[S.i];
+  const x=QS[P.i];
   if(e.key==='Enter'){const b=cur.querySelector('[data-next]');if(b){e.preventDefault();go(1)}return}
   if(x.type==='choice'&&/^[a-z]$/i.test(e.key)&&!e.metaKey&&!e.ctrlKey){const b=cur.querySelectorAll('.opt')[e.key.toUpperCase().charCodeAt(0)-65];if(b)b.click()}
-  if(e.key==='ArrowUp'&&S.i>0){e.preventDefault();go(-1)}
+  if(e.key==='ArrowUp'&&P.i>0){e.preventDefault();go(-1)}
   if(e.key==='ArrowDown'&&x.type!=='intro'&&x.type!=='end'){e.preventDefault();go(1)}
 });
 /* Flush on leave, so a half-finished form still reaches the sheet. */
 addEventListener('pagehide',()=>{save()});
 
 render(0);
-window.__fb={QS,S,go,answer,COLUMNS};
+window.__fb={QS,S,P,go,answer,COLUMNS};
 })();
 </script>
 </body></html>
