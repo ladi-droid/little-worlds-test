@@ -85,7 +85,7 @@ nav.arrows button:disabled{opacity:.35;cursor:default}
 </style>
 </head><body>
 <header>
-  <div class="in"><a class="mark" href="login.html?v=1793641646#account">Little Worlds</a><a class="close" href="login.html?v=1793641646#account" id="closeLink">Save and close</a></div>
+  <div class="in"><a class="mark" href="login.html?v=1793641720#account">Little Worlds</a><a class="close" href="login.html?v=1793641720#account" id="closeLink">Save and close</a></div>
   <div class="bar" aria-hidden="true"><i id="bar"></i></div>
 </header>
 <main id="stage" aria-live="polite"></main>
@@ -102,38 +102,38 @@ const STORE='lw_feedback_v1';
    show: only ask when this returns true. */
 const QS=[
   {type:'intro'},
-  {sec:'About you',key:'00 How you know the child',type:'choice',q:'Who is the child who played?',help:'If you don’t see them play, ask the adult who does before you answer.',opts:['My child','My grandchild','My niece or nephew','My godchild','A friend’s child','Someone else']},
-  {sec:'About you',key:'01 Child age',type:'choice',q:'How old is the child who played?',opts:['Under 4','4 or 5','6 or 7','8 or 9','10 or older']},
-  {sec:'About you',key:'02 Games they play now',type:'text',q:'Which games or apps does the child play most at the moment?',ph:'Type the names'},
+  {sec:'About you',key:'00 Who played',type:'choice',q:'Who played the game?',help:'If you didn’t see them play, ask the adult who did before you answer.',opts:['Me','My child','My grandchild','My niece or nephew','My godchild','A friend’s child','Another adult','Someone else']},
+  {sec:'About you',key:'01 Player age',type:'choice',q:'How old is the player?',opts:['Under 4','4 or 5','6 or 7','8 or 9','10 to 12','13 to 17','18 or older']},
+  {sec:'About you',key:'02 Games they play now',type:'text',q:'Which games or apps does the player play most at the moment?',ph:'Type the names'},
   {sec:'Setting it up',key:'03 Where stuck in set-up',type:'long',q:'Where did you get stuck, slow down or feel unsure while setting up?',help:'If nowhere, write “nowhere”.'},
   {sec:'Setting it up',key:'04 Set-up time',type:'choice',q:'How long did set-up take?',opts:['Under 2 minutes','2 to 5 minutes','5 to 10 minutes','Over 10 minutes','I gave up']},
   {sec:'Setting it up',key:'05 Confusing or pointless',type:'long',q:'Which part of the page felt confusing or pointless?',help:'Skip this if none did.'},
-  {sec:'The character',key:'06 First reaction',type:'long',q:'When the child first saw the character, what did they say or do?',help:'Write their words if you remember them.'},
-  {sec:'The character',key:'07 Looks like child',type:'choice',q:'How close was the character to the child’s real look?',opts:['Not close','A bit close','Close','Very close']},
+  {sec:'The character',key:'06 First reaction',type:'long',q:'When the player first saw the character, what did they say or do?',help:'Write their words if you remember them.'},
+  {sec:'The character',key:'07 Looks like player',type:'choice',q:'How close was the character to the player’s real look?',opts:['Not close','A bit close','Close','Very close']},
   {sec:'The character',key:'08 Looked for, not found',type:'long',q:'Which look did you search for and not find?',help:'A hairstyle, an outfit, a colour, something to wear. Skip this if you found it all.'},
   {sec:'The character',key:'09 Choices nobody used',type:'text',q:'Which choices did nobody use?',help:'Skip this if you used them all.'},
   {sec:'Home screen',key:'10 On home screen',type:'choice',q:'Is the game on your home screen now?',opts:['Yes','I tried and gave up','I didn’t try']},
   {sec:'Home screen',key:'11 What got in the way',type:'long',q:'What got in the way of adding it?',show:a=>a['10 On home screen']&&a['10 On home screen']!=='Yes'},
-  {sec:'Home screen',key:'12 Device',type:'choice',q:'Which device does the child play on?',opts:['Apple phone','Android phone','Apple tablet','Android tablet','Something else']},
-  {sec:'Home screen',key:'13 Who opens the game',type:'choice',q:'The last time the child played, who opened the game?',opts:['The child','An adult']},
-  {sec:'Playing',key:'14 Times asked to play',type:'choice',q:'Over the past few days, how many times did the child ask to play without an adult suggesting it?',opts:['None','1 or 2','3 to 5','6 or more']},
-  {sec:'Playing',key:'15 Least fun part',type:'long',q:'Which part was the least fun? When did the child stop playing, and why?'},
-  {sec:'Playing',key:'16 Stuck or needed help',type:'long',q:'Where did the child get stuck or ask for help?',help:'Skip this if they didn’t.'},
-  {sec:'Playing',key:'17 Talked about after',type:'long',q:'Which part did the child talk about afterwards?',help:'Skip this if they didn’t.'},
-  {sec:'Playing',key:'18 Compared with their games',type:'choice',q:'Compared with the games the child plays now, this game was:',opts:['Less fun','About the same','More fun']},
+  {sec:'Home screen',key:'12 Device',type:'choice',q:'Which device does the player play on?',opts:['Apple phone','Android phone','Apple tablet','Android tablet','Something else']},
+  {sec:'Home screen',key:'13 Who opens the game',type:'choice',q:'The last time the player played, who opened the game?',opts:['The player','Someone else'],show:a=>!['Me','Another adult'].includes(a['00 Who played'])},
+  {sec:'Playing',key:'14 Times asked to play',type:'choice',q:'Over the past few days, how many times did the player ask to play without someone suggesting it?',opts:['None','1 or 2','3 to 5','6 or more']},
+  {sec:'Playing',key:'15 Least fun part',type:'long',q:'Which part was the least fun? When did the player stop playing, and why?'},
+  {sec:'Playing',key:'16 Stuck or needed help',type:'long',q:'Where did the player get stuck or ask for help?',help:'Skip this if they didn’t.'},
+  {sec:'Playing',key:'17 Talked about after',type:'long',q:'Which part did the player talk about afterwards?',help:'Skip this if they didn’t.'},
+  {sec:'Playing',key:'18 Compared with their games',type:'choice',q:'Compared with the games the player plays now, this game was:',opts:['Less fun','About the same','More fun']},
   {sec:'Playing',key:'19 Sound turned off',type:'choice',q:'Did anyone turn the sound off?',opts:['No','Yes']},
   {sec:'Playing',key:'20 Why sound off',type:'text',q:'Why did they turn the sound off?',show:a=>a['19 Sound turned off']==='Yes'},
-  {sec:'Trips',key:'21 Places wanted next',type:'text',q:'Name up to three places the child would want to run through next.',ph:'Places, cities or countries'},
-  {sec:'Trips',key:'22 After last trip',type:'choice',q:'When the child reached the last trip, how did they feel?',opts:['They wanted more','They’d had enough','They haven’t reached it yet']},
-  {sec:'Trips',key:'23 Five trips feels',type:'choice',q:'Five trips per child feels:',opts:['Too few','About right','Too many','Not sure yet']},
-  {sec:'Price',key:'24 Expected price per month',type:'money',q:'A game like this, made for one child: how much per month would you expect it to cost?'},
+  {sec:'Trips',key:'21 Places wanted next',type:'text',q:'Name up to three places the player would want to run through next.',ph:'Places, cities or countries'},
+  {sec:'Trips',key:'22 After last trip',type:'choice',q:'When the player reached the last trip, how did they feel?',opts:['They wanted more','They’d had enough','They haven’t reached it yet']},
+  {sec:'Trips',key:'23 Five trips feels',type:'choice',q:'Five trips per player feels:',opts:['Too few','About right','Too many','Not sure yet']},
+  {sec:'Price',key:'24 Expected price per month',type:'money',q:'A game like this, made for one player: how much per month would you expect it to cost?'},
   {sec:'Price',key:'25 Too expensive at',type:'money',q:'At what monthly price would it feel too expensive to consider?'},
   {sec:'Price',key:'26 Too cheap at',type:'money',q:'At what monthly price would it feel so cheap you’d doubt the quality?'},
   {sec:'Price',key:'27 What stops other parents',type:'long',q:'Think of families you know. What would stop them paying for this?'},
   {sec:'Price',type:'statement'},
   {sec:'Price',key:'28 With these prices',type:'choice',q:'With these prices, what would you do?',opts:['Join, paying monthly','Join, paying yearly','Wait until there are more trips','Not join']},
-  {sec:'Price',key:'29 Plan',type:'choice',q:'Which plan would you pick?',opts:['One child','Family plan, for 2 children','Family plan, for 3 children','Family plan, for 4 children'],show:a=>/^Join/.test(a['28 With these prices']||'')},
-  {sec:'Price',key:'30 Buy as a present',type:'choice',q:'Would you buy one as a present for another child you know?',opts:['Yes','Maybe','No']},
+  {sec:'Price',key:'29 Plan',type:'choice',q:'Which plan would you pick?',opts:['One game','Family plan, for 2 games','Family plan, for 3 games','Family plan, for 4 games'],show:a=>/^Join/.test(a['28 With these prices']||'')},
+  {sec:'Price',key:'30 Buy as a present',type:'choice',q:'Would you buy one as a present for someone else?',opts:['Yes','Maybe','No']},
   {sec:'Last questions',key:'31 If it disappeared',type:'choice',q:'If the game disappeared tomorrow, how would you feel?',opts:['Very disappointed','A bit disappointed','Not disappointed']},
   {sec:'Last questions',key:'32 One sentence to a parent',type:'long',q:'Describe the game to a friend in one sentence.'},
   {sec:'Last questions',key:'33 Change worth paying',type:'long',q:'Name one change that would make it worth paying for.'},
@@ -177,7 +177,7 @@ function view(x){
   if(x.type==='end')return `<p class="kicker">All done</p><h1>Thank <span class="hl">you</span></h1>
     <p class="lede">Your answers are with us now. We use them to decide what to build next.</p>
     ${ENDPOINT?'':'<p class="note">Test version: the answers are saved in this browser only.</p>'}
-    <div class="row"><a class="pill" href="login.html?v=1793641646#account">Back to your account</a><button class="skip" data-act="again">Change an answer</button></div>`;
+    <div class="row"><a class="pill" href="login.html?v=1793641720#account">Back to your account</a><button class="skip" data-act="again">Change an answer</button></div>`;
   const head=`<p class="kicker"><span class="n">${x.type==='statement'?'£':numOf(x)}</span>${esc(x.sec)}</p>`;
   if(x.type==='statement')return head+`<h2>Here are the prices we’re thinking about.</h2>
     <div class="reveal"><div><b>£3</b><span>a month for one child</span></div><div><b>£6</b><span>a month for up to four children</span></div>
