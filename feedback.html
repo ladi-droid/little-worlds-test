@@ -1,0 +1,266 @@
+<!doctype html>
+<html lang="en"><head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<link rel="icon" type="image/png" href="favicon.png">
+<link rel="apple-touch-icon" href="icons/A.png">
+<title>Feedback</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bowlby+One&family=Figtree:wght@500;600;700;800&display=swap">
+<style>
+/* One question per screen. Each answer moves the next question up into view. Answers save in this browser and go to the Google Sheet in ENDPOINT. */
+:root{
+  color-scheme:light;
+  --paper:#f6efe3; --card:#fbf7ee; --ink:#0b0b0e; --sun:#ffd23a; --navy:#1c2a5e; --muted:#5d5a66; --bad:#b8321f;
+  --display:"Bowlby One","Arial Black",Impact,sans-serif;
+  --body:"Figtree",system-ui,-apple-system,"Segoe UI",sans-serif;
+}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+html,body{height:100%}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--body);font-size:17px;line-height:1.45;overflow:hidden}
+button,input,textarea{font:inherit;color:inherit}
+button{cursor:pointer;border:0;background:none;touch-action:manipulation}
+a{color:inherit}
+:focus-visible{outline:3px solid var(--navy);outline-offset:3px}
+
+header{position:fixed;inset:0 0 auto 0;z-index:10;background:var(--paper)}
+header .in{max-width:760px;margin:0 auto;height:58px;display:flex;align-items:center;justify-content:space-between;gap:12px;padding-inline:max(18px,env(safe-area-inset-left,0px)) max(18px,env(safe-area-inset-right,0px))}
+.mark{font-family:var(--display);font-size:19px;text-decoration:none;white-space:nowrap}
+.close{font-weight:800;font-size:15px;text-decoration:underline;text-decoration-thickness:3px;text-decoration-color:var(--sun);text-underline-offset:4px;padding:6px}
+.bar{height:6px;background:rgba(11,11,14,.1)}
+.bar i{display:block;height:100%;width:0;background:var(--ink);transition:width .4s ease}
+
+main{position:fixed;inset:64px 0 0 0;overflow:hidden}
+.q{position:absolute;inset:0;overflow-y:auto;display:flex;padding:24px max(20px,env(safe-area-inset-right,0px)) 110px max(20px,env(safe-area-inset-left,0px));
+  transition:transform .5s cubic-bezier(.2,.8,.2,1),opacity .4s ease}
+.q .box{margin:auto;width:100%;max-width:640px;display:flex;flex-direction:column;gap:18px}
+.q.below{transform:translateY(60px);opacity:0;pointer-events:none}
+.q.above{transform:translateY(-60px);opacity:0;pointer-events:none}
+.kicker{display:flex;align-items:center;gap:10px;font-weight:800;font-size:13px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+.kicker .n{display:inline-grid;place-items:center;min-width:28px;height:28px;padding:0 6px;border-radius:99px;background:var(--sun);border:2px solid var(--ink);color:var(--ink);letter-spacing:0}
+h1{font-family:var(--display);font-weight:400;font-size:clamp(34px,7vw,52px);line-height:1.02;margin:0;letter-spacing:.02em}
+h1 .hl{background:linear-gradient(transparent 62%,var(--sun) 62%,var(--sun) 92%,transparent 92%)}
+h2{font-weight:800;font-size:clamp(23px,4.6vw,30px);line-height:1.2;margin:0;text-wrap:pretty}
+.help{font-weight:600;color:var(--muted);margin:-6px 0 0}
+p{margin:0}
+.lede{font-size:19px;font-weight:600}
+.lede+.lede{margin-top:-4px}
+
+.opts{display:flex;flex-direction:column;gap:10px}
+.opt{display:flex;align-items:center;gap:12px;text-align:left;width:100%;padding:12px 16px 12px 12px;background:#fff;border:3px solid var(--ink);border-radius:16px;font-weight:700;font-size:18px;box-shadow:0 4px 0 var(--ink);transition:transform .08s,box-shadow .08s,background .15s}
+.opt:hover{background:var(--card)}
+.opt:active{transform:translateY(2px);box-shadow:0 2px 0 var(--ink)}
+.opt .k{flex:none;display:inline-grid;place-items:center;width:28px;height:28px;border-radius:8px;border:2px solid var(--ink);font-size:13px;font-weight:800;background:var(--paper)}
+.opt[aria-pressed="true"]{background:var(--sun)}
+.opt[aria-pressed="true"] .k{background:var(--ink);color:#fff}
+@media (hover:none){.opt .k{display:none}.opt{padding-left:16px}}
+
+.field{width:100%;background:transparent;border:0;border-bottom:3px solid var(--ink);padding:8px 2px;font-size:22px;font-weight:700;outline:0;border-radius:0}
+.field:focus{border-bottom-color:var(--navy)}
+textarea.field{resize:none;min-height:3.2em;line-height:1.35}
+.money{display:flex;align-items:baseline;gap:6px;font-size:28px;font-weight:800}
+.money .field{font-size:28px;max-width:200px}
+.field::placeholder{color:#a9a5af}
+
+.row{display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+.pill{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:13px 24px;border-radius:999px;background:var(--sun);border:3px solid var(--ink);
+  font-family:var(--display);font-size:17px;letter-spacing:.03em;text-decoration:none;box-shadow:0 5px 0 var(--ink);transition:transform .08s,box-shadow .08s;white-space:nowrap}
+.pill:active{transform:translateY(3px);box-shadow:0 2px 0 var(--ink)}
+.pill.ghost{background:#fff}
+.hint{font-size:14px;font-weight:700;color:var(--muted)}
+.skip{font-weight:800;font-size:15px;color:var(--muted);text-decoration:underline;text-underline-offset:4px;padding:6px}
+.note{font-size:15px;font-weight:700;background:var(--card);border:2px dashed var(--ink);border-radius:14px;padding:10px 14px}
+.reveal{background:#fff;border:4px solid var(--ink);border-radius:24px;box-shadow:0 6px 0 var(--ink);padding:20px;display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.reveal div{background:var(--card);border:3px solid var(--ink);border-radius:16px;padding:12px;text-align:center}
+.reveal b{display:block;font-family:var(--display);font-weight:400;font-size:34px;line-height:1.1}
+.reveal span{font-weight:700;font-size:15px;color:var(--muted)}
+.reveal p{grid-column:1/-1;font-weight:700;text-align:center}
+
+nav.arrows{position:fixed;right:max(16px,env(safe-area-inset-right,0px));bottom:calc(16px + env(safe-area-inset-bottom,0px));z-index:10;display:flex;gap:8px}
+nav.arrows button{width:46px;height:46px;border-radius:12px;background:#fff;border:3px solid var(--ink);box-shadow:0 3px 0 var(--ink);font-size:20px;font-weight:800;line-height:1}
+nav.arrows button:disabled{opacity:.35;cursor:default}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head><body>
+<header>
+  <div class="in"><a class="mark" href="login.html?v=1793641088#account">Little Worlds</a><a class="close" href="login.html?v=1793641088#account" id="closeLink">Save and close</a></div>
+  <div class="bar" aria-hidden="true"><i id="bar"></i></div>
+</header>
+<main id="stage" aria-live="polite"></main>
+<nav class="arrows" aria-label="Questions"><button id="up" aria-label="Previous question">↑</button><button id="down" aria-label="Next question">↓</button></nav>
+
+<script>
+(()=>{
+/* Paste the Google Apps Script web app URL here. Empty = answers stay in this browser only. */
+const ENDPOINT='';
+const STORE='lw_feedback_v1';
+
+/* type: intro | choice | text | long | money | statement | end
+   key: the column name in the sheet (numbered so the columns stay in question order).
+   show: only ask when this returns true. */
+const QS=[
+  {type:'intro'},
+  {sec:'About you',key:'01 Child age',type:'choice',q:'How old is the child who played?',opts:['Under 4','4 or 5','6 or 7','8 or 9','10 or older']},
+  {sec:'About you',key:'02 Games they play now',type:'text',q:'Which games or apps does the child play most at the moment?',ph:'Type the names'},
+  {sec:'Setting it up',key:'03 Where stuck in set-up',type:'long',q:'Where did you get stuck, slow down or feel unsure while setting up?',help:'If nowhere, write “nowhere”.'},
+  {sec:'Setting it up',key:'04 Set-up time',type:'choice',q:'How long did set-up take?',opts:['Under 2 minutes','2 to 5 minutes','5 to 10 minutes','Over 10 minutes','I gave up']},
+  {sec:'Setting it up',key:'05 Confusing or pointless',type:'long',q:'Which part of the page felt confusing or pointless?',help:'Skip this if none did.'},
+  {sec:'The character',key:'06 First reaction',type:'long',q:'When the child first saw the character, what did they say or do?',help:'Write their words if you remember them.'},
+  {sec:'The character',key:'07 Looks like child',type:'choice',q:'How close was the character to the child’s real look?',opts:['Not close','A bit close','Close','Very close']},
+  {sec:'The character',key:'08 Looked for, not found',type:'long',q:'Which look did you search for and not find?',help:'A hairstyle, an outfit, a colour, something to wear. Skip this if you found it all.'},
+  {sec:'The character',key:'09 Choices nobody used',type:'text',q:'Which choices did nobody use?',help:'Skip this if you used them all.'},
+  {sec:'Home screen',key:'10 On home screen',type:'choice',q:'Is the game on your home screen now?',opts:['Yes','I tried and gave up','I didn’t try']},
+  {sec:'Home screen',key:'11 What got in the way',type:'long',q:'What got in the way of adding it?',show:a=>a['10 On home screen']&&a['10 On home screen']!=='Yes'},
+  {sec:'Home screen',key:'12 Device',type:'choice',q:'Which device does the child play on?',opts:['Apple phone','Android phone','Apple tablet','Android tablet','Something else']},
+  {sec:'Home screen',key:'13 Who opens the game',type:'choice',q:'The last time the child played, who opened the game?',opts:['The child','An adult']},
+  {sec:'Playing',key:'14 Times asked to play',type:'choice',q:'Over the past few days, how many times did the child ask to play without you suggesting it?',opts:['None','1 or 2','3 to 5','6 or more']},
+  {sec:'Playing',key:'15 Least fun part',type:'long',q:'Which part was the least fun? When did the child stop playing, and why?'},
+  {sec:'Playing',key:'16 Stuck or needed help',type:'long',q:'Where did the child get stuck or ask for help?',help:'Skip this if they didn’t.'},
+  {sec:'Playing',key:'17 Talked about after',type:'long',q:'Which part did the child talk about afterwards?',help:'Skip this if they didn’t.'},
+  {sec:'Playing',key:'18 Compared with their games',type:'choice',q:'Compared with the games the child plays now, this game was:',opts:['Less fun','About the same','More fun']},
+  {sec:'Playing',key:'19 Sound turned off',type:'choice',q:'Did anyone turn the sound off?',opts:['No','Yes']},
+  {sec:'Playing',key:'20 Why sound off',type:'text',q:'Why did they turn the sound off?',show:a=>a['19 Sound turned off']==='Yes'},
+  {sec:'Trips',key:'21 Places wanted next',type:'text',q:'Name up to three places the child would want to run through next.',ph:'Places, cities or countries'},
+  {sec:'Trips',key:'22 After last trip',type:'choice',q:'When the child reached the last trip, how did they feel?',opts:['They wanted more','They’d had enough','They haven’t reached it yet']},
+  {sec:'Trips',key:'23 Five trips feels',type:'choice',q:'Five trips per child feels:',opts:['Too few','About right','Too many','Not sure yet']},
+  {sec:'Price',key:'24 Expected price per month',type:'money',q:'A game like this, made for one child: how much per month would you expect it to cost?'},
+  {sec:'Price',key:'25 Too expensive at',type:'money',q:'At what monthly price would it feel too expensive to consider?'},
+  {sec:'Price',key:'26 Too cheap at',type:'money',q:'At what monthly price would it feel so cheap you’d doubt the quality?'},
+  {sec:'Price',key:'27 What stops other parents',type:'long',q:'Think of parents you know. What would stop them paying for this?'},
+  {sec:'Price',type:'statement'},
+  {sec:'Price',key:'28 With these prices',type:'choice',q:'With these prices, what would you do?',opts:['Join, paying monthly','Join, paying yearly','Wait until there are more trips','Not join']},
+  {sec:'Price',key:'29 Plan',type:'choice',q:'Which plan would you pick?',opts:['One child','Family plan, for 2 children','Family plan, for 3 children','Family plan, for 4 children'],show:a=>/^Join/.test(a['28 With these prices']||'')},
+  {sec:'Price',key:'30 Buy as a present',type:'choice',q:'Would you buy one as a present for a child in your family who isn’t your own?',opts:['Yes','Maybe','No']},
+  {sec:'Last questions',key:'31 If it disappeared',type:'choice',q:'If the game disappeared tomorrow, how would you feel?',opts:['Very disappointed','A bit disappointed','Not disappointed']},
+  {sec:'Last questions',key:'32 One sentence to a parent',type:'long',q:'Describe the game to another parent in one sentence.'},
+  {sec:'Last questions',key:'33 Change worth paying',type:'long',q:'Name one change that would make it worth paying for.'},
+  {sec:'Last questions',key:'34 Told anyone',type:'choice',q:'Have you told anyone about the game yet?',opts:['Yes','No']},
+  {type:'end'}
+];
+const COLUMNS=QS.filter(x=>x.key).map(x=>x.key);
+const NUMBERED=QS.filter(x=>x.key);
+
+const $=s=>document.querySelector(s);
+const esc=t=>String(t).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const touch=matchMedia('(hover:none)').matches;
+let S={id:'',answers:{},i:0,done:false};
+try{Object.assign(S,JSON.parse(localStorage.getItem(STORE)||'{}'))}catch(e){}
+if(!S.id)S.id=Date.now().toString(36)+Math.random().toString(36).slice(2,8);
+const save=()=>{try{localStorage.setItem(STORE,JSON.stringify(S))}catch(e){}};
+if(S.done)S.i=QS.length-1;
+
+/* Send all answers so far. The sheet keeps one row per id and overwrites it, so a parent who stops halfway still counts. */
+let sending=Promise.resolve();
+function send(finished){
+  if(!ENDPOINT)return;
+  const body=JSON.stringify({id:S.id,columns:COLUMNS,answers:S.answers,finished:!!finished,page:location.pathname});
+  sending=sending.then(()=>fetch(ENDPOINT,{method:'POST',mode:'no-cors',headers:{'Content-Type':'text/plain;charset=utf-8'},body,keepalive:true})
+    .then(()=>{S.unsent=false;save()}).catch(()=>{S.unsent=true;save()}));
+}
+if(S.unsent)send(S.done);
+
+const visible=i=>{const x=QS[i];return !x.show||x.show(S.answers)};
+const step=(i,d)=>{do{i+=d}while(i>0&&i<QS.length-1&&!visible(i));return Math.max(0,Math.min(QS.length-1,i))};
+const numOf=x=>NUMBERED.filter(y=>!y.show||y.show(S.answers)).indexOf(x)+1;
+const total=()=>NUMBERED.filter(y=>!y.show||y.show(S.answers)).length;
+
+function view(x){
+  if(x.type==='intro')return `<p class="kicker">Feedback · about 8 minutes</p>
+    <h1>Help us decide <span class="hl">what happens next</span></h1>
+    <p class="lede">We haven’t decided whether Little Worlds is worth building further. Your answers decide that.</p>
+    <p class="lede">A harsh answer helps us more than a kind one. If something bored you, confused you or put you off, please say so.</p>
+    <p class="note">We don’t attach your name, email or account to your answers, so we can’t see who wrote what.</p>
+    <div class="row"><button class="pill" data-next>Start</button><span class="hint">${touch?'':'or press Enter ↵'}</span></div>`;
+  if(x.type==='end')return `<p class="kicker">All done</p><h1>Thank <span class="hl">you</span></h1>
+    <p class="lede">Your answers are with us now. We use them to decide what to build next.</p>
+    ${ENDPOINT?'':'<p class="note">Test version: the answers are saved in this browser only.</p>'}
+    <div class="row"><a class="pill" href="login.html?v=1793641088#account">Back to your account</a><button class="skip" data-act="again">Change an answer</button></div>`;
+  const head=`<p class="kicker"><span class="n">${x.type==='statement'?'£':numOf(x)}</span>${esc(x.sec)}</p>`;
+  if(x.type==='statement')return head+`<h2>Here are the prices we’re thinking about.</h2>
+    <div class="reveal"><div><b>£3</b><span>a month for one child</span></div><div><b>£6</b><span>a month for up to four children</span></div>
+    <p>Paying yearly costs the price of 10 months for 12.</p></div>
+    <div class="row"><button class="pill" data-next>Next</button></div>`;
+  const v=S.answers[x.key];
+  let body='';
+  if(x.type==='choice')body=`<div class="opts" role="group" aria-label="${esc(x.q)}">${x.opts.map((o,j)=>`<button class="opt" data-opt="${esc(o)}" aria-pressed="${v===o}"><span class="k">${String.fromCharCode(65+j)}</span>${esc(o)}</button>`).join('')}</div>
+    <div class="row"><button class="skip" data-skip>Skip</button></div>`;
+  else{
+    const inp=x.type==='long'?`<textarea class="field" rows="2" placeholder="${esc(x.ph||'Type your answer')}" aria-label="${esc(x.q)}">${esc(v||'')}</textarea>`
+      :x.type==='money'?`<div class="money">£<input class="field" type="text" inputmode="decimal" placeholder="0.00" aria-label="${esc(x.q)}" value="${esc(v??'')}"></div>`
+      :`<input class="field" type="text" placeholder="${esc(x.ph||'Type your answer')}" aria-label="${esc(x.q)}" value="${esc(v||'')}">`;
+    body=inp+`<div class="row"><button class="pill" data-ok>OK</button><span class="hint">${touch?'':x.type==='long'?'Enter ↵ to go on · Shift + Enter for a new line':'or press Enter ↵'}</span><button class="skip" data-skip>Skip</button></div>`;
+  }
+  return head+`<h2>${esc(x.q)}</h2>${x.help?`<p class="help">${esc(x.help)}</p>`:''}`+body;
+}
+
+let cur=null,busy=false;
+function render(dir){
+  const x=QS[S.i];
+  const el=document.createElement('section');el.className='q '+(dir>0?'below':dir<0?'above':'');
+  el.innerHTML=`<div class="box">${view(x)}</div>`;
+  $('#stage').appendChild(el);
+  const old=cur;cur=el;
+  requestAnimationFrame(()=>requestAnimationFrame(()=>{
+    el.classList.remove('below','above');
+    if(old){old.classList.add(dir>0?'above':'below');setTimeout(()=>old.remove(),520)}
+  }));
+  const f=el.querySelector('.field');
+  if(f){f.addEventListener('keydown',onFieldKey);if(f.tagName==='TEXTAREA')autoGrow(f),f.addEventListener('input',()=>autoGrow(f));if(!touch)setTimeout(()=>f.focus({preventScroll:true}),dir?420:0)}
+  const n=total(),k=x.key?numOf(x):x.type==='end'?n:x.type==='intro'?0:numOf(QS[step(S.i,-1)]);
+  $('#bar').style.width=(x.type==='end'?100:Math.round(k/n*100))+'%';
+  $('#up').disabled=S.i===0;$('#down').disabled=x.type==='end'||x.type==='intro';
+  $('#closeLink').textContent=x.type==='end'?'Close':'Save and close';
+}
+const autoGrow=t=>{t.style.height='auto';t.style.height=Math.min(t.scrollHeight,260)+'px'};
+
+function go(d){
+  if(busy)return;const to=step(S.i,d);if(to===S.i)return;
+  busy=true;setTimeout(()=>busy=false,450);
+  S.i=to;
+  if(QS[to].type==='end'&&!S.done){S.done=true;send(true)}
+  save();render(d);
+}
+function answer(val){
+  const x=QS[S.i];if(!x.key)return go(1);
+  if(val===''||val==null)delete S.answers[x.key];else S.answers[x.key]=val;
+  save();send(false);go(1);
+}
+function readField(){
+  const x=QS[S.i],f=cur.querySelector('.field');if(!f)return null;
+  let v=f.value.trim();
+  if(x.type==='money'&&v!==''){const n=parseFloat(v.replace(/[£,\s]/g,''));if(isNaN(n)||n<0){f.setCustomValidity('x');shake(f);return undefined}v=Math.round(n*100)/100}
+  return v;
+}
+const shake=f=>{f.animate([{transform:'translateX(0)'},{transform:'translateX(-8px)'},{transform:'translateX(8px)'},{transform:'translateX(0)'}],{duration:260});f.style.borderBottomColor='var(--bad)'};
+function onFieldKey(e){
+  if(e.key==='Enter'&&!e.shiftKey&&!e.isComposing){e.preventDefault();const v=readField();if(v!==undefined)answer(v)}
+}
+
+document.addEventListener('click',e=>{
+  const o=e.target.closest('[data-opt]');
+  if(o){if(busy)return;cur.querySelectorAll('.opt').forEach(b=>b.setAttribute('aria-pressed',b===o));const v=o.dataset.opt;setTimeout(()=>answer(v),260);return}
+  if(e.target.closest('[data-next]'))return go(1);
+  if(e.target.closest('[data-ok]')){const v=readField();if(v!==undefined)answer(v);return}
+  if(e.target.closest('[data-skip]')){const x=QS[S.i];if(x.key&&!(x.key in S.answers)){S.answers[x.key]='(skipped)';save();send(false)}return go(1)}
+  if(e.target.closest('[data-act="again"]')){S.done=false;S.i=step(QS.length-1,-1);save();render(-1);return}
+});
+$('#up').onclick=()=>go(-1);
+$('#down').onclick=()=>go(1);
+document.addEventListener('keydown',e=>{
+  if(e.target.closest('.field'))return;
+  const x=QS[S.i];
+  if(e.key==='Enter'){const b=cur.querySelector('[data-next]');if(b){e.preventDefault();go(1)}return}
+  if(x.type==='choice'&&/^[a-z]$/i.test(e.key)&&!e.metaKey&&!e.ctrlKey){const b=cur.querySelectorAll('.opt')[e.key.toUpperCase().charCodeAt(0)-65];if(b)b.click()}
+  if(e.key==='ArrowUp'&&S.i>0){e.preventDefault();go(-1)}
+  if(e.key==='ArrowDown'&&x.type!=='intro'&&x.type!=='end'){e.preventDefault();go(1)}
+});
+/* Flush on leave, so a half-finished form still reaches the sheet. */
+addEventListener('pagehide',()=>{save()});
+
+render(0);
+window.__fb={QS,S,go,answer,COLUMNS};
+})();
+</script>
+</body></html>
