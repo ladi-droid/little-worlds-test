@@ -244,9 +244,9 @@ ol.how b{font-weight:800}
 </head><body>
 
 <nav class="top"><div class="in">
-  <a class="mark" href="index.html?v=1793557933" aria-label="Back to Little Worlds"><span class="tile" id="tile">A</span>’s World</a>
+  <a class="mark" href="index.html?v=1793631839" aria-label="Back to Little Worlds"><span class="tile" id="tile">A</span>’s World</a>
   <ol class="steps" id="steps" aria-label="Steps"></ol>
-  <div class="navr"><a class="navlink" href="login.html?v=1793557933">Log in</a><span class="mock">Mock-up</span></div>
+  <div class="navr"><a class="navlink" href="login.html?v=1793631839">Log in</a><span class="mock">Mock-up</span></div>
 </div></nav>
 
 <div class="layout">
@@ -268,7 +268,7 @@ ol.how b{font-weight:800}
 <script>
 (()=>{
 const DOMAIN='myworld.games';
-const GAME='play.html?v=1793557933';
+const GAME='play.html?v=1793631839';
 const GAME_KEYS=['name','kid','style','acc','skin','hair','hood','jog','shoe','worlds','slug'];
 const gameCode=paid=>{const c={};GAME_KEYS.forEach(k=>{if(S[k]!==undefined)c[k]=S[k]});c.paid=!!paid;
   return btoa(unescape(encodeURIComponent(JSON.stringify(c)))).replace(/\+/g,'-').replace(/\//g,'_').replace(/=+$/,'')};
@@ -310,8 +310,8 @@ const TAKEN=['bob','bobsworld','sam','samsworld','amara','amaresworld','leo','mi
 const RESERVED=['www','admin','api','app','help','support','mail','login','shop','billing','static','cdn','blog','news'];
 const RUDE=['poo','butt','fart','sex','damn','crap','hell','kill','nazi','fuck','shit','piss','dick'];
 const STEP_NAMES=['Name','Look','Trips','Link','Play'];
-const PRICES={one:{m:3,y:30,label:'One game',list:['1 world (1 child)','Up to 5 trips','New trips as they arrive']},
-              family:{m:6,y:60,label:'Family',list:['Up to 4 worlds (up to 4 children)','A game and a link each','New trips as they arrive']}};
+const PRICES={one:{m:'?',y:'?',label:'One game',list:['1 world (1 child)','Up to 5 trips','New trips as they arrive']},
+              family:{m:'?',y:'?',label:'Family',list:['Up to 4 worlds (up to 4 children)','A game and a link each','New trips as they arrive']}};
 
 const S={step:0,name:'',kid:'boy',style:'curls',acc:'none',skin:'#c47a3c',hair:'#3a1c10',hood:'#1c2a5e',jog:'#2a2a2e',shoe:'#f2f0ea',worlds:[],slug:'',plan:'one',yearly:false,paid:false,tab:'ios'};
 try{const s=JSON.parse(localStorage.getItem('wb_draft2')||'null');if(s)Object.assign(S,s,{paid:false})}catch(e){}
@@ -625,14 +625,14 @@ function memberNote(){const a=member(),fam=a.plan==='family',room=roomLeft(a);
   return `<div class="summary" style="grid-template-columns:1fr;background:${fam&&room>0?'var(--sun)':'#fff'}">
     ${fam&&room>0?`<b>Included in your Family plan</b><span>We add ${esc(nm())}’s World to your account. You don’t pay anything extra. You have room for ${room} more ${room>1?'worlds':'world'}.</span>`
     :fam?`<b>Your Family plan is full</b><span>It has room for 4 worlds. Delete one in your account to make room.</span>`
-    :`<b>Switch to Family to add this world</b><span>Your One game plan has room for one world. Family gives you up to 4 worlds (up to 4 children) for £6 a month.</span>`}</div>`}
+    :`<b>Switch to Family to add this world</b><span>Your One game plan has room for one world. Family gives you up to 4 worlds (up to 4 children) for £? a month.</span>`}</div>`}
 function addToAccount(){const a=getAcct();const g=snapshot();a.games=a.games.filter(x=>x.slug!==g.slug);a.games.push(g);setAcct(a);
   try{localStorage.setItem('lw_session',JSON.stringify({email:a.email}))}catch(e){}
   S.paid=true;S.added=true;save();lwBuildShow(()=>{render();scrollTo({top:0})})}
 function upgradeSheet(then){const a=getAcct();
   sheet(`<p class="kicker">Add another world</p><h2>Switch to Family</h2>
     <p>Your One game plan has room for one world. The Family plan gives you up to 4 worlds (up to 4 children).</p>
-    <dl class="summary"><dt>Now</dt><dd>One game, £${a.yearly?'30 a year':'3 a month'}</dd><dt>Family</dt><dd>£${a.yearly?'60 a year':'6 a month'}</dd><dt>Today</dt><dd>We charge the difference on your next payment</dd></dl>
+    <dl class="summary"><dt>Now</dt><dd>One game, £?${a.yearly?' a year':' a month'}</dd><dt>Family</dt><dd>£?${a.yearly?' a year':' a month'}</dd><dt>Today</dt><dd>We charge the difference on your next payment</dd></dl>
     <button class="pill wide" data-act="doupgrade" data-then="${then}">Switch to Family</button><button class="textbtn" data-close>Not now</button>`)}
 V.done=()=>{return `
   <section class="panel">
@@ -643,7 +643,7 @@ V.done=()=>{return `
       <div class="tabs"><button class="${S.tab==='ios'?'on':''}" data-tab="ios">iPhone or iPad</button><button class="${S.tab==='and'?'on':''}" data-tab="and">Android</button></div></div>
     ${S.tab==='ios'?`<ol class="how"><li><span>Open the link in <b>Safari</b>.</span></li><li><span>Tap the <b>•••</b> button next to the address bar.</span></li><li><span>Tap <b>Share</b>.</span></li><li><span>Scroll down and tap <b>Add to Home Screen</b>.</span></li><li><span>Leave <b>Open as Web App</b> switched on.</span></li><li><span>Tap <b>Add</b>. ${esc(nm())}’s World gets its own icon and opens full screen.</span></li></ol>`
     :`<ol class="how"><li><span>Open the link in <b>Chrome</b>.</span></li><li><span>Tap the <b>⋮</b> menu in the top corner.</span></li><li><span>Tap <b>Add to Home screen</b>, then <b>Install</b>.</span></li><li><span>${esc(nm())}’s World gets its own icon and opens full screen.</span></li></ol>`}
-    <p class="fine">We also emailed the link to ${esc((getAcct()||{}).email||'you')}. To change their trips, look or link, <a href="login.html?v=1793557933">log in to your account</a>. We email you a one-tap login link, so you never need a password.</p>
+    <p class="fine">We also emailed the link to ${esc((getAcct()||{}).email||'you')}. To change their trips, look or link, <a href="login.html?v=1793631839">log in to your account</a>. We email you a one-tap login link, so you never need a password.</p>
   </section>`};
 
 function qrSvg(t){const q=qrcode(0,'L');q.addData(t);q.make();return q.createSvgTag({cellSize:4,margin:0,scalable:true})}
@@ -700,13 +700,13 @@ function stageFor(){
 function render(){
   renderSteps();
   $('#view').innerHTML=V[S.paid?'done':S.step]();stageFor();drawPicks();if(S.paid)drawQR();
-  if(S.paid)bar(`<button class="pill ghost two" data-act="restart">Build another world</button><a class="pill two" href="login.html?v=1793557933#account" data-act="myacct">My account</a>`);
-  else if(S.edit){const back=`<a class="pill ghost back" href="login.html?v=1793557933#account" aria-label="Back to your account">◂</a>`;
+  if(S.paid)bar(`<button class="pill ghost two" data-act="restart">Build another world</button><a class="pill two" href="login.html?v=1793631839#account" data-act="myacct">My account</a>`);
+  else if(S.edit){const back=`<a class="pill ghost back" href="login.html?v=1793631839#account" aria-label="Back to your account">◂</a>`;
     bar(back+`<button class="pill" data-act="savechanges" ${canGo(4)?'':'disabled'}>Save changes</button>`)}
   else{
     const back=S.step>0?`<button class="pill ghost back" data-act="back" aria-label="Back">◂</button>`:'';
     if(S.step===4){const p=PRICES[S.plan],m=member();
-      if(m){const room=roomLeft(m);bar(back+(m.plan==='family'?(room>0?`<button class="pill" data-act="addacct">Add to my account</button>`:`<a class="pill" href="login.html?v=1793557933#account">Manage worlds</a>`):`<button class="pill" data-act="upgrade">Switch to Family and add</button>`))}
+      if(m){const room=roomLeft(m);bar(back+(m.plan==='family'?(room>0?`<button class="pill" data-act="addacct">Add to my account</button>`:`<a class="pill" href="login.html?v=1793631839#account">Manage worlds</a>`):`<button class="pill" data-act="upgrade">Switch to Family and add</button>`))}
       else bar(back+`<button class="pill" data-act="pay">Join for £${S.yearly?p.y+' a year':p.m+' a month'}</button>`)}
     else bar(back+`<button class="pill" data-act="next" ${canGo(S.step+1)?'':'disabled'}>Next: ${STEP_NAMES[S.step+1]} ▸</button>`);
   }
@@ -774,7 +774,7 @@ document.addEventListener('click',e=>{
     <form class="stack" id="laterForm" novalidate><div class="box"><input id="em2" type="email" inputmode="email" autocomplete="email" placeholder="you@example.com" aria-label="Your email"></div>
     <p class="hint" id="em2Hint" style="margin:0" aria-live="polite"></p><button class="pill wide" type="submit">Email me the link</button></form><button class="textbtn" data-close>Not now</button>`);return}
   if(d.act==='savechanges'){const a=getAcct();if(a&&a.games){const g=snapshot();const i=a.games.findIndex(x=>x.slug===new URLSearchParams(location.search).get('edit'));if(i>=0)a.games[i]=g;else a.games.push(g);setAcct(a)}
-    sheet(`<h2>Saved</h2><p>${esc(nm())} sees the changes the next time the game opens.</p><a class="pill wide" href="login.html?v=1793557933#account">Back to your account</a>`);return}
+    sheet(`<h2>Saved</h2><p>${esc(nm())} sees the changes the next time the game opens.</p><a class="pill wide" href="login.html?v=1793631839#account">Back to your account</a>`);return}
   if(d.act==='copy'){const txt=$('#theLink').textContent,b=$('#copyBtn');
     const sel=()=>{const r=document.createRange();r.selectNodeContents($('#theLink'));const s=getSelection();s.removeAllRanges();s.addRange(r);b.textContent='Selected'};
     try{navigator.clipboard.writeText(txt).then(()=>{b.textContent='Copied'},sel)}catch(err){sel()}return}
