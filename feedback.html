@@ -93,7 +93,7 @@ nav.arrows button:disabled{opacity:.35;cursor:default}
 </style>
 </head><body>
 <header>
-  <div class="in"><a class="mark" href="login.html?v=1793684069#account">Little Worlds</a><a class="close" href="login.html?v=1793684069#account" id="closeLink">Save and close</a></div>
+  <div class="in"><a class="mark" href="login.html?v=1793684118#account">Little Worlds</a><a class="close" href="login.html?v=1793684118#account" id="closeLink">Save and close</a></div>
   <div class="bar" aria-hidden="true"><i id="bar"></i></div>
 </header>
 <main id="stage" aria-live="polite"></main>
@@ -119,12 +119,12 @@ const PART=PARAM==='2'?2:1;
 if(!PARAM){
   let st={};try{st=JSON.parse(localStorage.getItem(STORE)||'{}').parts||{}}catch(e){}
   const tag=n=>{const p=st[n]||{};return p.done?'<span class="tag done">Done ✓</span>':p.i?'<span class="tag">Started</span>':''};
-  const card=(n,title,sub)=>`<a class="pick" href="feedback.html?v=1793684069&part=${n}"><span class="pt"><b>${title}</b>${tag(n)}</span><span class="ps">${sub}</span></a>`;
+  const card=(n,title,sub)=>`<a class="pick" href="feedback.html?v=1793684118&part=${n}"><span class="pt"><b>${title}</b>${tag(n)}</span><span class="ps">${sub}</span></a>`;
   document.querySelector('#stage').innerHTML=`<section class="q"><div class="box">
     <p class="kicker">Feedback</p>
     <h1>Help us decide <span class="hl">what happens next</span></h1>
     <p class="lede">Pick the questions that fit where you are now.</p>
-    <div class="opts">${card(1,'Right after setting up the game','About 3 minutes. Set-up, the character and the first go.')}${card(2,'After playing a few times','About 5 minutes. How often they play, the trips and the price.')}</div>
+    <div class="opts">${card(1,'Right after setting up the game','Takes about 3 minutes. Set-up, the character and the first go.')}${card(2,'After playing a few times','Takes about 5 minutes. How often they play, the trips and the price.')}</div>
     <p class="note">We don’t attach your name, email or account to your answers, so we can’t see who wrote what.</p>
   </div></section>`;
   document.querySelector('nav.arrows').hidden=true;document.querySelector('.bar').hidden=true;document.querySelector('#closeLink').textContent='Close';
