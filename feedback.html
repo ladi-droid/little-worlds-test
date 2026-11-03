@@ -85,7 +85,7 @@ nav.arrows button:disabled{opacity:.35;cursor:default}
 </style>
 </head><body>
 <header>
-  <div class="in"><a class="mark" href="login.html?v=1793680051#account">Little Worlds</a><a class="close" href="login.html?v=1793680051#account" id="closeLink">Save and close</a></div>
+  <div class="in"><a class="mark" href="login.html?v=1793683215#account">Little Worlds</a><a class="close" href="login.html?v=1793683215#account" id="closeLink">Save and close</a></div>
   <div class="bar" aria-hidden="true"><i id="bar"></i></div>
 </header>
 <main id="stage" aria-live="polite"></main>
@@ -94,7 +94,7 @@ nav.arrows button:disabled{opacity:.35;cursor:default}
 <script>
 (()=>{
 /* Paste the Google Apps Script web app URL here. Empty = answers stay in this browser only. */
-const ENDPOINT='';
+const ENDPOINT='https://script.google.com/macros/s/AKfycbwbbqG4tg3LQxXu0mWkWmoInMumnrYscPdz3NKcc3wwZyCV2W4cjdMg4eBUlJ2EKEWw/exec';
 const STORE='lw_feedback_v2';
 /* Opened from a shared link without being logged in: close and back go to the front page instead of the login screen. */
 let HOME=document.querySelector('.close').getAttribute('href'),loggedIn=true;try{loggedIn=!!localStorage.getItem('lw_session')}catch(e){}
