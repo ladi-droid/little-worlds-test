@@ -1,0 +1,47 @@
+/* Little Worlds feedback: receives answers from feedback.html and writes them to this Google Sheet.
+   One row per person. The row updates after each answer, so half-finished forms still show up.
+   Columns appear in question order the first time someone answers. */
+const SHEET = 'Answers';
+
+function doPost(e) {
+  const lock = LockService.getScriptLock();
+  lock.waitLock(15000);
+  try {
+    const d = JSON.parse(e.postData.contents);
+    const ss = SpreadsheetApp.getActiveSpreadsheet();
+    const sh = ss.getSheetByName(SHEET) || ss.insertSheet(SHEET);
+
+    // Header row: fixed columns, then every question column in order.
+    let head = sh.getLastColumn() ? sh.getRange(1, 1, 1, sh.getLastColumn()).getValues()[0].map(String) : [];
+    const want = ['Response id', 'Started', 'Last answer', 'Finished'].concat(d.columns || []);
+    want.forEach(k => { if (head.indexOf(k) < 0) head.push(k); });
+    sh.getRange(1, 1, 1, head.length).setValues([head]).setFontWeight('bold');
+    sh.setFrozenRows(1);
+
+    // Find this person's row, or add one.
+    const n = sh.getLastRow();
+    const ids = n > 1 ? sh.getRange(2, 1, n - 1, 1).getValues().map(r => String(r[0])) : [];
+    let row = ids.indexOf(String(d.id));
+    const now = new Date();
+    if (row < 0) {
+      row = n + 1;
+      sh.getRange(row, 1, 1, 2).setValues([[String(d.id), now]]);
+    } else {
+      row += 2;
+    }
+
+    const set = (k, v) => sh.getRange(row, head.indexOf(k) + 1).setValue(v);
+    set('Last answer', now);
+    set('Finished', d.finished ? 'Yes' : 'Not yet');
+    const a = d.answers || {};
+    (d.columns || []).forEach(k => set(k, k in a ? a[k] : ''));
+
+    return ContentService.createTextOutput('ok');
+  } finally {
+    lock.releaseLock();
+  }
+}
+
+function doGet() {
+  return ContentService.createTextOutput('Little Worlds feedback is running.');
+}
