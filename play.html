@@ -425,8 +425,8 @@ html.lw-loading .splash{visibility:hidden}
 
 <script src="kids/kids-meta.js?v=20261102d"></script>
 <script src="kids/kids.js?v=20261102d"></script>
-<script src="sfx.js?v=1793684118"></script>
-<script src="game.js?v=1793684118"></script>
+<script src="sfx.js"></script>
+<script src="game.js?v=1793689119"></script>
 <script>
 (() => {
 'use strict';
@@ -1250,7 +1250,7 @@ $('retryBtn').addEventListener('click', () => startLevel(levelIndex));
 // If the builder opened this tab, close it and show the builder again; otherwise open the builder with this child's world filled in.
 let lwJoinEnd = false;
 function lwBackToBuilder() {
-  const url = 'builder.html?v=1793684118&w=' + lwEncode(LW);
+  const url = 'builder.html?v=1793689119&w=' + lwEncode(LW);
   try { if (window.opener && !window.opener.closed && /builder\.html/.test(window.opener.location.pathname)) { window.opener.focus(); window.close(); setTimeout(() => { location.href = url; }, 400); return; } } catch (e) {}
   location.href = url;
 }
