@@ -72,6 +72,14 @@ textarea.field{resize:none;min-height:3.2em;line-height:1.35}
 .hint{font-size:14px;font-weight:700;color:var(--muted)}
 .skip{font-weight:800;font-size:15px;color:var(--muted);text-decoration:underline;text-underline-offset:4px;padding:6px}
 .note{font-size:15px;font-weight:700;background:var(--card);border:2px dashed var(--ink);border-radius:14px;padding:10px 14px}
+.pick{display:flex;flex-direction:column;gap:4px;text-decoration:none;background:#fff;border:3px solid var(--ink);border-radius:18px;padding:16px 18px;box-shadow:0 5px 0 var(--ink);transition:transform .08s,box-shadow .08s}
+.pick:hover{background:var(--card)}
+.pick:active{transform:translateY(3px);box-shadow:0 2px 0 var(--ink)}
+.pick .pt{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap}
+.pick b{font-size:20px;font-weight:800}
+.pick .ps{font-weight:600;color:var(--muted)}
+.tag{font-size:13px;font-weight:800;border:2px solid var(--ink);border-radius:99px;padding:1px 10px;background:var(--paper)}
+.tag.done{background:var(--sun)}
 .reveal{background:#fff;border:4px solid var(--ink);border-radius:24px;box-shadow:0 6px 0 var(--ink);padding:20px;display:grid;grid-template-columns:1fr 1fr;gap:12px}
 .reveal div{background:var(--card);border:3px solid var(--ink);border-radius:16px;padding:12px;text-align:center}
 .reveal b{display:block;font-family:var(--display);font-weight:400;font-size:34px;line-height:1.1}
@@ -85,7 +93,7 @@ nav.arrows button:disabled{opacity:.35;cursor:default}
 </style>
 </head><body>
 <header>
-  <div class="in"><a class="mark" href="login.html?v=1793683215#account">Little Worlds</a><a class="close" href="login.html?v=1793683215#account" id="closeLink">Save and close</a></div>
+  <div class="in"><a class="mark" href="login.html?v=1793683948#account">Little Worlds</a><a class="close" href="login.html?v=1793683948#account" id="closeLink">Save and close</a></div>
   <div class="bar" aria-hidden="true"><i id="bar"></i></div>
 </header>
 <main id="stage" aria-live="polite"></main>
@@ -105,7 +113,23 @@ if(!loggedIn){HOME='index.html';document.querySelectorAll('header a').forEach(x=
    Part 2 (feedback.html?part=2): after 3 to 5 days of play.
    type: intro | choice | text | long | money | statement | end
    key: the column name in the sheet. show: only ask when this returns true. */
-const PART=new URLSearchParams(location.search).get('part')==='2'?2:1;
+const PARAM=new URLSearchParams(location.search).get('part');
+const PART=PARAM==='2'?2:1;
+/* No part picked yet: show the two sets of questions and let the person choose. */
+if(!PARAM){
+  let st={};try{st=JSON.parse(localStorage.getItem(STORE)||'{}').parts||{}}catch(e){}
+  const tag=n=>{const p=st[n]||{};return p.done?'<span class="tag done">Done ✓</span>':p.i?'<span class="tag">Started</span>':''};
+  const card=(n,title,sub)=>`<a class="pick" href="feedback.html?v=1793683948&part=${n}"><span class="pt"><b>${title}</b>${tag(n)}</span><span class="ps">${sub}</span></a>`;
+  document.querySelector('#stage').innerHTML=`<section class="q"><div class="box">
+    <p class="kicker">Feedback</p>
+    <h1>Help us decide <span class="hl">what happens next</span></h1>
+    <p class="lede">Pick the questions that fit where you are now.</p>
+    <div class="opts">${card(1,'Right after setting up the game','About 3 minutes. Set-up, the character and the first go.')}${card(2,'After playing a few times','About 5 minutes. How often they play, the trips and the price.')}</div>
+    <p class="note">We don’t attach your name, email or account to your answers, so we can’t see who wrote what.</p>
+  </div></section>`;
+  document.querySelector('nav.arrows').hidden=true;document.querySelector('.bar').hidden=true;document.querySelector('#closeLink').textContent='Close';
+  return;
+}
 const ADULT=a=>['Me','Another adult'].includes(a['A00 Who played']);
 const WHO={sec:'About you',key:'A00 Who played',type:'choice',q:'Who played the game?',help:'If you didn’t see them play, ask the adult who did before you answer.',opts:['Me','My child','My grandchild','My niece or nephew','My godchild','A friend’s child','Another adult','Someone else']};
 const AGE={sec:'About you',key:'A01 Player age',type:'choice',q:'How old is the player?',opts:['Under 4','4 or 5','6 or 7','8 or 9','10 to 12','13 to 17','18 or older']};
@@ -182,12 +206,12 @@ const total=()=>NUMBERED.filter(y=>!y.show||y.show(S.answers)).length;
 function view(x){
   if(x.type==='intro')return `<p class="kicker">${PART===2?'Feedback, part 2 · about 5 minutes':'Feedback, part 1 · about 3 minutes'}</p>
     <h1>Help us decide <span class="hl">what happens next</span></h1>
-    <p class="lede">${PART===2?'These questions cover the last few days of play, and what you’d pay.':'These questions cover set-up and the first go, while you still remember them. We’ll ask a few more in 3 days.'}</p>
+    <p class="lede">${PART===2?'These questions cover the last few days of play, and what you’d pay.':'These questions cover set-up and the first go, while you still remember them.'}</p>
     <p class="lede">A harsh answer helps us more than a kind one. If something bored you, confused you or put you off, please say so.</p>
     <p class="note">We don’t attach your name, email or account to your answers, so we can’t see who wrote what.</p>
     <div class="row"><button class="pill" data-next>Start</button><span class="hint">${touch?'':'or press Enter ↵'}</span></div>`;
   if(x.type==='end')return `<p class="kicker">All done</p><h1>Thank <span class="hl">you</span></h1>
-    <p class="lede">Your answers are with us now. ${PART===2?'We use them to decide what to build next.':'In 3 days we’ll ask a few more questions, once the player has had time with the game.'}</p>
+    <p class="lede">Your answers are with us now. ${PART===2?'We use them to decide what to build next.':'Once the player has had a few more goes, come back and answer the second set of questions.'}</p>
     ${ENDPOINT?'':'<p class="note">Test version: the answers are saved in this browser only.</p>'}
     <div class="row"><a class="pill" href="${HOME}">${loggedIn?'Back to your account':'Back to Little Worlds'}</a><button class="skip" data-act="again">Change an answer</button></div>`;
   const head=`<p class="kicker"><span class="n">${x.type==='statement'?'£':numOf(x)}</span>${esc(x.sec)}</p>`;
