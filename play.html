@@ -4420,25 +4420,65 @@ function drawCwScreenDoors() {
   const first = x0 - Math.floor((x0 - (S.bot + 1.2)) / PSD_W) * PSD_W, pe = IMG.cw_pl_end;
   if (pe) { const h = 401 / 125, w = h * pe.width / pe.height; ctx.drawImage(pe, sx(first - w + 0.02), sy(-7 + 0.05) - h * U, w * U, h * U); }   // a solid end panel, so the doors don't just start
   for (let x = first; x < S.x1 + PSD_W; x += PSD_W) {
-    const open = Math.abs(x - x0) < 0.1 && !boarded && cwTrainStopped();
-    const im = psdArt(open ? 'cw_psd_open' : 'cw_psd'); if (!im) continue;
+    const here = Math.abs(x - x0) < 0.1, d = here ? cwDoorD() : 0;
+    const im = psdArt(d > 0 ? 'cw_psd_open' : 'cw_psd'); if (!im) continue;
     const X = sx(x); if (X > W || X + PSD_W * U < 0) continue;
-    ctx.drawImage(im, X, sy(-7 + 0.05) - 401 / 125 * U, PSD_W * U + 0.5, 401 / 125 * U);
+    const Y = sy(-7 + 0.05) - 401 / 125 * U, k = U / 125;
+    ctx.drawImage(im, X, Y, PSD_W * U + 0.5, 401 / 125 * U);
+    if (d > 0 && d < 1) {   // the two glass leaves slide apart / together, tucked behind the side panels
+      const cl = psdArt('cw_psd'); if (!cl) continue;
+      ctx.save(); ctx.beginPath(); ctx.rect(X + 128 * k, Y, 282 * k, 401 * k); ctx.clip();
+      ctx.drawImage(cl, 128, 0, 140, 401, X + (128 - d * 140) * k, Y, 140 * k, 401 * k);
+      ctx.drawImage(cl, 268, 0, 142, 401, X + (268 + d * 142) * k, Y, 142 * k, 401 * k);
+      ctx.restore();
+    }
   }
 }
 const CW_TRAIN_STOP = () => G.L.trainEnd - 302 / 65;   // left end of the train when its first door lines up
 function cwTrainArrive() { return Math.max(0, G.L.trainEnd - 12.6 - G.p.x); }
 function cwTrainStopped() { return cwTrainArrive() === 0; }
+// how open the train and screen doors are (0 shut, 1 open): they slide open once the train has stopped,
+// and slide shut behind A after he steps in (Ladi: no popping between pictures)
+const CW_DOOR = { open: 0.6, shut0: 0.85, shut1: 1.45, wave: 1.55 };
+function cwRunH() { return 1.78; }
+function cwDoorD() {
+  if (!cwTrainStopped()) return 0;
+  const T = G.cwDoor || (G.cwDoor = { t0: G.t }), F = G.flag, ease = k => k * k * (3 - 2 * k);
+  let d = ease(Math.min(1, (G.t - T.t0) / CW_DOOR.open));
+  if (F && F.ride !== undefined) d *= 1 - ease(Math.min(1, Math.max(0, (F.ride - CW_DOOR.shut0) / (CW_DOOR.shut1 - CW_DOOR.shut0))));
+  return d;
+}
+function cwInsideA() { const F = G.flag; return G.L.trainEnd !== undefined && F && F.ride !== undefined && F.ride >= 0.45; }
 function drawCwTrain() {
   const t = G.L.trainEnd; if (t === undefined) return;
-  const F = G.flag, d = cwTrainArrive();
-  let x = CW_TRAIN_STOP() - d * d * 0.12;
-  const leaving = F && F.ride !== undefined && F.ride > 0.8;
-  if (leaving) x += F.tx || 0;
-  const open = cwTrainStopped() && !(F && F.ride !== undefined && F.ride > 0.75);
-  const im = IMG[open ? 'cw_train_open' : 'cw_train']; if (!im) return;
-  const w = im.width / 65 * U, h = im.height / 65 * U, X = sx(x); if (X > W || X + w < 0) return;
-  ctx.drawImage(im, X, sy(-7 + 224 / 65) - 0 + 0, w, h);
+  const F = G.flag, a = cwTrainArrive();
+  let x = CW_TRAIN_STOP() - a * a * 0.12;
+  if (F && F.ride !== undefined) x += F.tx || 0;
+  const im = IMG.cw_train, op = IMG.cw_train_open; if (!im) return;
+  const k = U / 65, X = sx(x), Y = sy(-7 + 224 / 65), w = im.width * k, h = im.height * k; if (X > W || X + w < 0) return;
+  ctx.drawImage(im, X, Y, w, h);
+  const d = cwDoorD(), inside = cwInsideA();
+  if (d > 0 || inside) {
+    // the lit inside of the carriage, from the open-doors picture
+    if (op && d > 0) ctx.drawImage(op, 252, 40, 108, 184, X + 252 * k, Y + 40 * k, 108 * k, 184 * k);
+    if (inside && F.ride < CW_DOOR.wave) {   // A stands in the doorway as the doors close in front of him
+      ctx.save(); ctx.beginPath(); ctx.rect(X + 246 * k, Y + 36 * k, 114 * k, 188 * k); ctx.clip();
+      { const sa = IMG.a_side; if (sa) { const h = cwRunH() * U, w = h * sa.width / sa.height; ctx.drawImage(sa, X + 306 * k - w / 2, Y + 222 * k - h, w, h); } }
+      ctx.restore();
+    }
+    // the two door leaves (from the closed picture) slide outwards over the body
+    const s = d * 55;
+    ctx.drawImage(im, 246, 40, 57, 186, X + (246 - s) * k, Y + 40 * k, 57 * k, 186 * k);
+    ctx.drawImage(im, 303, 40, 57, 186, X + (303 + s) * k, Y + 40 * k, 57 * k, 186 * k);
+  }
+  if (inside && F.ride >= CW_DOOR.wave) {   // then he pops up in the window next to the door and waves goodbye
+    const wx0 = 402, wx1 = 580, wy0 = 68, wy1 = 144;
+    ctx.save(); ctx.beginPath(); ctx.rect(X + wx0 * k, Y + wy0 * k, (wx1 - wx0) * k, (wy1 - wy0) * k); ctx.clip();
+    const up = Math.min(1, (F.ride - CW_DOOR.wave) / 0.25);
+    drawSprite('a_jump', 3, X + 470 * k, Y + (wy1 + 90 - 40 * up) * k, cwRunH() * 1.05, false, { rot: Math.sin(animT * 9) * 0.12 });
+    ctx.fillStyle = 'rgba(170,200,240,.12)'; ctx.fillRect(X + wx0 * k, Y + wy0 * k, (wx1 - wx0) * k, (wy1 - wy0) * k);
+    ctx.restore();
+  }
 }
 function drawCwStreetSlab() {
   const S = G.L.cwStation; if (!S) return;
@@ -4545,15 +4585,9 @@ function drawCwRideA(cx, by, RUN_H, JUMP_H) {
   }
   if (L.trainEnd !== undefined && F && F.slid && (G.mode === 'flag' || G.done)) {
     if (F.ride === undefined) { if (F.t2 < 0.3) return false; drawSprite('a_run', Math.floor(F.t2 * 11) % 6, cx, by + 0.04 * U, RUN_H, false); return true; }
-    if (F.ride < 0.8) {   // step in through the doors and walk on behind the right-hand door leaf
-      const k = F.ride / 0.8, im = IMG.cw_train_open;
-      drawSprite('a_run', Math.floor(F.ride * 9) % 6, cx + k * 1.55 * U, by - Math.min(1, k * 3) * 0.25 * U + 0.04 * U, RUN_H, false);
-      if (im) {
-        const c0 = 358, x = CW_TRAIN_STOP(), X = sx(x) + c0 / 65 * U, clipR = sx(L.trainEnd + PSD_W / 2);
-        ctx.save(); ctx.beginPath(); ctx.rect(X, 0, clipR - X, H); ctx.clip();
-        ctx.drawImage(im, c0, 0, im.width - c0, im.height, X, sy(-7 + 224 / 65), (im.width - c0) / 65 * U, im.height / 65 * U);
-        ctx.restore();
-      }
+    if (F.ride < 0.45) {   // walk up to the open doors (then drawCwTrain shows him inside)
+      const k = F.ride / 0.45;
+      drawSprite('a_run', Math.floor(F.ride * 11) % 6, cx + k * 0.45 * U, by + 0.04 * U, RUN_H, false);
     }
     return true;
   }

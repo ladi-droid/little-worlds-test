@@ -2475,9 +2475,9 @@ function tickFlag(g, dt) {
         const walk = L.buggyEnd ? 1.2 : L.busEnd !== undefined || L.trainEnd !== undefined || L.taxiEnd !== undefined ? 0.8 : 0;   // bus / train: A walks in through the door first
         if (F.ride < walk) p.x = board + (L.trainEnd !== undefined || L.taxiEnd !== undefined ? 0 : F.ride);
         else if (L.taxiEnd !== undefined) { const r = Math.max(0, F.ride - walk - 0.5); p.x = board; F.tx = 1.5 * r + 4 * r * r; }   // the taxi pulls away with A inside
-        else if (L.trainEnd !== undefined) { const r = Math.max(0, F.ride - walk - 0.7); p.x = board; F.tx = 2 * r + 4.5 * r * r; }   // camera stays; the train pulls away on its own
+        else if (L.trainEnd !== undefined) { const r = Math.max(0, F.ride - walk - 1.4); p.x = board; F.tx = 2 * r + 4.5 * r * r; }   // camera stays; the train pulls away on its own
         else { const r = Math.max(0, F.ride - walk - 0.3); p.x = Math.min(g.L.endX + (L.scooterEnd !== undefined ? -3 : 30), board + (L.trainEnd !== undefined ? 0 : walk) + 2 * r + 4.5 * r * r); }
-        if (F.ride > (L.trainEnd !== undefined || L.taxiEnd !== undefined ? 3.2 : 1.9) + walk && !g.done) { g.done = true; g.events.push({ type: 'done' }); }
+        if (F.ride > (L.trainEnd !== undefined ? 3.9 : L.taxiEnd !== undefined ? 3.2 : 1.9) + walk && !g.done) { g.done = true; g.events.push({ type: 'done' }); }
       }
       return;
     }
