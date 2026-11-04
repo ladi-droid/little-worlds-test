@@ -598,7 +598,7 @@ const ALL_LEVELS = [
     b.coins(168, -6.1, 8);
     b.coins(181, -3.5, 10, 1.6);
     b.special(201, -2.2);                // on top of the train
-    b.pigeon(172, -7); b.pigeon(216, -7);
+    b.pigeon(172, -7);                   // (no pigeon by the up escalator: Ladi)
     b.cwSolid('cw_st_pillar', 186.0, 0.82, 2.18, 0, -7);   // a wayfinding totem: jump it
     b.cwSolid('cw_st_ext', 212.0, 0.88, 1.45, 0, -7);
     b.coins(214, -6.1, 10);
