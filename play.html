@@ -2592,6 +2592,13 @@ function drawEstateEnd(xL, n, side) {
   ctx.strokeStyle = '#2a2420'; ctx.lineWidth = Math.max(2, U * 0.05);
   ctx.beginPath(); ctx.moveTo(side < 0 ? X : X + w, sy(0)); ctx.lineTo(side < 0 ? X : X + w, sy(top - 0.3)); ctx.stroke();
 }
+// Ladi's row of five terraced houses (replaces the second estate block)
+function drawWwTerrace(pr) {
+  let im = IMG.ww_terrace; if (!im) { im = IMG.ww_terrace = new Image(); im.src = 'ww_terrace.webp'; }
+  if (!im.complete || !im.naturalWidth) return;
+  const X = sx(pr.x), w = pr.w * U, h = w * im.naturalHeight / im.naturalWidth; if (X > W || X + w < 0) return;
+  ctx.drawImage(im, X, sy(0) - h + 0.02 * U, w, h);
+}
 const ES2_FLOORS = ['es2_floor', 'es2_floor1', 'es2_floor2', 'es2_floor3'];
 function drawEstate(pr) {
   const k = U / ES2.pxu, kx = k * ES2.sx, g = IMG.es2_ground, f = IMG.es2_floor, r = IMG.es2_roof; if (!g || !f || !r) return;
@@ -2691,6 +2698,7 @@ function drawWwBuildings() {
   for (const pr of G.L.props) {
     switch (pr.kind) {
       case 'estate': drawEstate(pr); break;
+      case 'wwterrace': drawWwTerrace(pr); break;
       case 'tower': drawTower(pr); break;
       case 'powis': drawPowis(pr); break;
       case 'wwstall': stand(IMG[['bs_fabric', 'bs_veg', 'bs_phones'][pr.i % 3]], pr.x, 0, 200); break;
@@ -2979,6 +2987,7 @@ function drawShadows() {
   for (const pr of G.L.props) {
     switch (pr.kind) {
       case 'estate': baseShadow(pr.x, pr.x + wOf(IMG.es2_ground, ES2.pxu) * ES2.sx, 0); break;
+      case 'wwterrace': baseShadow(pr.x, pr.x + pr.w, 0); break;
       case 'tower': baseShadow(pr.x, pr.x + wOf(IMG.nb_ground, 82.5), 0); break;
       case 'powis': baseShadow(pr.xs[0], pr.xs[pr.xs.length - 1] + wOf(IMG.pw_pub, 90), 0); break;
       case 'station': baseShadow(pr.x, pr.x + wOf(IMG.st_entrance, 100), 0); break;

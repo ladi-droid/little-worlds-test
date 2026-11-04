@@ -126,6 +126,14 @@ function makeBuilder(area) {
       for (let i = 0; i < n; i++) ledge(3.59 + 3.31 * i + 0.29);
       ledge(3.59 + 3.31 * n + 1.14);
     },
+    // a row of five terraced houses (Ladi's picture, 17.5 units wide, roof 5.5 up); upstairs window sills and the roof are ledges
+    terrace(x) {
+      L.props.push({ kind: 'wwterrace', x, w: 17.5 });
+      const P = 95.4, sill = 3.27;   // art pixels per unit
+      for (const [a, c] of [[70, 185], [235, 325], [428, 512], [552, 650], [722, 815], [850, 940], [1045, 1135], [1180, 1280], [1365, 1450], [1485, 1610]])
+        L.oneways.push({ kind: 'ledge', x: x + a / P, y: sill, w: (c - a) / P });
+      L.oneways.push({ kind: 'ledge', x: x + 0.1, y: 5.45, w: 17.3 });
+    },
     // Powis Street parade; fascia signs and roofs are ledges
     powis(x) {
       const W = [4.02, 3.84, 4.24, 3.88, 4.15, 4.59, 5.34, 4.79, 6.14], xs = []; let cx = x;
@@ -556,9 +564,9 @@ const ALL_LEVELS = [
     b.gull(23.5, 8.34, 1.4);              // a gull on the estate roof
     b.fox(36, 31, 39);
     b.arc(35.6, 1.4, 5, 3.4, 2.2);
-    b.estate(40, 3);
-    b.coins(42, 4.7, 4, 1.4); b.coins(47.4, 8.0, 4, 1.4); b.coins(42, 11.3, 4, 1.4);
-    b.special(50.6, 16.1);                 // top of the tall estate block
+    b.terrace(40);                         // Ladi's row of five houses (the middle one has the brown door)
+    b.coins(41.2, 4.3, 3, 1.2); b.coins(47.6, 4.3, 3, 1.2); b.coins(43, 6.5, 5, 1.2);
+    b.special(51.5, 7.4);                  // on top of the houses' roof
     b.arc(56.2, 1.4, 4, 4.4, 2.4);       // jump the gap
     b.ground(61.5, 158.6);
     b.fox(66, 62, 72);
