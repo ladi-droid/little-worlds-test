@@ -1125,6 +1125,200 @@ const ALL_LEVELS = [
   },
 },
 {
+  id: 'westend', name: 'West End', plate: 'West End', area: 'westend',
+  build(b) {
+    const L = b.L;
+    // The West End at Christmas, drawn from Ladi's art (src/westend/cut.py; sizes in src/westend/pieces.json).
+    // Bond Street Elizabeth line exit -> Oxford Street lights -> Elfridges (hall, toy shop, Santa's grotto, present chute)
+    // -> Regent Street angels -> Carnaby Street -> Covent Garden piazza + market hall -> Trafalgar Square ice slide -> tree lights.
+    L.killY = -12; L.startX = 2.0; L.camMin = -6; L.snow = true;
+    const art = (key, x, y, h, o = {}) => (L.weArt = L.weArt || []).push(Object.assign({ key, x, y, h }, o));   // a picture standing at (x, y), h units tall
+    const solid = (x, w, h, y = 0, o = {}) => { L.solids.push(Object.assign({ kind: 'block', x, y, w, h, style: 'hidden' }, o)); };
+    const ledge = (x, y, w) => b.ledge(x, y, w);
+    const ground = (x0, x1, style, y = 0) => L.solids.push({ kind: 'ground', x: x0, y: y - 40, w: x1 - x0, h: 40, style });
+    const drift = (x) => { art('we_drift', x, 0, 0.45); solid(x + 0.1, 0.67, 0.4); };                    // knee high: A hops it
+    const driftL = (x) => { art('we_drift_long', x, 0, 0.5); solid(x + 0.15, 1.6, 0.45); };
+    const snowman = (x) => { art('we_snowman', x, 0, 1.05); solid(x + 0.08, 0.52, 0.95); };                // needs a tap
+    const bigman = (x) => { art('we_snowman_big', x, 0, 2.3); solid(x + 0.45, 0.75, 2.25); ledge(x + 0.4, 2.25, 0.85); };   // lean, then jump up onto his hat
+    const bench = (x) => { art('we_bench', x, 0, 1.0); solid(x + 0.1, 1.55, 0.55); };
+    const grit = (x) => { art('we_gritbin', x, 0, 0.85); solid(x + 0.05, 0.98, 0.8); };
+    const xtree = (x) => { art('we_xtree', x, 0, 2.2, { back: true }); };
+    const lamp = (x) => art('we_lamp', x, 0, 4.6, { back: true });
+    // ---------- 1. Bond Street exit and Oxford Street ----------
+    b.wall(-6.5, 1, 22);
+    ground(-12, 72, 'wepave');
+    art('we_stn', -5.0, 0, 4.6, { back: true }); art('we_stn_end', 4.25, 0, 4.6, { back: true });
+    L.weStn = { x: -5.0 };
+    // shop fronts wall to wall, tall upper floors above, piers between: x from 6 to 70
+    L.weBus = 36.5; L.weCab = 52.0; L.weStreet = [['tb_c_post', 12.6, 1.6], ['tb_c_phone', 182.0, 2.6]];
+    L.weRows = L.weRows || [];
+    L.weRows.push({ kind: 'oxford', x0: 6.0, x1: 70.2 });
+    const SHOPS = [];
+    for (let x = 6.0, i = 0; x < 66; i++) { const k = i % 2 ? 'we_of_shop2' : 'we_of_shop1', w = i % 2 ? 4.991 : 5.109; SHOPS.push([k, x, w]); x += w + 0.81; }
+    L.weShops = SHOPS;
+    for (const [, x, w] of SHOPS) ledge(x + 0.35, 2.82, w - 0.7);   // the shop canopies
+    // hanging lights across the street: snowflakes and stars, their top bars are ledges
+    const flake = (x, y, star) => { art(star ? 'we_star' : 'we_flake', x, y, star ? 3.2 : 3.4, { hang: true }); ledge(x + 0.3, y + (star ? 3.05 : 3.25), (star ? 4.187 : 3.647) - 0.6); };
+    L.weStrings = [[6, 70, 7.6], [171, 219, 7.7], [221, 261, 7.4], [262, 289, 7.8]];
+    lamp(8.2); drift(10.5); b.coins(9.8, 1.2, 3, 0.8);
+    snowman(15.2); b.coins(14.8, 2.2, 3, 0.7);
+    flake(18.5, 3.4); b.coins(19.2, 7.4, 3, 0.9);
+    b.pigeon(23.5);
+    bench(27.0); b.coins(27.2, 1.6, 3, 0.7);
+    flake(31.0, 3.6, true);
+    bigman(33.6); b.coins(33.7, 3.2, 2, 0.6);
+    b.special(32.9, 8.0);                                     // 1: above the big gold star, from the snowman's hat
+    lamp(38.0); grit(40.0);
+    b.coins(42.0, 1.1, 4, 0.8);
+    flake(45.0, 3.4); drift(46.0); b.coins(45.6, 7.4, 3, 0.9);
+    b.pigeon(50.5);
+    snowman(54.0); xtree(56.5);
+    driftL(59.5); b.arc(58.8, 1.2, 5, 3.2, 1.3);
+    lamp(63.5); bigman(65.5);
+    // ---------- 2. Elfridges ----------
+    const EF = 70.2;
+    art('we_ef_endl', EF, 0, 4.4, { back: true }); art('we_ef_windows', EF + 2.0, 0, 4.4, { back: true });
+    const ENT = EF + 19.5;                                    // the grand entrance with the yellow sign
+    art('we_ef_entr', ENT, 0, 4.75, { back: true });
+    L.weEf = { x0: EF, x1: ENT + 8.76, ent: ENT, sign: [ENT + 1.05, 4.05, 6.6, 0.66] };
+    for (let x = EF + 2.6; x < EF + 19; x += 3.55) ledge(x, 3.55, 2.6);   // the yellow window canopies
+    grit(EF + 3.2); b.coins(EF + 3.0, 4.6, 12, 1.2);
+    bigman(EF + 9.0); b.pigeon(EF + 15.0);
+    // inside: a cut-away box from IN to OUT, ground floor and first floor (toy shop + grotto), ceiling at 8.6
+    const IN = ENT + 4.4, OUT = IN + 76, UP = 4.2, CEIL = 8.6;
+    L.weInside = { x0: IN, x1: OUT, up: UP, ceil: CEIL };
+    const BX = ENT + 8.6; L.weEf.box = BX;
+    ground(72, BX, 'wepave'); ground(BX, OUT, 'wemarble');
+    solid(IN, OUT - IN, 40, CEIL);                            // the ceiling (the roof is never reached)
+    // ground floor hall: counters, giant baubles, escalator up to the first floor
+    const counter = (x) => { art('we_eg_counter', x, 0, 1.45); solid(x + 0.15, 8.0, 1.38); ledge(x + 0.1, 1.42, 8.1); };   // too tall to vault: a tap
+    counter(IN + 5.5); b.coins(IN + 6.1, 2.0, 6, 0.9);
+    art('we_eg_bauble_r', IN + 12.0, CEIL - 2.5, 2.0, { hang: true }); art('we_eg_bauble_g', IN + 14.6, CEIL - 2.2, 2.0, { hang: true });
+    const ESC = IN + 15.5;
+    b.escalator(ESC + 0.9, 0, ESC + 10.3, UP);
+    L.weEsc = { x: ESC, y: 0 };
+    // first floor from the top of the escalator to the chute; the ground floor carries on underneath with counters
+    L.oneways.push({ kind: 'ledge', x: ESC + 10.3, y: UP, w: OUT - 6 - ESC - 10.3 });
+    L.weFloor = { x0: ESC + 10.3, x1: OUT - 6, y: UP };
+    counter(ESC + 12.0); counter(ESC + 22.0); b.coins(ESC + 12.5, 2.0, 6, 0.9); b.coins(ESC + 22.5, 2.0, 6, 0.9);
+    b.pigeon(ESC + 30.0); counter(ESC + 40.0); b.coins(ESC + 40.5, 2.0, 6, 0.9); b.pigeon(ESC + 50.0);
+    // toy shop (first floor)
+    const TS = ESC + 10.3;
+    L.weToys = { x0: TS, x1: TS + 20 };
+    const shelf = (x) => { art('we_ts_shelf', x, UP, 3.3); solid(x + 0.1, 1.5, 0.3, UP); ledge(x + 0.15, UP + 1.15, 1.4); ledge(x + 0.15, UP + 2.25, 1.4); ledge(x + 0.1, UP + 3.25, 1.5); };
+    art('we_ts_gifts3', TS + 1.5, UP, 1.3); solid(TS + 1.55, 0.58, 1.25, UP);
+    art('we_ts_track', TS + 3.4, UP, 0.7); art('we_ts_track', TS + 4.95, UP, 0.7); art('we_ts_track', TS + 6.5, UP, 0.7); solid(TS + 3.5, 4.5, 0.65, UP);
+    // the toy train runs to and fro along its table: ride it to the top shelf
+    L.movers = L.movers || [];
+    const train = { kind: 'wetrain', mover: true, ax: 'x', x: TS + 3.5, x0: TS + 3.5, x1: TS + 6.0, off: 0, w: 2.0, y: UP + 0.65, up: 1.6, d0: 0.5, d1: 0.5, ph: 0 };
+    L.weTrain = train;
+    L.oneways.push(train); L.movers.push(train);
+    shelf(TS + 8.4); b.special(TS + 9.2, UP + 4.2);          // 2: on top of the toy shelf
+    b.coins(TS + 3.8, UP + 1.6, 3, 0.8);
+    art('we_ts_horse', TS + 10.5, UP, 1.2);
+    b.L.enemies.push({ kind: 'fox', skin: 'soldier', x: TS + 13.0, y: UP, w: 0.55, h: 0.9, speed: 1.4, x0: TS + 11.0, x1: TS + 15.6 });
+    art('we_ts_nut', TS + 16.4, UP, 2.7); solid(TS + 16.5, 0.6, 2.6, UP); ledge(TS + 16.45, UP + 2.6, 0.7);
+    art('we_ts_gifts5', TS + 18.0, UP, 1.75); solid(TS + 18.05, 0.78, 1.7, UP);
+    b.coins(TS + 11.4, UP + 1.2, 4, 0.9);
+    // Santa's grotto: arch, conveyor belts carrying A along, elves, Santa waving, then the present chute down to the side door
+    const GR = TS + 20.5;
+    L.weGrotto = { x0: GR, x1: OUT - 6 };
+    art('we_gr_arch', GR, UP, 4.2, { back: true });
+    const belt = (x, w) => { solid(x, w, 0.62, UP, { belt: 3.0 }); (L.weBelts = L.weBelts || []).push({ x, w, y: UP }); };
+    belt(GR + 6.6, 9.0); b.coins(GR + 7.0, UP + 1.6, 8, 1.0);
+    art('we_gr_bench', GR + 16.0, UP, 1.6); solid(GR + 16.1, 2.0, 1.4, UP); ledge(GR + 16.1, UP + 1.45, 2.0);
+    art('we_gr_sleigh', GR + 19.0, UP, 1.4); solid(GR + 19.2, 1.7, 1.05, UP); ledge(GR + 19.25, UP + 1.3, 1.6);
+    b.coins(GR + 16.4, UP + 2.2, 5, 0.9);
+    L.weElves = [['we_elf1', GR + 8.5], ['we_elf2', GR + 12.0], ['we_elf3', GR + 3.0]];
+    L.weSanta = { x: GR + 21.4, y: UP };
+    // the chute: from the first floor down to the ground floor, then out of the side door onto Regent Street
+    const CH = OUT - 6;
+    b.slope(CH, UP, CH + 4.6, 0.25); L.slopes[L.slopes.length - 1].belt = 4;
+    L.weChute = { x: CH - 0.3, y: 0 };
+    b.coins(CH + 0.5, UP + 0.6, 4, 1.1, -0.95);
+    // ---------- 3. Regent Street ----------
+    const RG = OUT;
+    L.weDoorOut = { x: RG - 0.6 };
+    ground(RG, 220, 'wepave');
+    L.weRows.push({ kind: 'regent', x0: RG + 1.0, x1: 219.0 });
+    const angel = (x, y) => { art('we_angel', x, y, 1.5, { hang: true }); ledge(x + 2.6, y + 1.05, 2.2); };
+    b.coins(RG + 2, 1.1, 4, 0.9);
+    drift(RG + 6.0); bigman(RG + 9.0);
+    angel(RG + 9.5, 4.9); b.coins(RG + 12.4, 7.0, 2, 0.9);
+    b.pigeon(RG + 16.0);
+    angel(RG + 17.5, 5.6); b.special(RG + 21.1, 7.9);           // 3: above the middle angel
+    bench(RG + 21.0); b.coins(RG + 21.3, 1.6, 3, 0.7);
+    bigman(RG + 27.0); xtree(RG + 29.5);
+    angel(RG + 31.0, 4.9); b.coins(RG + 33.8, 7.0, 2, 0.9);
+    grit(RG + 34.5); lamp(RG + 37.5);
+    b.pigeon(RG + 40.0); bigman(RG + 44.5);
+    // ---------- 4. Carnaby Street ----------
+    const CB = 221.0;
+    ground(220, 261, 'wecobble');
+    L.weCbSwap = CB + 20; L.weRows.push({ kind: 'carnaby', x0: CB + 0.5, x1: 260.5 });
+    art('we_cb_arch', CB + 1.0, 0, 4.2, { mid: true }); ledge(CB + 1.2, 4.05, 5.5);
+    L.weArch = { x: CB + 1.0 };
+    bigman(CB - 1.6); b.special(CB + 4.0, 5.1);                 // 5: on top of the Carnaby arch
+    b.coins(CB + 1.6, 4.9, 3, 0.8);
+    [['we_cb_ball', CB + 10, 5.9], ['we_cb_cane', CB + 17, 5.6], ['we_cb_gift', CB + 24, 6.0], ['we_cb_ball', CB + 31, 5.8], ['we_cb_cane', CB + 37, 5.6]]
+      .forEach(([k, x, y]) => art(k, x, y, k === 'we_cb_cane' ? 1.8 : k === 'we_cb_gift' ? 1.5 : 1.6, { hang: true }));
+    snowman(CB + 11.0); b.coins(CB + 10.6, 2.2, 3, 0.7);
+    b.pigeon(CB + 16.0);
+    bigman(CB + 20.0); bench(CB + 25.0); b.coins(CB + 25.2, 1.6, 3, 0.7);
+    b.pigeon(CB + 29.0); grit(CB + 34.0); b.coins(CB + 33.8, 1.9, 3, 0.7);
+    // ---------- 5. Covent Garden: piazza, then through the old market hall ----------
+    const CG = 261.0;
+    ground(261, 344, 'wecobble');
+    art('we_chalets', CG + 1.5, 0, 3.0, { back: true }); ledge(CG + 1.7, 2.75, 10.6);
+    b.coins(CG + 2.2, 3.6, 9, 1.1); b.pigeon(CG + 6.5);
+    art('we_cg_tree', CG + 13.5, 0, 7.5, { back: true });
+    art('we_reindeer', CG + 18.5, 0, 2.6, { back: true });
+    art('we_chestnut', CG + 21.0, 0, 1.5); solid(CG + 21.2, 1.6, 1.4);
+    b.pigeon(CG + 25.0);
+    const MH = CG + 28.0;                                      // the market hall: in through the arch, two floors inside
+    const HI = MH + 8.0, HO = HI + 34;                          // inside, from HI to HO
+    L.weHall = { x0: HI, x1: HO, up: 3.6, roof: 7.2, out: MH };
+    solid(HI, HO - HI, 40, 7.6);
+    L.oneways.push({ kind: 'ledge', x: HI + 4.0, y: 3.6, w: HO - HI - 8.0 });
+    L.weHall.box = HI + 2.0;
+    bigman(HI + 3.2);
+    bench(HI + 6.0); b.coins(HI + 6.2, 1.6, 3, 0.7);
+    b.coins(HI + 6.0, 4.4, 12, 1.1);
+    art('we_mh_ball_r', HI + 13.0, 5.1, 1.3, { hang: true }); ledge(HI + 13.1, 6.35, 1.0); b.special(HI + 13.6, 7.0);   // 4: on top of the giant red bauble
+    art('we_mh_ball_s', HI + 21.0, 5.1, 1.3, { hang: true }); ledge(HI + 21.1, 6.35, 1.0);
+    b.pigeon(HI + 18.0); b.pigeon(HI + 20.0, 3.6);
+    bigman(HI + 25.0); b.coins(HI + 25.0, 3.4, 2, 0.6);
+    b.pigeon(HI + 30.5);
+    L.weHallOut = { x: HO - 0.6 };
+    bigman(HO + 4.5);
+    // ---------- 6. Trafalgar Square: the frozen fountains ----------
+    const TF = 344.0;
+    ground(344, 414, 'wegranite');
+    art('we_tf_lion', TF + 0.5, 0, 2.6, { back: true });
+    // ice ramp up onto the first basin, slide across, hop the rim, slide across the second one: belts, nothing that hurts
+    const ICE = 1.0;
+    const R0 = TF + 6.0;
+    art('we_tf_ramp', R0, 0, 1.6);           // climb up on the left, slide down to the right
+    solid(R0, 1.0, 1.55);
+    b.slope(R0 + 1.0, 1.55, R0 + 5.4, ICE); L.slopes[L.slopes.length - 1].belt = 3.5;
+    const basin = (x, w) => { (L.weBasins = L.weBasins || []).push({ x, w }); solid(x, w, ICE, 0, { belt: 3.6, ice: true }); };
+    basin(R0 + 5.4, 9.0);
+    b.coins(R0 + 1.6, 2.6, 4, 1.0, -0.25); b.coins(R0 + 6.2, 2.0, 8, 1.0);
+    solid(R0 + 14.4, 0.6, 1.5);                               // the rim between the two fountains: hop it
+    basin(R0 + 15.0, 9.0); b.coins(R0 + 15.6, 2.0, 8, 1.0);
+    L.weIce = [R0 + 0.8, R0 + 24.2]; L.weNg = TF + 11.0;
+    L.weFountains = [R0 + 9.9 - 1.5, R0 + 19.5 - 1.5];
+    art('we_tf_column', TF + 30.0, 0, 4.2, { back: true });
+    const TREE = TF + 40.0;
+    L.weTree = { x: TREE - 1.4, y: 0 };
+    b.flag(TREE - 6.0);
+    L.finale = TREE - 0.6;
+    L.weFinale = true;
+    b.wall(TF + 52, 1, 22);
+    b.end(TF + 50);
+  },
+},
+{
   id: 'heathrow', name: 'Airport Rush', area: 'heathrow', bonus: true,
   build(b) {
     const L = b.L;
