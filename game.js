@@ -1149,6 +1149,7 @@ const ALL_LEVELS = [
     ground(-12, 72, 'wepave');
     art('we_stn', -5.0, 0, 4.6, { back: true }); art('we_stn_end', 4.25, 0, 4.6, { back: true });
     L.weStn = { x: -5.0 };
+    L.outfit = 'win';   // the children wear their winter coat and scarf here (A has no winter pictures, so he keeps his clothes)
     // shop fronts wall to wall, tall upper floors above, piers between: x from 6 to 70
     L.weBus = 36.5; L.weCab = 52.0; L.weStreet = [['tb_c_post', 12.6, 1.6], ['tb_c_phone', 182.0, 2.6]];
     L.weRows = L.weRows || [];

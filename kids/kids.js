@@ -20,11 +20,11 @@
   // of it is that part, and blue what the rest is (another part, the black outline or white), so edges blend cleanly.
   const FIXED = { 6: [24, 20, 24], 7: [248, 246, 240] };
   const lumOf = c => .3 * c[0] + .59 * c[1] + .11 * c[2];
-  function recolour(im, lab, cols, K, only) {
+  function recolour(im, lab, cols, K, only, own) {
     const c = canvas(im.width, im.height), x = c.getContext('2d', { willReadFrequently: true });
     x.drawImage(im, 0, 0);
     if (!lab) return c;
-    const base = META.kids[K].base, orig = META.kids[K].rgb || {};
+    const base = own ? Object.assign({}, META.kids[K].base, own) : META.kids[K].base, orig = META.kids[K].rgb || {};   // (an outfit can bring its own shading, e.g. the winter coat)
     const l = canvas(lab.width, lab.height), lx = l.getContext('2d', { willReadFrequently: true }); lx.drawImage(lab, 0, 0);
     let d, L;
     try { d = x.getImageData(0, 0, c.width, c.height); L = lx.getImageData(0, 0, l.width, l.height).data; } catch (e) { return c; }
@@ -106,7 +106,7 @@
       const cols = colours(cfg);
       const [im, lab, front] = await Promise.all([load(`${K}_${key}.webp`), load(`${K}_${key}_lab.png`), e.front ? load(`${K}_${key}_front.png`) : null]);
       if (!im) return null;
-      const body = recolour(im, lab, cols, K, e.parts);
+      const body = recolour(im, lab, cols, K, e.parts, e.base);
       const head = e.head && cfg.style;
       const [hp, ap] = head ? await Promise.all([hairPiece(K, cfg, cols, e.back ? 'hairb' : 'hair'), accPiece(K, cfg, e.back)]) : [null, null];
       const n = e.n, fw = e.w / n, fh = e.h, pt = head ? PT : 0, px = head ? PX : 0, cw = fw + 2 * px;

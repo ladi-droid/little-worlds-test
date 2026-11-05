@@ -1,0 +1,25 @@
+<!doctype html><meta charset=utf-8><body style="margin:0;background:#cfd8e3">
+<canvas id=c width=1800 height=1300></canvas>
+<script src="kids/kids-meta.js"></script><script src="kids/kids.js"></script>
+<script>
+const looks=[
+ {kid:'boy',style:'afro',acc:'headphones',skin:'#8a5a3b',hair:'#1c1410',tee:'#d23c3c',bottom:'#2a2a30',shoe:'#f2f0ea'},
+ {kid:'boy',style:'parting',acc:'glasses',skin:'#f1c9a5',hair:'#e8c66a',tee:'#2a5bd7',bottom:'#c9b28a',shoe:'#333333'},
+ {kid:'boy',style:'locs',acc:null,skin:'#5a3a26',hair:'#2a1a10',tee:'#f2c230',bottom:'#3b6b3b',shoe:'#ee3333'},
+ {kid:'girl',style:'puffs',acc:'bow',skin:'#7a4a2e',hair:'#1a1210',tee:'#e85aa8',bottom:'#5a3ea8',shoe:'#fff'},
+ {kid:'girl',style:'long',acc:'crown',skin:'#f3d0b0',hair:'#b5562a',tee:'#2fa8a0',bottom:'#1c2a5a',shoe:'#f5a623'},
+ {kid:'girl',style:'braids',acc:'clips',skin:'#a8714a',hair:'#3a2214',tee:'#fafafa',bottom:'#d23c3c',shoe:'#222222'},
+];
+const keys=[['a_run_win',1],['a_jump_win',1],['a_lean_win',0],['a_slide_win',0],['hero_back_win',0],['a_run',1]];
+const x=document.getElementById('c').getContext('2d');
+(async()=>{
+ for(let r=0;r<looks.length;r++){
+  for(let k=0;k<keys.length;k++){
+   const [key,f]=keys[k]; const c=await KidArt.build(looks[r],key); if(!c) continue;
+   const e=KidArt.info(looks[r],key), n=e.n, cw=c.width/n, s=key.startsWith('hero')?0.27:0.48;
+   x.drawImage(c,f*cw,0,cw,c.height,k*300+10,r*215+210-c.height*s,cw*s,c.height*s);
+  }
+ }
+ document.title='done';
+})();
+</script>
