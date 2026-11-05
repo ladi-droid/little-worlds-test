@@ -2218,6 +2218,311 @@ const ALL_LEVELS = [
     b.end(FIN + 42);
   },
 },
+{
+  id: 'capetown', name: 'Cape Town', plate: 'Cape Town', area: 'capetown', city: 'Cape Town',
+  build(b) {
+    const L = b.L;
+    // Cape Town, drawn from Ladi's art (src/capetown/cut.py; sizes in src/capetown/pieces.json). Plan: london-runner/capetown/capetown-plan.md
+    // minibus taxi at Mouille Point -> Blue Train Park ride -> promenade -> V&A Waterfront -> Two Oceans Aquarium (two floors)
+    // -> Greenmarket Square -> Bo-Kaap (uphill) -> fynbos path -> lower cable station -> cable car -> Table Mountain top (Cape Doctor wind) -> tablecloth ending
+    L.outfit = 'dxb'; L.killY = -8; L.startX = 2.0; L.camMin = -9; L.introCam = -6.2;
+    const art = (key, x, y, h, o = {}) => (L.ctArt = L.ctArt || []).push(Object.assign({ key, x, y, h }, o));   // a picture standing at (x, y), h units tall
+    const solid = (x, w, h, y = 0, o = {}) => L.solids.push(Object.assign({ kind: 'block', x, y, w, h, style: 'hidden' }, o));
+    const ledge = (x, y, w) => b.ledge(x, y, w);
+    const ground = (x0, x1, style, y = 0) => L.solids.push({ kind: 'ground', x: x0, y: y - 40, w: x1 - x0, h: 40, style });
+    const W = k => ({ ct_wf1: 5.547, ct_wf2: 5.617, ct_gm_cream: 3.847, ct_gm_green: 3.933, ct_gm_upper: 3.41, ct_townhouse: 6.443, ct_mk_red: 2.407, ct_mk_yel: 2.24, ct_mk_grn: 2.367, ct_mk_blu: 2.333,
+      ct_bk_pink: 3.709, ct_bk_lime: 3.875, ct_bk_teal: 3.944, ct_bk_yel: 3.869, ct_bk_lilac: 3.717, ct_mosque: 5.061, ct_stall_g: 2.827, ct_stall_o: 2.727, ct_stall_b: 2.727, ct_kiosk: 2.757 })[k];
+    // knee-high things A hops by himself, and taller ones he leans on and jumps
+    const bollard = (x) => { art('ct_bollard', x, 0, 0.45); solid(x + 0.05, 0.3, 0.42); };
+    const rope = (x) => { art('ct_rope', x, 0, 0.45); solid(x + 0.05, 0.57, 0.4); };
+    const crates2 = (x) => { art('ct_crates2', x, 0, 0.7); solid(x + 0.04, 0.55, 0.66); };
+    const crates4 = (x) => { art('ct_crates4', x, 0, 1.45); solid(x + 0.04, 0.64, 1.4); ledge(x + 0.02, 1.42, 0.68); };   // a tap
+    const pbench = (x) => { art('ct_prom_bench', x, 0, 0.85); solid(x + 0.1, 1.3, 0.5); };
+    const planter = (x, y = 0, tall) => { const k = tall ? 1.6 : 1; art('ct_planter', x, y, 0.9 * k); solid(x + 0.08 * k, 0.57 * k, tall ? 1.4 : 0.85, y); if (tall) ledge(x + 0.1, y + 1.42, 0.8); };
+
+    // ---------- 1. Mouille Point: the minibus taxi drops A on Beach Road ----------
+    b.wall(-9.5, 1, 22);
+    ground(-14, 7, 'ctprom');
+    L.ctTaxi = { x: -4.0 };                                     // the doorway is in the middle; A steps out, the taxi drives off to the left
+    art('ct_palm2', -7.8, 0, 5.5, { back: true });
+    pbench(4.0);
+    b.coins(4.0, 1.4, 3, 0.6);
+
+    // ---------- 2. The Blue Train Park: a fast ride on the miniature train ----------
+    ground(7, 95, 'ctlawn');
+    L.ctFence = [[7.6, 94.0]];
+    art('ct_gate_l', 6.2, 0, 0.8, { back: true });
+    art('ct_gazebo', 8.0, 0, 2.5, { back: true });
+    const ST = 11.0;                                             // the little station: platform with its striped canopy
+    art('ct_plat', ST, 0, 2.7, { back: true });
+    // the track: A sits in the open carriage behind the engine. Tap = pop up (high coins), swipe down = duck (tunnel, wave)
+    const T0 = 17.6, TB = 94.0;
+    const pts = [[T0, 0], [27.5, 0], [30.5, 1.5], [32.0, 1.6], [35.6, 0], [44.5, 0], [46.3, 0.9], [53.8, 0.9], [55.6, 0], [TB - 7.0, 0]];
+    L.rides = L.rides || [];
+    const train = { kind: 'train', x0: T0, pts, v: 10.5, acc: 7, w0: 0.45, w1: 0.35, input: true, seat: 0.48, up: 1.2, down: 0.78,
+      hits: [{ x: 38.0, kind: 'ctbonk' }, { x: 66.0, kind: 'ctsoak' }], exitY: 0 };
+    L.rides.push(train); L.ctTrain = train;
+    const ty = (x) => { for (let i = 1; i < pts.length; i++) if (x <= pts[i][0]) { const [a, c] = [pts[i - 1], pts[i]]; return a[1] + (c[1] - a[1]) * (x - a[0]) / (c[0] - a[0]); } return 0; };
+    const lo = (x) => b.coins(x, ty(x) + 1.15, 1), hi = (x) => b.coins(x, ty(x) + 2.45, 1);
+    // whoosh out of the station past the playground, the coins weaving low and high
+    art('ct_swings', 19.0, 0, 2.4, { back: true }); art('ct_seesaw', 24.0, 0, 0.9, { back: true });
+    [20.5, 22.5, 24.5].forEach(lo); [21.5, 23.5, 25.5, 26.5].forEach(hi);
+    // the big dip into the tunnel: duck under its low mouth (or bonk and drop some coins)
+    L.ctTrestles = [[27.5, 35.6], [44.5, 55.6]];
+    [29.0, 30.5, 32.0, 33.5, 34.8].forEach(lo);
+    L.ctTunnel = { x: 37.2 };                                    // the grassy hill and its stone mouth, the track runs through it
+    [38.8, 40.0, 41.2, 42.4].forEach(x => b.coins(x, 0.6, 1));
+    // out into the sun and over the little wooden bridge, gulls flying alongside
+    L.ctGulls = [44, 57];
+    [46.5, 48.0, 49.5, 51.0, 52.5].forEach(hi);
+    // the sea wall: the big wave rises and crashes over the track (duck and it sprays over)
+    L.ctSeaWall = [55.0, 80.0]; L.ctWave = { x: 66.0 };
+    [58.0, 59.4, 60.8].forEach(lo); [70.0, 71.4].forEach(lo);
+    // the lighthouse special: hanging high on the bunting by the red and white lighthouse
+    art('ct_lighthouse', 73.0, 0, 7.5, { back: true });
+    L.ctBunting = [[76.2, 6.0], [83.5, 3.0]];
+    b.special(78.6, 2.6);                                        // 1: pop up at the right moment
+    [77.2, 80.0].forEach(hi);
+    // screech into the station with a burst of steam; A climbs out and runs on
+    art('ct_plat', TB - 11.6, 0, 2.7, { back: true });
+    [84.0, 85.5].forEach(lo);
+    art('ct_gym', 96.0, 0, 2.5, { back: true });
+    art('ct_gate_l', 94.0, 0, 0.8, { back: true, flip: true });
+
+    // ---------- 3. Along the promenade to the Waterfront ----------
+    ground(95, 125, 'ctprom');
+    L.ctPromWall = [95, 125];
+    art('ct_palm2', 99.5, 0, 5.5, { back: true });
+    b.coins(97.0, 1.1, 3, 0.8);
+    pbench(101.5); b.coins(101.6, 1.8, 3, 0.6);
+    b.gull(106.5, 2.6, 1.6);
+    planter(104.6, 0, true); planter(110.0); planter(119.7, 0, true); art('ct_palm2', 111.5, 0, 5.5, { back: true });
+    b.arc(112.5, 1.3, 5, 3.4, 1.4);
+    pbench(117.5); b.coins(117.6, 1.8, 3, 0.6);
+    b.pigeon(121.0);
+
+    // ---------- 4. V&A Waterfront ----------
+    ground(125, 230, 'ctquay');
+    const CT = 124.6; art('ct_clock', CT, 0, 9.1, { back: true }); L.ctSwap0 = CT + 1.26;   // the middle strip changes behind the Clock Tower
+    // Victorian harbour buildings wall to wall, their canopies are ledges
+    let x = 127.6; L.ctWfRow = [x, 0]; x += 1.885;
+    const WF = [];
+    for (let i = 0; i < 5; i++) { const k = i % 2 ? 'ct_wf2' : 'ct_wf1'; WF.push([k, x]); ledge(x + 0.3, i % 2 ? 2.45 : 2.38, W(k) - 0.6); x += W(k) - 0.02; }
+    L.ctWf = WF; L.ctWfRow[1] = x;
+    bollard(130.0); rope(132.0); b.coins(130.5, 1.2, 3, 0.8);
+    crates4(135.0); b.coins(135.1, 2.3, 2, 0.5);
+    b.coins(136.5, 3.4, 5, 1.0);                                 // along the canopies
+    bollard(140.0); b.pigeon(143.0);
+    crates2(146.0); crates4(147.2); b.coins(147.0, 2.4, 3, 0.7);
+    bollard(152.0);
+    // the fishing boats moored along the quay: hop across their decks and wheelhouse roofs
+    const BQ = 157.0; L.ctBoats = []; L.ctWater = [x + 1.5, 192.5];
+    const boat = (k, bx, deck, roof) => { L.ctBoats.push([k, bx]); const w = k === 'ct_boat_r' ? 4.312 : 3.39, h = k === 'ct_boat_r' ? 3.0 : 2.5;
+      ledge(bx + w * deck[0], -0.35 + h * deck[2], w * (deck[1] - deck[0])); ledge(bx + w * roof[0], -0.35 + h * roof[2], w * (roof[1] - roof[0])); };
+    boat('ct_boat_r', BQ, [0.05, 0.93, 0.42], [0.48, 0.72, 0.74]);
+    boat('ct_boat_b', BQ + 5.3, [0.05, 0.93, 0.44], [0.48, 0.75, 0.78]);
+    boat('ct_boat_r', BQ + 10.0, [0.05, 0.93, 0.42], [0.48, 0.72, 0.74]);
+    b.coins(BQ + 1.0, 1.9, 3, 0.9); b.coins(BQ + 2.3, 3.2, 2, 0.6); b.coins(BQ + 6.0, 1.9, 2, 0.9); b.coins(BQ + 7.0, 3.0, 2, 0.6); b.coins(BQ + 11.0, 1.9, 3, 0.9); b.coins(BQ + 12.3, 3.2, 2, 0.6);
+    rope(BQ + 3.7); bollard(BQ + 9.0); crates4(BQ + 7.6); b.gull(BQ + 8.0, 4.4, 1.4);
+    // Cape fur seals lazing on the quay and on their pontoon (they bark; they don't hurt)
+    L.ctPontoon = { x: 173.5 }; L.ctSeals = [['ct_seal1', 174.0, 0.45, 0.83], ['ct_seal3', 175.4, 0.45, 0.65]];
+    const seal = (k, sx) => { const h = ({ ct_seal0: 0.53, ct_seal2: 0.95 })[k]; L.ctSeals.push([k, sx, 0, h]); solid(sx + 0.25, ({ ct_seal0: 1.795, ct_seal2: 1.552 })[k] - 0.5, h - 0.08); };
+    seal('ct_seal0', 177.0); b.coins(177.0, 1.6, 3, 0.6);
+    seal('ct_seal2', 182.0); b.coins(182.0, 1.9, 3, 0.6);
+    crates4(184.4);
+    // three craft stalls and a food kiosk with flat tops to bounce along
+    let sx2 = 186.0; L.ctStalls = [];
+    for (const k of ['ct_stall_g', 'ct_stall_o', 'ct_stall_b', 'ct_kiosk']) { L.ctStalls.push([k, sx2]); ledge(sx2 + 0.15, k === 'ct_kiosk' ? 2.45 : 2.5, W(k) - 0.3); sx2 += W(k) + 0.05; }
+    b.coins(186.4, 3.3, 10, 1.05);
+    b.pigeon(190.5);
+    crates2(198.6); crates4(200.0);
+    b.coins(203.0, 1.1, 3, 0.8);
+
+    // ---------- 5. Two Oceans Aquarium: in through the doors, two floors inside, out of a side door ----------
+    const AQ = 205.5;
+    L.ctAq = { x0: AQ };                                         // outside: end piece, wall with windows, the entrance
+    const ENT = AQ + 4.93 + 8.36 - 0.04;                           // the entrance piece (doors in the middle)
+    const BX = ENT + 5.471 - 0.35;                                // inside from here (a cut-away box)
+    const UP = 4.6, CEIL = 9.4, OUT = BX + 66;
+    Object.assign(L.ctAq, { ent: ENT, box: BX, x1: OUT, up: UP, ceil: CEIL });
+    ground(BX, OUT + 1, 'ctaqua'); L.solids.forEach(q => { if (q.style === 'ctquay') q.w = BX - q.x; });
+    solid(BX + 0.3, OUT - BX - 0.6, 40, CEIL);                    // the ceiling
+    L.ctSwap1 = BX + 33;                                          // far and middle strips change in here, out of sight
+    // ground floor: the ray touch-pool, a crab, the stairs up
+    art('ct_raypool', BX + 2.0, 0, 1.6); solid(BX + 2.2, 3.3, 1.4); ledge(BX + 2.15, 1.42, 3.4);   // tall enough to need a tap
+    b.coins(BX + 2.3, 2.0, 3, 0.8);
+    const SU = BX + 6.5;                                           // the stairs up (the top landing is the upper floor)
+    L.ctStairs = [[SU, 0, false]];
+    b.slope(SU + 0.55, 0.05, SU + 5.25, UP);
+    L.oneways.push({ kind: 'ledge', x: SU + 5.25, y: UP, w: BX + 54.0 - SU - 5.25 });
+    L.ctUpper = [SU + 5.25, BX + 54.0];
+    b.coins(SU + 1.2, 1.3, 4, 1.0, 0.95);
+    // the kelp forest tank under the upper floor; the special sits above it, at the top of the tank
+    L.ctKelp = { x: BX + 12.6, w: 15.0 };
+    b.crab(BX + 18.0, BX + 13.0, BX + 27.0);
+    b.coins(BX + 14.0, 1.1, 6, 1.6);
+    b.coins(BX + 13.0, UP + 1.1, 5, 1.0);
+    ledge(BX + 19.4, UP + 2.4, 2.4); L.ctTankTop = [BX + 19.4, UP + 2.4, 2.4];   // a lamp beam over the tank
+    b.special(BX + 20.6, UP + 3.5);                              // 2: at the top of the kelp forest tank
+    // upper floor: the African penguins on their rocks (knee-high, harmless), then the glass walkway over the predator tank
+    L.ctPeng = { x: BX + 29.0 };
+    const prock = (x) => { art('ct_pg_rock', x, UP, 0.6); solid(x + 0.1, 0.88, 0.55, UP); };
+    art('ct_pg_rock', BX + 31.3, UP, 1.5); solid(BX + 31.55, 1.9, 1.4, UP); ledge(BX + 31.55, UP + 1.42, 1.9); prock(BX + 36.5); prock(BX + 41.0);
+    b.coins(BX + 30.5, UP + 1.3, 3, 0.9); b.coins(BX + 35.5, UP + 1.6, 3, 0.9); b.coins(BX + 40.0, UP + 1.3, 3, 0.9);
+    L.ctWalk = { x: BX + 44.6 };
+    b.arc(BX + 45.0, UP + 1.2, 6, 7.0, 1.6);
+    // ground floor under the upper floor: portholes and a second crab
+    L.ctPorthole = [BX + 29.0, BX + 54.0];
+    b.crab(BX + 36.0, BX + 30.0, BX + 44.0);
+    b.coins(BX + 31.0, 1.1, 5, 1.2);
+    // down the stairs on the far side, and out of the side door
+    const SD = BX + 54.0;
+    L.ctStairs.push([SD, UP, true]);
+    b.slope(SD, UP, SD + 4.7, 0.05);
+    b.coins(SD + 0.8, UP + 0.4, 4, 1.0, -0.95);
+    b.coins(BX + 58.5, 1.1, 4, 0.9); planter(BX + 60.8, 0, true);
+    L.ctAqOut = { x: OUT };
+    solid(OUT + 0.7, 0.3, 0.2);                                  // the door step (pigeons turn back here)
+
+    // ---------- 6. Greenmarket Square ----------
+    const GM = OUT + 1.0;
+    ground(OUT + 1, GM + 62, 'ctcobble');
+    let gx = GM + 3.0; const GMR = []; L.ctGmRow = [gx, 0]; gx += 1.494;
+    for (const k of ['ct_gm_cream', 'ct_gm_green', 'ct_townhouse', 'ct_gm_upper', 'ct_gm_cream', 'ct_gm_green', 'ct_gm_upper', 'ct_gm_cream', 'ct_gm_green']) {
+      GMR.push([k, gx]); if (k === 'ct_townhouse') L.ctTown = gx; gx += W(k) - 0.02; }
+    L.ctGm = GMR; L.ctGmRow[1] = gx;
+    // the Old Town House: its balcony is a ledge; the special sits above it (from the stall canopies)
+    ledge(L.ctTown + 0.4, 2.55, 5.6);
+    b.special(L.ctTown + 3.2, 4.3);                              // 3: on the Old Town House balcony
+    // market stalls in groups of three and four, their canopies are ledges
+    const stalls = (x, ks) => { for (const k of ks) { (L.ctMk = L.ctMk || []).push([k, x]); ledge(x + 0.15, 2.62, W(k) - 0.3); x += W(k) + 0.04; } return x; };
+    const s1 = stalls(GM + 2.5, ['ct_mk_red', 'ct_mk_yel', 'ct_mk_grn']);
+    b.coins(GM + 2.9, 3.4, 6, 1.0);
+    b.pigeon(GM + 6.0);
+    art('ct_baskets', s1 + 0.6, 0, 1.4); solid(s1 + 0.65, 0.66, 1.35); ledge(s1 + 0.62, 1.37, 0.72);
+    b.coins(L.ctTown + 1.0, 1.1, 5, 1.0);
+    const s2 = stalls(L.ctTown + 7.8, ['ct_mk_blu', 'ct_mk_red', 'ct_mk_yel', 'ct_mk_grn']);
+    b.coins(L.ctTown + 8.2, 3.4, 8, 1.0);
+    b.pigeon(L.ctTown + 12.0);
+    art('ct_cloth', s2 + 0.8, 0, 2.15); solid(s2 + 0.9, 0.88, 2.1); ledge(s2 + 0.85, 2.12, 0.98);   // a tall stack of fabrics: lean, then jump
+    b.coins(s2 + 0.9, 3.0, 2, 0.6);
+    b.pigeon(s2 + 4.5);
+    const s3 = stalls(s2 + 6.5, ['ct_mk_grn', 'ct_mk_blu', 'ct_mk_red']);
+    b.coins(s2 + 6.9, 3.4, 6, 1.0);
+    art('ct_baskets', s3 + 0.5, 0, 1.4); solid(s3 + 0.55, 0.66, 1.35); ledge(s3 + 0.52, 1.37, 0.72);
+
+    // ---------- 7. Bo-Kaap: the steep cobbled street, each house a step higher than the last ----------
+    const BK = GM + 62.0;
+    const HOUSES = ['ct_bk_pink', 'ct_bk_lime', 'ct_bk_teal', 'ct_mosque', 'ct_bk_yel', 'ct_bk_lilac', 'ct_bk_pink', 'ct_bk_lime', 'ct_bk_teal', 'ct_bk_yel', 'ct_bk_lilac'];
+    const HH = { ct_bk_pink: 5.0, ct_bk_lime: 3.65, ct_bk_teal: 5.0, ct_bk_yel: 3.62, ct_bk_lilac: 4.98, ct_mosque: 4.6 };
+    const RISE = 0.4;
+    let hx = BK + 1.93, hy = 0; L.ctBk = [];
+    let prevX = BK - 2;
+    for (let i = 0; i < HOUSES.length; i++) {
+      const k = HOUSES[i], w = W(k), ny = i === 0 ? 0 : hy + RISE;
+      if (i > 0) { ground(prevX, hx + 0.2, 'ctbokaap', hy); b.slope(hx + 0.2, hy, hx + 1.4, ny); prevX = hx + 1.4; }
+      else { ground(BK - 2, hx + 0.2, 'ctbokaap', 0); prevX = hx + 0.2; }
+      hy = ny;
+      L.ctBk.push([k, hx, hy]);
+      if (k !== 'ct_mosque') ledge(hx + 0.15, hy + HH[k] - 0.15, w - 0.3);   // flat roofs
+      hx += w - 0.02;
+    }
+    const TOPY = hy;                                              // the top of the street: the mountain path and the lower cable station
+    ground(prevX, hx + 26, 'ctbokaap', hy);
+    L.ctBkEnd = [BK, hx, hy];
+    L.ctSwap2 = hx - W('ct_bk_lilac') / 2;                        // the middle strip changes behind the last house
+    // stoeps, geraniums, benches and bollards along the street
+    const at = (x) => { let y = 0; for (const [k, xx, yy] of L.ctBk) if (x >= xx + 1.4 - 0.01) y = yy; return y; };
+    const stoep = (x) => { const y = at(x); art('ct_steps', x, y, 1.0); solid(x + 0.1, 1.15, 0.9, y); };
+    const tallStoep = (x) => { const y = at(x); art('ct_steps', x, y, 1.6); solid(x + 0.15, 1.75, 1.5, y); };   // too tall to hop: a tap up and over
+    const geranium = (x) => { const y = at(x); art('ct_geranium', x, y, 0.95); solid(x + 0.1, 0.5, 0.9, y); };
+    const bkbench = (x) => { const y = at(x); art('ct_bk_bench', x, y, 1.0); solid(x + 0.1, 1.43, 0.6, y); };
+    const lamp = (x) => art('ct_lamp', x, at(x), 4.4, { back: true });
+    const H0 = L.ctBk;
+    b.coins(H0[0][1] + 1.0, 1.1, 3, 0.8);
+    tallStoep(H0[0][1] + 2.2); b.coins(H0[1][1] + 1.6, H0[1][2] + 1.4, 3, 0.7);
+    geranium(H0[1][1] + 2.8);
+    lamp(H0[2][1] + 0.4);
+    b.coins(H0[1][1] + 1.0, H0[1][2] + 4.4, 3, 0.9);              // along the lime roof
+    b.pigeon(H0[2][1] + 2.4, H0[2][2]);
+    bkbench(H0[3][1] + 1.8); b.coins(H0[3][1] + 2.0, H0[3][2] + 1.8, 3, 0.6);
+    tallStoep(H0[4][1] + 2.0); b.coins(H0[4][1] + 1.0, H0[4][2] + 4.4, 3, 0.9);
+    b.coins(H0[5][1] + 1.0, H0[5][2] + 5.8, 3, 0.9);              // along the lilac roof
+    geranium(H0[5][1] + 2.6); lamp(H0[6][1] + 0.3);
+    b.pigeon(H0[6][1] + 2.6, H0[6][2]);
+    tallStoep(H0[7][1] + 2.3); b.coins(H0[7][1] + 1.0, H0[7][2] + 4.4, 3, 0.9);
+    bkbench(H0[8][1] + 1.8);
+    b.coins(H0[9][1] + 1.0, H0[9][2] + 4.4, 3, 0.9);              // along the yellow roof, then up onto the highest house
+    geranium(H0[9][1] + 2.7);
+    const top = H0[10];
+    b.special(top[1] + 1.9, top[2] + 4.98 + 0.9);                 // 4: on the flat roof of the highest painted house
+    b.coins(top[1] + 1.0, top[2] + 1.2, 3, 0.8);
+
+    // ---------- 8. Up to the cableway: fynbos, boulders, a blank signpost ----------
+    const FP = hx;
+    const boulder = (x) => { art('ct_boulder', x, TOPY, 0.45); solid(x + 0.05, 0.6, 0.42, TOPY); };
+    const rockT = (x) => { art('ct_rock_tall', x, TOPY, 2.2); solid(x + 0.2, 1.35, 2.15, TOPY); ledge(x + 0.25, TOPY + 2.15, 1.25); };
+    const protea = (x, y = TOPY) => art('ct_protea', x, y, 1.3, { back: true });
+    const restio = (x, y = TOPY) => art('ct_restio', x, y, 1.5, { back: true });
+    protea(FP + 0.6); restio(FP + 2.2);
+    boulder(FP + 3.0); b.coins(FP + 2.8, TOPY + 1.4, 3, 0.6);
+    art('ct_sign', FP + 5.0, TOPY, 1.8, { back: true });
+    rockT(FP + 7.5); b.coins(FP + 7.7, TOPY + 3.0, 3, 0.6);
+    protea(FP + 10.0); b.gull(FP + 12.0, TOPY + 2.6, 1.4);
+    art('ct_bush', FP + 13.5, TOPY, 0.6, { back: true }); restio(FP + 15.0);
+    boulder(FP + 16.5); b.coins(FP + 15.0, TOPY + 1.2, 4, 0.8);
+    // ---------- 9. The lower cable station and the cable car ----------
+    const LS = FP + 19.5;
+    L.ctCliff = { x0: LS - 6.0, top: 16.0 };                      // the cliffs of Table Mountain rise behind the station
+    L.ctSwap3 = LS + 4.0;                                          // far and middle strips change behind the station (the cliff hides it)
+    L.ctLs = { x: LS, y: TOPY };                                   // end piece, entrance (A walks in), then out onto the platform behind
+    const LSE = LS + 2.543 - 0.05, LSD = LSE + 6.829 * 0.5;        // the open doors
+    L.ctLs.ent = LSE; L.ctLs.door = LSD;
+    const WH = LSE + 6.829 - 0.05;                                  // the wheel house: the cable comes out of its roof
+    L.ctLs.wheel = WH;
+    const CAB = WH + 8.475 + 2.4;                                  // the cabin waits by the platform, centre
+    L.ctLs.plat = CAB - 2.3;
+    ground(hx + 26, CAB + 4, 'ctbokaap', TOPY);
+    b.coins(LSE + 1.5, TOPY + 1.1, 4, 0.9); b.coins(WH + 1.0, TOPY + 1.1, 6, 1.1);
+    const TOP = 16.0, TX = CAB + 32.0;                             // the top station on the edge of the mountain
+    const cab = { kind: 'cable', x0: CAB, pts: [[CAB, TOPY], [CAB + 2.0, TOPY + 0.5], [TX - 2.0, TOP - 0.4], [TX, TOP]], v: 4.4, acc: 1.4, w0: 1.4, w1: 1.1, input: false, seat: 0, up: 0, down: 0, exitY: TOP };
+    L.rides.push(cab); L.ctCab = cab;
+    for (let i = 1; i <= 9; i++) { const k = i / 10, cxp = CAB + 2 + (TX - CAB - 4) * k; b.coins(cxp, TOPY + 0.5 + (TOP - 0.4 - TOPY - 0.5) * k + 0.8, 1); }   // up beside the cable
+    // ---------- 10. Table Mountain top: the Cape Doctor blows A along, so his jumps go further ----------
+    L.ctUs = { x: TX - 4.68 };
+    L.camFloor = [[TX - 1.0, TX + 120, TOP]];
+    const E = TX + 70.0;                                            // the viewpoint at the edge
+    ground(TX - 1.0, E, 'ctrock', TOP);
+    L.wind = [TX + 6.0, E - 10.0, 2.3, 0.55];                      // (from, to, push in the air, how much gravity is left when falling)
+    const ROCK = (x) => { art('ct_rock_tall', x, TOP, 2.2); solid(x + 0.2, 1.35, 2.15, TOP); ledge(x + 0.25, TOP + 2.15, 1.25); };
+    const STACK = (x) => { art('ct_rock_stack', x, TOP, 3.1); solid(x + 0.35, 1.8, 3.0, TOP); ledge(x + 0.35, TOP + 3.02, 1.8); };
+    const BOULDER = (x) => { art('ct_boulder', x, TOP, 0.45); solid(x + 0.05, 0.6, 0.42, TOP); };
+    const DECK = (x) => { art('ct_deck', x, TOP, 2.1); solid(x + 0.1, 6.16, 1.4, TOP); };   // a raised boardwalk: tap up, run along
+    const DAS = (k, x, y = TOP) => (L.ctDassies = L.ctDassies || []).push([k, x, y]);
+    b.coins(TX + 2.0, TOP + 1.1, 4, 0.9);
+    protea(TX + 4.5, TOP); BOULDER(TX + 7.0);
+    STACK(TX + 11.0); b.special(TX + 12.2, TOP + 4.1);            // 5: on top of a tall sandstone stack
+    b.coins(TX + 9.5, TOP + 2.0, 3, 0.7);
+    DAS('ct_das_sit', TX + 11.6, TOP + 3.02);
+    restio(TX + 15.0, TOP); BOULDER(TX + 17.5);
+    DECK(TX + 20.0); b.coins(TX + 20.5, TOP + 2.4, 6, 1.0);
+    DAS('ct_das_peek', TX + 27.6);
+    b.gull(TX + 29.0, TOP + 3.4, 1.6);
+    ROCK(TX + 31.0); b.coins(TX + 33.0, TOP + 3.6, 4, 0.9);
+    protea(TX + 35.5, TOP); BOULDER(TX + 37.5);
+    STACK(TX + 40.0); DAS('ct_das_look', TX + 41.0, TOP + 3.02); b.coins(TX + 42.8, TOP + 4.0, 3, 0.9);
+    restio(TX + 45.5, TOP); BOULDER(TX + 47.0); b.gull(TX + 49.5, TOP + 2.8, 1.4);
+    DECK(TX + 51.0); b.coins(TX + 51.5, TOP + 2.4, 6, 1.0);
+    DAS('ct_das_sleep', TX + 58.5); protea(TX + 59.5, TOP);
+    // ---------- 11. The ending: the flag at the viewpoint; A watches the sunset as the tablecloth rolls over the mountain ----------
+    L.ctEdge = E;
+    b.flag(E - 7.5); L.flagY = TOP;
+    L.finale = E - 2.2;
+    L.ctFinale = true;
+    b.wall(E + 0.2, 1, 40);
+    b.end(E + 5.0);
+  },
+},
 ];
 // Tower Bridge is parked for now (Ladi 2026-10-28): its build and art stay, it just isn't in the game.
 const PARKED = ['towerbridge', 'practice'];
@@ -2296,7 +2601,8 @@ function diveDip(t) {   // down steeply, a glide along the bottom, then up
 // swipe/press down: fall through the ledge A is standing on (or just hopped off with the same touch)
 function dropDown(g) {
   const p = g.p;
-  if (p.zip) { p.zip.tgt = -1; p.zip.tt = 0.55; return; }   // on the zip line: drop lower
+  if (p.zip) { p.zip.tgt = -1; p.zip.tt = 0.55; return; }
+  if (p.ride) { p.duck = true; return; }   // on the zip line: drop lower
   if (p.onGround && p.ground && p.ground.swim) { startDive(g); return; }   // swimming: dive under
   p.buffer = 0;
   const on = p.onGround && p.ground && p.ground.h === undefined && !p.ground.slope ? p.ground
@@ -2332,6 +2638,68 @@ function leafSlopes(g) {
     { slope: true, id: 'leafB', x0: B.xb - dx, y0: B.y + dy, x1: B.xb, y1: B.y, leaf: 1 },
   ];
 }
+// rides (Cape Town): the Blue Train and the cable car carry A along their track (a list of points). He can't run or jump on them;
+// on the train a tap pops him up out of his seat and a swipe down ducks him (r.input). r.hits: places he must duck under.
+function rideY(r, x) {
+  const P = r.pts; if (x <= P[0][0]) return P[0][1];
+  for (let i = 1; i < P.length; i++) if (x <= P[i][0]) { const a = P[i - 1], c = P[i]; return a[1] + (c[1] - a[1]) * (x - a[0]) / (c[0] - a[0]); }
+  return P[P.length - 1][1];
+}
+function rideTick(g, dt) {
+  const p = g.p, R = g.L.rides;
+  if (!p.ride) {
+    const i = p.rideN || 0, r = R[i];
+    if (!r || p.x + PW / 2 < r.x0 || p.x > r.x0 + 3 || Math.abs(p.y - r.pts[0][1]) > 6) return false;
+    p.ride = { i, s: r.x0, off: 0, tgt: 0, tt: 0, t: 0, v: 0, end: 0 };
+    g.events.push({ type: 'ride', kind: r.kind });
+  }
+  const z = p.ride, r = R[z.i], end = r.pts[r.pts.length - 1][0];
+  z.t += dt;
+  if (r.input) {
+    if (p.buffer > 0) { z.tgt = 1; z.tt = 0.55; p.buffer = 0; }
+    if (p.duck) { z.tgt = -1; z.tt = 0.55; p.duck = false; }
+    z.tt -= dt; if (z.tt <= 0) z.tgt = 0;
+    z.off += (z.tgt - z.off) * Math.min(1, dt * 10);
+  } else { p.buffer = 0; p.duck = false; }
+  if (z.t > r.w0 && z.s < end) {
+    const vmax = Math.min(r.v, Math.sqrt(2 * r.acc * Math.max(0, end - z.s)) + 0.5);
+    z.v = Math.min(vmax, z.v + r.acc * 1.6 * dt);
+    const ps = z.s; z.s = Math.min(end, z.s + z.v * dt);
+    for (const h of r.hits || []) if (ps < h.x && z.s >= h.x) {
+      const hit = z.off > -0.45;
+      if (hit && h.kind === 'ctbonk') { const n = Math.min(3, g.coins); g.coins -= n; z.lost = n; }
+      z[h.kind] = { t: z.t, hit };
+      g.events.push({ type: h.kind, hit, x: z.s });
+    }
+  }
+  if (z.s >= end) {
+    z.end += dt;
+    if (z.end >= r.w1) {
+      p.ride = null; p.rideN = z.i + 1;
+      p.x = end - PW / 2 + (r.exitDx || 0); p.y = r.exitY + 0.02; p.vy = 0; p.vx = 0; p.onGround = false; p.dir = 1; p.coyote = 0;
+      g.events.push({ type: 'rideEnd', kind: r.kind });
+      return true;
+    }
+  }
+  const y = rideY(r, z.s);
+  p.x = z.s - PW / 2; p.y = y + r.seat + (z.off > 0 ? z.off * r.up : z.off * r.down);
+  p.vx = z.v; p.vy = 0; p.onGround = false; p.coyote = 0; p.wall = 0; p.blocked = false; p.airT = 0; p.dir = 1; p.rising = false;
+  pickUp(g);
+  return true;
+}
+function pickUp(g) {
+  const p = g.p;
+  const cx = p.x + PW / 2, cy = p.y - (p.dip || 0) + PH / 2;
+  for (const c of g.coinList) {
+    if (c.taken || Math.abs(c.x - cx) > 1 || Math.abs(c.y - cy) > 1.3) continue;
+    if (Math.abs(c.x - cx) < PW / 2 + 0.32 && Math.abs(c.y - cy) < PH / 2 + 0.32) { c.taken = true; g.coins++; g.events.push({ type: 'coin', x: c.x, y: c.y }); }
+  }
+  g.specialList.forEach((s, i) => {
+    if (s.taken) return;
+    if (Math.abs(s.x - cx) < PW / 2 + 0.5 && Math.abs(s.y - cy) < PH / 2 + 0.5) { s.taken = true; g.got[i] = true; g.events.push({ type: 'special', x: s.x, y: s.y, i }); }
+  });
+
+}
 function tick(g, dt) {
   const p = g.p, P = g.P, L = g.L;
   g.t += dt;
@@ -2354,6 +2722,7 @@ function tick(g, dt) {
   p.lockT = Math.max(0, p.lockT - dt);
   p.landT = Math.max(0, p.landT - dt);
   if (!g.held) p.rising = false;
+  if (L.rides && rideTick(g, dt)) return;
 
   // jumping
   if (p.buffer > 0 && p.zip) { p.zip.tgt = 1; p.zip.tt = 0.55; p.buffer = 0; }   // on the zip line: lift up
@@ -2371,8 +2740,11 @@ function tick(g, dt) {
 
   // gravity
   let grav = p.vy > 0 ? (p.cut && !p.rising ? P.gCut : P.gUp) : P.gFall;
+  const wind = L.wind && p.x > L.wind[0] && p.x < L.wind[1] ? L.wind : null;
+  if (wind && p.vy <= 0) grav *= wind[3];
   p.vy -= grav * dt;
   if (p.vy < -P.maxFall) p.vy = -P.maxFall;
+  if (wind && p.vy < -9) p.vy = -9;
   if (p.wall && p.vy < -P.wallSlide) p.vy = -P.wallSlide;
 
   // perfume mist slows A down; travelators carry him (and keep carrying him through a jump off one)
@@ -2383,6 +2755,7 @@ function tick(g, dt) {
   const belt = p.onGround ? (p.ground && p.ground.belt) || 0 : p.carry || 0;
   p.carry = belt;
   p.vx = p.dir * P.speed * slow + belt;
+  if (wind) p.vx += p.onGround ? wind[2] * 0.25 : wind[2];
 
   // moving platforms: set their height for this moment, and carry A if he is standing on one
   if (L.movers) for (const m of L.movers) {
@@ -2516,16 +2889,8 @@ function tick(g, dt) {
     else p.dip = diveDip(p.diveT);
   }
   // pick-ups
+  pickUp(g);
   const cx = p.x + PW / 2, cy = p.y - (p.dip || 0) + PH / 2;
-  for (const c of g.coinList) {
-    if (c.taken || Math.abs(c.x - cx) > 1 || Math.abs(c.y - cy) > 1.3) continue;
-    if (Math.abs(c.x - cx) < PW / 2 + 0.32 && Math.abs(c.y - cy) < PH / 2 + 0.32) { c.taken = true; g.coins++; g.events.push({ type: 'coin', x: c.x, y: c.y }); }
-  }
-  g.specialList.forEach((s, i) => {
-    if (s.taken) return;
-    if (Math.abs(s.x - cx) < PW / 2 + 0.5 && Math.abs(s.y - cy) < PH / 2 + 0.5) { s.taken = true; g.got[i] = true; g.events.push({ type: 'special', x: s.x, y: s.y, i }); }
-  });
-
   for (const s of g.passList) {
     if (s.taken || Math.abs(s.x - cx) > PW / 2 + 0.5 || Math.abs(s.y - cy) > PH / 2 + 0.5) continue;
     s.taken = true; g.bonus += L.passBonus || 2; g.events.push({ type: 'pass', x: s.x, y: s.y });
@@ -2770,7 +3135,7 @@ function updateEnemies(g, dt) {
 
 function cloneGame(g) {
   return {
-    ...g, p: { ...g.p, zip: g.p.zip && { ...g.p.zip } }, safe: g.safe.slice(), bubble: g.bubble && { ...g.bubble }, flag: g.flag && { ...g.flag },
+    ...g, p: { ...g.p, zip: g.p.zip && { ...g.p.zip }, ride: g.p.ride && { ...g.p.ride } }, safe: g.safe.slice(), bubble: g.bubble && { ...g.bubble }, flag: g.flag && { ...g.flag },
     got: g.got.slice(), passList: g.passList.map(s => ({ ...s })), coinList: g.coinList.map(c => ({ ...c })), specialList: g.specialList.map(s => ({ ...s })),
     enemies: g.enemies.map(e => ({ ...e })), events: [],
     race: g.race && { ...g.race, a: { ...g.race.a }, j: { ...g.race.j } },
@@ -2785,6 +3150,6 @@ function floorAt(L, x) {
   return best === null ? 0 : best;
 }
 
-const api = { setTrips, ALL_LEVELS, raceH, RACE, fixPhases: v => { FIXED_PH = v; }, DIVE_T, LEVELS, moverY, moverX, DX_HOUSE, mistOn, CW_TALL, floorAt, DEFAULT_TUNE, newGame, step, cloneGame, buildLevel, PW, PH };
+const api = { rideY, setTrips, ALL_LEVELS, raceH, RACE, fixPhases: v => { FIXED_PH = v; }, DIVE_T, LEVELS, moverY, moverX, DX_HOUSE, mistOn, CW_TALL, floorAt, DEFAULT_TUNE, newGame, step, cloneGame, buildLevel, PW, PH };
 if (typeof module !== 'undefined' && module.exports) module.exports = api; else root.ARun = api;
 })(typeof window !== 'undefined' ? window : globalThis);
