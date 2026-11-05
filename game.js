@@ -1130,7 +1130,7 @@ const ALL_LEVELS = [
     const L = b.L;
     // The West End at Christmas, drawn from Ladi's art (src/westend/cut.py; sizes in src/westend/pieces.json).
     // Bond Street Elizabeth line exit -> Oxford Street lights -> Elfridges (hall, toy shop, Santa's grotto, present chute)
-    // -> Regent Street angels -> Carnaby Street -> Covent Garden piazza + market hall -> Trafalgar Square ice slide -> tree lights.
+    // -> Regent Street angels -> Carnaby Street -> Piccadilly Circus screens -> Covent Garden piazza + market hall -> Trafalgar Square ice slide -> tree lights.
     L.killY = -12; L.startX = 2.0; L.camMin = -6; L.snow = true;
     const art = (key, x, y, h, o = {}) => (L.weArt = L.weArt || []).push(Object.assign({ key, x, y, h }, o));   // a picture standing at (x, y), h units tall
     const solid = (x, w, h, y = 0, o = {}) => { L.solids.push(Object.assign({ kind: 'block', x, y, w, h, style: 'hidden' }, o)); };
@@ -1160,7 +1160,7 @@ const ALL_LEVELS = [
     for (const [, x, w] of SHOPS) ledge(x + 0.35, 2.82, w - 0.7);   // the shop canopies
     // hanging lights across the street: snowflakes and stars, their top bars are ledges
     const flake = (x, y, star) => { art(star ? 'we_star' : 'we_flake', x, y, star ? 3.2 : 3.4, { hang: true }); ledge(x + 0.3, y + (star ? 3.05 : 3.25), (star ? 4.187 : 3.647) - 0.6); };
-    L.weStrings = [[6, 70, 7.6], [171, 219, 7.7], [221, 261, 7.4], [262, 289, 7.8]];
+    L.weStrings = [[6, 70, 7.6], [171, 219, 7.7], [221, 261, 7.4], [308, 335, 7.8]];
     lamp(8.2); drift(10.5); b.coins(9.8, 1.2, 3, 0.8);
     snowman(15.2); b.coins(14.8, 2.2, 3, 0.7);
     flake(18.5, 3.4); b.coins(19.2, 7.4, 3, 0.9);
@@ -1259,19 +1259,56 @@ const ALL_LEVELS = [
     L.weCbSwap = CB + 20; L.weRows.push({ kind: 'carnaby', x0: CB + 0.5, x1: 260.5 });
     art('we_cb_arch', CB + 1.0, 0, 4.2, { mid: true }); ledge(CB + 1.2, 4.05, 5.5);
     L.weArch = { x: CB + 1.0 };
-    bigman(CB - 1.6); b.special(CB + 4.0, 5.1);                 // 5: on top of the Carnaby arch
-    b.coins(CB + 1.6, 4.9, 3, 0.8);
+    bigman(CB - 1.6); b.coins(CB + 1.6, 4.9, 5, 0.8);         // along the top of the Carnaby arch
     [['we_cb_ball', CB + 10, 5.9], ['we_cb_cane', CB + 17, 5.6], ['we_cb_gift', CB + 24, 6.0], ['we_cb_ball', CB + 31, 5.8], ['we_cb_cane', CB + 37, 5.6]]
       .forEach(([k, x, y]) => art(k, x, y, k === 'we_cb_cane' ? 1.8 : k === 'we_cb_gift' ? 1.5 : 1.6, { hang: true }));
     snowman(CB + 11.0); b.coins(CB + 10.6, 2.2, 3, 0.7);
     b.pigeon(CB + 16.0);
     bigman(CB + 20.0); bench(CB + 25.0); b.coins(CB + 25.2, 1.6, 3, 0.7);
     b.pigeon(CB + 29.0); grit(CB + 34.0); b.coins(CB + 33.8, 1.9, 3, 0.7);
-    // ---------- 5. Covent Garden: piazza, then through the old market hall ----------
-    const CG = 261.0;
-    ground(261, 344, 'wecobble');
+    // ---------- 5. Piccadilly Circus: the fountain, then the giant screens: climb the gantry, ride the cradle down ----------
+    const PC = 261.0;
+    ground(261, 307, 'wepave');
+    // the fountain with the winged archer: three round steps to hop up and over
+    const FX = PC + 2.6, FW = 4.833;
+    art('we_pc_fountain', FX, 0, 5.6, { back: true });
+    solid(FX + FW * 0.02, FW * 0.96, 0.5); solid(FX + FW * 0.1, FW * 0.8, 0.8); solid(FX + FW * 0.18, FW * 0.64, 1.05);
+    b.arc(FX + 0.6, 1.4, 5, 3.2, 1.0);
+    art('we_pc_sign', PC + 8.4, 0, 2.6, { back: true });
+    art('we_pc_flowers', PC + 9.6, 0, 1.6); solid(PC + 9.7, 1.2, 1.5); ledge(PC + 9.65, 1.55, 1.3);
+    art('we_pc_barrier', PC + 12.4, 0, 0.75); solid(PC + 12.45, 1.2, 0.7);
+    b.coins(PC + 9.9, 2.4, 2, 0.6);
+    // the screens building: its two side buildings and the curved front covered in screens (adverts change in draw.js)
+    const S0 = PC + 14.0, BM = S0 + 5.7, S1 = BM + 19.914;
+    L.wePc = { x0: S0, bm: BM, x1: S1, swap: [PC - 3.0, S1 + 2.8] };
+    // the gantry across the screens: three walkways, each a tap above the last, hung on brackets; ladders between (just for looks)
+    const walk = (x, y, parts) => {
+      let xx = x; const pcs = [];
+      for (const k of parts) { const w = { we_gw_l: 3.067, we_gw_m: 7.959, we_gw_r: 3.076 }[k]; pcs.push([k, xx]); xx += w - 0.02; }
+      (L.weGw = L.weGw || []).push({ y, pcs, x0: x, x1: xx });
+      ledge(x + 0.15, y, xx - x - 0.3);
+      return xx;
+    };
+    const W1 = 2.5, W2 = 4.7, W3 = 6.9;
+    walk(BM + 0.4, W1, ['we_gw_l', 'we_gw_r']);
+    walk(BM + 5.2, W2, ['we_gw_l', 'we_gw_r']);
+    const w3 = walk(BM + 9.6, W3, ['we_gw_l', 'we_gw_m']);
+    L.weLadders = [[BM + 1.2, 0], [BM + 5.6, W1], [BM + 10.0, W2]];
+    b.coins(BM + 1.0, W1 + 0.9, 5, 1.0); b.coins(BM + 5.8, W2 + 0.9, 5, 1.0); b.coins(BM + 10.2, W3 + 0.9, 4, 1.0);
+    b.special(BM + 16.6, W3 + 1.6);                            // 5: at the top of the gantry, by the biggest screen
+    // the window cleaners' cradle at the end of the top walkway: it waits for A, then lowers him to the street
+    const cr = { kind: 'lift', mover: true, trig: 'weCradle', x: w3 - 0.1, w: 4.38, y: W3, y0: W3, y1: 0, up: 3.4, d0: 0.45 };
+    (L.movers = L.movers || []).push(cr); L.oneways.push(cr); L.weCradle = cr;
+    L.solids.push({ kind: 'block', x: cr.x + cr.w - 0.2, y: 2.0, w: 0.4, h: 20, style: 'hidden', noGrab: true });   // the cradle's far rail: he rides it down and walks out at the bottom
+    // down on the street: under the gantry for those who stay low
+    b.coins(S0 + 1.0, 1.1, 4, 0.9); b.pigeon(BM + 3.5); drift(BM + 7.5); b.coins(BM + 9.0, 1.1, 4, 0.9);
+    bigman(BM + 13.0);                                          // (no pigeon near the cradle: A can't hop while it lowers him)
+    b.coins(S1 + 1.0, 1.1, 4, 0.9);
+    // ---------- 6. Covent Garden: piazza, then through the old market hall ----------
+    const CG = 307.0;
+    ground(307, 390, 'wecobble');
     art('we_chalets', CG + 1.5, 0, 3.0, { back: true }); ledge(CG + 1.7, 2.75, 10.6);
-    b.coins(CG + 2.2, 3.6, 9, 1.1); b.pigeon(CG + 6.5);
+    b.coins(CG + 2.2, 3.6, 9, 1.1); bigman(CG + 11.6);   // (no pigeon here: it would walk into the cradle while A rides it down)
     art('we_cg_tree', CG + 13.5, 0, 7.5, { back: true });
     art('we_reindeer', CG + 18.5, 0, 2.6, { back: true });
     art('we_chestnut', CG + 21.0, 0, 1.5); solid(CG + 21.2, 1.6, 1.4);
@@ -1292,9 +1329,9 @@ const ALL_LEVELS = [
     b.pigeon(HI + 30.5);
     L.weHallOut = { x: HO - 0.6 };
     bigman(HO + 4.5);
-    // ---------- 6. Trafalgar Square: the frozen fountains ----------
-    const TF = 344.0;
-    ground(344, 414, 'wegranite');
+    // ---------- 7. Trafalgar Square: the frozen fountains ----------
+    const TF = 390.0;
+    ground(390, 460, 'wegranite');
     art('we_tf_lion', TF + 0.5, 0, 2.6, { back: true });
     // ice ramp up onto the first basin, slide across, hop the rim, slide across the second one: belts, nothing that hurts
     const ICE = 1.0;
