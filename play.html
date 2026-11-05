@@ -423,8 +423,8 @@ html.lw-loading .splash{visibility:hidden}
   </div>
 </section>
 
-<script src="kids/kids-meta.js?v=20261102d"></script>
-<script src="kids/kids.js?v=20261102d"></script>
+<script src="kids/kids-meta.js?v=20261105a"></script>
+<script src="kids/kids.js?v=20261105a"></script>
 <script src="sfx.js"></script>
 <script src="game.js?v=1793689119"></script>
 <script>
@@ -684,25 +684,28 @@ function lwKidCfg() {
     tee: lwColour('hood') || [28, 42, 94], bottom: lwColour('jog') || [42, 42, 46], shoe: lwColour('shoe') || [242, 240, 234] };
 }
 function lwKidCar(key) { const kc = lwKidCfg(), e = kc && KidArt.info(kc, key); return e && e.car; }
-// the child from behind, for the Downtown fireworks: null for A, false while it is being drawn
-let lwBack = null;
-function lwKidBack() {
-  const kc = lwKidCfg(); if (!kc || !KidArt.has(kc, 'hero_back')) return null;
-  if (lwBack === null) {
-    lwBack = false;
-    KidArt.build(kc, 'hero_back').then(c => {
+// the child from behind (the Downtown fireworks, the West End tree): null for A or when there is no such picture, false while it is being drawn
+const lwBacks = {};
+function lwKidBack(key = 'hero_back') {
+  const kc = lwKidCfg(); if (!kc || !KidArt.has(kc, key)) return null;
+  if (lwBacks[key] === undefined) {
+    lwBacks[key] = false;
+    KidArt.build(kc, key).then(c => {
       if (!c) return;
-      c.lwEar = KidArt.info(kc, 'hero_back').back.earY - KIDS_META.pad;   // ear line, in the picture
-      c.lwFeet = kc.kid === 'girl' ? 139 : 146;                           // middle of the feet, in the picture
-      lwBack = c;
+      const b = KidArt.info(kc, key).back, m = KidArt.info(kc, key).head[0];
+      c.lwEar = b.earY - KIDS_META.pad;                                                  // ear line, in the picture
+      c.lwFeet = b.feet !== undefined ? b.feet : (kc.kid === 'girl' ? 139 : 146) + m[2];  // middle of the feet, in the picture
+      lwBacks[key] = c;
     });
   }
-  return lwBack;
+  return lwBacks[key];
 }
 function loadImg(key, src) {
   const kc = lwKidCfg();
   if (key === 'dt_aback' || key === 'a_back_ldn') lwKidBack();
+  if (key === 'a_back_ldn') lwKidBack('hero_back_win');
   if (kc && KidArt.has(kc, key)) return KidArt.build(kc, key).then(c => { if (c) IMG[key] = c; });
+  if (!src) return Promise.resolve();   // a child's own picture (e.g. the winter coat) that A doesn't have
   const f = ATLAS_OF[key];
   if (f) return atlasPic(f).then(im => {
     if (!im) return; const [x, y, w, h] = ATLAS[f][key], c = document.createElement('canvas');
@@ -738,12 +741,12 @@ const own = list => list.map(k => [k, k + '.webp']);
 function loadAll() {
   if (groupP.length) return;   // already loading
   const core = [];
-  for (const k in SPRITES) if (!DX_SPRITES.includes(k) && !PM_SPRITES.includes(k)) core.push([k, SPRITES[k].src]);
+  for (const k in SPRITES) if (SPRITES[k].src && !DX_SPRITES.includes(k) && !PM_SPRITES.includes(k)) core.push([k, SPRITES[k].src]);
   core.push(['a_side', 'a_side.webp'], ['gw_backdrop', 'gw_backdrop.webp']);
   core.push(...own(['gw_wall', 'gw_pillar', 'gw_rail', 'gw_arch', 'gw_bench', 'gw_kiosk', 'gw_shelter', 'wh_bricktile', 'wh_door', 'wh_top', 'wh_crane', 'gw_boat', 'bk_bike', 'bk_dock', 'bk_totem', 'pub', 'pub_balcony', 'pub_sign', 'mk_arch', 'mk_shop1', 'mk_shop2', 'mk_shop3', 'mk_shop4', 'mk_shop5', 'mk_shop6', 'mk_shop7', 'mk_shop8', 'st_0', 'st_1', 'st_2', 'ap_roof', 'ap_floor', 'ap_ground', 'gw_lamp', 'gw_planter', 'gw_planter_tall',
     'plat_awning', 'plat_scaffold', 'plat_parapet', 'coin_face', 'coin_edge', 'flag_pole', 'flag_flag']));
   core.push(...['prop_tree', 'prop_tree_young', 'prop_lamp', 'prop_phonebox', 'prop_bin', 'prop_busstop'].map(k => [k, LON + k + '.webp']));
-  const groups = [core, own(WW_IMAGES), own(BX_IMAGES), own(GW2_IMAGES), own([...TB_IMAGES, ...CW_IMAGES]), own(WE_IMAGES), own(HW_IMAGES),
+  const groups = [core, own(WW_IMAGES), own(BX_IMAGES), own(GW2_IMAGES), own([...TB_IMAGES, ...CW_IMAGES]), [...own(WE_IMAGES), ...WE_KID], own(HW_IMAGES),
     [...own(DX_IMAGES), ...DX_SPRITES.map(k => [k, SPRITES[k].src]), ['a_side_dxb', 'a_side_dxb.webp']], own(DT_IMAGES), [...own(PM_IMAGES), ...PM_SPRITES.map(k => [k, SPRITES[k].src])], own(MA_IMAGES), own(DS_IMAGES)];
   let chain = Promise.resolve();
   groups.forEach((g, i) => { chain = chain.then(() => loadGroup(g)); const P = groupP[i] = chain; P.then(() => { P.done = true; }); });
@@ -1010,7 +1013,7 @@ const CARD_KID = {
   brixton: { key: 'a_run', f: 1, x: .42, y: .875, h: .28 },
   greenwich: { key: 'a_jump', f: 2, x: .42, y: .9, h: .30 },
   canarywharf: { key: 'a_jump', f: 2, x: .62, y: .8, h: .30 },
-  westend: { key: 'a_run', f: 1, x: .42, y: .95, h: .3, empty: 'ui_card_westend_empty.webp' },
+  westend: { key: 'a_run_win', f: 1, x: .42, y: .95, h: .3, empty: 'ui_card_westend_empty.webp' },
   heathrow: { key: 'hw_wake0', f: 0, x: .36, y: .76, h: .26, empty: 'ui_card_heathrow_empty.webp' },
   olddubai: { key: 'a_jump_dxb', f: 2, x: .46, y: .66, h: .38, empty: 'ui_card_olddubai_empty.webp' },
   downtown: { key: 'hero_back', f: 0, x: .5, y: .95, h: .4, empty: 'ui_card_downtown_empty.webp' },
@@ -5771,7 +5774,14 @@ const WE_GROUND = { wepave: ['we_g_pave', 1.2, 0.3, '#5c6272', '#2c303d'], wemar
 const weA = () => G && AREAS[G.L.area].westend;
 // the child's settings and back view (only on the Little Worlds site; A's World has neither)
 const weKid = () => typeof lwKidCfg === 'function' && lwKidCfg();
-const weKidBack = () => typeof lwKidBack === 'function' ? lwKidBack() : null;
+const weKidBack = () => typeof lwKidBack === 'function' ? (lwKidBack('hero_back_win') ?? lwKidBack()) : null;   // the child from behind, in the winter coat
+// the children's winter outfit (coat in their T-shirt colour, trousers in their bottoms colour, the striped scarf):
+// level.js sets L.outfit = 'win', so drawSprite picks these when the child has them (A keeps his usual clothes)
+const WE_KID = typeof lwKidCfg === 'function' ? ['a_run_win', 'a_jump_win', 'a_lean_win', 'a_slide_win'].map(k => [k, null]) : [];
+if (WE_KID.length) {
+  ['a_run', 'a_jump', 'a_lean'].forEach(k => { SPRITES[k + '_win'] = Object.assign({}, SPRITES[k], { src: null }); });
+  SPRITES.a_slide_win = { src: null, fw: 300, fh: 300, n: 2 };
+}
 // a picture stretched to fill a world box (x, y) to (x + w, y + h)
 function weBox(key, x, y, w, h) { const im = IMG[key]; if (!im) return; const X = sx(x); if (X > W || X + w * U < 0) return; ctx.drawImage(im, X, sy(y + h), w * U, h * U); }
 // a picture drawn only between world x0 and x1
@@ -6044,7 +6054,8 @@ function drawWeRideA(cx, by, RUN_H, JUMP_H) {
     const h = 1.62 * U, w = h * im.width / im.height; ctx.drawImage(im, cx - w / 2, by + 0.04 * U - h, w, h);
     return true;
   }
-  if (L.weIce && !weKid() && p.onGround && p.x > L.weIce[0] && p.x < L.weIce[1]) {   // (the children get their own slide pose with the winter outfit)   // sliding on the ice: crouched, arms out
+  if (L.weIce && p.onGround && p.x > L.weIce[0] && p.x < L.weIce[1]) {   // sliding on the ice: crouched, arms out
+    if (weKid()) return IMG.a_slide_win ? drawSprite('a_slide_win', Math.floor(animT * 3) % 2, cx, by + 0.04 * U, RUN_H, false) : false;
     const im = IMG[Math.floor(animT * 3) % 2 ? 'a_slide1' : 'a_slide0']; if (!im) return false;
     const h = 1.5 * U, w = h * im.width / im.height; ctx.drawImage(im, cx - w / 2, by + 0.06 * U - h, w, h);
     return true;
