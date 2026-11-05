@@ -79,7 +79,7 @@
   function hairPiece(K, cfg, cols, kind = 'hair') {
     const name = cfg.style, at = (META.kids[K].keys['_' + kind] || {})[name]; if (!at) return Promise.resolve(null);
     const id = K + kind + name + JSON.stringify([cols.skin, cols.hair]);
-    return pieces[id] || (pieces[id] = Promise.all([load(`${K}_${kind}_${name}.webp`), load(`${K}_${kind}_${name}_lab.png`)]).then(([im, lab]) =>
+    return pieces[id] || (pieces[id] = Promise.all([load(`${K}_${kind}_${name}.webp`), load(`${K}_${kind}_${name}_lab.webp`)]).then(([im, lab]) =>
       im && { c: recolour(im, lab, cols, K, [4, 5]), x: at[0] - PAD, y: at[1] - PAD }));
   }
   function accPiece(K, cfg, back) {
@@ -104,7 +104,7 @@
       const K = kidOf(cfg); if (!K) return null;
       const e = META.kids[K].keys[key]; if (!e) return null;
       const cols = colours(cfg);
-      const [im, lab, front] = await Promise.all([load(`${K}_${key}.webp`), load(`${K}_${key}_lab.png`), e.front ? load(`${K}_${key}_front.png`) : null]);
+      const [im, lab, front] = await Promise.all([load(`${K}_${key}.webp`), load(`${K}_${key}_lab.webp`), e.front ? load(`${K}_${key}_front.webp`) : null]);
       if (!im) return null;
       const body = recolour(im, lab, cols, K, e.parts, e.base);
       const head = e.head && cfg.style;
