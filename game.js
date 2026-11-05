@@ -1302,13 +1302,13 @@ const ALL_LEVELS = [
     L.solids.push({ kind: 'block', x: cr.x + cr.w - 0.2, y: 2.0, w: 0.4, h: 20, style: 'hidden', noGrab: true });   // the cradle's far rail: he rides it down and walks out at the bottom
     // down on the street: under the gantry for those who stay low
     b.coins(S0 + 1.0, 1.1, 4, 0.9); b.pigeon(BM + 3.5); drift(BM + 7.5); b.coins(BM + 9.0, 1.1, 4, 0.9);
-    snowman(BM + 13.0);                                         // (no pigeon near the cradle: A can't hop while it lowers him)
+    bigman(BM + 13.0);                                          // (no pigeon near the cradle: A can't hop while it lowers him)
     b.coins(S1 + 1.0, 1.1, 4, 0.9);
     // ---------- 6. Covent Garden: piazza, then through the old market hall ----------
     const CG = 307.0;
     ground(307, 390, 'wecobble');
     art('we_chalets', CG + 1.5, 0, 3.0, { back: true }); ledge(CG + 1.7, 2.75, 10.6);
-    b.coins(CG + 2.2, 3.6, 9, 1.1);   // (no pigeon here: it would walk into the cradle while A rides it down)
+    b.coins(CG + 2.2, 3.6, 9, 1.1); bigman(CG + 11.6);   // (no pigeon here: it would walk into the cradle while A rides it down)
     art('we_cg_tree', CG + 13.5, 0, 7.5, { back: true });
     art('we_reindeer', CG + 18.5, 0, 2.6, { back: true });
     art('we_chestnut', CG + 21.0, 0, 1.5); solid(CG + 21.2, 1.6, 1.4);
