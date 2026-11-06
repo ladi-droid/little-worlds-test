@@ -1,0 +1,187 @@
+<!doctype html>
+<html><head><meta charset="utf-8">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bowlby+One&family=Figtree:wght@600;800;900&display=block">
+<style>html,body{margin:0;background:#f6efe3}canvas{display:block}</style></head>
+<body><canvas id="c" width="1080" height="1920"></canvas>
+<script>
+const W=1080,H=1920,FPS=30;
+const PAPER='#f6efe3',INK='#0b0b0e',SUN='#ffd23a',CARD='#fbf7ee';
+const cv=document.getElementById('c'),x=cv.getContext('2d');
+const cache={};
+function img(src){if(!cache[src]){const i=new Image();i.src=src;cache[src]=i;i.p=new Promise(r=>{i.onload=r;i.onerror=r});}return cache[src];}
+const clamp=(v,a=0,b=1)=>Math.max(a,Math.min(b,v));
+const lin=(t,a,b)=>clamp((t-a)/(b-a));
+const eo=t=>1-Math.pow(1-t,3);            // ease out
+const eio=t=>t<.5?4*t*t*t:1-Math.pow(-2*t+2,3)/2;
+const back=t=>{const c1=1.9,c3=c1+1;return 1+c3*Math.pow(t-1,3)+c1*Math.pow(t-1,2)};
+const pad=n=>String(n).padStart(4,'0');
+
+let BLOG=[];
+async function init(){BLOG=(await (await fetch('clips/builder/log.json')).json()).filter(e=>e.f);await document.fonts.load('100px "Bowlby One"');await document.fonts.load('800 60px Figtree');await document.fonts.load('900 60px Figtree');}
+function bframe(rt){let k=0;for(let i=0;i<BLOG.length;i++){if(BLOG[i].t<=rt)k=i;else break;}return 'clips/builder/f'+pad(k)+'.jpg';}
+// builder time for ad time t (piecewise)
+const BMAP=[[2.0,0.3],[3.7,3.4],[4.1,5.0],[6.5,14.4]];
+const BMAP2=[[11.3,16.3],[13.4,22.2]];
+function pw(m,t){if(t<=m[0][0])return m[0][1];for(let i=1;i<m.length;i++){if(t<=m[i][0]){const a=m[i-1],b=m[i];return a[1]+(b[1]-a[1])*(t-a[0])/(b[0]-a[0]);}}return m[m.length-1][1];}
+function gframe(name,lt,speed=1){const k=clamp(Math.floor(lt*30*speed),0,89);return 'clips/'+name+'/f'+pad(k)+'.jpg';}
+
+function rr(X,Y,w,h,r){x.beginPath();x.moveTo(X+r,Y);x.arcTo(X+w,Y,X+w,Y+h,r);x.arcTo(X+w,Y+h,X,Y+h,r);x.arcTo(X,Y+h,X,Y,r);x.arcTo(X,Y,X+w,Y,r);x.closePath();}
+function drawCover(im,X,Y,w,h,crop){ // crop = [sx,sy,sw,sh] in 0..1
+  if(!im.naturalWidth)return; const c=crop||[0,0,1,1];
+  x.drawImage(im,c[0]*im.naturalWidth,c[1]*im.naturalHeight,c[2]*im.naturalWidth,c[3]*im.naturalHeight,X,Y,w,h);}
+function shadowBox(X,Y,w,h,r,off=14){x.save();x.fillStyle=INK;rr(X+off*.6,Y+off,w,h,r);x.fill();x.restore();}
+
+// text helpers
+function word(t0,t,str,X,Y,size,opt={}){
+  const p=lin(t,t0,t0+.32);if(p<=0)return 0;const s=back(p);
+  x.save();x.translate(X,Y);x.scale(.6+.4*s,.6+.4*s);x.globalAlpha=clamp(p*2.2)*(opt.alpha??1);
+  x.font=(opt.font||`${size}px "Bowlby One"`);x.textAlign=opt.align||'center';x.textBaseline='middle';
+  if(opt.hl){const m=x.measureText(str).width;const hp=eo(lin(t,t0+.12,t0+.42));x.fillStyle=SUN;x.save();x.rotate(-.02);rr(-m/2-22,-size*.42,(m+44)*hp,size*.92,size*.18);x.fill();x.restore();}
+  x.fillStyle=opt.color||INK;x.fillText(str,0,0);x.restore();return 1;}
+function line(t0,t,words,Y,size,opt={}){ // words: [str,hl?]
+  x.font=`${size}px "Bowlby One"`;const sp=size*.32;const ws=words.map(w=>x.measureText(w[0]).width);
+  const tot=ws.reduce((a,b)=>a+b,0)+sp*(words.length-1);let cx=W/2-tot/2;
+  words.forEach((w,i)=>{word(t0+i*(opt.step??.12),t,w[0],cx+ws[i]/2,Y,size,{hl:w[1],alpha:opt.alpha,color:w[2]});cx+=ws[i]+sp;});}
+function outLift(t,t1,fn){ // makes content fly up/out from t1
+  const p=eio(lin(t,t1,t1+.35));if(p>=1)return;x.save();x.translate(0,-p*160);x.globalAlpha=1-p;fn();x.restore();}
+
+// background: paper + faint dotted grid that drifts
+function bg(t){x.fillStyle=PAPER;x.fillRect(0,0,W,H);x.save();x.globalAlpha=.08;x.fillStyle=INK;const o=(t*18)%60;
+  for(let yy=-60;yy<H+60;yy+=60)for(let xx=-60;xx<W+60;xx+=60){x.beginPath();x.arc(xx+o,yy+o,3,0,7);x.fill();}x.restore();}
+
+// flying trip cards (opening + end)
+const CARDS=['westend','capetown','downtown','desert','olddubai','heathrow','marina','palm'];
+function card(name,X,Y,w,rot,alpha=1){const im=img('assets/ui_card_'+name+'.webp');if(!im.naturalWidth)return;const h=w*im.naturalHeight/im.naturalWidth;
+  x.save();x.translate(X,Y);x.rotate(rot);x.globalAlpha=alpha;x.fillStyle=INK;rr(-w/2+8,-h/2+12,w,h,26);x.fill();
+  x.save();rr(-w/2,-h/2,w,h,26);x.clip();x.drawImage(im,-w/2,-h/2,w,h);x.restore();x.lineWidth=7;x.strokeStyle=INK;rr(-w/2,-h/2,w,h,26);x.stroke();x.restore();}
+
+// phone
+const PH={w:620,r:78,bez:22};
+function phone(cx,cy,scale,contentFn){const sw=PH.w,sh=sw*1688/780;x.save();x.translate(cx,cy);x.scale(scale,scale);
+  const ow=sw+PH.bez*2,oh=sh+PH.bez*2;x.fillStyle=INK;rr(-ow/2+10,-oh/2+18,ow,oh,PH.r+PH.bez);x.globalAlpha=.25;x.fill();x.globalAlpha=1;
+  rr(-ow/2,-oh/2,ow,oh,PH.r+PH.bez);x.fill();
+  x.save();rr(-sw/2,-sh/2,sw,sh,PH.r);x.clip();contentFn(-sw/2,-sh/2,sw,sh);x.restore();
+  x.restore();}
+
+// tap ripple drawn by us is not needed: builder footage already shows taps
+
+// orbs that fly out of the phone (the look picks)
+const ORBS=[['#141010',4.45,-1],['#9a5f34',4.8,1],['#f4d35e',5.15,-1],['#4a6fa5',5.5,1],['#e85b9c',5.85,-1],[SUN,6.15,1]];
+function orbs(t,fade=1){ORBS.forEach(([c,t0,side],i)=>{const p=eo(lin(t,t0,t0+.6));if(p<=0)return;
+  const fx=W/2+side*(400+ (i%3)*22),fy=640+i*150;const sx=W/2,sy=1100;const X=sx+(fx-sx)*p,Y=sy+(fy-sy)*p-Math.sin(p*Math.PI)*120;
+  const bob=Math.sin(t*2.4+i)*10;const r=44*(p<1?.5+.5*p:1);x.save();x.globalAlpha=fade;x.fillStyle=INK;x.beginPath();x.arc(X+5,Y+bob+8,r,0,7);x.fill();
+  x.fillStyle=c;x.beginPath();x.arc(X,Y+bob,r,0,7);x.fill();x.lineWidth=7;x.strokeStyle=INK;x.stroke();
+  x.fillStyle='rgba(255,255,255,.45)';x.beginPath();x.arc(X-r*.35,Y+bob-r*.35,r*.22,0,7);x.fill();x.restore();});}
+
+// game window (trip-card shaped)
+const WIN={w:1000,h:916,cy:1010};
+const CROP={westend:[0,.12,.8,.8],olddubai:[0,.15,.8,.8],downtown:[.05,0,.8,.8],capetown:[0,.12,.8,.8],desert:[.02,.12,.8,.8],heathrow:[0,.15,.8,.8],finalcall:[0,.04,.8,.8],start:[.1,.05,.8,.8]};
+function clipSrc(name,lt){if(name==='finalcall')return 'assets/finalcall.jpg';if(name==='start')return 'assets/start.png';return gframe(name,lt);}
+function gameIn(name,lt,X,Y,w,h,zoom=1){const im=img(clipSrc(name,lt));const c=CROP[name].slice();const z=1+ (zoom-1);
+  const cw=c[2]/z,ch=c[3]/z;c[0]+= (c[2]-cw)/2;c[1]+=(c[3]-ch)/2;c[2]=cw;c[3]=ch;drawCover(im,X,Y,w,h,c);}
+function windowFrame(X,Y,w,h,fill){shadowBox(X,Y,w,h,54,18);x.save();rr(X,Y,w,h,54);x.clip();fill(X,Y,w,h);x.restore();x.lineWidth=10;x.strokeStyle=INK;rr(X,Y,w,h,54);x.stroke();}
+function plate(label,X,Y,p){if(p<=0)return;x.save();x.translate(X,Y);x.rotate(-.04);const s=back(clamp(p));x.scale(s,s);x.font='800 46px Figtree';const m=x.measureText(label).width;
+  x.fillStyle=INK;rr(-12+6,-36+8,m+44,76,38);x.fill();x.fillStyle=SUN;rr(-12,-36,m+44,76,38);x.fill();x.lineWidth=6;x.strokeStyle=INK;x.stroke();x.fillStyle=INK;x.textBaseline='middle';x.fillText(label,10,3);x.restore();}
+
+// city montage: diagonal wipes
+const CITIES=[['olddubai','Old Dubai',9.0],['downtown','Downtown Dubai',9.9],['capetown','Cape Town',10.8],['desert','Desert Race',11.7],['finalcall','Airport Rush',12.6],['westend','West End',13.4]];
+function montage(t,X,Y,w,h){
+  for(let i=0;i<CITIES.length;i++){const [n,l,t0]=CITIES[i];const p=eio(lin(t,t0,t0+.32));if(p<=0)continue;const next=CITIES[i+1];if(next&&t>next[2]+.32)continue;
+    x.save();// diagonal mask
+    if(p<1){x.beginPath();const k=p*(w+h)*1.05;x.moveTo(X+w,Y+h);x.lineTo(X+w-k,Y+h);x.lineTo(X+w,Y+h-k);x.closePath();x.clip();}
+    gameIn(n,t-t0+.2,X,Y,w,h,1.05+ .06*lin(t,t0,t0+1.2));x.restore();
+    if(p<1){x.save();x.lineWidth=46;x.strokeStyle=SUN;x.beginPath();const k=p*(w+h)*1.05;x.moveTo(X+w-k,Y+h);x.lineTo(X+w,Y+h-k);x.stroke();x.lineWidth=8;x.strokeStyle=INK;x.stroke();x.restore();}
+  }}
+function curCity(t){let c=null;for(const k of CITIES)if(t>=k[2]+.15)c=k;return c;}
+
+// stacked "M's World" type with video pills
+const STACK=['westend','olddubai','downtown','capetown','desert','heathrow'];
+function stack(t,T0){const n=11,lh=150,size=118;const scroll=(t-T0)*70;x.save();
+  for(let i=0;i<n;i++){const Y=330+i*lh-scroll;const mid=i>=3&&i<=7;const k=i-3;const op=mid?eo(lin(t,T0+.15+k*.12,T0+.55+k*.12)):0;
+    const pillW=op*300;x.font=`${size}px "Bowlby One"`;const a=x.measureText("M's").width,b=x.measureText('World').width;const gap=26;
+    const tot=a+b+gap+(pillW>0?pillW+gap:0);let cx=W/2-tot/2;x.textBaseline='middle';x.fillStyle=INK;x.globalAlpha=mid?1:.28;
+    x.fillText("M's",cx,Y);cx+=a+gap;
+    if(pillW>2){x.globalAlpha=1;x.save();rr(cx,Y-58,pillW,116,58);x.clip();gameIn(STACK[k%STACK.length],t-T0,cx-40,Y-150,pillW+80,300,1.2);x.restore();x.lineWidth=6;x.strokeStyle=INK;rr(cx,Y-58,pillW,116,58);x.stroke();cx+=pillW+gap;}
+    x.globalAlpha=mid?1:.28;x.fillStyle=mid&&op>.5&&k===2?INK:INK;x.fillText('World',cx,Y);}
+  x.restore();}
+
+// logo
+function logo(t,T0,cy){const p=back(lin(t,T0,T0+.4));if(p<=0)return;x.save();x.translate(W/2,cy);
+  x.font='96px "Bowlby One"';const txt='Little Worlds';const tw=x.measureText(txt).width;const m=tw+156+36;
+  // tile
+  const ts=clamp(p,0,1.2);x.save();x.translate(-m/2+78,0);x.rotate(-.12+ .05*Math.sin(t*3));x.scale(ts,ts);x.fillStyle=INK;rr(-78+8,-78+12,156,156,34);x.fill();x.fillStyle=SUN;rr(-78,-78,156,156,34);x.fill();x.lineWidth=9;x.strokeStyle=INK;x.stroke();
+  // globe dots
+  x.fillStyle='#2b7fd0';x.beginPath();x.arc(0,0,44,0,7);x.fill();x.lineWidth=7;x.stroke();x.fillStyle='#4caf50';x.beginPath();x.ellipse(-12,-10,16,22,.5,0,7);x.fill();x.beginPath();x.ellipse(18,16,12,14,0,0,7);x.fill();x.restore();
+  // type-on
+  const n=Math.floor(clamp(lin(t,T0+.25,T0+.85))*txt.length);x.fillStyle=INK;x.textBaseline='middle';x.textAlign='left';x.font='96px "Bowlby One"';
+  x.fillText(txt.slice(0,n),-m/2+156+36,8);x.restore();}
+
+async function renderAt(t){
+  // preload what this frame needs (draw twice: first pass registers images)
+  draw(t);await Promise.all(Object.values(cache).map(i=>i.p));draw(t);}
+
+function draw(t){
+  x.setTransform(1,0,0,1,0,0);x.globalAlpha=1;bg(t);
+  // ---------- S1 hook 0-2.0
+  if(t<2.4){
+    const cards=[['westend',-1,180,300,-.18,.0],['capetown',1,240,330,.16,.08],['downtown',-1,1500,320,.14,.16],['desert',1,1560,300,-.12,.24]];
+    cards.forEach(([n,side,y,w,rot,d])=>{const p=eo(lin(t,d,d+.6));const X=side<0?-200+ (330)*p:W+200-(330)*p;const out=eio(lin(t,1.75,2.2));
+      card(n,X+side*out*500,y+Math.sin(t*2+y)*8,w,rot*(1-.3*p),1);});
+    outLift(t,1.75,()=>{line(.15,t,[['make'],['them']],720,128);line(.45,t,[['the'],['hero',1]],880,150);line(.85,t,[['of'],['their'],['own'],['game']],1040,84,{step:.08});});
+  }
+  // ---------- S2 builder in phone 1.9-6.9
+  if(t>=1.85&&t<7.3){
+    const pin=eo(lin(t,1.85,2.35));const s=.9;const cy=1120+(1-pin)*1000;
+    const zoom=eio(lin(t,6.6,7.2));
+    if(t<6.95){
+      orbs(t,1-lin(t,6.5,6.8));
+      phone(W/2,cy+zoom*120,s*(1+zoom*1.6),(X,Y,w,h)=>{drawCover(img(bframe(pw(BMAP,t))),X,Y,w,h);});
+      // captions
+      outLift(t,3.55,()=>line(2.15,t,[['their'],['name',1]],250,124));
+      if(t>3.6)outLift(t,6.45,()=>line(3.65,t,[['their'],['look',1]],250,124));
+    }
+  }
+  // ---------- S3 window opens: "and they're off" 6.8-7.9
+  if(t>=6.8&&t<8.1){
+    const p=eio(lin(t,6.8,7.15));const w=WIN.w*p,h=WIN.h*p;const X=W/2-w/2,Y=WIN.cy-h/2;
+    const outp=eio(lin(t,7.75,8.05));
+    x.save();x.globalAlpha=1-outp;x.translate(0,-outp*200);
+    if(w>20)windowFrame(X,Y,w,h,(X,Y,w,h)=>gameIn('westend',t-6.8,X,Y,w,h,1.1));
+    line(6.95,t,[["they're"],['off!',1]],330,124);x.restore();
+  }
+  // ---------- S4 stacked type 7.8-9.2
+  if(t>=7.8&&t<9.3){x.save();const a=lin(t,7.8,7.95)*(1-lin(t,9.05,9.3));x.globalAlpha=a;stack(t,7.8);x.restore();}
+  // ---------- S5 montage 9.0-14.0
+  if(t>=9.0&&t<14.4){
+    const p=back(lin(t,9.0,9.35));const w=WIN.w,h=WIN.h;const outp=eio(lin(t,14.05,14.4));
+    x.save();x.translate(W/2,WIN.cy);x.scale(.7+.3*clamp(p,0,1.1),.7+.3*clamp(p,0,1.1));x.translate(-W/2,-WIN.cy);x.globalAlpha=clamp(p*3)*(1-outp);
+    windowFrame(W/2-w/2,WIN.cy-h/2,w,h,(X,Y,w,h)=>montage(t,X,Y,w,h));
+    const c=curCity(t);if(c)plate(c[1],W/2-w/2+34,WIN.cy+h/2-70,lin(t,c[2]+.2,c[2]+.45));
+    x.restore();
+    x.save();x.globalAlpha=1-outp;
+    outLift(t,11.15,()=>{line(9.1,t,[['bored'],['of']],250,118);line(9.3,t,[['one'],['place?',1]],390,118);});
+    if(t>11.2){outLift(t,14.0,()=>{line(11.2,t,[['add'],['another',1]],250,118);line(11.45,t,[['in'],['two'],['taps']],390,96);});}
+    // mini phone with trips tapping
+    const mp=back(lin(t,11.35,11.7))*(1-eio(lin(t,13.35,13.6)));if(mp>0.01){phone(W-270,1380,.44*mp,(X,Y,w,h)=>drawCover(img(bframe(pw(BMAP2,t))),X,Y,w,h));}
+    x.restore();
+  }
+  // ---------- S6 start screen + trust 14.2-17.0
+  if(t>=14.2&&t<17.3){
+    const p=back(lin(t,14.2,14.55));const outp=eio(lin(t,16.85,17.2));const w=WIN.w,h=WIN.h;
+    x.save();x.globalAlpha=1-outp;x.translate(W/2,WIN.cy);const s=.7+.3*clamp(p,0,1.1);x.scale(s,s);x.translate(-W/2,-WIN.cy);
+    windowFrame(W/2-w/2,WIN.cy-h/2,w,h,(X,Y,w,h)=>gameIn('start',0,X,Y,w,h,1+.08*lin(t,14.2,17)));x.restore();
+    x.save();x.globalAlpha=1-outp;line(14.45,t,[['no'],['ads.',1]],250,124);line(14.85,t,[['nothing'],['to'],['buy']],1600,80,{step:.08});line(15.1,t,[['inside'],['the'],['game.']],1700,80,{step:.08});x.restore();
+  }
+  // ---------- S7 end card 17.0-20
+  if(t>=17.0){
+    const fan=[['capetown',-1,-.22],['downtown',-.5,-.1],['westend',.5,.1],['desert',1,.22]];
+    fan.forEach(([n,k,r],i)=>{const p=back(lin(t,17.05+i*.06,17.5+i*.06));if(p<=0)return;card(n,W/2+k*300*clamp(p,0,1.1),620+Math.abs(k)*60,300*clamp(p,0,1.1),r*clamp(p,0,1.1));});
+    logo(t,17.25,1010);
+    const q=back(lin(t,17.9,18.25));if(q>0){x.save();x.translate(W/2,1180);x.scale(q,q);x.font='900 58px Figtree';x.textAlign='center';x.textBaseline='middle';x.fillStyle=INK;x.fillText('Make them the hero this Christmas',0,0);x.restore();}
+    const r=back(lin(t,18.3,18.65));if(r>0){x.save();x.translate(W/2,1330);x.scale(r,r);x.fillStyle=INK;rr(-400+8,-62+12,800,124,62);x.fill();x.fillStyle=INK;rr(-400,-62,800,124,62);x.fill();
+      x.fillStyle=PAPER;x.font='800 52px Figtree';x.textAlign='center';x.textBaseline='middle';x.fillText('Try it out before you buy',0,3);x.restore();}
+    const u=lin(t,18.7,19.0);if(u>0){x.save();x.globalAlpha=u;x.font='800 46px Figtree';x.textAlign='center';x.fillStyle=INK;x.fillText('From £3 a month · No ads',W/2,1470);x.restore();}
+  }
+}
+window.renderAt=renderAt;window.ready=init();
+</script></body></html>
