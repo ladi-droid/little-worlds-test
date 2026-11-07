@@ -1166,9 +1166,9 @@ const ALL_LEVELS = [
     flake(18.5, 3.4); b.coins(19.2, 7.4, 3, 0.9);
     b.pigeon(23.5);
     bench(27.0); b.coins(27.2, 1.6, 3, 0.7);
-    flake(31.0, 3.6, true);
+    flake(31.0, 3.6);                                         // (Ladi 2026-11-07: no big star; a snowflake instead)
     bigman(33.6); b.coins(33.7, 3.2, 2, 0.6);
-    b.special(32.9, 8.0);                                     // 1: above the big gold star, from the snowman's hat
+    b.special(32.9, 8.0);                                     // 1: above the snowflake, from the snowman's hat
     lamp(38.0); grit(40.0);
     b.coins(42.0, 1.1, 4, 0.8);
     flake(45.0, 3.4); drift(46.0); b.coins(45.6, 7.4, 3, 0.9);
@@ -1256,7 +1256,7 @@ const ALL_LEVELS = [
     // ---------- 4. Carnaby Street ----------
     const CB = 221.0;
     ground(220, 261, 'wecobble');
-    L.weCbSwap = CB + 20; L.weRows.push({ kind: 'carnaby', x0: CB + 0.5, x1: 260.5 });
+    L.weCbSwap = CB - 3.0; L.weRows.push({ kind: 'carnaby', x0: CB + 0.5, x1: 260.5 });
     art('we_cb_arch', CB + 1.0, 0, 4.2, { mid: true }); ledge(CB + 1.2, 4.05, 5.5);
     L.weArch = { x: CB + 1.0 };
     bigman(CB - 1.6); b.coins(CB + 1.6, 4.9, 5, 0.8);         // along the top of the Carnaby arch
@@ -1322,8 +1322,8 @@ const ALL_LEVELS = [
     bigman(HI + 3.2);
     bench(HI + 6.0); b.coins(HI + 6.2, 1.6, 3, 0.7);
     b.coins(HI + 6.0, 4.4, 12, 1.1);
-    art('we_mh_ball_r', HI + 13.0, 5.1, 1.3, { hang: true }); ledge(HI + 13.1, 6.35, 1.0); b.special(HI + 13.6, 7.0);   // 4: on top of the giant red bauble
-    art('we_mh_ball_s', HI + 21.0, 5.1, 1.3, { hang: true }); ledge(HI + 21.1, 6.35, 1.0);
+    art('we_mh_ball_r', HI + 13.0, 5.1, 1.3, { hang: true, hall: true }); ledge(HI + 13.1, 6.35, 1.0); b.special(HI + 13.6, 7.0);   // 4: on top of the giant red bauble
+    art('we_mh_ball_s', HI + 21.0, 5.1, 1.3, { hang: true, hall: true }); ledge(HI + 21.1, 6.35, 1.0);
     b.pigeon(HI + 18.0); b.pigeon(HI + 20.0, 3.6);
     bigman(HI + 25.0); b.coins(HI + 25.0, 3.4, 2, 0.6);
     b.pigeon(HI + 30.5);
@@ -2552,16 +2552,24 @@ const ALL_LEVELS = [
     b.wall(-9.5, 1, 22);
     ground(-14, 74, 'nypave');
     L.nyTaxi = { x: -4.0 };                                       // the back door is open; A steps out, the cab drives off to the left
-    // brownstones wall to wall behind the pavement, a fire-escape block at the corner, then two more houses to Columbus Avenue
+    // short terraces of brownstones (5.6 tall, so the San Remo towers and the rooftops behind show above them, even on a phone),
+    // with gaps between them where the street behind shows through; then the tall fire-escape block, then one more terrace
     const ROW = []; let x = -13.0;
-    const put = (k) => { ROW.push([k, x]); x += AW[k] - 0.02; };
-    put('ny_bs_endl'); for (let i = 0; i < 13; i++) put(i % 2 ? 'ny_bs2' : 'ny_bs1');
+    const BSH = 5.6;
+    const put = (k, h = BSH) => { ROW.push([k, x, h]); x += AW[k] * h / (k.startsWith('ny_fe') ? 9.0 : 7.0) - 0.02; };
+    const terrace = (n) => { put('ny_bs_endl'); for (let i = 0; i < n; i++) put(i % 2 ? 'ny_bs2' : 'ny_bs1'); put('ny_bs_endr'); };
+    terrace(4); x += 2.9; terrace(3); x += 3.2; terrace(4);
+    x = -13.0 + (AW.ny_bs_endl - 0.02) + 7 * (AW.ny_bs1 - 0.02) + 6 * (AW.ny_bs2 - 0.02);   // the fire escape block stays where it was
     const FE = x + AW.ny_fe_endl - 0.02;                          // the fire escape building
-    put('ny_fe_endl'); put('ny_fe'); put('ny_fe_endr');
+    put('ny_fe_endl', 9.0); put('ny_fe', 9.0); put('ny_fe_endr', 9.0);
     const ROOF = 9.0, FE0 = FE - AW.ny_fe_endl, FE1 = FE + AW.ny_fe + AW.ny_fe_endr;
-    put('ny_bs_endl'); put('ny_bs1'); put('ny_bs2'); put('ny_bs_endr');
-    L.nyRow = ROW; L.nyRowEnd = x;
-    stree(-2.5); stree(10.0); stree(21.5); stree(31.5); stree(53.0);
+    const RE = x + (AW.ny_bs_endl - 0.02) + (AW.ny_bs1 - 0.02) + (AW.ny_bs2 - 0.02) + (AW.ny_bs_endr - 0.02);   // where the row ends (unchanged)
+    x = RE - 2 * (AW.ny_bs_endl * 0.8 - 0.02) - (AW.ny_bs1 * 0.8 - 0.02) - (AW.ny_bs2 * 0.8 - 0.02);
+    terrace(2);
+    L.nyRow = ROW; L.nyRowEnd = RE;
+    L.nyGaps = [];                                                 // the gaps between terraces: a lower building set further back fills each one
+    ROW.forEach(([k, x0, h], i) => { const n = ROW[i + 1], e = x0 + AW[k] * h / (k.startsWith('ny_fe') ? 9.0 : 7.0); if (n && n[1] > e + 0.1) L.nyGaps.push([e - 0.1, n[1] + 0.1]); });
+    stree(-2.5); stree(10.0); stree(21.5); stree(29.0); stree(53.0);
     b.coins(4.2, 1.2, 3, 0.7);
     hydrant(5.2);
     stoop(8.0); b.coins(8.6, 1.4, 3, 0.6); b.coins(10.6, 2.6, 2, 0.6);
@@ -2577,10 +2585,12 @@ const ALL_LEVELS = [
     // up the fire escape: its landings are ledges, a tap each; the roof, then the old wooden water tower (special 1 above it)
     const LAND = [1.75, 3.2, 4.65, 6.05, 7.5];
     // A leans on the right-hand end of each landing and jumps straight up to the next one (the building's corner is a wall up there)
-    LAND.forEach((y, i) => { ledge(FE + 5.322 * 0.29, y, 5.322 * 0.58); b.coins(FE + 3.9, y + 1.0, 1); });
+    // a trail of coins leads off the pavement onto the bottom landing, then a coin above every landing marks the way up
+    b.coins(FE - 0.6, 0.9, 4, 0.6, 0.35);
+    LAND.forEach((y, i) => { ledge(FE + 5.322 * 0.29, y, 5.322 * 0.58); b.coins(FE + 3.3, y + 0.9, 2, 0.6); });
     solid(FE + 5.322 * 0.87, 0.3, ROOF - 1.75, 1.75);
     ledge(FE0 + 0.1, ROOF, FE1 - FE0 - 0.2);
-    const WT = FE + 5.4;
+    const WT = FE + 3.4;                                           // the water tower stands well inside the roof
     art('ny_wtower', WT, ROOF, 4.2, { back: true });
     ledge(WT + 0.2, ROOF + 2.3, 1.45);                            // the walkway round the bottom of the tank
     b.special(WT + 0.93, ROOF + 4.7);                             // 1: above the water tower
@@ -2639,17 +2649,20 @@ const ALL_LEVELS = [
     solid(RT + 3.05, 5.9, 0.22);
     b.arc(RT + 2.6, 1.3, 6, 6.6, 1.2);
     Object.assign(L.nyMu, { oh: OH, dh: DH, x1: OUT });
+    L.nyArches = [[DH + 0.25, UP + 3.2, UP - 0.6], [OH + 1.6, UP + 3.2, UP], [RT + 0.3, 4.6, 0]];   // [x, top of the opening, its floor]   // deep stone archways between the halls (rule 7): the walls change in their shadow
     ground(L.nyRowEnd - 1, OUT + 1, 'nycream');
     L.solids.forEach(q => { if (q.style === 'nypave') q.w = MU + 2 - q.x; });
     ground(MU + 2, BX, 'nypave');
-    L.solids.forEach(q => { if (q.style === 'nycream') { q.x = BX; q.w = OUT + 1 - BX; } });
+    L.solids.forEach(q => { if (q.style === 'nycream') { q.x = BX; q.w = OUT - BX; } });
     solid(BX + 0.3, OUT - BX - 0.6, 40, CEIL);                     // the ceiling
     L.nySwap1 = DH + 14.0;                                         // the backdrops change in here, out of sight
 
     // ---------- 3. Into the park: Belvedere Castle on Vista Rock ----------
     const P0 = OUT + 1;
-    ground(P0, P0 + 300, 'nyhex');
-    art('ny_cpw_endr', OUT - 0.3, 0, 7.6, { back: true });         // the corner of the museum on Central Park West
+    ground(OUT, P0 + 300, 'nyhex');                                 // the paving starts at the museum's front wall
+    const CPW = 743 / 480 * 7.6;                                    // the Central Park West front: A comes out of its doors (the part over the hall is drawn from outside only)
+    art('ny_cpw', OUT + 0.6 - CPW / 2, 0, 7.6, { back: true });
+    art('ny_cpw_endr', OUT + 0.6 + CPW / 2 - 0.05, 0, 7.6, { back: true });   // the corner of the museum
     art('ny_pwall', P0 + 5.0, 0, 0.6); solid(P0 + 5.05, 1.1, 0.55);
     const stack0 = P0 + 11.0; art('ny_stack', stack0, 0, 2.6); solid(stack0 + 0.25, 1.65, 2.55); ledge(stack0 + 0.2, 2.57, 1.75);   // a big rock outcrop
     b.coins(P0 + 4.5, 1.4, 6, 0.9);
@@ -2691,14 +2704,15 @@ const ALL_LEVELS = [
     // ---------- 5. The boathouse, and a rowing boat across the Lake (A sits; tap = pop up, swipe down = duck) ----------
     const BH = R0 + 36.5, D1 = BH + 7.0;                            // the boathouse dock ends at D1, the water starts
     L.nyBoathouse = { x: BH - 0.4 };
-    L.solids.forEach(q => { if (q.style === 'nyhex' && q.x === P0) q.w = BH - q.x; });
+    L.solids.forEach(q => { if (q.style === 'nyhex' && q.x === OUT) q.w = BH - q.x; });
     ground(BH, D1, 'nydock');
     b.coins(BH + 1.0, 1.1, 4, 1.0);
     const WY = -0.85, LANDX = D1 + 58.0;                            // the water line, and where he climbs out at Bethesda Terrace
     L.nyLake = [D1 - 0.3, LANDX + 1.0];
     L.rides = L.rides || [];
-    const boat = { kind: 'boat', x0: D1 + 0.6, pts: [[D1 + 0.6, WY], [LANDX, WY]], v: 7.6, acc: 6, w0: 0.5, w1: 0.45, input: true, seat: 0.4, up: 1.2, down: 0.8,
-      hits: [], exitY: 0, exitDx: 1.2 };
+    // the boat pulls up at the foot of the stone steps below the terrace and is tied up there; A steps out and runs up the steps
+    const boat = { kind: 'boat', x0: D1 + 0.6, pts: [[D1 + 0.6, WY], [LANDX - 4.48, WY]], v: 7.6, acc: 6, w0: 0.5, w1: 0.45, input: true, seat: 0.4, up: 1.2, down: 0.8,
+      hits: [], exitY: -0.42, exitDx: 1.73 };
     L.rides.push(boat); L.nyBoat = boat;
     const lo = (x) => b.coins(x, 0.5, 1), hi = (x) => b.coins(x, 1.9, 1);
     [D1 + 4, D1 + 5.5, D1 + 7].forEach(lo); [D1 + 8.5, D1 + 10, D1 + 11.5].forEach(hi); [D1 + 13, D1 + 14.5].forEach(lo);
@@ -2714,17 +2728,19 @@ const ALL_LEVELS = [
     [BW + 18.5, BW + 20, BW + 21.5].forEach(hi);
     const JET = BW + 28.5; L.nyJet = { x: JET };
     boat.hits.push({ x: JET, kind: 'ctsoak' });
-    [JET - 3, JET - 1.6].forEach(lo); [JET + 2.5, JET + 4, JET + 5.5].forEach(hi); [LANDX - 5, LANDX - 3.5].forEach(lo);
+    [JET - 3, JET - 1.6].forEach(lo); [JET + 2.5, JET + 4, JET + 5.5].forEach(hi); [LANDX - 8, LANDX - 6.5].forEach(lo);
 
     // ---------- 6. Bethesda Terrace: the fountain, then through the arcade with its golden tiled ceiling ----------
     const T0 = LANDX - 0.4;
     ground(T0, T0 + 44, 'nyterr');
     L.nyTerrace = { x: T0 };
-    art('ny_fountain', T0 + 3.0, 0, 5.0, { back: true });
-    art('ny_poolrim', T0 + 1.2, 0, 0.6); solid(T0 + 1.3, 10.8, 0.52);   // the low pool rim: hop up and run along it
-    b.coins(T0 + 2.0, 1.4, 9, 1.1);
-    art('ny_balus', T0 + 12.8, 0, 1.6); solid(T0 + 13.0, 6.43, 1.5); ledge(T0 + 12.95, 1.52, 6.55);   // a stone balustrade: lean, then run along its top
-    b.coins(T0 + 13.4, 2.2, 6, 1.0);
+    L.nyLanding = { x: T0 };                                        // stone steps down into the Lake, and a mooring post
+    solid(T0 - 2.4, 0.45, 0.5, -0.92); b.slope(T0 - 1.95, -0.42, T0 - 1.3, 0); solid(T0 - 1.3, 1.35, 1.0, -1.0);   // up the steps onto the terrace
+    art('ny_fountain', T0 + 2.0, 0, 5.0, { back: true });
+    art('ny_poolrim', T0 + 0.2, 0, 0.6); solid(T0 + 0.3, 10.8, 0.52);   // the low pool rim: hop up and run along it
+    b.coins(T0 + 1.0, 1.4, 9, 1.1);
+    art('ny_balus', T0 + 11.8, 0, 1.6); solid(T0 + 12.0, 6.43, 1.5); ledge(T0 + 11.95, 1.52, 6.55);   // a stone balustrade: lean, then run along its top
+    b.coins(T0 + 12.4, 2.2, 6, 1.0);
     const AR = T0 + 15.5, AE = AR + 13.0;                           // the arcade, under the road
     L.nyArcade = [AR, AE];
     L.nySwap2 = AR + 6.5;
@@ -2739,7 +2755,7 @@ const ALL_LEVELS = [
     const AL = BS + 12.0;
     L.solids.forEach(q => { if (q.style === 'nyterr') q.w = AL - 1 - q.x; });
     ground(AL - 1, AL + 120, 'nyhex');
-    L.solids.forEach(q => { if (q.style === 'nyhex' && q.x === P0) q.w = BH - q.x; });
+    L.solids.forEach(q => { if (q.style === 'nyhex' && q.x === OUT) q.w = BH - q.x; });
     L.nyPond = [AL - 1.0, AL + 17.5];
     art('ny_pavilion', AL + 0.2, 0, 2.4); ledge(AL + 0.3, 2.35, 4.2); solid(AL + 0.35, 4.0, 2.33);   // the little pond pavilion: a tap up onto its flat roof
     b.coins(AL + 0.8, 3.0, 4, 0.9);
