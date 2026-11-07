@@ -2857,44 +2857,49 @@ const ALL_LEVELS = [
     L.wmTower = [62.6 - 6.19 * 0.52, 136.1 - 6.19 * 0.52];         // the foot of the tower outside: its door on the bridge side, and on the square side
     L.wmDoor = [62.6, 136.1];                                       // the doorway wipe in and out
     ground(BX, OUT, 'wmstone');
-    // the spiral stairs: a flight up to the first landing, then the landings up the shaft (lean on the wall, tap up to the next)
-    L.wmStairs = { x: 62.6 };
-    b.slope(63.0, 0.05, 66.0, 1.6);
-    const LAND = [1.6, 3.2, 4.8, 6.4, 8.0];
-    L.wmLand = LAND.map(y => [66.0, y, 4.2]);
-    b.coins(63.4, 1.1, 3, 0.8, 0.45);
-    LAND.forEach((y, i) => { ledge(66.0, y, 4.2); b.coins(68.6, y + 0.9, 1); });
+    // no going back out once inside (Ladi 2026-11-07): the doorway behind A stops him if he turns round
+    solid(62.9, 0.2, 40, 0, { backOnly: true, noGrab: true });
+    // climb 1, up the tower: a stone pier on an archway (A runs under it) and the clock room's wall facing it.
+    // A runs into the wall, then jumps from one to the other to go up (like the Greenwich towers); coins zigzag between them
     const F = 9.6;                                                   // the clock room floor
+    const P1 = [63.9, 67.2];
+    solid(P1[0], P1[1] - P1[0], 40, 3.6);
     solid(70.2, 29.4, F);
-    // the giant gears: their tops carry A up and down, always at the same speed
-    const W = 14.2;                                                  // the walkway above the clockwork
+    L.wmPiers = [[P1[0], P1[1], 3.6, 40], [70.2, 71.6, 0, F, 'r']];
+    b.coins(63.6, 1.1, 4, 1.0);
+    [[69.3, 3.4], [68.1, 5.4], [69.3, 7.4], [68.1, 9.4], [70.9, 11.0]].forEach(([x, y]) => b.coins(x, y, 1));
+    // the clock room: the clockwork turning behind, the giant gears turning half sunk in the floor
+    const W = 14.2;                                                  // the dial room floor
     L.wmClock = { x0: 70.2, x1: 99.6, f: F, w: W };
-    const gear = (x) => { const m = { kind: 'cradle', mover: true, x, w: 2.6, y: F + 0.9, y0: F + 0.9, y1: F + 3.5, up: 1.5, d0: 0.5, d1: 0.5, ph: 0 };
-      (L.movers = L.movers || []).push(m); L.oneways.push(m); (L.wmGears = L.wmGears || []).push(m); };
-    gear(79.0); gear(96.9);
-    ledge(78.0, W, 21.6);
-    solid(99.5, 0.1, W - F, F);                                      // the dial room's wall: lean here on gear 2
-    b.coins(79.4, F + 1.4, 3, 0, 1.2); b.coins(83.0, W + 0.9, 8, 1.6);
-    b.coins(73.0, F + 1.0, 4, 1.0);
+    L.wmGears = [80.0, 89.5];
+    b.coins(73.0, F + 1.0, 4, 1.0); b.coins(81.6, F + 1.1, 6, 1.0);
+    lean('wm_motor', 86.2, 1.6, 0.05, 2.6, 1.5, F); b.coins(86.5, F + 2.4, 3, 0.8);   // the clock's motor housing
+    // climb 2, up to the dial room: another pier on an archway, facing the dial room's wall
+    const P2 = [94.8, 96.6];
+    solid(P2[0], P2[1] - P2[0], 40, F + 3.6);
+    L.wmPiers.push([P2[0], P2[1], F + 3.6, 40], [99.6, 101.0, F, W, 'r']);
+    [[98.7, F + 3.4], [97.5, F + 5.3], [100.2, W + 1.4]].forEach(([x, y]) => b.coins(x, y, 1));
     // behind the clock face: the glowing dial
     solid(99.6, 16.4, W);
     L.wmDial = { x: 104.4, y: W + 0.6 };
     b.special(108.0, W + 4.2);                                       // 2: the centre of the clock face
     b.arc(101.0, W + 1.0, 5, 5.0, 2.4);
-    lean('wm_motor', 112.6, 1.6, 0.05, 2.6, 1.5, W); b.coins(112.9, W + 2.4, 3, 0.8);   // the clock's motor housing
+    lean('wm_motor', 112.6, 1.6, 0.05, 2.6, 1.5, W); b.coins(112.9, W + 2.4, 3, 0.8);   // the dial's motor housing
     // the belfry: up the steps, under the Great Bell (it bongs once as A passes)
     solid(115.6, 16.4, W);
     b.slope(115.6, W, 120.0, 17.0); solid(120.0, 12.0, 17.0);
     L.wmBelfry = { x0: 115.6, x1: 132.0, f: 17.0 };
     L.wmBell = { x: 122.8 }; L.wmBong = 126.0;
     b.coins(121.0, 18.0, 3, 0.9); b.coins(128.6, 18.0, 3, 0.9);
-    L.wmArches = [[99.5, W], [120.6, 17.0]];                         // deep stone archways between the rooms: [middle, floor]
+    L.wmArches = [[(P1[0] + P1[1]) / 2, 0], [(P2[0] + P2[1]) / 2, F], [99.5, W], [120.6, 17.0]];                         // deep stone archways between the rooms: [middle, floor]
     // the lift down: it waits for A, takes him to the bottom, and he walks out through the door to the square
     const lift = { kind: 'lift', mover: true, trig: 'wmLift', x: 132.0, w: 2.4, y: 17.0, y0: 17.0, y1: 0, up: 4.0, d0: 0.45 };
     (L.movers = L.movers || []).push(lift); L.oneways.push(lift); L.wmLift = lift;
     solid(134.4, 0.3, 30, 2.0, { noGrab: true });                  // the lift's far side: he rides it down and walks out at the bottom
     b.coins(135.0, 1.0, 2, 0.8);
-    L.camFloor = [[70.2, 99.6, F], [99.6, 115.6, W], [115.6, 132.0, 17.0]];   // high floors stay at the bottom of the screen
+    solid(136.7, 0.2, 40, 0, { backOnly: true, noGrab: true });     // out in the square: no going back in
+    // high floors stay at the bottom of the screen; up the belfry steps the floor rises with them (no dip and bounce)
+    L.camFloor = [[70.2, 99.6, F], [99.6, 115.6, W], [115.6, 120.0, W, 17.0], [120.0, 132.0, 17.0]];
     L.wmSwap1 = 110.0;                                               // the backdrops change while A is inside
 
     // ---------- 3. Parliament Square and Whitehall ----------
@@ -2931,7 +2936,7 @@ const ALL_LEVELS = [
     L.wmHgArch = { x: X0 + 10.9 };                                   // the archway through the building: A runs under it
     b.coins(X0 + 9.4, 1.1, 4, 1.0);
     L.wmSwap2 = X0 + 22.6;                                           // the backdrops change behind the right-hand wing (big trees above hide the seam)
-    L.wmClump = [X0 + 15.0, X0 + 31.0];
+    L.wmClump = [X0 + 15.0, X0 + 31.0];                              // (every tree stands on the ground)
     b.coins(HG + 33.0, 1.1, 5, 1.0);
     b.pigeon(HG + 37.0);
     lean('wm_gpier', HG + 42.3, 1.8, 0.05, 1.9, 1.7); b.coins(HG + 42.6, 2.7, 3, 0.6);   // the park gate's stone pier and railing
@@ -2974,7 +2979,6 @@ const ALL_LEVELS = [
     back('wm_willow', BE + 0.4, 0, 4.4);
     lean('wm_deck', BE + 2.0, 1.6, 0.05, 1.15, 1.55); b.coins(BE + 2.1, 2.5, 2, 0.6);   // a stack of deckchairs
     daff(BE + 6.5);
-    back('wm_gatel', 327.2, 0, 2.6); back('wm_gater', 330.2, 0, 2.6);   // the park gates, open
 
     // ---------- 6. The Mall and the Victoria Memorial ----------
     ground(330, 420, 'wmmall');
@@ -3265,6 +3269,7 @@ function tick(g, dt) {
     if (overlaps(box, s)) {
       // stepping off an escalator onto the floor at its end
       if (p.slope && s.y + s.h - p.y < 0.2) { p.y = s.y + s.h; box.y = p.y; continue; }
+      if (s.backOnly && p.vx >= 0) continue;   // a doorway A has gone through: it only stops him going back
       if (p.vx > 0) p.x = s.x - PW - 1e-6; else p.x = s.x + s.w + 1e-6;
       box.x = p.x; hitWall = s;
     }
@@ -3276,6 +3281,7 @@ function tick(g, dt) {
   box.y = p.y; box.x = p.x;
   p.onGround = false;
   for (const s of solidsNear(L, p.x - 2, p.x + 3)) {
+    if (s.backOnly) continue;
     if (overlaps(box, s)) {
       if (p.vy <= 0) { p.y = s.y + s.h; p.vy = 0; p.onGround = true; p.ground = s; }
       else { p.y = s.y - PH - 1e-6; p.vy = 0; p.rising = false; g.events.push({ type: 'bonk' }); }
