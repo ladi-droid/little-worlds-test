@@ -2893,7 +2893,7 @@ const ALL_LEVELS = [
     b.coins(121.0, 18.0, 3, 0.9); b.coins(128.6, 18.0, 3, 0.9);
     L.wmArches = [[(P1[0] + P1[1]) / 2, 0], [(P2[0] + P2[1]) / 2, F], [99.5, W], [120.6, 17.0]];                         // deep stone archways between the rooms: [middle, floor]
     // the lift down: it waits for A, takes him to the bottom, and he walks out through the door to the square
-    const lift = { kind: 'lift', mover: true, trig: 'wmLift', x: 132.0, w: 2.4, y: 17.0, y0: 17.0, y1: 0, up: 4.0, d0: 0.45 };
+    const lift = { kind: 'lift', mover: true, trig: 'wmLift', x: 132.0, w: 2.4, y: 17.0, y0: 17.0, y1: 0, up: 1.9, d0: 0.25 };   // (Ladi 2026-11-07: quicker down)
     (L.movers = L.movers || []).push(lift); L.oneways.push(lift); L.wmLift = lift;
     solid(134.4, 0.3, 30, 2.0, { noGrab: true });                  // the lift's far side: he rides it down and walks out at the bottom
     b.coins(135.0, 1.0, 2, 0.8);
@@ -2903,59 +2903,71 @@ const ALL_LEVELS = [
     L.wmSwap1 = 110.0;                                               // the backdrops change while A is inside
 
     // ---------- 3. Parliament Square and Whitehall ----------
-    ground(OUT, 188, 'wmpave');
+    ground(OUT, 162 + 23.7, 'wmpave');
     back('wm_lawnrail', 138.8, 0, 1.2); back('wm_lawnrail', 141.55, 0, 1.2); back('wm_tulips', 139.4, 0, 0.6);
     back('wm_sqlamp', 144.6, 0, 2.8);
     lean('wm_phone', 146.0, 2.9, 0.1, 1.45, 2.85); b.coins(146.2, 3.8, 2, 0.6);
     art('wm_pillar', 150.5, 0, 1.1); solid(150.52, 0.55, 1.05);
     b.coins(151.0, 1.1, 4, 1.0);
-    // ---------- 3b. The Whitehall rooftop run (Ladi 2026-11-07): up between two buildings, along the roofs, across the alleys to Horse Guards ----------
-    // a miss drops A onto the pavement in front of the row; he carries on along the street and climbs Horse Guards from its porch (Ladi's pictures 32-36)
-    const AB = 151.6, BH = 158.45, BW = 9.371;                       // the building over an archway (A runs under it), the Banqueting House (right in his way)
-    art('wm_ab', AB, 0, 9.66); solid(AB + 0.15, 3.7, 40, 3.0);      // wall 1: from the top of its arch up
-    art('wm_bh', BH, 0, 8.0); solid(BH, BW, 8.0); ledge(BH, 8.0, BW); // wall 2: jump from one to the other up to its roof
-    [[157.0, 3.2], [156.1, 5.2], [157.2, 7.1], [159.2, 9.0]].forEach(([x, y]) => b.coins(x, y, 1));
-    lean('wm_pots', 162.2, 0.8, 0.0, 0.69, 0.8, 8.0);               // chimney pots: A hops them
-    b.coins(160.4, 9.1, 2, 0.8); b.coins(164.0, 8.9, 3, 0.9);
-    const R2 = 170.0, R3 = 179.0;                                    // two roofs of the row behind the pavement (A only stands on top)
-    back('wm_roofb', R2, 0, 9.0); ledge(R2, 9.0, 5.247);
-    lean('wm_chim', 172.6, 2.0, 0.0, 0.97, 2.0, 9.0);               // the tall chimney: lean on it, jump up and off it
-    b.coins(167.9, 9.7, 3, 0.75, 0.3); b.coins(170.6, 10.0, 2, 0.8); b.coins(172.8, 11.9, 2, 0.6);
-    b.special(177.1, 12.7);                                          // 3: in mid-air over the widest alley, off the tall chimney
-    back('wm_roofa', R3, 0, 8.0); ledge(R3, 8.0, 5.349);
-    lean('wm_skylt', 180.4, 0.6, 0.05, 1.04, 0.55, 8.0);            // a glass skylight: A hops it
-    back('wm_aerial', 182.9, 8.0, 1.4);                              // a pigeon on a TV aerial
-    b.coins(179.4, 8.9, 1); b.coins(182.0, 8.9, 2, 0.8); b.coins(184.8, 8.9, 3, 0.9, -0.4);
-    L.wmGaps = [[AB + 3.963, BH, 8.0], [BH + BW, R2, 8.0], [R2 + 5.247, R3, 8.0], [R3 + 5.349, 188.0, 7.0]];   // the alleys: [from, to, up to]
-    // down on the street: the way on for a child who missed a jump
-    lean('wm_kiosk', 168.6, 2.3, 0.05, 2.0, 2.2); b.coins(168.8, 3.1, 3, 0.8);
-    back('wm_sqlamp', 176.0, 0, 2.8); back('wm_bin', 177.4, 0, 0.9);
-    bollard(180.0); bollard(181.2);
-    b.coins(183.0, 1.1, 4, 1.0);
+    lean('wm_kiosk', 154.6, 2.3, 0.05, 2.0, 2.2); b.coins(154.8, 3.1, 3, 0.8);
+    back('wm_sqlamp', 158.2, 0, 2.8); bollard(159.4); bollard(160.6);
 
     // ---------- 4. Horse Guards: up the porch and the ledges to the clock turret, then through the arch ----------
-    const HG = 188.0, X0 = HG + 4.0;                                 // the wings, the main building (Ladi's picture 18)
-    ground(HG, HG + 29.6, 'wmpave'); ground(HG + 29.6, 236, 'wmgravel');
-    back('wm_hg_endl', HG, 0, 7.25); back('wm_hg', X0, 0, 11.0); back('wm_hg_endr', X0 + 21.56, 0, 7.25);
+    // (drawn at 0.8 of its old size so the City skyline still shows above it on a phone: rule 2)
+    const HG = 162.0, S = 0.8, X0 = HG + 4.0 * S, hx = v => X0 + v * S;   // the wings, the main building (Ladi's picture 18)
+    ground(HG + 23.7, 228.6, 'wmgravel');
+    back('wm_hg_endl', HG, 0, 7.25 * S); back('wm_hg', X0, 0, 11.0 * S); back('wm_hg_endr', hx(21.56), 0, 7.25 * S);
     L.wmHG = { x: HG, x0: X0 };
-    L.wmMounted = [[HG + 0.25, 0], [X0 + 22.4, 4]];                  // the mounted guards in their sentry arches (red, then blue): they never move
-    lean('wm_pier', HG + 2.55, 1.4, 0.05, 0.95, 1.4);               // a stone pier: lean, then up onto the porch
-    ledge(X0 + 0.1, 3.4, 4.3);                                       // the porch roof
-    ledge(X0 + 4.3, 6.1, 4.4);                                       // the window heads
-    ledge(X0 + 0.4, 8.25, 20.7);                                     // the roof
-    ledge(HG + 0.2, 7.0, 3.8);                                       // the left wing: the rooftop run lands here
-    solid(X0 + 9.9, 1.8, 1.4, 8.25); ledge(X0 + 9.9, 9.65, 1.8);     // the clock turret
-    ledge(X0 + 21.6, 7.05, 3.9);                                     // the right-hand wing
-    b.coins(X0 + 10.3, 11.0, 3, 0.6);                                // on top of the clock turret (special 3 moved to the rooftop run)
-    b.coins(HG + 2.8, 2.4, 2, 0.6); b.coins(X0 + 0.6, 4.3, 4, 1.0); b.coins(X0 + 4.7, 7.0, 4, 1.0); b.coins(X0 + 5.0, 9.15, 4, 1.0);
-    b.coins(X0 + 13.0, 9.15, 7, 1.0); b.coins(X0 + 22.3, 7.95, 3, 0.9); b.coins(X0 + 26.6, 6.0, 4, 1.0, -1.4);
-    L.wmHgArch = { x: X0 + 10.9 };                                   // the archway through the building: A runs under it
-    b.coins(X0 + 9.4, 1.1, 4, 1.0);
-    L.wmSwap2 = X0 + 22.6;                                           // the backdrops change behind the right-hand wing (big trees above hide the seam)
-    L.wmClump = [X0 + 15.0, X0 + 31.0];                              // (every tree stands on the ground)
-    b.coins(HG + 33.0, 1.1, 5, 1.0);
-    b.pigeon(HG + 37.0);
-    lean('wm_gpier', HG + 42.3, 1.8, 0.05, 1.9, 1.7); b.coins(HG + 42.6, 2.7, 3, 0.6);   // the park gate's stone pier and railing
+    L.wmMounted = [[HG + 0.25 * S, 0], [hx(22.4), 4]]; L.wmMountedH = 3.0 * S;   // the mounted guards in their sentry arches (red, then blue): they never move
+    lean('wm_pier', HG + 2.2, 1.4, 0.05, 0.95, 1.4);                // a stone pier (clear of the mounted guard): lean, then up onto the porch
+    ledge(hx(0.1), 3.4 * S, 4.3 * S);                                // the porch roof
+    ledge(hx(4.3), 6.1 * S, 4.4 * S);                                // the window heads
+    ledge(hx(0.4), 8.25 * S, 20.7 * S);                              // the roof
+    ledge(HG + 0.2 * S, 7.0 * S, 3.8 * S);                           // the left wing
+    solid(hx(9.9), 1.8 * S, 1.4 * S, 8.25 * S); ledge(hx(9.9), 9.65 * S, 1.8 * S);   // the clock turret
+    ledge(hx(21.6), 7.05 * S, 3.9 * S);                              // the right-hand wing
+    b.coins(hx(10.3), 9.65 * S + 1.2, 3, 0.5);                       // on top of the clock turret
+    b.coins(HG + 2.0, 2.4, 2, 0.6); b.coins(hx(0.6), 3.4 * S + 0.9, 3, 1.0); b.coins(hx(4.7), 6.1 * S + 0.9, 3, 1.0); b.coins(hx(5.0), 8.25 * S + 0.9, 3, 1.0);
+    b.coins(hx(13.0), 8.25 * S + 0.9, 6, 0.9); b.coins(hx(22.3), 7.05 * S + 0.9, 3, 0.8); b.coins(hx(26.0), 4.6, 4, 1.0, -1.1);
+    L.wmHgArch = { x: hx(10.9), s: S };                              // the archway through the building: A runs under it
+    b.coins(hx(9.4), 1.1, 4, 1.0);
+    L.wmSwap2 = hx(22.6);                                            // the backdrops change behind the right-hand wing (big trees above hide the seam)
+    L.wmClump = [hx(15.0), hx(31.0)];                                // (every tree stands on the ground)
+    L.wmJoins = [57.0, HG + 23.7];                                   // where one kind of ground meets another: a stone kerb (rule 8)
+
+    // ---------- 4b. The rooftop run (Ladi 2026-11-07: after the blossom tree): round the grand buildings at the edge of Horse Guards Parade ----------
+    // in under the archway, up between two walls onto the roofs, along them behind their stone balustrades, over the gaps, down at the park gate.
+    // A miss drops A onto the gravel in front of the row; he carries on along the ground (Ladi's pictures 32-36)
+    const RT = HG + 32.0;
+    const roof = (k, x, h, w, top) => { back(k, x, 0, h); ledge(x, top, w); (L.wmRoofs = L.wmRoofs || []).push([k, x, h]); };   // A runs on the flat roof, behind the balustrade
+    const AH = 7.0, AW = AH * 544 / 1326, AB = RT;                   // the building over an archway: A runs under it
+    back('wm_ab', AB, 0, AH); solid(AB + 0.1, AW - 0.2, 40, 3.0);   // wall 1: from the top of its arch up
+    L.wmRoofs = [['wm_ab', AB, AH]];
+    const BHh = 6.0, BW = BHh * 1087 / 928, BH = AB + AW + 2.9, BT = BHh * 0.92;   // the Banqueting House: right in his way
+    back('wm_bh', BH, 0, BHh); solid(BH, BW, BT); ledge(BH, BT, BW); L.wmRoofs.push(['wm_bh', BH, BHh]);   // wall 2: jump from one to the other up to its roof
+    [[BH - 1.4, 2.6], [BH - 2.4, 4.4], [BH - 1.3, 6.0], [BH + 0.6, BT + 1.0]].forEach(([x, y]) => b.coins(x, y, 1));
+    lean('wm_pots', BH + 3.6, 1.1, 0.0, 0.95, 1.1, BT); b.coins(BH + 1.6, BT + 0.9, 2, 0.8); b.coins(BH + 4.0, BT + 2.0, 2, 0.7); b.coins(BH + 5.6, BT + 0.9, 2, 0.8);
+    const Rh = 6.6, RBW = Rh * 597 / 1024, R2 = BH + BW + 2.0, R2T = Rh * 0.92;   // a taller roof: up a little step
+    roof('wm_roofb', R2, Rh, RBW, R2T);
+    lean('wm_chim', R2 + 2.2, 1.7, 0.0, 0.82, 1.7, R2T);             // the tall chimney: lean on it, jump up and off it
+    b.coins(R2 + 0.4, R2T + 0.9, 2, 0.8); b.coins(R2 + 2.4, R2T + 2.6, 2, 0.5);
+    const GAP = 3.4, Ah = 6.0, AW2 = Ah * 577 / 863, R3 = R2 + RBW + GAP, R3T = Ah * 0.91;
+    b.special(R2 + RBW + GAP / 2, R2T + 5.2);                          // 3: in mid-air over the widest gap, off the tall chimney
+    b.coins(R2 + RBW + 0.3, R2T + 3.4, 1); b.coins(R3 - 0.6, R2T + 3.4, 1);
+    roof('wm_roofa', R3, Ah, AW2, R3T);
+    lean('wm_skylt', R3 + 1.4, 0.9, 0.05, 1.45, 0.75, R3T);         // a glass skylight: A hops it
+    back('wm_aerial', R3 + 3.2, R3T, 1.4);                           // a pigeon on a TV aerial
+    b.coins(R3 + 0.3, R3T + 0.9, 1); b.coins(R3 + 1.6, R3T + 1.7, 2, 0.6);
+    const R4 = R3 + AW2 + 2.0;
+    roof('wm_roofb', R4, Rh, RBW, R2T);
+    lean('wm_pots', R4 + 1.4, 1.1, 0.0, 0.95, 1.1, R2T);
+    b.coins(R4 + 0.2, R2T + 0.9, 1); b.coins(R4 + 2.8, R2T + 1.0, 3, 0.9, -1.2);   // and down off the end
+    // down on the gravel: the way on for a child who missed a jump
+    b.coins(BH + 1.0, 1.1, 5, 1.2); bollard(R2 + 1.2); b.coins(R2 + RBW + 0.6, 1.1, 3, 1.0);
+    bollard(R3 + 1.6); b.coins(R3 + AW2, 1.1, 3, 1.0);
+    b.pigeon(R4 + RBW + 0.8);
+    lean('wm_gpier', 227.6, 1.8, 0.05, 1.9, 1.7); b.coins(227.9, 2.7, 3, 0.6);   // the park gate's stone pier and railing
+    L.wmJoins.push(228.6);
 
     // ---------- 5. St James's Park: pelicans, Duck Island Cottage, the Blue Bridge ----------
     const SJ = 236.0;
@@ -2984,7 +2996,7 @@ const ALL_LEVELS = [
     back('wm_btree', DC + 18.4, 0, 4.4); back('wm_wtree', DC + 25.4, 0, 3.8);
     // the Blue Bridge over the lake (Ladi's picture 24): the ramps up from the banks, the deck over the water
     const BB = 290.0, K = 1.4, RW = 4.858 * K, DW = 8.648 * K;
-    ground(SJ, BB + RW, 'wmpath');
+    ground(228.6, BB + RW, 'wmpath');
     L.wmBlue = { x: BB, k: K, rw: RW, dw: DW, wy: -0.6 };
     b.slope(BB + 2.6, 0.05, BB + RW, 0.92); solid(BB + RW, DW, 0.98); b.slope(BB + RW + DW, 0.92, BB + RW + DW + RW - 2.6, 0.05);
     ground(BB + RW, BB + RW + DW, 'wmlake', -0.6);
@@ -2992,6 +3004,7 @@ const ALL_LEVELS = [
     b.coins(BB + 3.0, 1.0, 4, 1.0, 0.25); b.arc(BB + RW + 3.0, 2.0, 4, 4.0, 1.6); b.coins(BB + RW + DW + 0.6, 1.8, 3, 1.0, -0.3);
     const BE = BB + 2 * RW + DW;
     ground(BB + RW + DW, 330, 'wmpath');
+    L.wmJoins.push(BB + RW, BB + RW + DW, 330);                      // the lake's stone edges, the Mall's kerb
     back('wm_willow', BE + 0.4, 0, 4.4);
     lean('wm_deck', BE + 2.0, 1.6, 0.05, 1.15, 1.55); b.coins(BE + 2.1, 2.5, 2, 0.6);   // a stack of deckchairs
     daff(BE + 6.5);
@@ -3014,7 +3027,7 @@ const ALL_LEVELS = [
     const PG = VM + 13.0, PC = PG + 8.555;                           // the palace (Ladi's picture 27), its gates in the middle
     L.wmPalace = { x: PG, c: PC };
     b.flag(PG - 0.5); L.flagY = 0;
-    L.finale = PC - 0.4; L.wmFinale = true;
+    L.finale = PC - 0.4; L.wmFinale = true; L.finaleT = 5.0;            // a short watch: the guards are already passing the gates (Ladi 2026-11-07)
     b.wall(PG + 15.5, 1, 40);
     b.end(PG + 19.0);
   },
@@ -3558,7 +3571,7 @@ function tickFlag(g, dt) {
     }
     if (L.finale !== undefined) {   // Downtown: walk up to the lake railing, stop, and watch the fountains and fireworks
       if (F.ride === undefined) { p.x = Math.min(L.finale, p.x + (F.t2 < 0.3 ? 3.2 : 3.0) * dt); if (p.x >= L.finale) { F.ride = 0; g.events.push({ type: 'finale' }); } }
-      else { F.ride += dt; if (F.ride > 10 && !g.done) { g.done = true; g.events.push({ type: 'done' }); } }
+      else { F.ride += dt; if (F.ride > (L.finaleT || 10) && !g.done) { g.done = true; g.events.push({ type: 'done' }); } }
       return;
     }
     const rideX = L.scooterEnd !== undefined ? L.scooterEnd + 0.36 : L.busEnd !== undefined ? L.busEnd + 0.55 : L.boatEnd !== undefined ? L.boatEnd + 1.2 : L.trainEnd !== undefined ? L.trainEnd - 0.39 : L.taxiEnd !== undefined ? L.taxiEnd + 0.95 : undefined;
