@@ -436,10 +436,10 @@ html.lw-loading .splash{visibility:hidden}
   </div>
 </section>
 
-<script src="kids/kids-meta.js?v=1794075145"></script>
-<script src="kids/kids.js?v=1794075145"></script>
-<script src="sfx.js?v=1794075145"></script>
-<script src="game.js?v=1794075145"></script>
+<script src="kids/kids-meta.js?v=1794075728"></script>
+<script src="kids/kids.js?v=1794075728"></script>
+<script src="sfx.js?v=1794075728"></script>
+<script src="game.js?v=1794075728"></script>
 <script>
 (() => {
 'use strict';
@@ -1290,7 +1290,7 @@ $('retryBtn').addEventListener('click', () => startLevel(levelIndex));
 // If the builder opened this tab, close it and show the builder again; otherwise open the builder with this child's world filled in.
 let lwJoinEnd = false;
 function lwBackToBuilder() {
-  const url = 'builder.html?v=1794075145&w=' + lwEncode(LW);
+  const url = 'builder.html?v=1794075728&w=' + lwEncode(LW);
   try { if (window.opener && !window.opener.closed && /builder\.html/.test(window.opener.location.pathname)) { window.opener.focus(); window.close(); setTimeout(() => { location.href = url; }, 400); return; } } catch (e) {}
   location.href = url;
 }
@@ -7398,7 +7398,7 @@ function drawNyRideA(cx, by, RUN_H, JUMP_H) {
 /* ===== CENTRAL PARK END ===== */
 /* ===== WESTMINSTER START ===== */
 // Westminster on a spring morning, drawn from Ladi's art (pieces cut by src/westminster/cut.py into atlas_wm*.webp; sizes in src/westminster/pieces.json)
-const WM_IMAGES = ['wm_ab', 'wm_bh', 'wm_roofb', 'wm_roofa', 'wm_alley', 'wm_bins', 'wm_chim', 'wm_aerial', 'wm_pots', 'wm_skylt', 'wm_mid2',  'wm_mid3',  'wm_far1',  'wm_far2',  'wm_far3',  'wm_dial_walk',  'wm_vsteps',  'wm_picket',  'wm_walk',  'wm_cottage',  'wm_bel_wall',  'wm_st_wall',  'wm_works',  'wm_g_bank',  'wm_g_water',  'wm_hg',  'wm_bb_rail',  'wm_bluebr',  'wm_palace',  'wm_g_wood',  'wm_g_stone',  'wm_g_path',  'wm_g_mall',  'wm_g_lake',  'wm_g_pave',  'wm_g_gravel',  'wm_g_bridge',  'wm_bel_floor',  'wm_g_daff',  'wm_fountain',  'wm_tulips2',  'wm_tulips',  'wm_bench',  'wm_pel4',  'wm_daff',  'wm_sq2',  'wm_kerb',  'wm_sq3',  'wm_sq4',  'wm_sq1',  'wm_sq0',  'wm_pet5',  'wm_pet2',  'wm_pet1',  'wm_pet6',  'wm_pet4',  'wm_pet3',  'wm_bus',  'wm_dial_wall',  'wm_vmem',  'wm_st_land',  'wm_prail',  'wm_qbells',  'wm_bluel',  'wm_bluer',  'wm_bell',  'wm_plane',  'wm_wtree',  'wm_cab_open',  'wm_wh_bld',  'wm_wh_upper',  'wm_st_steps',  'wm_cab_blue',  'wm_cab',  'wm_parl',  'wm_prock',  'wm_bb_base',  'wm_dial',  'wm_lawnrail',  'wm_st_door',  'wm_bel_steps',  'wm_icevan',  'wm_lift_door',  'wm_rail',  'wm_pkiosk',  'wm_irail',  'wm_hg_arch',  'wm_arch',  'wm_gear1',  'wm_btree',  'wm_pwall',  'wm_pel3',  'wm_motor',  'wm_kiosk',  'wm_gear2',  'wm_gear3',  'wm_goose1',  'wm_goose0',  'wm_bin',  'wm_duck0',  'wm_duck2',  'wm_duck3',  'wm_duck1',  'wm_bollard',  'wm_mg0',  'wm_mg1',  'wm_mg2',  'wm_mg3',  'wm_mg4',  'wm_mg5',  'wm_mg6',  'wm_mg7',  'wm_willow',  'wm_lift',  'wm_gpier',  'wm_shaft',  'wm_lift_front',  'wm_pgatel',  'wm_pgater',  'wm_phone',  'wm_bb_wall',  'wm_wh_endr',  'wm_hg_endl',  'wm_hg_endr',  'wm_wh_endl',  'wm_pel2',  'wm_pier',  'wm_pel0',  'wm_bb_door',  'wm_pel1',  'wm_deck',  'wm_pendulum',  'wm_hg_box',  'wm_gd16',  'wm_gd15',  'wm_gd17',  'wm_gd12',  'wm_gd14',  'wm_gd13',  'wm_nutcart',  'wm_sentry',  'wm_gd1',  'wm_gd4',  'wm_gd0',  'wm_gd6',  'wm_gd3',  'wm_gd7',  'wm_st_pierr',  'wm_gd8',  'wm_st_pierl',  'wm_lamp',  'wm_gd9',  'wm_gd10',  'wm_gd5',  'wm_gd2',  'wm_gd11',  'wm_gater',  'wm_gatel',  'wm_sqlamp',  'wm_arch_front',  'wm_cab_door',  'wm_bb_cornl',  'wm_bb_cornr',  'wm_pillar',  'wm_malllamp'];
+const WM_IMAGES = ['wm_ab', 'wm_bh', 'wm_roofb', 'wm_roofa', 'wm_chim', 'wm_aerial', 'wm_pots', 'wm_skylt', 'wm_mid2',  'wm_mid3',  'wm_far1',  'wm_far2',  'wm_far3',  'wm_dial_walk',  'wm_vsteps',  'wm_picket',  'wm_walk',  'wm_cottage',  'wm_bel_wall',  'wm_st_wall',  'wm_works',  'wm_g_bank',  'wm_g_water',  'wm_hg',  'wm_bb_rail',  'wm_bluebr',  'wm_palace',  'wm_g_wood',  'wm_g_stone',  'wm_g_path',  'wm_g_mall',  'wm_g_lake',  'wm_g_pave',  'wm_g_gravel',  'wm_g_bridge',  'wm_bel_floor',  'wm_g_daff',  'wm_fountain',  'wm_tulips2',  'wm_tulips',  'wm_bench',  'wm_pel4',  'wm_daff',  'wm_sq2',  'wm_kerb',  'wm_sq3',  'wm_sq4',  'wm_sq1',  'wm_sq0',  'wm_pet5',  'wm_pet2',  'wm_pet1',  'wm_pet6',  'wm_pet4',  'wm_pet3',  'wm_bus',  'wm_dial_wall',  'wm_vmem',  'wm_st_land',  'wm_prail',  'wm_qbells',  'wm_bluel',  'wm_bluer',  'wm_bell',  'wm_plane',  'wm_wtree',  'wm_cab_open',  'wm_wh_bld',  'wm_wh_upper',  'wm_st_steps',  'wm_cab_blue',  'wm_cab',  'wm_parl',  'wm_prock',  'wm_bb_base',  'wm_dial',  'wm_lawnrail',  'wm_st_door',  'wm_bel_steps',  'wm_icevan',  'wm_lift_door',  'wm_rail',  'wm_pkiosk',  'wm_irail',  'wm_hg_arch',  'wm_arch',  'wm_gear1',  'wm_btree',  'wm_pwall',  'wm_pel3',  'wm_motor',  'wm_kiosk',  'wm_gear2',  'wm_gear3',  'wm_goose1',  'wm_goose0',  'wm_bin',  'wm_duck0',  'wm_duck2',  'wm_duck3',  'wm_duck1',  'wm_bollard',  'wm_mg0',  'wm_mg1',  'wm_mg2',  'wm_mg3',  'wm_mg4',  'wm_mg5',  'wm_mg6',  'wm_mg7',  'wm_willow',  'wm_lift',  'wm_gpier',  'wm_shaft',  'wm_lift_front',  'wm_pgatel',  'wm_pgater',  'wm_phone',  'wm_bb_wall',  'wm_wh_endr',  'wm_hg_endl',  'wm_hg_endr',  'wm_wh_endl',  'wm_pel2',  'wm_pier',  'wm_pel0',  'wm_bb_door',  'wm_pel1',  'wm_deck',  'wm_pendulum',  'wm_hg_box',  'wm_gd16',  'wm_gd15',  'wm_gd17',  'wm_gd12',  'wm_gd14',  'wm_gd13',  'wm_nutcart',  'wm_sentry',  'wm_gd1',  'wm_gd4',  'wm_gd0',  'wm_gd6',  'wm_gd3',  'wm_gd7',  'wm_st_pierr',  'wm_gd8',  'wm_st_pierl',  'wm_lamp',  'wm_gd9',  'wm_gd10',  'wm_gd5',  'wm_gd2',  'wm_gd11',  'wm_gater',  'wm_gatel',  'wm_sqlamp',  'wm_arch_front',  'wm_cab_door',  'wm_bb_cornl',  'wm_bb_cornr',  'wm_pillar',  'wm_malllamp'];
 const WM_GROUND = { wmbridge: ['wm_g_bridge', 0.9, 0.3, '#4e6b47', '#1d3a46'], wmpave: ['wm_g_pave', 0.85, 0.3, '#857a76', '#4d4644'], wmstone: ['wm_g_stone', 0.9, 0.3, '#b98a4c', '#5c4426'],
   wmgravel: ['wm_g_gravel', 0.9, 0.3, '#c8955c', '#7a5634'], wmpath: ['wm_g_path', 0.9, 0.35, '#c9a57c', '#6f5a3e'], wmmall: ['wm_g_mall', 0.9, 0.3, '#8f7f74', '#4f4540'],
   wmlake: ['wm_g_lake', 0.9, 0.25, '#3a7fae', '#1c4766'] };
@@ -7413,7 +7413,7 @@ function wmFit(key, x0, x1, y0, y1) { const im = IMG[key]; if (!im || sx(x1) < 0
 function wmFloor(key, x0, x1, y, hU, frac) { maRow(key, x0, x1, y - hU * frac, hU); }
 // sky: fresh spring blue, pale near the ground
 function wmSky() {
-  const d = Math.max(0, Math.min(1, wmFin() / 6));
+  const d = Math.max(0, Math.min(1, wmFin() / 4.5));
   const a = ctLerp([66, 138, 222], [92, 128, 206], d), b = ctLerp([186, 218, 246], [250, 214, 170], d);
   const g = ctx.createLinearGradient(0, 0, 0, H); g.addColorStop(0, ctRgb(a)); g.addColorStop(0.75, ctRgb(b)); g.addColorStop(1, ctRgb(ctLerp(b, [255, 244, 222], 0.4)));
   ctx.fillStyle = g; ctx.fillRect(0, 0, W, H);
@@ -7582,12 +7582,13 @@ function wmStreet() {
   }
 }
 function wmMounted() {
-  for (const [x, f] of G.L.wmMounted || []) { if (sx(x + 3) < 0 || sx(x) > W) continue; const k = 'wm_mg' + (f + Math.floor((animT * 0.25 + x * 0.13) % 4)); bxImg(k, x, 0, 3.0); }
+  const h = G.L.wmMountedH || 3.0;
+  for (const [x, f] of G.L.wmMounted || []) { if (sx(x + 3) < 0 || sx(x) > W) continue; const k = 'wm_mg' + (f + Math.floor((animT * 0.25 + x * 0.13) % 4)); bxImg(k, x, 0, h); }
 }
 function wmHgArchFront() {
-  const A = G.L.wmHgArch; if (!A || sx(A.x + 4) < 0 || sx(A.x - 4) > W) return;
-  ctx.fillStyle = 'rgba(10,6,4,.32)'; ctx.fillRect(sx(A.x - 1.25), sy(2.8), 2.5 * U, 2.8 * U);   // the arch's shadow on A as he goes under it
-  bxImg('wm_hg_arch', A.x - 2.42, 0, 4.0);
+  const A = G.L.wmHgArch; if (!A || sx(A.x + 4) < 0 || sx(A.x - 4) > W) return; const k = A.s || 1;
+  ctx.fillStyle = 'rgba(10,6,4,.32)'; ctx.fillRect(sx(A.x - 1.25 * k), sy(2.8 * k), 2.5 * k * U, 2.8 * k * U);   // the arch's shadow on A as he goes under it
+  bxImg('wm_hg_arch', A.x - 2.42 * k, 0, 4.0 * k);
 }
 // ---------- St James's Park ----------
 function wmPark() {
@@ -7632,25 +7633,34 @@ function wmPalace() {
   bxImg('wm_palace', P.x, 0, 8.0);
   for (const x of [P.x + 2.2, P.x + 13.8]) { bxImg('wm_sentry', x, 0, 2.3); bxImg('wm_gd5', x + 0.06, 0.12, 1.75); }   // sentry boxes, a guard standing in each
   // the guard and the band march across the forecourt: guards, drummers, trumpeters (frames 0-5, 6-11, 12-17)
-  const band = [0, 0, 6, 6, 12, 12, 0, 0];
+  // (Ladi 2026-11-07: they come up the forecourt as A runs to the gates, so they are already passing the gates when he gets there)
+  const band = [0, 0, 6, 6, 12, 12, 0, 0], fin = wmFin(), lead = c - 2.5 + (fin >= 0 ? 1.7 * fin : -0.34 * Math.max(0, L.finale - G.p.x));
   weClip(P.x - 3, P.x + 20, () => band.forEach((f, i) => {
-    const x = P.x - 4 + ((t * 1.05 + 30 - i * 1.25) % 26), k = 'wm_gd' + (f + Math.floor(t * 7 + i * 0.5) % 6);
+    const x = lead - i * 1.25, k = 'wm_gd' + (f + Math.floor(t * 7 + i * 0.5) % 6);
     bxImg(k, x, 0.16, 1.6);
   }));
   maRow('wm_prail', P.x - 6, c - 2.2, 0, 2.6); maRow('wm_prail', c + 2.2, P.x + 23, 0, 2.6);   // the railings, the gates open in the middle
   bxImg('wm_pgatel', c - 2.231, 0, 3.6); bxImg('wm_pgater', c, 0, 3.6);
 }
-// the Whitehall rooftop run: the shady alleys between the buildings (only up to the lower roof either side), bins at the bottom
-function wmAlleys() {
-  const L = G.L, im = IMG.wm_alley;
-  for (const [a, b, h] of L.wmGaps || []) {
-    if (!im || sx(b) < 0 || sx(a) > W) continue;
-    const w = b - a, th = w * im.height / im.width;
-    ctx.save(); ctx.beginPath(); ctx.rect(sx(a), sy(h), w * U, h * U + 2); ctx.clip();
-    for (let y = 0; y < h; y += th - 0.05) ctx.drawImage(im, sx(a), sy(y + th), w * U, th * U);
-    ctx.fillStyle = 'rgba(20,30,50,.25)'; ctx.fillRect(sx(a), sy(h), w * U, h * U);
-    ctx.restore();
-    if (w > 1.6) bxImg('wm_bins', a + w / 2 - 0.72, 0, 1.0);
+// the rooftop run: A runs on the flat roofs behind their stone balustrades, so the balustrades are drawn over him
+// (and the chimneys and skylights stand on the roof behind them: rule 4)
+const WM_BAL = { wm_bh: 0.085, wm_roofb: 0.085, wm_roofa: 0.095, wm_ab: 0.07 };
+function wmRoofFront() {
+  for (const [k, x, h] of G.L.wmRoofs || []) {
+    const im = IMG[k], f = WM_BAL[k]; if (!im || !f) continue;
+    const w = h * im.width / im.height; if (sx(x + w) < 0 || sx(x) > W) continue;
+    ctx.save(); ctx.beginPath(); ctx.rect(sx(x) - 1, sy(h) - 1, w * U + 2, f * h * U + 1); ctx.clip(); bxImg(k, x, 0, h); ctx.restore();
+  }
+}
+// where one kind of ground meets another (the bridge, the pavement, the gravel, the park path, the lake, the Mall):
+// a column of stone kerb blocks, so it never shows as a straight seam (rule 8)
+function wmJoins() {
+  const im = IMG.wm_kerb; if (!im) return;
+  const bw = 0.9, bh = bw * im.height / im.width, bot = cam.y - viewH() * (1 - GROUND_FRAC) - 1;
+  for (const x of G.L.wmJoins || []) {
+    if (sx(x + 1) < 0 || sx(x - 1) > W) continue;
+    ctx.fillStyle = 'rgba(30,24,18,.25)'; ctx.fillRect(sx(x + bw / 2), sy(0.1), 0.12 * U, (0.1 - bot) * U);   // a little shade beside it
+    for (let y = 0.1, i = 0; y > bot; y -= bh - 0.02, i++) ctx.drawImage(im, sx(x - bw / 2 + (i % 2 ? 0.04 : 0)), sy(y), bw * U, bh * U);
   }
 }
 function drawWestminster(dt) {
@@ -7666,18 +7676,18 @@ function drawWestminster(dt) {
   wmBridge();
   wmTowerOut();
   wmStreet();
-  wmAlleys();
   wmArt(a => a.back);
   wmMounted();
   wmPark();
   wmPalace();
   for (const s of L.solids) if (s.kind === 'ground') wmGround(s);
   wmBlue(false);
+  wmJoins();
   wmArt(a => !a.back);
   wmCab(false);
 }
 function drawWmFront() {
-  if (G.wmIn) wmInsideFront(); else { wmTowerFront(); wmHgArchFront(); wmPetals(); }
+  if (G.wmIn) wmInsideFront(); else { wmTowerFront(); wmHgArchFront(); wmRoofFront(); wmPetals(); }
   doorWipe(G.wmDoorW, WM_EDGE);
   const F = G.flag; if (G.L.wmFinale && F && F.ride !== undefined && F.ride > 0.3 && !$('hud').hidden) $('hud').hidden = true;
 }
