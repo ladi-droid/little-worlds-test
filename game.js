@@ -2255,12 +2255,12 @@ const ALL_LEVELS = [
     art('ct_gazebo', 8.0, 0, 2.5, { back: true });
     const ST = 11.0;                                             // the little station: platform with its striped canopy
     art('ct_plat', ST, 0, 2.7, { back: true });
-    // the track: A sits in the open carriage behind the engine. Tap = pop up (high coins), swipe down = duck (tunnel, wave)
+    // the track: A sits in the open carriage behind the engine. Tap = jump up out of his seat (high coins), swipe down = duck (tunnel)
     const T0 = 17.6, TB = 94.0;
     const pts = [[T0, 0], [27.5, 0], [30.5, 1.5], [32.0, 1.6], [35.6, 0], [44.5, 0], [46.3, 0.9], [53.8, 0.9], [55.6, 0], [TB - 7.0, 0]];
     L.rides = L.rides || [];
     const train = { kind: 'train', x0: T0, pts, v: 10.5, acc: 7, w0: 0.45, w1: 0.35, input: true, seat: 0.48, up: 1.2, down: 0.78,
-      hits: [{ x: 38.0, kind: 'ctbonk' }, { x: 66.0, kind: 'ctsoak' }], exitY: 0 };
+      jump: 11.5, grav: 22, hits: [{ x: 38.0, kind: 'ctbonk' }], exitY: 0 };
     L.rides.push(train); L.ctTrain = train;
     const ty = (x) => { for (let i = 1; i < pts.length; i++) if (x <= pts[i][0]) { const [a, c] = [pts[i - 1], pts[i]]; return a[1] + (c[1] - a[1]) * (x - a[0]) / (c[0] - a[0]); } return 0; };
     const lo = (x) => b.coins(x, ty(x) + 1.15, 1), hi = (x) => b.coins(x, ty(x) + 2.45, 1);
@@ -2272,12 +2272,13 @@ const ALL_LEVELS = [
     [29.0, 30.5, 32.0, 33.5, 34.8].forEach(lo);
     L.ctTunnel = { x: 37.2 };                                    // the grassy hill and its stone mouth, the track runs through it
     [38.8, 40.0, 41.2, 42.4].forEach(x => b.coins(x, 0.6, 1));
-    // out into the sun and over the little wooden bridge, gulls flying alongside
-    L.ctGulls = [44, 57];
+    // out into the sun and over the little wooden bridge
     [46.5, 48.0, 49.5, 51.0, 52.5].forEach(hi);
-    // the sea wall: the big wave rises and crashes over the track (duck and it sprays over)
-    L.ctSeaWall = [55.0, 80.0]; L.ctWave = { x: 66.0 };
-    [58.0, 59.4, 60.8].forEach(lo); [70.0, 71.4].forEach(lo);
+    // along the sea wall: a string of coins up high, only reached with a big jump out of the seat
+    L.ctSeaWall = [55.0, 80.0];
+    [58.0, 59.4].forEach(lo);
+    [61.6, 62.8, 64.0, 65.2, 66.4].forEach((x, i) => b.coins(x, 3.7 + [0, 0.45, 0.6, 0.45, 0][i], 1));
+    [70.0, 71.4].forEach(lo);
     // the lighthouse special: hanging high on the bunting by the red and white lighthouse
     art('ct_lighthouse', 73.0, 0, 7.5, { back: true });
     L.ctBunting = [[76.2, 6.0], [83.5, 3.0]];
@@ -2345,7 +2346,7 @@ const ALL_LEVELS = [
     const BX = ENT + 5.471 - 0.35;                                // inside from here (a cut-away box)
     const UP = 4.6, CEIL = 9.4, OUT = BX + 66;
     Object.assign(L.ctAq, { ent: ENT, box: BX, x1: OUT, up: UP, ceil: CEIL });
-    ground(BX, OUT + 1, 'ctaqua'); L.solids.forEach(q => { if (q.style === 'ctquay') q.w = BX - q.x; });
+    ground(BX, OUT - 0.8, 'ctaqua'); ground(OUT - 0.8, OUT + 1, 'ctcobble');   // the hall's floor ends at the side door L.solids.forEach(q => { if (q.style === 'ctquay') q.w = BX - q.x; });
     solid(BX + 0.3, OUT - BX - 0.6, 40, CEIL);                    // the ceiling
     L.ctSwap1 = BX + 33;                                          // far and middle strips change in here, out of sight
     // ground floor: the ray touch-pool, a crab, the stairs up
@@ -2473,8 +2474,7 @@ const ALL_LEVELS = [
     boulder(FP + 16.5); b.coins(FP + 15.0, TOPY + 1.2, 4, 0.8);
     // ---------- 9. The lower cable station and the cable car ----------
     const LS = FP + 19.5;
-    L.ctCliff = { x0: LS - 6.0, top: 16.0 };                      // the cliffs of Table Mountain rise behind the station
-    L.ctSwap3 = LS + 4.0;                                          // far and middle strips change behind the station (the cliff hides it)
+    L.ctCliff = { x0: LS - 6.0, top: 28.0 };                      // the cliffs of Table Mountain rise behind the station
     L.ctLs = { x: LS, y: TOPY };                                   // end piece, entrance (A walks in), then out onto the platform behind
     const LSE = LS + 2.543 - 0.05, LSD = LSE + 6.829 * 0.5;        // the open doors
     L.ctLs.ent = LSE; L.ctLs.door = LSD;
@@ -2484,10 +2484,11 @@ const ALL_LEVELS = [
     L.ctLs.plat = CAB - 2.3;
     ground(hx + 26, CAB + 4, 'ctbokaap', TOPY);
     b.coins(LSE + 1.5, TOPY + 1.1, 4, 0.9); b.coins(WH + 1.0, TOPY + 1.1, 6, 1.1);
-    const TOP = 16.0, TX = CAB + 32.0;                             // the top station on the edge of the mountain
-    const cab = { kind: 'cable', x0: CAB, pts: [[CAB, TOPY], [CAB + 2.0, TOPY + 0.5], [TX - 2.0, TOP - 0.4], [TX, TOP]], v: 4.4, acc: 1.4, w0: 1.4, w1: 1.1, input: false, seat: 0, up: 0, down: 0, exitY: TOP };
+    const TOP = 28.0, TX = CAB + 40.0;                             // the top station on the edge of the mountain: a long, steep climb
+    const cab = { kind: 'cable', x0: CAB, pts: [[CAB, TOPY], [CAB + 2.0, TOPY + 0.6], [TX - 2.0, TOP - 0.4], [TX, TOP]], v: 6.0, acc: 2.2, w0: 1.4, w1: 1.1, input: false, seat: 0, up: 0, down: 0, exitY: TOP };
     L.rides.push(cab); L.ctCab = cab;
-    for (let i = 1; i <= 9; i++) { const k = i / 10, cxp = CAB + 2 + (TX - CAB - 4) * k; b.coins(cxp, TOPY + 0.5 + (TOP - 0.4 - TOPY - 0.5) * k + 0.8, 1); }   // up beside the cable
+    // coins beside the cable, far apart at the bottom and closer and closer towards the top, so their tune climbs too
+    for (let x = CAB + 4.0, gap = 6.4; x < TX - 2.2; x += gap, gap = Math.max(1.15, gap * 0.8)) b.coins(x, rideY(cab, x) + 0.8, 1);
     // ---------- 10. Table Mountain top: the Cape Doctor blows A along, so his jumps go further ----------
     L.ctUs = { x: TX - 4.68 };
     L.camFloor = [[TX - 1.0, TX + 120, TOP]];
@@ -2519,7 +2520,7 @@ const ALL_LEVELS = [
     b.flag(E - 7.5); L.flagY = TOP;
     L.finale = E - 2.2;
     L.ctFinale = true;
-    b.wall(E + 0.2, 1, 40);
+    b.hidden(E + 0.2, 1, 40);   // invisible: past the edge the hill slopes away
     b.end(E + 5.0);
   },
 },
@@ -2943,7 +2944,8 @@ function rideTick(g, dt) {
   const z = p.ride, r = R[z.i], end = r.pts[r.pts.length - 1][0];
   z.t += dt;
   if (r.input) {
-    if (p.buffer > 0) { z.tgt = 1; z.tt = 0.55; p.buffer = 0; }
+    if (p.buffer > 0) { if (r.jump) { if (!(z.jy > 0)) { z.jy = 0.001; z.jvy = r.jump; } } else { z.tgt = 1; z.tt = 0.55; } p.buffer = 0; }
+    if (z.jy > 0) { z.jvy -= r.grav * dt; z.jy += z.jvy * dt; if (z.jy <= 0) { z.jy = 0; z.jvy = 0; } }
     if (p.duck) { z.tgt = -1; z.tt = 0.55; p.duck = false; }
     z.tt -= dt; if (z.tt <= 0) z.tgt = 0;
     z.off += (z.tgt - z.off) * Math.min(1, dt * 10);
@@ -2953,7 +2955,7 @@ function rideTick(g, dt) {
     z.v = Math.min(vmax, z.v + r.acc * 1.6 * dt);
     const ps = z.s; z.s = Math.min(end, z.s + z.v * dt);
     for (const h of r.hits || []) if (ps < h.x && z.s >= h.x) {
-      const hit = z.off > -0.45;
+      const hit = z.off > -0.45 || z.jy > 0;
       if (hit && h.kind === 'ctbonk') { const n = Math.min(3, g.coins); g.coins -= n; z.lost = n; }
       z[h.kind] = { t: z.t, hit };
       g.events.push({ type: h.kind, hit, x: z.s });
@@ -2969,7 +2971,7 @@ function rideTick(g, dt) {
     }
   }
   const y = rideY(r, z.s);
-  p.x = z.s - PW / 2; p.y = y + r.seat + (z.off > 0 ? z.off * r.up : z.off * r.down);
+  p.x = z.s - PW / 2; p.y = y + r.seat + (z.off > 0 ? z.off * r.up : z.off * r.down) + (z.jy || 0);
   p.vx = z.v; p.vy = 0; p.onGround = false; p.coyote = 0; p.wall = 0; p.blocked = false; p.airT = 0; p.dir = 1; p.rising = false;
   pickUp(g);
   return true;
