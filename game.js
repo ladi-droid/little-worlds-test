@@ -2908,30 +2908,26 @@ const ALL_LEVELS = [
     back('wm_sqlamp', 144.6, 0, 2.8);
     lean('wm_phone', 146.0, 2.9, 0.1, 1.45, 2.85); b.coins(146.2, 3.8, 2, 0.6);
     art('wm_pillar', 150.5, 0, 1.1); solid(150.52, 0.55, 1.05);
-    b.coins(152.0, 1.1, 4, 1.0);
-    // ---------- 3b. The Whitehall rooftop run (Ladi 2026-11-07): up between two buildings, along the roofs, across the gaps to Horse Guards ----------
-    // a miss drops A onto the pavement in front of the row; he carries on along the street and climbs Horse Guards from its porch
-    const box = (x, y, w, h, label, o = {}) => (L.wmBlocks = L.wmBlocks || []).push(Object.assign({ x, y, w, h, label }, o));   // block layout only: grey boxes until the pictures come
-    const AB = [152.4, 155.4], BH = [158.4, 165.6];                 // the arched building (A runs under its arch), the Banqueting House (right in his way)
-    solid(AB[0], AB[1] - AB[0], 40, 3.6);
-    box(AB[0] - 0.6, 3.6, AB[1] - AB[0] + 1.2, 8.4, 'office building over an archway (wall 1)');
-    box(AB[0] - 0.6, 0, 0.6, 3.6, ''); box(AB[1], 0, 0.6, 3.6, '');
-    solid(BH[0], BH[1] - BH[0], 8.0); ledge(BH[0], 8.0, BH[1] - BH[0]);
-    box(BH[0], 0, BH[1] - BH[0], 8.0, 'Banqueting House front (wall 2): jump between the walls to the roof');
-    [[157.3, 3.4], [156.2, 5.3], [157.3, 7.2], [159.4, 9.0]].forEach(([x, y]) => b.coins(x, y, 1));
-    solid(161.6, 0.9, 0.8, 8.0); box(161.6, 8.0, 0.9, 0.8, 'pots', { tag: 1 });   // chimney pots: A hops them
-    b.coins(160.2, 9.1, 3, 0.8);
-    const R2 = [167.8, 175.2], R3 = [178.0, 184.4];                   // the next two roofs (the row behind the pavement; A only stands on top)
-    ledge(R2[0], 9.0, R2[1] - R2[0]); box(R2[0], 0, R2[1] - R2[0], 9.0, 'Whitehall office roof', { back: 1 });
-    solid(171.0, 1.2, 1.9, 9.0); ledge(171.0, 10.9, 1.2); box(171.0, 9.0, 1.2, 1.9, 'tall chimney: lean, jump', { tag: 1 });
-    b.coins(166.0, 9.6, 2, 0.8, 0.4); b.coins(168.6, 10.0, 3, 0.8); b.coins(171.2, 11.8, 2, 0.6);
-    b.special(176.6, 12.6);                                          // 3: in mid-air over the widest gap, off the tall chimney
-    ledge(R3[0], 8.0, R3[1] - R3[0]); box(R3[0], 0, R3[1] - R3[0], 8.0, 'Whitehall office roof', { back: 1 });
-    solid(181.0, 1.6, 0.7, 8.0); box(181.0, 8.0, 1.6, 0.7, 'skylight', { tag: 1 });
-    b.coins(178.6, 8.9, 2, 0.8); b.coins(182.9, 8.9, 2, 0.8); b.coins(185.4, 8.6, 3, 0.9, -0.4);
-    L.wmGaps = [[BH[1], R2[0]], [R2[1], R3[0]], [R3[1], 188.2]];     // the alleys between the buildings (the drop to the street)
+    b.coins(151.0, 1.1, 4, 1.0);
+    // ---------- 3b. The Whitehall rooftop run (Ladi 2026-11-07): up between two buildings, along the roofs, across the alleys to Horse Guards ----------
+    // a miss drops A onto the pavement in front of the row; he carries on along the street and climbs Horse Guards from its porch (Ladi's pictures 32-36)
+    const AB = 151.6, BH = 158.45, BW = 9.371;                       // the building over an archway (A runs under it), the Banqueting House (right in his way)
+    art('wm_ab', AB, 0, 9.66); solid(AB + 0.15, 3.7, 40, 3.0);      // wall 1: from the top of its arch up
+    art('wm_bh', BH, 0, 8.0); solid(BH, BW, 8.0); ledge(BH, 8.0, BW); // wall 2: jump from one to the other up to its roof
+    [[157.0, 3.2], [156.1, 5.2], [157.2, 7.1], [159.2, 9.0]].forEach(([x, y]) => b.coins(x, y, 1));
+    lean('wm_pots', 162.2, 0.8, 0.0, 0.69, 0.8, 8.0);               // chimney pots: A hops them
+    b.coins(160.4, 9.1, 2, 0.8); b.coins(164.0, 8.9, 3, 0.9);
+    const R2 = 170.0, R3 = 179.0;                                    // two roofs of the row behind the pavement (A only stands on top)
+    back('wm_roofb', R2, 0, 9.0); ledge(R2, 9.0, 5.247);
+    lean('wm_chim', 172.6, 2.0, 0.0, 0.97, 2.0, 9.0);               // the tall chimney: lean on it, jump up and off it
+    b.coins(167.9, 9.7, 3, 0.75, 0.3); b.coins(170.6, 10.0, 2, 0.8); b.coins(172.8, 11.9, 2, 0.6);
+    b.special(177.1, 12.7);                                          // 3: in mid-air over the widest alley, off the tall chimney
+    back('wm_roofa', R3, 0, 8.0); ledge(R3, 8.0, 5.349);
+    lean('wm_skylt', 180.4, 0.6, 0.05, 1.04, 0.55, 8.0);            // a glass skylight: A hops it
+    back('wm_aerial', 182.9, 8.0, 1.4);                              // a pigeon on a TV aerial
+    b.coins(179.4, 8.9, 1); b.coins(182.0, 8.9, 2, 0.8); b.coins(184.8, 8.9, 3, 0.9, -0.4);
+    L.wmGaps = [[AB + 3.963, BH, 8.0], [BH + BW, R2, 8.0], [R2 + 5.247, R3, 8.0], [R3 + 5.349, 188.0, 7.0]];   // the alleys: [from, to, up to]
     // down on the street: the way on for a child who missed a jump
-    back('wm_sqlamp', 166.0, 0, 2.8);
     lean('wm_kiosk', 168.6, 2.3, 0.05, 2.0, 2.2); b.coins(168.8, 3.1, 3, 0.8);
     back('wm_sqlamp', 176.0, 0, 2.8); back('wm_bin', 177.4, 0, 0.9);
     bollard(180.0); bollard(181.2);
