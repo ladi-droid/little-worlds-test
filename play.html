@@ -432,10 +432,10 @@ html.lw-loading .splash{visibility:hidden}
   </div>
 </section>
 
-<script src="kids/kids-meta.js?v=1794053697"></script>
-<script src="kids/kids.js?v=1794053697"></script>
-<script src="sfx.js?v=1794053697"></script>
-<script src="game.js?v=1794053697"></script>
+<script src="kids/kids-meta.js?v=1794053923"></script>
+<script src="kids/kids.js?v=1794053923"></script>
+<script src="sfx.js?v=1794053923"></script>
+<script src="game.js?v=1794053923"></script>
 <script>
 (() => {
 'use strict';
@@ -1277,7 +1277,7 @@ $('retryBtn').addEventListener('click', () => startLevel(levelIndex));
 // If the builder opened this tab, close it and show the builder again; otherwise open the builder with this child's world filled in.
 let lwJoinEnd = false;
 function lwBackToBuilder() {
-  const url = 'builder.html?v=1794053697&w=' + lwEncode(LW);
+  const url = 'builder.html?v=1794053923&w=' + lwEncode(LW);
   try { if (window.opener && !window.opener.closed && /builder\.html/.test(window.opener.location.pathname)) { window.opener.focus(); window.close(); setTimeout(() => { location.href = url; }, 400); return; } } catch (e) {}
   location.href = url;
 }
@@ -6332,7 +6332,7 @@ function ctBandCanvas() { const c = ctx.canvas; if (!ctOC) ctOC = document.creat
 // It stays put on the horizon as A climbs, and its hazy bottom carries on down to the foot of the screen.
 function ctFar3() {
   const im = IMG[weGrain('ct_far3', 18)]; if (!im) return;
-  const h = 7.6 * U, w = h * im.width / im.height, bot = sy(cam.y * 0.1 - 1.6, 0.1), S = G.L.ctLs ? G.L.ctLs.ent : 0;
+  const h = 7.6 * U, w = h * im.width / im.height, bot = sy(cam.y * 0.1 - 1.6, 0.1), S = G.L.ctSwap2 || 0;
   const x0 = -(cam.x - S) * U * 0.1 - 0.05 * w;
   const one = () => { ctx.drawImage(im, 0, bot - h, w, h); if (bot < H) ctx.drawImage(im, 0, im.height - 2, im.width, 2, 0, bot - 1, w, H - bot + 2); };
   for (const [x, f] of [[x0, 1], [x0 + 2 * w - 1, -1]]) { if (x + w * f * 0 > W && f > 0) continue; ctx.save(); ctx.translate(x, 0); ctx.scale(f, 1); one(); ctx.restore(); }
@@ -6340,22 +6340,22 @@ function ctFar3() {
 function ctBands() {
   const L = G.L, T = L.ctBk ? L.ctBkEnd[2] : 3.6;
   const band = (key, par, hU, bot) => maBand(weGrain(key, par < 0.2 ? 18 : 8), par, hU, bot);
-  if (G.ctUp) { ctFar3(); return; }   // through the lower station's doors: the view from the mountain, all the way up
   const S = [L.ctSwap0, L.ctSwap1, L.ctSwap2].map(x => x === undefined ? 1e9 : sx(x));
   const part = (a, b, fn) => { a = Math.max(-10, a); b = Math.min(W + 10, b); if (b <= a) return; ctx.save(); ctx.beginPath(); ctx.rect(a, -10, b - a, H + 20); ctx.clip(); fn(); ctx.restore(); };
   part(-10, S[0], () => { band('ct_far1', 0.1, 9.0, 1.4); band('ct_mid0', 0.3, 5.6, -0.3); });
   part(S[0], S[1], () => { band('ct_far1', 0.1, 9.0, 1.4); band('ct_mid1', 0.3, 5.8, -0.3); });
   part(S[1], S[2], () => { band('ct_far2', 0.1, 11.0, 1.0); band('ct_mid2', 0.3, 7.2, -0.4); });
-  part(S[2], W + 10, () => { band('ct_far2', 0.1, 11.0, 1.0); band('ct_mid3', 0.3, 4.6, T - 0.5); });
+  // past the last Bo-Kaap house the view out to sea waits behind Table Mountain; on the cable car the mountain and the path sink away below and the view opens up
+  if (L.ctLs && cam.x + W / U / 2 < L.ctLs.ent) G.ctY0 = cam.y;
+  const climb = Math.max(0, cam.y - (G.ctY0 !== undefined ? G.ctY0 : (L.ctCab ? L.ctCab.pts[0][1] : 0)));
+  part(S[2], W + 10, () => { ctFar3(); if (climb < 30) { band('ct_far2', 0.1, 11.0, 1.0 - 0.7 * climb); band('ct_mid3', 0.3, 4.6, T - 0.5 - 0.5 * climb); } });
 }
-// going in and out of buildings (rule 6): the aquarium, the lower cable station, the top station. The view changes while the doorway is shut.
+// going in and out of buildings (rule 6): the aquarium. The cable stations have no wipe (Ladi 2026-11-07). The view changes while the doorway is shut.
 const CT_EDGE = { dark: '#163a33', rim: '#1a8f6a', trim: ['ct_protea', 'ct_geranium', 'ct_protea', 'ct_restio'] };
 function ctDoorTick() {
   const L = G.L, x = G.p.x + ARun.PW / 2, A = L.ctAq, S = L.ctLs, U2 = L.ctUs;
   const st = {
     ctIn: !!A && x > A.ent + 4.0 && x < A.x1 - 7.346 * 0.31 + 0.3,       // in at the aquarium's glass doors, out of its side door
-    ctUp: !!S && x > S.ent + 4.3,                                          // in through the lower station's doors
-    ctTopOut: !!U2 && x > U2.x + 6.6 + 9.363 * 0.62 && (G.p.rideN || 0) >= 2,   // out of the top station
   };
   if (G.ctSt === undefined) { G.ctSt = Object.assign({}, st); Object.assign(G, st); }
   let D = G.ctDoor;
