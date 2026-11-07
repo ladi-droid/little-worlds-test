@@ -7640,6 +7640,20 @@ function wmPalace() {
   maRow('wm_prail', P.x - 6, c - 2.2, 0, 2.6); maRow('wm_prail', c + 2.2, P.x + 23, 0, 2.6);   // the railings, the gates open in the middle
   bxImg('wm_pgatel', c - 2.231, 0, 3.6); bxImg('wm_pgater', c, 0, 3.6);
 }
+// block layout only (until the pictures come): grey boxes with labels
+function wmBlocks(back) {
+  const L = G.L; ctx.textBaseline = 'top';
+  if (back) for (const [a, b] of L.wmGaps || []) { ctx.fillStyle = 'rgba(70,70,80,.55)'; ctx.fillRect(sx(a), sy(8.0), (b - a) * U, 8.0 * U); ctx.fillStyle = '#fff'; ctx.font = `bold ${Math.round(U * 0.24)}px sans-serif`; ctx.fillText('alley', sx(a) + 4, sy(3.0)); }
+  for (const k of L.wmBlocks || []) {
+    if (!!k.back !== back) continue;
+    ctx.fillStyle = k.back ? 'rgba(170,160,145,.92)' : k.tag ? 'rgba(150,95,70,.95)' : 'rgba(120,120,132,.95)';
+    ctx.fillRect(sx(k.x), sy(k.y + k.h), k.w * U, k.h * U); ctx.strokeStyle = '#2a2a2a'; ctx.lineWidth = 2; ctx.strokeRect(sx(k.x), sy(k.y + k.h), k.w * U, k.h * U);
+    if (k.label) { ctx.fillStyle = k.back ? '#2b2418' : '#fff'; ctx.font = `bold ${Math.round(U * 0.24)}px sans-serif`;
+      const ws = k.label.split(' '); let line = '', y = sy(k.y + k.h) + 4, w = Math.max(k.w * U - 8, U * 1.4);
+      for (const wd of ws) { const t = line ? line + ' ' + wd : wd; if (ctx.measureText(t).width > w) { ctx.fillText(line, sx(k.x) + 4, y); y += U * 0.28; line = wd; } else line = t; } ctx.fillText(line, sx(k.x) + 4, y); }
+  }
+  ctx.textBaseline = 'alphabetic';
+}
 function drawWestminster(dt) {
   const L = G.L;
   wmDoorTick(); wmBongTick();
@@ -7653,6 +7667,7 @@ function drawWestminster(dt) {
   wmBridge();
   wmTowerOut();
   wmStreet();
+  wmBlocks(true);
   wmArt(a => a.back);
   wmMounted();
   wmPark();
@@ -7660,6 +7675,7 @@ function drawWestminster(dt) {
   for (const s of L.solids) if (s.kind === 'ground') wmGround(s);
   wmBlue(false);
   wmArt(a => !a.back);
+  wmBlocks(false);
   wmCab(false);
 }
 function drawWmFront() {

@@ -2909,14 +2909,33 @@ const ALL_LEVELS = [
     lean('wm_phone', 146.0, 2.9, 0.1, 1.45, 2.85); b.coins(146.2, 3.8, 2, 0.6);
     art('wm_pillar', 150.5, 0, 1.1); solid(150.52, 0.55, 1.05);
     b.coins(152.0, 1.1, 4, 1.0);
-    back('wm_sqlamp', 155.6, 0, 2.8);
-    b.pigeon(157.0);
-    L.wmWh = [['wm_wh_endl', 159.0, 4.8]]; { let x = 159.0 + 2.995 - 0.02; for (let i = 0; i < 3; i++) { L.wmWh.push(['wm_wh_bld', x, 8.0]); x += 6.967 - 0.02; } L.wmWh.push(['wm_wh_endr', x, 4.8]); }
-    bollard(163.0);
-    lean('wm_kiosk', 168.0, 2.3, 0.05, 2.0, 2.2); b.coins(168.2, 3.1, 3, 0.8);
-    back('wm_sqlamp', 172.6, 0, 2.8); back('wm_bin', 174.0, 0, 0.9);
-    bollard(176.0); bollard(177.2);
-    b.coins(180.0, 1.1, 4, 1.0);
+    // ---------- 3b. The Whitehall rooftop run (Ladi 2026-11-07): up between two buildings, along the roofs, across the gaps to Horse Guards ----------
+    // a miss drops A onto the pavement in front of the row; he carries on along the street and climbs Horse Guards from its porch
+    const box = (x, y, w, h, label, o = {}) => (L.wmBlocks = L.wmBlocks || []).push(Object.assign({ x, y, w, h, label }, o));   // block layout only: grey boxes until the pictures come
+    const AB = [152.4, 155.4], BH = [158.4, 165.6];                 // the arched building (A runs under its arch), the Banqueting House (right in his way)
+    solid(AB[0], AB[1] - AB[0], 40, 3.6);
+    box(AB[0] - 0.6, 3.6, AB[1] - AB[0] + 1.2, 8.4, 'office building over an archway (wall 1)');
+    box(AB[0] - 0.6, 0, 0.6, 3.6, ''); box(AB[1], 0, 0.6, 3.6, '');
+    solid(BH[0], BH[1] - BH[0], 8.0); ledge(BH[0], 8.0, BH[1] - BH[0]);
+    box(BH[0], 0, BH[1] - BH[0], 8.0, 'Banqueting House front (wall 2): jump between the walls to the roof');
+    [[157.3, 3.4], [156.2, 5.3], [157.3, 7.2], [159.4, 9.0]].forEach(([x, y]) => b.coins(x, y, 1));
+    solid(161.6, 0.9, 0.8, 8.0); box(161.6, 8.0, 0.9, 0.8, 'pots', { tag: 1 });   // chimney pots: A hops them
+    b.coins(160.2, 9.1, 3, 0.8);
+    const R2 = [167.8, 175.2], R3 = [178.0, 184.4];                   // the next two roofs (the row behind the pavement; A only stands on top)
+    ledge(R2[0], 9.0, R2[1] - R2[0]); box(R2[0], 0, R2[1] - R2[0], 9.0, 'Whitehall office roof', { back: 1 });
+    solid(171.0, 1.2, 1.9, 9.0); ledge(171.0, 10.9, 1.2); box(171.0, 9.0, 1.2, 1.9, 'tall chimney: lean, jump', { tag: 1 });
+    b.coins(166.0, 9.6, 2, 0.8, 0.4); b.coins(168.6, 10.0, 3, 0.8); b.coins(171.2, 11.8, 2, 0.6);
+    b.special(176.6, 12.6);                                          // 3: in mid-air over the widest gap, off the tall chimney
+    ledge(R3[0], 8.0, R3[1] - R3[0]); box(R3[0], 0, R3[1] - R3[0], 8.0, 'Whitehall office roof', { back: 1 });
+    solid(181.0, 1.6, 0.7, 8.0); box(181.0, 8.0, 1.6, 0.7, 'skylight', { tag: 1 });
+    b.coins(178.6, 8.9, 2, 0.8); b.coins(182.9, 8.9, 2, 0.8); b.coins(185.4, 8.6, 3, 0.9, -0.4);
+    L.wmGaps = [[BH[1], R2[0]], [R2[1], R3[0]], [R3[1], 188.2]];     // the alleys between the buildings (the drop to the street)
+    // down on the street: the way on for a child who missed a jump
+    back('wm_sqlamp', 166.0, 0, 2.8);
+    lean('wm_kiosk', 168.6, 2.3, 0.05, 2.0, 2.2); b.coins(168.8, 3.1, 3, 0.8);
+    back('wm_sqlamp', 176.0, 0, 2.8); back('wm_bin', 177.4, 0, 0.9);
+    bollard(180.0); bollard(181.2);
+    b.coins(183.0, 1.1, 4, 1.0);
 
     // ---------- 4. Horse Guards: up the porch and the ledges to the clock turret, then through the arch ----------
     const HG = 188.0, X0 = HG + 4.0;                                 // the wings, the main building (Ladi's picture 18)
@@ -2928,9 +2947,10 @@ const ALL_LEVELS = [
     ledge(X0 + 0.1, 3.4, 4.3);                                       // the porch roof
     ledge(X0 + 4.3, 6.1, 4.4);                                       // the window heads
     ledge(X0 + 0.4, 8.25, 20.7);                                     // the roof
+    ledge(HG + 0.2, 7.0, 3.8);                                       // the left wing: the rooftop run lands here
     solid(X0 + 9.9, 1.8, 1.4, 8.25); ledge(X0 + 9.9, 9.65, 1.8);     // the clock turret
     ledge(X0 + 21.6, 7.05, 3.9);                                     // the right-hand wing
-    b.special(X0 + 10.8, 12.3);                                      // 3: on top of the clock turret
+    b.coins(X0 + 10.3, 11.0, 3, 0.6);                                // on top of the clock turret (special 3 moved to the rooftop run)
     b.coins(HG + 2.8, 2.4, 2, 0.6); b.coins(X0 + 0.6, 4.3, 4, 1.0); b.coins(X0 + 4.7, 7.0, 4, 1.0); b.coins(X0 + 5.0, 9.15, 4, 1.0);
     b.coins(X0 + 13.0, 9.15, 7, 1.0); b.coins(X0 + 22.3, 7.95, 3, 0.9); b.coins(X0 + 26.6, 6.0, 4, 1.0, -1.4);
     L.wmHgArch = { x: X0 + 10.9 };                                   // the archway through the building: A runs under it
