@@ -2710,9 +2710,9 @@ const ALL_LEVELS = [
     const WY = -0.85, LANDX = D1 + 58.0;                            // the water line, and where he climbs out at Bethesda Terrace
     L.nyLake = [D1 - 0.3, LANDX + 1.0];
     L.rides = L.rides || [];
-    // the boat noses in against the stone steps at the terrace and is tied up there; A steps out onto the top step
-    const boat = { kind: 'boat', x0: D1 + 0.6, pts: [[D1 + 0.6, WY], [LANDX - 2.0, WY]], v: 7.6, acc: 6, w0: 0.5, w1: 0.45, input: true, seat: 0.4, up: 1.2, down: 0.8,
-      hits: [], exitY: 0, exitDx: 2.4 };
+    // the boat pulls up at the foot of the stone steps below the terrace and is tied up there; A steps out and runs up the steps
+    const boat = { kind: 'boat', x0: D1 + 0.6, pts: [[D1 + 0.6, WY], [LANDX - 4.48, WY]], v: 7.6, acc: 6, w0: 0.5, w1: 0.45, input: true, seat: 0.4, up: 1.2, down: 0.8,
+      hits: [], exitY: -0.42, exitDx: 1.73 };
     L.rides.push(boat); L.nyBoat = boat;
     const lo = (x) => b.coins(x, 0.5, 1), hi = (x) => b.coins(x, 1.9, 1);
     [D1 + 4, D1 + 5.5, D1 + 7].forEach(lo); [D1 + 8.5, D1 + 10, D1 + 11.5].forEach(hi); [D1 + 13, D1 + 14.5].forEach(lo);
@@ -2728,18 +2728,19 @@ const ALL_LEVELS = [
     [BW + 18.5, BW + 20, BW + 21.5].forEach(hi);
     const JET = BW + 28.5; L.nyJet = { x: JET };
     boat.hits.push({ x: JET, kind: 'ctsoak' });
-    [JET - 3, JET - 1.6].forEach(lo); [JET + 2.5, JET + 4, JET + 5.5].forEach(hi); [LANDX - 5, LANDX - 3.5].forEach(lo);
+    [JET - 3, JET - 1.6].forEach(lo); [JET + 2.5, JET + 4, JET + 5.5].forEach(hi); [LANDX - 8, LANDX - 6.5].forEach(lo);
 
     // ---------- 6. Bethesda Terrace: the fountain, then through the arcade with its golden tiled ceiling ----------
     const T0 = LANDX - 0.4;
     ground(T0, T0 + 44, 'nyterr');
     L.nyTerrace = { x: T0 };
     L.nyLanding = { x: T0 };                                        // stone steps down into the Lake, and a mooring post
-    art('ny_fountain', T0 + 3.0, 0, 5.0, { back: true });
-    art('ny_poolrim', T0 + 1.2, 0, 0.6); solid(T0 + 1.3, 10.8, 0.52);   // the low pool rim: hop up and run along it
-    b.coins(T0 + 2.0, 1.4, 9, 1.1);
-    art('ny_balus', T0 + 12.8, 0, 1.6); solid(T0 + 13.0, 6.43, 1.5); ledge(T0 + 12.95, 1.52, 6.55);   // a stone balustrade: lean, then run along its top
-    b.coins(T0 + 13.4, 2.2, 6, 1.0);
+    solid(T0 - 2.4, 0.45, 0.5, -0.92); b.slope(T0 - 1.95, -0.42, T0 - 1.3, 0); solid(T0 - 1.3, 1.35, 1.0, -1.0);   // up the steps onto the terrace
+    art('ny_fountain', T0 + 2.0, 0, 5.0, { back: true });
+    art('ny_poolrim', T0 + 0.2, 0, 0.6); solid(T0 + 0.3, 10.8, 0.52);   // the low pool rim: hop up and run along it
+    b.coins(T0 + 1.0, 1.4, 9, 1.1);
+    art('ny_balus', T0 + 11.8, 0, 1.6); solid(T0 + 12.0, 6.43, 1.5); ledge(T0 + 11.95, 1.52, 6.55);   // a stone balustrade: lean, then run along its top
+    b.coins(T0 + 12.4, 2.2, 6, 1.0);
     const AR = T0 + 15.5, AE = AR + 13.0;                           // the arcade, under the road
     L.nyArcade = [AR, AE];
     L.nySwap2 = AR + 6.5;
