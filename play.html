@@ -432,10 +432,10 @@ html.lw-loading .splash{visibility:hidden}
   </div>
 </section>
 
-<script src="kids/kids-meta.js?v=1794052520"></script>
-<script src="kids/kids.js?v=1794052520"></script>
-<script src="sfx.js?v=1794052520"></script>
-<script src="game.js?v=1794052520"></script>
+<script src="kids/kids-meta.js?v=1794052834"></script>
+<script src="kids/kids.js?v=1794052834"></script>
+<script src="sfx.js?v=1794052834"></script>
+<script src="game.js?v=1794052834"></script>
 <script>
 (() => {
 'use strict';
@@ -1274,7 +1274,7 @@ $('retryBtn').addEventListener('click', () => startLevel(levelIndex));
 // If the builder opened this tab, close it and show the builder again; otherwise open the builder with this child's world filled in.
 let lwJoinEnd = false;
 function lwBackToBuilder() {
-  const url = 'builder.html?v=1794052520&w=' + lwEncode(LW);
+  const url = 'builder.html?v=1794052834&w=' + lwEncode(LW);
   try { if (window.opener && !window.opener.closed && /builder\.html/.test(window.opener.location.pathname)) { window.opener.focus(); window.close(); setTimeout(() => { location.href = url; }, 400); return; } } catch (e) {}
   location.href = url;
 }
@@ -6408,7 +6408,16 @@ function ctRamps() {
     if (sl.x0 < x0 || sl.x1 > x1 + 1 || sl.y1 <= sl.y0 || sx(sl.x1) < 0 || sx(sl.x0) > W) continue;
     const st = CT_GROUND.ctbokaap, lift = 0.22 * U;
     ctx.fillStyle = st[3]; ctx.beginPath(); ctx.moveTo(sx(sl.x0) - 1, sy(sl.y0) + 0.5 * U); ctx.lineTo(sx(sl.x0) - 1, sy(sl.y0) - lift); ctx.lineTo(sx(sl.x1) + 1, sy(sl.y1) - lift);
-    ctx.lineTo(sx(sl.x1) + 1, H); ctx.lineTo(sx(sl.x0) - 1, H); ctx.closePath(); ctx.fill();
+    ctx.lineTo(sx(sl.x1) + 1, H); ctx.lineTo(sx(sl.x0) - 1, H); ctx.closePath();
+    const gr = ctx.createLinearGradient(0, sy(sl.y1), 0, H); gr.addColorStop(0, st[3]); gr.addColorStop(1, st[4]); ctx.fillStyle = gr; ctx.fill();
+    ctx.save(); ctx.clip();   // stone courses, like the walls under the houses
+    ctx.strokeStyle = 'rgba(70,64,58,.3)'; ctx.lineWidth = Math.max(1, 0.05 * U);
+    for (let y = sl.y1 - 0.55 * 1.5, i = 0; sy(y) < H + 4; y -= 0.55, i++) {
+      if (sy(y) < -4) continue;
+      ctx.beginPath(); ctx.moveTo(sx(sl.x0) - 2, sy(y)); ctx.lineTo(sx(sl.x1) + 2, sy(y)); ctx.stroke();
+      for (let xx = sl.x0 + (i % 2) * 0.55 - 1.1; xx < sl.x1 + 1.1; xx += 1.1) { ctx.beginPath(); ctx.moveTo(sx(xx), sy(y)); ctx.lineTo(sx(xx), sy(y - 0.55)); ctx.stroke(); }
+    }
+    ctx.restore();
     ctx.strokeStyle = '#d9d2c6'; ctx.lineWidth = 0.16 * U; ctx.beginPath(); ctx.moveTo(sx(sl.x0), sy(sl.y0) - lift + 0.08 * U); ctx.lineTo(sx(sl.x1), sy(sl.y1) - lift + 0.08 * U); ctx.stroke();
   }
 }
