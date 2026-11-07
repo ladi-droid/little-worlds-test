@@ -2811,6 +2811,194 @@ const ALL_LEVELS = [
     b.end(GP + GW + 3.0);
   },
 },
+{
+  id: 'westminster', name: 'Westminster', plate: 'Westminster', area: 'westminster', city: 'London',
+  build(b) {
+    const L = b.L;
+    // Westminster on a spring morning, drawn from Ladi's art (src/westminster/cut.py). Plan: london-runner/westminster/westminster-plan.md
+    // black cab onto Westminster Bridge -> inside Big Ben (spiral stairs, the clock's giant gears, behind the glowing dial, the Great Bell, the lift down)
+    // -> Parliament Square and Whitehall -> Horse Guards (up to the clock turret, through the arch) -> St James's Park (pelicans, Duck Island Cottage,
+    // the Blue Bridge) -> the Mall and the Victoria Memorial -> Buckingham Palace: the changing of the guard
+    L.killY = -8; L.startX = 2.0; L.camMin = -12; L.introCam = 'centre';   // A starts in the middle of the screen (Ladi 2026-11-07)
+    const art = (key, x, y, h, o = {}) => (L.wmArt = L.wmArt || []).push(Object.assign({ key, x, y, h }, o));   // a picture standing at (x, y), h units tall
+    const solid = (x, w, h, y = 0, o = {}) => L.solids.push(Object.assign({ kind: 'block', x, y, w, h, style: 'hidden' }, o));
+    const ledge = (x, y, w) => b.ledge(x, y, w);
+    const ground = (x0, x1, style, y = 0) => L.solids.push({ kind: 'ground', x: x0, y: y - 40, w: x1 - x0, h: 40, style });
+    const back = (key, x, y, h, o = {}) => art(key, x, y, h, Object.assign({ back: true }, o));
+    // knee-high things A hops by himself, and taller ones he leans on and jumps onto
+    const bollard = (x) => { art('wm_bollard', x, 0, 0.8); solid(x + 0.04, 0.3, 0.75); };
+    const daff = (x) => { art('wm_daff', x, 0, 0.55); solid(x + 0.1, 1.05, 0.5); };
+    const bench = (x) => { art('wm_bench', x, 0, 0.85); solid(x + 0.1, 1.45, 0.5); };
+    const cab = (x, k = 'wm_cab') => { art(k, x, 0, 1.8); solid(x + 0.15, 3.1, 1.45); ledge(x + 0.15, 1.45, 3.1); };   // a parked cab: lean, then hop on its roof
+    const lean = (k, x, h, sx, sw, sh, y = 0) => { art(k, x, y, h); solid(x + sx, sw, sh, y); ledge(x + sx, y + sh, sw); };
+
+    // ---------- 1. Westminster Bridge: the black cab drops A off, Big Ben and Parliament across the river ----------
+    b.wall(-12.5, 1, 22);
+    ground(-14, 57, 'wmbridge');
+    L.wmCab = { x: -3.0 };                                         // the back door is open; A steps out, the cab drives off to the left
+    L.wmBridge = [-14, 57]; L.wmLamps = [-6, 3, 12, 21, 30, 39, 48];   // the bridge's railing and lamps, behind A
+    bollard(6.0);
+    cab(9.0); b.coins(9.4, 2.1, 4, 0.8);
+    lean('wm_bus', 13.5, 4.3, 0.1, 7.9, 4.15);                    // the red bus in the traffic: lean, jump up from the cab roof
+    b.coins(14.4, 5.0, 4, 1.0);
+    b.special(18.0, 7.0);                                          // 1: above the bus roof
+    b.coins(22.6, 3.4, 3, 0.8, -1.0);
+    bollard(27.5);
+    b.pigeon(30.5);
+    cab(34.0, 'wm_cab_blue'); b.coins(34.4, 2.1, 4, 0.8);
+    lean('wm_nutcart', 41.0, 1.75, 0.05, 1.0, 1.6); b.coins(41.0, 2.6, 2, 0.6);
+    bollard(47.0); bollard(48.2);
+    ground(57, 61.5, 'wmpave');
+    b.coins(57.0, 1.1, 4, 1.0);
+
+    // ---------- 2. Inside Big Ben: in at the foot of the tower, up the spiral stairs, through the clock, out at the bottom ----------
+    const BX = 61.5, OUT = 137.5;
+    L.wmIn = { box: BX, x1: OUT };
+    L.wmTower = [62.6 - 6.19 * 0.52, 136.1 - 6.19 * 0.52];         // the foot of the tower outside: its door on the bridge side, and on the square side
+    L.wmDoor = [62.6, 136.1];                                       // the doorway wipe in and out
+    ground(BX, OUT, 'wmstone');
+    // the spiral stairs: a flight up to the first landing, then the landings up the shaft (lean on the wall, tap up to the next)
+    L.wmStairs = { x: 62.6 };
+    b.slope(63.0, 0.05, 66.0, 1.6);
+    const LAND = [1.6, 3.2, 4.8, 6.4, 8.0];
+    L.wmLand = LAND.map(y => [66.0, y, 4.2]);
+    b.coins(63.4, 1.1, 3, 0.8, 0.45);
+    LAND.forEach((y, i) => { ledge(66.0, y, 4.2); b.coins(68.6, y + 0.9, 1); });
+    const F = 9.6;                                                   // the clock room floor
+    solid(70.2, 29.4, F);
+    // the giant gears: their tops carry A up and down, always at the same speed
+    const W = 14.2;                                                  // the walkway above the clockwork
+    L.wmClock = { x0: 70.2, x1: 99.6, f: F, w: W };
+    const gear = (x) => { const m = { kind: 'cradle', mover: true, x, w: 2.6, y: F + 0.9, y0: F + 0.9, y1: F + 3.5, up: 1.5, d0: 0.5, d1: 0.5, ph: 0 };
+      (L.movers = L.movers || []).push(m); L.oneways.push(m); (L.wmGears = L.wmGears || []).push(m); };
+    gear(79.0); gear(96.9);
+    ledge(78.0, W, 21.6);
+    solid(99.5, 0.1, W - F, F);                                      // the dial room's wall: lean here on gear 2
+    b.coins(79.4, F + 1.4, 3, 0, 1.2); b.coins(83.0, W + 0.9, 8, 1.6);
+    b.coins(73.0, F + 1.0, 4, 1.0);
+    // behind the clock face: the glowing dial
+    solid(99.6, 16.4, W);
+    L.wmDial = { x: 104.4, y: W + 0.6 };
+    b.special(108.0, W + 4.2);                                       // 2: the centre of the clock face
+    b.arc(101.0, W + 1.0, 5, 5.0, 2.4);
+    lean('wm_motor', 112.6, 1.6, 0.05, 2.6, 1.5, W); b.coins(112.9, W + 2.4, 3, 0.8);   // the clock's motor housing
+    // the belfry: up the steps, under the Great Bell (it bongs once as A passes)
+    solid(115.6, 16.4, W);
+    b.slope(115.6, W, 120.0, 17.0); solid(120.0, 12.0, 17.0);
+    L.wmBelfry = { x0: 115.6, x1: 132.0, f: 17.0 };
+    L.wmBell = { x: 122.8 }; L.wmBong = 126.0;
+    b.coins(121.0, 18.0, 3, 0.9); b.coins(128.6, 18.0, 3, 0.9);
+    L.wmArches = [[99.5, W], [120.6, 17.0]];                         // deep stone archways between the rooms: [middle, floor]
+    // the lift down: it waits for A, takes him to the bottom, and he walks out through the door to the square
+    const lift = { kind: 'lift', mover: true, trig: 'wmLift', x: 132.0, w: 2.4, y: 17.0, y0: 17.0, y1: 0, up: 4.0, d0: 0.45 };
+    (L.movers = L.movers || []).push(lift); L.oneways.push(lift); L.wmLift = lift;
+    solid(134.4, 0.3, 30, 2.0, { noGrab: true });                  // the lift's far side: he rides it down and walks out at the bottom
+    b.coins(135.0, 1.0, 2, 0.8);
+    L.camFloor = [[70.2, 99.6, F], [99.6, 115.6, W], [115.6, 132.0, 17.0]];   // high floors stay at the bottom of the screen
+    L.wmSwap1 = 110.0;                                               // the backdrops change while A is inside
+
+    // ---------- 3. Parliament Square and Whitehall ----------
+    ground(OUT, 188, 'wmpave');
+    back('wm_lawnrail', 138.8, 0, 1.2); back('wm_lawnrail', 141.55, 0, 1.2); back('wm_tulips', 139.4, 0, 0.6);
+    back('wm_sqlamp', 144.6, 0, 2.8);
+    lean('wm_phone', 146.0, 2.9, 0.1, 1.45, 2.85); b.coins(146.2, 3.8, 2, 0.6);
+    art('wm_pillar', 150.5, 0, 1.1); solid(150.52, 0.55, 1.05);
+    b.coins(152.0, 1.1, 4, 1.0);
+    back('wm_sqlamp', 155.6, 0, 2.8);
+    b.pigeon(157.0);
+    L.wmWh = [['wm_wh_endl', 159.0, 4.8]]; { let x = 159.0 + 2.995 - 0.02; for (let i = 0; i < 3; i++) { L.wmWh.push(['wm_wh_bld', x, 8.0]); x += 6.967 - 0.02; } L.wmWh.push(['wm_wh_endr', x, 4.8]); }
+    bollard(163.0);
+    lean('wm_kiosk', 168.0, 2.3, 0.05, 2.0, 2.2); b.coins(168.2, 3.1, 3, 0.8);
+    back('wm_sqlamp', 172.6, 0, 2.8); back('wm_bin', 174.0, 0, 0.9);
+    bollard(176.0); bollard(177.2);
+    b.coins(180.0, 1.1, 4, 1.0);
+
+    // ---------- 4. Horse Guards: up the porch and the ledges to the clock turret, then through the arch ----------
+    const HG = 188.0, X0 = HG + 4.0;                                 // the wings, the main building (Ladi's picture 18)
+    ground(HG, HG + 29.6, 'wmpave'); ground(HG + 29.6, 236, 'wmgravel');
+    back('wm_hg_endl', HG, 0, 7.25); back('wm_hg', X0, 0, 11.0); back('wm_hg_endr', X0 + 21.56, 0, 7.25);
+    L.wmHG = { x: HG, x0: X0 };
+    L.wmMounted = [[HG + 0.25, 0], [X0 + 22.4, 4]];                  // the mounted guards in their sentry arches (red, then blue): they never move
+    lean('wm_pier', HG + 2.55, 1.4, 0.05, 0.95, 1.4);               // a stone pier: lean, then up onto the porch
+    ledge(X0 + 0.1, 3.4, 4.3);                                       // the porch roof
+    ledge(X0 + 4.3, 6.1, 4.4);                                       // the window heads
+    ledge(X0 + 0.4, 8.25, 20.7);                                     // the roof
+    solid(X0 + 9.9, 1.8, 1.4, 8.25); ledge(X0 + 9.9, 9.65, 1.8);     // the clock turret
+    ledge(X0 + 21.6, 7.05, 3.9);                                     // the right-hand wing
+    b.special(X0 + 10.8, 12.3);                                      // 3: on top of the clock turret
+    b.coins(HG + 2.8, 2.4, 2, 0.6); b.coins(X0 + 0.6, 4.3, 4, 1.0); b.coins(X0 + 4.7, 7.0, 4, 1.0); b.coins(X0 + 5.0, 9.15, 4, 1.0);
+    b.coins(X0 + 13.0, 9.15, 7, 1.0); b.coins(X0 + 22.3, 7.95, 3, 0.9); b.coins(X0 + 26.6, 6.0, 4, 1.0, -1.4);
+    L.wmHgArch = { x: X0 + 10.9 };                                   // the archway through the building: A runs under it
+    b.coins(X0 + 9.4, 1.1, 4, 1.0);
+    L.wmSwap2 = X0 + 22.6;                                           // the backdrops change behind the right-hand wing (big trees above hide the seam)
+    L.wmClump = [X0 + 15.0, X0 + 31.0];
+    b.coins(HG + 33.0, 1.1, 5, 1.0);
+    b.pigeon(HG + 37.0);
+    lean('wm_gpier', HG + 42.3, 1.8, 0.05, 1.9, 1.7); b.coins(HG + 42.6, 2.7, 3, 0.6);   // the park gate's stone pier and railing
+
+    // ---------- 5. St James's Park: pelicans, Duck Island Cottage, the Blue Bridge ----------
+    const SJ = 236.0;
+    back('wm_btree', SJ - 1.0, 0, 4.4); back('wm_willow', SJ + 9.6, 0, 4.4); back('wm_wtree', SJ + 20.5, 0, 3.8);
+    daff(SJ + 2.0);
+    bench(SJ + 5.8); bench(SJ + 7.6);
+    b.coins(SJ + 5.0, 1.3, 6, 0.9);
+    lean('wm_prock', SJ + 14.6, 1.4, 0.4, 2.6, 1.3); b.coins(SJ + 15.2, 2.3, 3, 0.8);   // the pelicans' rock
+    L.wmPel = [[SJ + 12.3, 0, 0, true], [SJ + 15.4, 1.3, 1], [SJ + 17.6, 1.25, 3]];   // [x, y, pose, standing on the grass]
+    L.wmSq = [[SJ + 4.0, 0], [SJ + 22.5, 0], [SJ + 63.0, 0]];
+    b.pigeon(SJ + 22.0);
+    const DC = SJ + 27.0, CW = 12.207;                               // Duck Island Cottage (Ladi's picture 23, 7 tall)
+    back('wm_cottage', DC, 0, 7.0);
+    solid(DC + 0.85, 1.5, 1.35); ledge(DC + 0.85, 1.35, 1.5);       // the porch railing: lean, then up
+    ledge(DC + 0.2, 3.45, 2.4);                                      // the porch roof
+    ledge(DC + 2.7, 5.0, 7.75);                                      // across the roof
+    ledge(DC + 3.9, 6.3, 6.5);                                       // the ridge
+    solid(DC + 10.5, 0.8, 1.7, 5.0); ledge(DC + 10.5, 6.7, 0.8);    // the chimney
+    b.special(DC + 10.9, 9.3);                                       // 4: on the cottage chimney
+    b.coins(DC + 0.5, 4.3, 2, 1.0); b.coins(DC + 3.0, 5.9, 4, 1.0); b.coins(DC + 4.4, 7.2, 5, 1.0);
+    b.coins(DC + 12.0, 5.6, 3, 0.8, -1.6);
+    bench(DC + 13.6);
+    lean('wm_pkiosk', DC + 16.0, 2.3, 0.1, 2.8, 2.2); b.coins(DC + 16.4, 3.1, 3, 0.8);
+    daff(DC + 20.6);
+    lean('wm_deck', DC + 23.6, 1.6, 0.05, 1.15, 1.55); b.coins(DC + 23.7, 2.5, 2, 0.6);   // striped deckchairs stacked up
+    back('wm_btree', DC + 18.4, 0, 4.4); back('wm_wtree', DC + 25.4, 0, 3.8);
+    // the Blue Bridge over the lake (Ladi's picture 24): the ramps up from the banks, the deck over the water
+    const BB = 290.0, K = 1.4, RW = 4.858 * K, DW = 8.648 * K;
+    ground(SJ, BB + RW, 'wmpath');
+    L.wmBlue = { x: BB, k: K, rw: RW, dw: DW, wy: -0.6 };
+    b.slope(BB + 2.6, 0.05, BB + RW, 0.92); solid(BB + RW, DW, 0.98); b.slope(BB + RW + DW, 0.92, BB + RW + DW + RW - 2.6, 0.05);
+    ground(BB + RW, BB + RW + DW, 'wmlake', -0.6);
+    b.special(BB + RW + DW / 2, 4.7);                                // 5: over the middle of the Blue Bridge, the palace behind
+    b.coins(BB + 3.0, 1.0, 4, 1.0, 0.25); b.arc(BB + RW + 3.0, 2.0, 4, 4.0, 1.6); b.coins(BB + RW + DW + 0.6, 1.8, 3, 1.0, -0.3);
+    const BE = BB + 2 * RW + DW;
+    ground(BB + RW + DW, 330, 'wmpath');
+    back('wm_willow', BE + 0.4, 0, 4.4);
+    lean('wm_deck', BE + 2.0, 1.6, 0.05, 1.15, 1.55); b.coins(BE + 2.1, 2.5, 2, 0.6);   // a stack of deckchairs
+    daff(BE + 6.5);
+    back('wm_gatel', 327.2, 0, 2.6); back('wm_gater', 330.2, 0, 2.6);   // the park gates, open
+
+    // ---------- 6. The Mall and the Victoria Memorial ----------
+    ground(330, 420, 'wmmall');
+    [331.5, 339.0, 346.5, 354.0].forEach(x => back('wm_plane', x, 0, 7.0));
+    [335.6, 343.2, 350.6].forEach(x => back('wm_malllamp', x, 0, 2.6));
+    b.coins(332.0, 1.1, 6, 1.0);
+    lean('wm_icevan', 342.0, 2.4, 0.1, 2.45, 1.9); b.coins(342.4, 2.8, 4, 0.8);
+    b.pigeon(351.0);
+    const VM = 358.0;                                                // the memorial (cut from Ladi's picture 26), 9 tall
+    back('wm_vmem', VM, 0, 9.0);
+    solid(VM + 0.5, 8.4, 0.6);                                       // its low steps: A hops up
+    solid(VM + 2.2, 4.7, 0.6, 0.6);
+    solid(VM + 3.1, 3.1, 1.3, 1.2); ledge(VM + 3.1, 2.5, 3.1);      // the base with the wreath: lean, then up
+    b.coins(VM + 1.0, 1.4, 3, 0.8, 0.3); b.coins(VM + 3.4, 3.3, 4, 0.8); b.coins(VM + 7.0, 2.2, 3, 0.8, -0.5);
+
+    // ---------- 7. The ending: Buckingham Palace; A watches the changing of the guard through the railings ----------
+    const PG = VM + 13.0, PC = PG + 8.555;                           // the palace (Ladi's picture 27), its gates in the middle
+    L.wmPalace = { x: PG, c: PC };
+    b.flag(PG - 0.5); L.flagY = 0;
+    L.finale = PC - 0.4; L.wmFinale = true;
+    b.wall(PG + 15.5, 1, 40);
+    b.end(PG + 19.0);
+  },
+},
 ];
 // Tower Bridge is parked for now (Ladi 2026-10-28): its build and art stay, it just isn't in the game.
 const PARKED = ['towerbridge', 'practice'];
