@@ -432,10 +432,10 @@ html.lw-loading .splash{visibility:hidden}
   </div>
 </section>
 
-<script src="kids/kids-meta.js?v=1794053923"></script>
-<script src="kids/kids.js?v=1794053923"></script>
-<script src="sfx.js?v=1794053923"></script>
-<script src="game.js?v=1794053923"></script>
+<script src="kids/kids-meta.js?v=1794054557"></script>
+<script src="kids/kids.js?v=1794054557"></script>
+<script src="sfx.js?v=1794054557"></script>
+<script src="game.js?v=1794054557"></script>
 <script>
 (() => {
 'use strict';
@@ -744,11 +744,17 @@ let assetsReady = false;
 const DX_SPRITES = ['a_run_dxb', 'a_jump_dxb', 'a_lean_dxb', 'dx_cat', 'dx_crow'], PM_SPRITES = ['a_run_wet', 'a_jump_wet', 'a_lean_wet', 'a_pose_wet', 'a_swim_wet', 'a_dive_wet', 'pm_crab'];
 const WORLD_GROUP = { woolwich: 1, brixton: 2, greenwich: 3, towerbridge: 4, canarywharf: 4, westend: 5, heathrow: 6, olddubai: 7, downtown: 8, palm: 9, marina: 11, desert: 11, capetown: 12, centralpark: 13 };   // the Marina ends with A's buggy, so it waits for the desert art too
 const groupP = [];
-let loadedJobs = 0, totalJobs = 0;
-function loadGroup(keys) {
+// the loading count: pictures in, out of all the pictures the waited-for part needs (that world's group and the ones before it),
+// all counted up front so it only ever climbs
+const groupSize = [], groupIn = [];
+function loadPct() {
+  const t = waitingFor !== null ? (WORLD_GROUP[ARun.LEVELS[waitingFor].area] || groupSize.length - 1) : 1;
+  let n = 0, d = 0; for (let i = 0; i <= t && i < groupSize.length; i++) { n += groupIn[i]; d += groupSize[i]; }
+  return d ? Math.min(100, Math.floor(n / d * 100)) : 100;
+}
+function loadGroup(keys, gi) {
   const jobs = keys.map(([k, src]) => loadImg(k, src));
-  totalJobs += jobs.length;
-  jobs.forEach(j => j.then(() => { loadedJobs++; if (!assetsReady || waitingFor !== null) $('loadMsg').textContent = `Loading… ${Math.round(loadedJobs / totalJobs * 100)}%`; }));
+  jobs.forEach(j => j.then(() => { groupIn[gi]++; if (!assetsReady || waitingFor !== null) $('loadMsg').textContent = `Loading… ${loadPct()}%`; }));
   return Promise.all(jobs).then(() => { for (const f in atlasPics) delete atlasPics[f]; });   // let the big atlas pictures go once they're sliced
 }
 const own = list => list.map(k => [k, k + '.webp']);
@@ -763,7 +769,8 @@ function loadAll() {
   const groups = [core, own(WW_IMAGES), own(BX_IMAGES), own(GW2_IMAGES), own([...TB_IMAGES, ...CW_IMAGES]), [...own(WE_IMAGES), ...WE_KID], own(HW_IMAGES),
     [...own(DX_IMAGES), ...DX_SPRITES.map(k => [k, SPRITES[k].src]), ['a_side_dxb', 'a_side_dxb.webp']], own(DT_IMAGES), [...own(PM_IMAGES), ...PM_SPRITES.map(k => [k, SPRITES[k].src])], own(MA_IMAGES), own(DS_IMAGES), own(CT_IMAGES), own([...NY_IMAGES, 'a_back_ldn'])];
   let chain = Promise.resolve();
-  groups.forEach((g, i) => { chain = chain.then(() => loadGroup(g)); const P = groupP[i] = chain; P.then(() => { P.done = true; }); });
+  groups.forEach((g, i) => { groupSize[i] = g.length; groupIn[i] = 0; });
+  groups.forEach((g, i) => { chain = chain.then(() => loadGroup(g, i)); const P = groupP[i] = chain; P.then(() => { P.done = true; }); });
   // the menu is ready once the shared art and the first world are in
   groupP[1].then(() => { assetsReady = true; $('loadMsg').hidden = true; renderMenu(); });
 }
@@ -971,7 +978,7 @@ function startLevel(i) {
   audio();
   const P = levelReady(i);
   if (!P.done) {   // this world's art is still on its way: show the progress and start when it's in
-    waitingFor = i; $('loadMsg').hidden = false;
+    waitingFor = i; $('loadMsg').hidden = false; $('loadMsg').textContent = `Loading… ${loadPct()}%`;
     P.then(() => { P.done = true; if (waitingFor === i) { waitingFor = null; $('loadMsg').hidden = true; startLevel(i); } });
     return;
   }
@@ -1277,7 +1284,7 @@ $('retryBtn').addEventListener('click', () => startLevel(levelIndex));
 // If the builder opened this tab, close it and show the builder again; otherwise open the builder with this child's world filled in.
 let lwJoinEnd = false;
 function lwBackToBuilder() {
-  const url = 'builder.html?v=1794053923&w=' + lwEncode(LW);
+  const url = 'builder.html?v=1794054557&w=' + lwEncode(LW);
   try { if (window.opener && !window.opener.closed && /builder\.html/.test(window.opener.location.pathname)) { window.opener.focus(); window.close(); setTimeout(() => { location.href = url; }, 400); return; } } catch (e) {}
   location.href = url;
 }
