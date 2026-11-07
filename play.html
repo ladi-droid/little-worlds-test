@@ -432,10 +432,10 @@ html.lw-loading .splash{visibility:hidden}
   </div>
 </section>
 
-<script src="kids/kids-meta.js?v=1794050031"></script>
-<script src="kids/kids.js?v=1794050031"></script>
-<script src="sfx.js?v=1794050031"></script>
-<script src="game.js?v=1794050031"></script>
+<script src="kids/kids-meta.js?v=1794052520"></script>
+<script src="kids/kids.js?v=1794052520"></script>
+<script src="sfx.js?v=1794052520"></script>
+<script src="game.js?v=1794052520"></script>
 <script>
 (() => {
 'use strict';
@@ -1274,7 +1274,7 @@ $('retryBtn').addEventListener('click', () => startLevel(levelIndex));
 // If the builder opened this tab, close it and show the builder again; otherwise open the builder with this child's world filled in.
 let lwJoinEnd = false;
 function lwBackToBuilder() {
-  const url = 'builder.html?v=1794050031&w=' + lwEncode(LW);
+  const url = 'builder.html?v=1794052520&w=' + lwEncode(LW);
   try { if (window.opener && !window.opener.closed && /builder\.html/.test(window.opener.location.pathname)) { window.opener.focus(); window.close(); setTimeout(() => { location.href = url; }, 400); return; } } catch (e) {}
   location.href = url;
 }
@@ -1488,7 +1488,7 @@ function updateCamera(dt) {
   let tx = p.x + ARun.PW / 2 - vw * lead;
   tx = Math.max(G.L.camMin !== undefined ? G.L.camMin : -2, Math.min(tx, G.L.endX - vw));
   if (G.L.introCam !== undefined && G.intro && state === 'ready') tx = G.L.introCam === 'centre' ? G.L.startX + ARun.PW / 2 - vw / 2 : G.L.introCam;   // the Marina: A in the middle of the screen   // the Marina: look at the speedboat while it pulls in
-  const In = G.L.nyMu && G.nyIn ? G.L.nyMu : null;   // inside a building: the camera never looks past its walls
+  const In = G.L.nyMu && G.nyIn ? G.L.nyMu : G.L.ctAq && G.ctIn ? { box: G.L.ctAq.box, x1: G.L.ctAq.x1 - 7.346 * 0.31 + 0.5 } : null;   // inside a building: the camera never looks past its walls
   if (In) tx = Math.max(In.box, Math.min(tx, In.x1 - vw));
   if (G.camSnap) cam.x = tx;   // the doorway has just shut: the new side is already in place when it opens
   else cam.x += (tx - cam.x) * Math.min(1, dt * (Math.abs(tx - cam.x) > 3 ? 3.2 : 6));
@@ -1496,9 +1496,10 @@ function updateCamera(dt) {
   let floor = Math.min(0, ARun.floorAt(G.L, p.x + ARun.PW / 2));
   for (const f of G.L.camFloor || []) if (p.x > f[0] && p.x < f[1] && p.y > f[2] - 0.6) floor = f[2];   // a high floor (The View's gallery): keep it at the bottom of the screen
   const riding = p.onGround && p.ground && p.ground.mover && p.ground.ax !== 'x';   // on a moving cradle: look where it's going
-  const ty = Math.max(floor, (riding ? p.y + ARun.moverY(p.ground, G.t + 0.3) - p.ground.y : p.y) + 1.5 - vh * 0.55);
+  const cable = G.L.ctCab && p.ride && G.L.rides[p.ride.i] === G.L.ctCab;   // Cape Town's cable car: keep the cabin and the climb ahead in view
+  const ty = cable ? ARun.rideY(G.L.ctCab, p.ride.s + 1.2) + 2.2 - vh * 0.5 : Math.max(floor, (riding ? p.y + ARun.moverY(p.ground, G.t + 0.3) - p.ground.y : p.y) + 1.5 - vh * 0.55);
   if (G.camSnap) { cam.y = ty; G.camSnap = false; }
-  else cam.y += (ty - cam.y) * Math.min(1, dt * (riding ? 14 : 3));
+  else cam.y += (ty - cam.y) * Math.min(1, dt * (riding || cable ? 14 : 3));
 }
 
 function drawSky() {
@@ -6295,7 +6296,7 @@ const CT_GROUND = { ctprom: ['ct_g_prom', 0.75, 0.22, '#9a8f86', '#5d544f'], ctl
   ctrock: ['ct_g_rock', 0.8, 0.22, '#a07c55', '#5e4630'] };
 const ctA = () => G && AREAS[G.L.area].capetown;
 const ctKidBack = () => typeof lwKidBack === 'function' ? lwKidBack() : null;
-const CT_TOP = 16.0;
+const CT_TOP = 28.0;
 const ctFin = () => { const L = G.L, F = G.flag; return L.ctFinale && F && F.ride !== undefined ? F.ride : -1; };
 const ctLerp = (a, b, k) => a.map((v, i) => Math.round(v + (b[i] - v) * k));
 const ctRgb = c => `rgb(${c[0]},${c[1]},${c[2]})`;
@@ -6324,34 +6325,80 @@ function ctSky() {
 // and behind the lower cable station (where the cliff hides the seam). On the top, the view from the mountain.
 let ctOC = null;
 function ctBandCanvas() { const c = ctx.canvas; if (!ctOC) ctOC = document.createElement('canvas'); if (ctOC.width !== c.width || ctOC.height !== c.height) { ctOC.width = c.width; ctOC.height = c.height; } return ctOC; }
+// the view from the top: one picture (its left end is a faded cliff, so it never repeats there); past its right end it carries on mirrored, sea to sea.
+// It stays put on the horizon as A climbs, and its hazy bottom carries on down to the foot of the screen.
+function ctFar3() {
+  const im = IMG[weGrain('ct_far3', 18)]; if (!im) return;
+  const h = 7.6 * U, w = h * im.width / im.height, bot = sy(cam.y * 0.1 - 1.6, 0.1), S = G.L.ctLs ? G.L.ctLs.ent : 0;
+  const x0 = -(cam.x - S) * U * 0.1 - 0.05 * w;
+  const one = () => { ctx.drawImage(im, 0, bot - h, w, h); if (bot < H) ctx.drawImage(im, 0, im.height - 2, im.width, 2, 0, bot - 1, w, H - bot + 2); };
+  for (const [x, f] of [[x0, 1], [x0 + 2 * w - 1, -1]]) { if (x + w * f * 0 > W && f > 0) continue; ctx.save(); ctx.translate(x, 0); ctx.scale(f, 1); one(); ctx.restore(); }
+}
 function ctBands() {
   const L = G.L, T = L.ctBk ? L.ctBkEnd[2] : 3.6;
-  const S = [L.ctSwap0, L.ctSwap1, L.ctSwap2, L.ctSwap3].map(x => x === undefined ? 1e9 : sx(x));
+  const band = (key, par, hU, bot) => maBand(weGrain(key, par < 0.2 ? 18 : 8), par, hU, bot);
+  if (G.ctUp) { ctFar3(); return; }   // through the lower station's doors: the view from the mountain, all the way up
+  const S = [L.ctSwap0, L.ctSwap1, L.ctSwap2].map(x => x === undefined ? 1e9 : sx(x));
   const part = (a, b, fn) => { a = Math.max(-10, a); b = Math.min(W + 10, b); if (b <= a) return; ctx.save(); ctx.beginPath(); ctx.rect(a, -10, b - a, H + 20); ctx.clip(); fn(); ctx.restore(); };
-  const band = (key, par, hU, bot) => maBand(key, par, hU, bot);
   part(-10, S[0], () => { band('ct_far1', 0.1, 9.0, 1.4); band('ct_mid0', 0.3, 5.6, -0.3); });
   part(S[0], S[1], () => { band('ct_far1', 0.1, 9.0, 1.4); band('ct_mid1', 0.3, 5.8, -0.3); });
   part(S[1], S[2], () => { band('ct_far2', 0.1, 11.0, 1.0); band('ct_mid2', 0.3, 7.2, -0.4); });
-  part(S[2], S[3], () => { band('ct_far2', 0.1, 11.0, 1.0); band('ct_mid3', 0.3, 4.6, T - 0.5); });
-  part(S[3], W + 10, () => {
-    band('ct_far3', 0.1, 7.6, -1.9);
-    const E = L.ctEdge;
-    if (E === undefined || sx(E - 6.5) > W) { band('ct_mid3', 0.3, 4.2, -0.6 + CT_TOP * 0.3); return; }
-    // near the edge the fynbos thins out softly so the whole view opens up: keep a copy of the view, draw the fynbos, lay the view back over it with a soft edge
-    const oc = ctBandCanvas(), c2 = oc.getContext('2d');
-    c2.setTransform(1, 0, 0, 1, 0, 0); c2.globalCompositeOperation = 'copy'; c2.drawImage(ctx.canvas, 0, 0); c2.globalCompositeOperation = 'source-over';
-    band('ct_mid3', 0.3, 4.2, -0.6 + CT_TOP * 0.3);
-    const k = oc.width / W, a = sx(E - 7.0) * k, b = sx(E - 3.8) * k, gr = c2.createLinearGradient(a, 0, b, 0); gr.addColorStop(0, 'rgba(0,0,0,0)'); gr.addColorStop(1, 'rgba(0,0,0,1)');
-    c2.globalCompositeOperation = 'destination-in'; c2.fillStyle = gr; c2.fillRect(0, 0, oc.width, oc.height); c2.globalCompositeOperation = 'source-over';
-    ctx.save(); ctx.setTransform(1, 0, 0, 1, 0, 0); ctx.drawImage(oc, 0, 0); ctx.restore();
-  });
+  part(S[2], W + 10, () => { band('ct_far2', 0.1, 11.0, 1.0); band('ct_mid3', 0.3, 4.6, T - 0.5); });
+}
+// going in and out of buildings (rule 6): the aquarium, the lower cable station, the top station. The view changes while the doorway is shut.
+const CT_EDGE = { dark: '#163a33', rim: '#1a8f6a', trim: ['ct_protea', 'ct_geranium', 'ct_protea', 'ct_restio'] };
+function ctDoorTick() {
+  const L = G.L, x = G.p.x + ARun.PW / 2, A = L.ctAq, S = L.ctLs, U2 = L.ctUs;
+  const st = {
+    ctIn: !!A && x > A.ent + 4.0 && x < A.x1 - 7.346 * 0.31 + 0.3,       // in at the aquarium's glass doors, out of its side door
+    ctUp: !!S && x > S.ent + 4.3,                                          // in through the lower station's doors
+    ctTopOut: !!U2 && x > U2.x + 6.6 + 9.363 * 0.62 && (G.p.rideN || 0) >= 2,   // out of the top station
+  };
+  if (G.ctSt === undefined) { G.ctSt = Object.assign({}, st); Object.assign(G, st); }
+  let D = G.ctDoor;
+  if (!D) for (const k in st) if (st[k] !== G.ctSt[k]) { D = G.ctDoor = { t0: G.t, k, to: st[k] }; G.ctSt[k] = st[k]; break; }
+  if (!D) return;
+  const e = G.t - D.t0;
+  if (e >= DOOR_T[0] && !D.ding) { D.ding = true; if (!snd('star', { rate: 1.15 })) BEEP.coin(); }
+  if (e >= DOOR_T[0] + DOOR_T[1] / 2 && G[D.k] !== D.to) { G[D.k] = D.to; G.camSnap = true; }
+  if (e >= DOOR_T[0] + DOOR_T[1] + DOOR_T[2]) G.ctDoor = null;
 }
 function ctGround(s) {
   const top = s.y + s.h, X = sx(s.x), w = s.w * U; if (X > W + U || X + w < -U) return;
   const st = CT_GROUND[s.style]; if (!st) return;
   const y0 = sy(top) + (st[1] - st[2]) * U - 2, g = ctx.createLinearGradient(0, y0, 0, H); g.addColorStop(0, st[3]); g.addColorStop(1, st[4]);
   ctx.fillStyle = g; ctx.fillRect(X, y0, w, H);
+  if (top > 0.5 && (s.style === 'ctbokaap' || s.style === 'ctrock')) {   // no plain blocks: stone courses / sandstone layers down the face
+    ctx.save(); ctx.beginPath(); ctx.rect(X, y0, w, H); ctx.clip();
+    const rock = s.style === 'ctrock', step = rock ? 1.1 : 0.55;
+    ctx.strokeStyle = rock ? 'rgba(60,40,20,.28)' : 'rgba(70,64,58,.3)'; ctx.lineWidth = Math.max(1, 0.05 * U);
+    for (let y = top - step * 1.5, i = 0; sy(y) < H + 4; y -= step, i++) {
+      if (sy(y) < -4) continue;
+      ctx.beginPath(); ctx.moveTo(X, sy(y)); ctx.lineTo(X + w, sy(y)); ctx.stroke();
+      const x0 = Math.max(s.x, cam.x - 2), x1 = Math.min(s.x + s.w, cam.x + W / U + 2);
+      if (!rock) for (let xx = s.x + (i % 2) * 0.55 + Math.ceil((x0 - s.x) / 1.1) * 1.1; xx < x1; xx += 1.1) { ctx.beginPath(); ctx.moveTo(sx(xx), sy(y)); ctx.lineTo(sx(xx), sy(y - step)); ctx.stroke(); }
+      else for (let xx = s.x + ((i * 1.7) % 2.3) + Math.ceil((x0 - s.x) / 2.9) * 2.9; xx < x1; xx += 2.9) { ctx.beginPath(); ctx.moveTo(sx(xx), sy(y)); ctx.lineTo(sx(xx + 0.15), sy(y - step * 0.7)); ctx.stroke(); }
+    }
+    ctx.restore();
+  }
   bxStrip(st[0], st[1], s.x, s.x + s.w, top, st[2]);
+  if (s.style === 'ctrock' && G.L.ctEdge !== undefined && Math.abs(s.x + s.w - G.L.ctEdge) < 0.01) ctHillEnd(s.x + s.w, top);
+}
+// past the viewpoint the top of the mountain rounds over and falls away out of sight
+function ctHillEnd(E, top) {
+  if (sx(E) > W + 2) return;
+  const P = []; for (let i = 0; i <= 24; i++) { const d = i * 0.75, y = top - 0.06 * d * d - 0.25 * d; P.push([E + d, y + (i ? 0.12 * Math.sin(d * 2.1) : 0)]); }
+  const g = ctx.createLinearGradient(0, sy(top), 0, H); g.addColorStop(0, '#a07c55'); g.addColorStop(1, '#5e4630');
+  ctx.fillStyle = g; ctx.beginPath(); ctx.moveTo(sx(E - 0.3), sy(top) + 2);
+  for (const [x, y] of P) ctx.lineTo(sx(x), sy(y));
+  ctx.lineTo(sx(P[P.length - 1][0]), H + 10); ctx.lineTo(sx(E - 0.3), H + 10); ctx.closePath(); ctx.fill();
+  ctx.strokeStyle = '#4a3420'; ctx.lineWidth = Math.max(2, 0.07 * U); ctx.beginPath(); ctx.moveTo(sx(E), sy(top));
+  for (const [x, y] of P) ctx.lineTo(sx(x), sy(y)); ctx.stroke();
+  for (let i = 1; i < P.length - 2; i += 2) {   // fynbos tufts down the slope
+    const [x, y] = P[i], q = Math.abs(Math.sin(x * 5.3));
+    if (q > 0.55) bxImg(q > 0.8 ? 'ct_protea' : 'ct_bush', x - 0.4, y - 0.15, q > 0.8 ? 0.9 : 0.5);
+    else { ctx.fillStyle = '#6f8f3a'; ctx.beginPath(); ctx.ellipse(sx(x), sy(y) + 2, 0.45 * U, 0.18 * U, 0, Math.PI, 0); ctx.fill(); }
+  }
 }
 // the Bo-Kaap street between the terraces: cobbled ramps
 function ctRamps() {
@@ -6543,14 +6590,45 @@ function ctUpperWall(x0, x1, y0) {   // the aquarium's white upper walls, with i
     ctx.fillStyle = '#c6d3db'; ctx.fillRect(a, sy(y - 1.6), b - a, 0.12 * U);
   }
 }
+// inside, above the hall: the dark jellyfish gallery, its glowing tanks and round lights (no plain wall on a tall phone screen)
+function ctAqCeiling(x0, x1, c) {
+  const a = Math.max(-2, sx(x0)), b = Math.min(W + 2, sx(x1)), Y = sy(c); if (b <= a || Y < 0) return;
+  const g = ctx.createLinearGradient(0, 0, 0, Y); g.addColorStop(0, '#06122a'); g.addColorStop(1, '#0d2950');
+  ctx.fillStyle = g; ctx.fillRect(a, -2, b - a, Y + 2);
+  const t = animT, TW = 5.5, TH = 3.2;
+  for (let row = 0; sy(c + 1.2 + row * (TH + 1.4) + TH) > -TH * U; row++) {
+    const yb = c + 1.2 + row * (TH + 1.4);
+    for (let x = Math.floor((cam.x - 8) / 7.5) * 7.5 + (row % 2) * 3.75; x < cam.x + W / U + 8; x += 7.5) {
+      if (x < x0 || x + TW > x1) continue;
+      const X = sx(x), Yt = sy(yb + TH), w = TW * U, h = TH * U;
+      const tg = ctx.createLinearGradient(0, Yt, 0, Yt + h); tg.addColorStop(0, '#1d5a8f'); tg.addColorStop(1, '#0b2c55');
+      ctx.fillStyle = '#2a3f5c'; ctx.fillRect(X - 0.12 * U, Yt - 0.12 * U, w + 0.24 * U, h + 0.24 * U);
+      ctx.fillStyle = tg; ctx.fillRect(X, Yt, w, h);
+      for (let j = 0; j < 3; j++) {   // moon jellyfish pulsing up and drifting down
+        const ph = t * 0.6 + x * 0.37 + j * 2.1, jx = x + 0.9 + j * 1.75 + Math.sin(ph * 0.7) * 0.3, jy = yb + 0.9 + ((Math.sin(ph * 0.5) + 1) * 0.5) * (TH - 1.8);
+        const pulse = 1 + 0.12 * Math.sin(ph * 3), R = 0.38 * U * pulse, JX = sx(jx), JY = sy(jy);
+        ctx.fillStyle = 'rgba(255,190,230,.18)'; ctx.beginPath(); ctx.arc(JX, JY, R * 1.9, 0, Math.PI * 2); ctx.fill();
+        ctx.fillStyle = 'rgba(255,214,240,.85)'; ctx.beginPath(); ctx.ellipse(JX, JY, R, R * 0.7 / pulse, 0, Math.PI, 0); ctx.fill();
+        ctx.strokeStyle = 'rgba(255,214,240,.6)'; ctx.lineWidth = Math.max(1, 0.04 * U);
+        for (let k = -2; k <= 2; k++) { ctx.beginPath(); ctx.moveTo(JX + k * R * 0.35, JY); ctx.quadraticCurveTo(JX + k * R * 0.4 + Math.sin(ph * 2 + k) * 0.15 * U, JY + 0.45 * U, JX + k * R * 0.3, JY + 0.8 * U); ctx.stroke(); }
+      }
+      ctx.fillStyle = 'rgba(255,255,255,.08)'; ctx.fillRect(X + w * 0.08, Yt + 0.15 * U, w * 0.12, h - 0.3 * U);   // the glass shine
+    }
+  }
+  for (let x = Math.floor(cam.x / 2.5) * 2.5; x < cam.x + W / U + 3; x += 2.5) {   // round lights along the ceiling
+    if (x < x0 || x > x1) continue; ctx.fillStyle = 'rgba(255,240,200,.25)'; ctx.beginPath(); ctx.arc(sx(x), sy(c + 0.75), 0.35 * U, 0, Math.PI * 2); ctx.fill();
+    ctx.fillStyle = '#fff3cf'; ctx.beginPath(); ctx.arc(sx(x), sy(c + 0.75), 0.13 * U, 0, Math.PI * 2); ctx.fill();
+  }
+}
 function ctAquarium() {
   const L = G.L, A = L.ctAq; if (!A || sx(A.x1 + 10) < 0 || sx(A.x0 - 2) > W) return;
   const t = animT, up = A.up, BX = A.box, x1 = A.x1, EX = x1 - 7.346 * 0.31;
   // outside
   bxImg('ct_aq_endl', A.x0, 0, 4.27); bxImg('ct_aq_wall', A.x0 + 4.91, 0, 3.67); bxImg('ct_aq_entr', A.ent, 0, 4.6);
   bxImg('ct_aq_exit', EX, 0, 4.08); bxImg('ct_aq_endr', EX + 7.32, 0, 4.27);
-  ctUpperWall(BX - 0.2, EX + 0.6, A.ceil);
-  // inside: the cut-away hall
+  if (!G.ctIn) return;   // outside: the building is closed (drawn in front, see ctAqFront)
+  ctAqCeiling(BX - 30, EX + 30, A.ceil);
+  // inside: the hall
   weClip(BX, EX + 0.5, () => {
     const g = ctx.createLinearGradient(0, sy(A.ceil), 0, sy(0)); g.addColorStop(0, '#0b2347'); g.addColorStop(1, '#123a66');
     ctx.fillStyle = g; ctx.fillRect(sx(BX), sy(A.ceil + 0.05), (EX + 0.5 - BX) * U, A.ceil * U + 2);
@@ -6610,10 +6688,17 @@ function ctAquarium() {
 }
 function ctAqFront() {
   const A = G.L.ctAq; if (!A || sx(A.x1 + 10) < 0 || sx(A.x0 - 2) > W) return;
-  weClip(A.ent + 5.471 * 0.74, A.box + 0.2, () => bxImg('ct_aq_entr', A.ent, 0, 4.6));   // A walks in behind the far door
   const EX = A.x1 - 7.346 * 0.31;
-  weClip(EX - 0.1, EX + 7.346 * 0.2, () => bxImg('ct_aq_exit', EX, 0, 4.08));         // and out of the side door
-  // the white end walls of the cut-away, from the roofs of the low buildings up out of sight
+  if (!G.ctIn) {   // outside: the building is closed, white walls with the blue wave up above the low front; A goes in behind the far door and comes out of the side door
+    weClip(A.ent + 5.471 * 0.74, EX + 7.346 * 0.2, () => {
+      ctGround({ x: A.box - 0.5, y: -40, w: EX - A.box + 3, h: 40, style: 'ctquay' });
+      ctUpperWall(A.ent + 3.0, EX + 2.0, 3.55);
+      for (let x = A.ent + 5.471 - 0.05; x < EX + 0.2; x += 7.0 - 0.05) { const w = Math.min(7.0, EX + 0.25 - x); if (sx(x + w) < 0 || sx(x) > W) continue; weClip(x, x + w, () => bxImg('ct_aq_wall', x, 0, 3.67)); }
+      bxImg('ct_aq_entr', A.ent, 0, 4.6); bxImg('ct_aq_exit', EX, 0, 4.08);
+    });
+    return;
+  }
+  // inside: the white end walls of the hall
   for (const x of [A.box - 0.25, EX + 0.1]) { ctx.fillStyle = '#eef2f4'; ctx.fillRect(sx(x), -2, 0.5 * U, sy(x < A.box ? 4.5 : 4.0) + 2); ctx.fillStyle = '#2a6fc0'; ctx.fillRect(sx(x) + 0.38 * U, -2, 0.12 * U, sy(x < A.box ? 4.5 : 4.0) + 2); }
 }
 // ---------- Greenmarket Square and Bo-Kaap ----------
@@ -6642,10 +6727,11 @@ function ctCliff() {
   const pts = [[x0 - 1.5, 0], [x0 - 1.0, 2.0]];
   for (let x = x0; x < X1; x += 1.4) {
     const j = 0.35 * Math.sin(x * 2.3) + 0.25 * Math.sin(x * 0.9);
-    const y = x < cab0 ? 2.0 + (P[0][1] - 0.5 - 2.0) * (x - x0) / (cab0 - x0) : ARun.rideY(r, x) - 2.4;
-    pts.push([x, Math.min(top - 0.3, Math.max(0.5, y + j))]);
+    const k = Math.min(1, Math.max(0, (x - (X1 - 9)) / 9)), ease = k * k * (3 - 2 * k);   // the last stretch rounds up into the top
+    const y = x < cab0 ? 2.0 + (P[0][1] - 0.5 - 2.0) * (x - x0) / (cab0 - x0) : ARun.rideY(r, x) - 2.6 * (1 - ease) - 0.25 * ease;
+    pts.push([x, Math.min(top - 0.25, Math.max(0.5, y + j * (1 - ease)))]);
   }
-  pts.push([X1, top - 0.3], [X1 + 0.6, top]);
+  pts.push([X1, top - 0.2], [X1 + 0.6, top]);
   const g = ctx.createLinearGradient(0, sy(top), 0, sy(0)); g.addColorStop(0, '#c99a62'); g.addColorStop(0.5, '#a57a4c'); g.addColorStop(1, '#7c5a3a');
   ctx.fillStyle = g; ctx.strokeStyle = '#4a3420'; ctx.lineWidth = Math.max(2, 0.07 * U);
   ctx.beginPath(); ctx.moveTo(sx(pts[0][0]), Math.max(sy(-2), H + 10)); for (const [x, y] of pts) ctx.lineTo(sx(x), sy(y));
@@ -6654,6 +6740,11 @@ function ctCliff() {
   ctx.beginPath(); ctx.moveTo(sx(pts[0][0]), Math.max(sy(-2), H + 10)); for (const [x, y] of pts) ctx.lineTo(sx(x), sy(y)); ctx.lineTo(sx(X1 + 1.5), sy(top)); ctx.lineTo(sx(X1 + 1.5), Math.max(sy(-2), H + 10)); ctx.closePath();
   // sandstone layers and cracks, fynbos on the ledges
   ctx.save(); ctx.clip();
+  for (let y = 0, i = 0; y < top + 2; y += 1.35, i++) { ctx.fillStyle = i % 3 === 0 ? 'rgba(255,225,170,.10)' : i % 3 === 1 ? 'rgba(70,40,15,.10)' : 'rgba(150,95,50,.08)'; ctx.fillRect(sx(x0 - 2), sy(y + 1.35), (X1 - x0 + 4) * U, 1.35 * U + 1); }
+  for (let x = Math.floor(Math.max(x0, cam.x - 4) / 3.7) * 3.7; x < Math.min(X1, cam.x + W / U + 4); x += 3.7) {   // buttresses: lit on the left, shaded on the right
+    const gx = ctx.createLinearGradient(sx(x), 0, sx(x + 3.7), 0); gx.addColorStop(0, 'rgba(255,230,180,.12)'); gx.addColorStop(0.55, 'rgba(0,0,0,0)'); gx.addColorStop(1, 'rgba(50,25,8,.18)');
+    ctx.fillStyle = gx; ctx.fillRect(sx(x), 0, 3.7 * U, H);
+  }
   ctx.strokeStyle = 'rgba(70,46,24,.35)'; ctx.lineWidth = Math.max(1, 0.05 * U);
   for (let y = 1.2; y < top; y += 1.35) { ctx.beginPath(); ctx.moveTo(sx(x0 - 2), sy(y)); for (let x = x0 - 2; x < Math.min(X1 + 2, cam.x + W / U + 2); x += 2.2) ctx.lineTo(sx(x), sy(y + 0.18 * Math.sin(x * 1.3 + y))); ctx.stroke(); }
   for (let x = Math.floor(Math.max(x0, cam.x - 2) / 1.9) * 1.9; x < Math.min(X1, cam.x + W / U + 2); x += 1.9) {
@@ -6662,6 +6753,13 @@ function ctCliff() {
     if (q > 0.45) { ctx.fillStyle = q > 0.8 ? '#7aa046' : '#5d8a3a'; ctx.beginPath(); ctx.ellipse(sx(x + 0.6), sy(y + 0.1), 0.5 * U, 0.2 * U, 0, Math.PI, 0); ctx.fill(); }
   }
   ctx.restore();
+  // along the top of the slope: fynbos, proteas and boulders
+  for (let i = 3; i < pts.length - 1; i++) {
+    const [x, y] = pts[i]; if (sx(x + 2) < 0 || sx(x - 2) > W || x < cab0) continue;
+    const q = Math.abs(Math.sin(x * 3.71)), k = ['ct_bush', 'ct_restio', 'ct_protea', 'ct_boulder', 'ct_bush', 'ct_rock_tall'][i % 6];
+    const h = { ct_bush: 0.6, ct_restio: 1.1, ct_protea: 0.95, ct_boulder: 0.5, ct_rock_tall: 1.3 }[k] * (0.8 + q * 0.4);
+    bxImg(k, x - 0.3, y - 0.12, h);
+  }
 }
 function ctCabPos() {
   const L = G.L, r = L.ctCab; if (!r) return null;
@@ -6762,6 +6860,7 @@ function ctTablecloth() {
 }
 function drawCapeTown(dt) {
   const L = G.L;
+  ctDoorTick();
   ctSky(); ctBands();
   ctCliff();
   ctFence();
@@ -6779,16 +6878,16 @@ function drawCapeTown(dt) {
   for (const s of L.solids) if (s.kind === 'ground') ctGround(s);
   ctRamps();
   ctDassies();
-  ctWisps(false);
-  ctTablecloth();
+  if (ctFin() < 0) ctWisps(false);
   ctArt(a => !a.back);
   ctTaxi();
   ctTrain('back');
   ctCabin(false);
 }
 function drawCtFront() {
-  ctStations(true); ctAqFront(); ctTunnel(true); ctWave(true);
-  ctRideGulls(); ctWisps(true);
+  ctStations(true); ctAqFront(); ctTunnel(true);
+  if (ctFin() < 0) ctWisps(true);
+  doorWipe(G.ctDoor, CT_EDGE);
   const F = G.flag; if (G.L.ctFinale && F && F.ride !== undefined && F.ride > 0.3 && !$('hud').hidden) $('hud').hidden = true;
 }
 // A: stepping out of the taxi, sitting in the Blue Train, riding the cable car, watching the sunset from behind
@@ -6812,7 +6911,7 @@ function drawCtRideA(cx, by, RUN_H, JUMP_H) {
   const z = p.ride; if (!z) return false;
   const r = L.rides[z.i];
   if (r.kind === 'train') {
-    const up = z.off > 0.35, bonk = z.ctbonk && z.ctbonk.hit && z.t - z.ctbonk.t < 1.0, soak = z.ctsoak && z.ctsoak.hit && z.t - z.ctsoak.t < 1.6;
+    const up = z.off > 0.35 || z.jy > 0.15, bonk = z.ctbonk && z.ctbonk.hit && z.t - z.ctbonk.t < 1.0, soak = z.ctsoak && z.ctsoak.hit && z.t - z.ctsoak.t < 1.6;
     const shake = soak && z.t - z.ctsoak.t > 0.5 ? Math.sin((z.t - z.ctsoak.t) * 40) * 0.08 * U : 0;
     if (up) drawSprite('a_jump', 1, cx, by - 0.82 * U, JUMP_H, false, { center: true });
     else drawSprite('a_run', 0, cx + shake, by + 0.04 * U, RUN_H, false, { sy: z.off < -0.3 ? 1 + z.off * 0.12 : 1 });
