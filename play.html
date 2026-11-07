@@ -432,10 +432,10 @@ html.lw-loading .splash{visibility:hidden}
   </div>
 </section>
 
-<script src="kids/kids-meta.js?v=1793992776"></script>
-<script src="kids/kids.js?v=1793992776"></script>
-<script src="sfx.js?v=1793992776"></script>
-<script src="game.js?v=1793992776"></script>
+<script src="kids/kids-meta.js?v=1794044926"></script>
+<script src="kids/kids.js?v=1794044926"></script>
+<script src="sfx.js?v=1794044926"></script>
+<script src="game.js?v=1794044926"></script>
 <script>
 (() => {
 'use strict';
@@ -758,7 +758,7 @@ function loadAll() {
     'plat_awning', 'plat_scaffold', 'plat_parapet', 'coin_face', 'coin_edge', 'flag_pole', 'flag_flag']));
   core.push(...['prop_tree', 'prop_tree_young', 'prop_lamp', 'prop_phonebox', 'prop_bin', 'prop_busstop'].map(k => [k, LON + k + '.webp']));
   const groups = [core, own(WW_IMAGES), own(BX_IMAGES), own(GW2_IMAGES), own([...TB_IMAGES, ...CW_IMAGES]), [...own(WE_IMAGES), ...WE_KID], own(HW_IMAGES),
-    [...own(DX_IMAGES), ...DX_SPRITES.map(k => [k, SPRITES[k].src]), ['a_side_dxb', 'a_side_dxb.webp']], own(DT_IMAGES), [...own(PM_IMAGES), ...PM_SPRITES.map(k => [k, SPRITES[k].src])], own(MA_IMAGES), own(DS_IMAGES), own(CT_IMAGES), own(NY_IMAGES)];
+    [...own(DX_IMAGES), ...DX_SPRITES.map(k => [k, SPRITES[k].src]), ['a_side_dxb', 'a_side_dxb.webp']], own(DT_IMAGES), [...own(PM_IMAGES), ...PM_SPRITES.map(k => [k, SPRITES[k].src])], own(MA_IMAGES), own(DS_IMAGES), own(CT_IMAGES), own([...NY_IMAGES, 'a_back_ldn'])];
   let chain = Promise.resolve();
   groups.forEach((g, i) => { chain = chain.then(() => loadGroup(g)); const P = groupP[i] = chain; P.then(() => { P.done = true; }); });
   // the menu is ready once the shared art and the first world are in
@@ -1274,7 +1274,7 @@ $('retryBtn').addEventListener('click', () => startLevel(levelIndex));
 // If the builder opened this tab, close it and show the builder again; otherwise open the builder with this child's world filled in.
 let lwJoinEnd = false;
 function lwBackToBuilder() {
-  const url = 'builder.html?v=1793992776&w=' + lwEncode(LW);
+  const url = 'builder.html?v=1794044926&w=' + lwEncode(LW);
   try { if (window.opener && !window.opener.closed && /builder\.html/.test(window.opener.location.pathname)) { window.opener.focus(); window.close(); setTimeout(() => { location.href = url; }, 400); return; } } catch (e) {}
   location.href = url;
 }
@@ -1488,13 +1488,17 @@ function updateCamera(dt) {
   let tx = p.x + ARun.PW / 2 - vw * lead;
   tx = Math.max(G.L.camMin !== undefined ? G.L.camMin : -2, Math.min(tx, G.L.endX - vw));
   if (G.L.introCam !== undefined && G.intro && state === 'ready') tx = G.L.introCam === 'centre' ? G.L.startX + ARun.PW / 2 - vw / 2 : G.L.introCam;   // the Marina: A in the middle of the screen   // the Marina: look at the speedboat while it pulls in
-  cam.x += (tx - cam.x) * Math.min(1, dt * (Math.abs(tx - cam.x) > 3 ? 3.2 : 6));
+  const In = G.L.nyMu && G.nyIn ? G.L.nyMu : null;   // inside a building: the camera never looks past its walls
+  if (In) tx = Math.max(In.box, Math.min(tx, In.x1 - vw));
+  if (G.camSnap) cam.x = tx;   // the doorway has just shut: the new side is already in place when it opens
+  else cam.x += (tx - cam.x) * Math.min(1, dt * (Math.abs(tx - cam.x) > 3 ? 3.2 : 6));
   // never look below the floor A is over (the station floor is underground)
   let floor = Math.min(0, ARun.floorAt(G.L, p.x + ARun.PW / 2));
   for (const f of G.L.camFloor || []) if (p.x > f[0] && p.x < f[1] && p.y > f[2] - 0.6) floor = f[2];   // a high floor (The View's gallery): keep it at the bottom of the screen
   const riding = p.onGround && p.ground && p.ground.mover && p.ground.ax !== 'x';   // on a moving cradle: look where it's going
   const ty = Math.max(floor, (riding ? p.y + ARun.moverY(p.ground, G.t + 0.3) - p.ground.y : p.y) + 1.5 - vh * 0.55);
-  cam.y += (ty - cam.y) * Math.min(1, dt * (riding ? 14 : 3));
+  if (G.camSnap) { cam.y = ty; G.camSnap = false; }
+  else cam.y += (ty - cam.y) * Math.min(1, dt * (riding ? 14 : 3));
 }
 
 function drawSky() {
@@ -6723,7 +6727,7 @@ function nySky() {
 function nyBands() {
   const L = G.L, S = [L.nySwap1, L.nySwap2].map(x => x === undefined ? 1e9 : sx(x));
   const part = (a, b, fn) => { a = Math.max(-10, a); b = Math.min(W + 10, b); if (b <= a) return; ctx.save(); ctx.beginPath(); ctx.rect(a, -10, b - a, H + 20); ctx.clip(); fn(); ctx.restore(); };
-  part(-10, S[0], () => { maBand('ny_far1', 0.1, 9.0, 1.2); maBand('ny_mid1', 0.3, 6.4, -0.3); });
+  part(-10, S[0], () => { maBand('ny_far1', 0.1, 9.0, 1.2, 9.6); maBand('ny_mid1', 0.3, 6.4, -0.3); });
   part(S[0], S[1], () => { maBand('ny_far2', 0.1, 9.0, 0.6); maBand('ny_mid2', 0.3, 5.4, -0.4); });
   part(S[1], W + 10, () => { maBand('ny_far3', 0.1, 9.6, 0.6); nyLights(); maBand('ny_mid3', 0.3, 5.6, -0.4); });
 }
@@ -6796,13 +6800,98 @@ function nyTaxi(front) {
 }
 function nyStreet() {
   const L = G.L; if (!L.nyRow || sx(L.nyRow[0][1]) > W || sx(L.nyRowEnd) < 0) return;
-  for (const [k, x] of L.nyRow) { const h = k.startsWith('ny_fe') ? 9.0 : 7.0, w = bxW(k, h); if (sx(x + w) < 0 || sx(x) > W) continue; bxImg(k, x, 0, h); }
+  for (const [a, b] of L.nyGaps || []) {   // a gap between terraces: a lower building further back, a little hazy, and its shadowed side
+    if (sx(b) < 0 || sx(a) > W) continue;
+    if (!IMG.ny_bs_far && IMG.ny_bs2) {   // the same brownstones, a little hazy blue with distance
+      const im = IMG.ny_bs2, c = document.createElement('canvas'), x = c.getContext('2d'); c.width = im.width; c.height = im.height;
+      x.drawImage(im, 0, 0); x.globalCompositeOperation = 'source-atop'; x.fillStyle = 'rgba(150,175,215,.3)'; x.fillRect(0, 0, c.width, c.height); IMG.ny_bs_far = c;
+    }
+    weClip(a, b, () => nyRow('ny_bs_far', a - 1.3, b + 3, 0, 4.7));
+  }
+  for (const [k, x, h0] of L.nyRow) { const h = h0 || (k.startsWith('ny_fe') ? 9.0 : 7.0), w = bxW(k, h); if (sx(x + w) < 0 || sx(x) > W) continue; bxImg(k, x, 0, h); }
 }
 // ---------- the museum: in at the Gilder Center, a cut-away hall on two floors, out at the rotunda ----------
+// ---------- going in and out of a building (rule 6): the screen closes to a doorway on A, his own special coin flips with a
+// ding as it shuts, and it opens on the other side. A keeps running all the way through; nothing in the game changes, only the view.
+const DOOR_T = [0.25, 0.2, 0.25];   // closing, shut, opening (seconds)
+function nyDoorTick() {
+  const M = G.L.nyMu; if (!M) return;
+  const x = G.p.x + ARun.PW / 2, want = x > M.ent + 6.2 && x < M.x1 - 2.9;   // in at the Gilder Center's glass doors, out at the rotunda's bronze doors
+  if (G.nyIn === undefined) G.nyIn = want;
+  let D = G.nyDoor;
+  if (!D && want !== G.nyIn) D = G.nyDoor = { t0: G.t, to: want };
+  if (!D) return;
+  const e = G.t - D.t0;
+  if (e >= DOOR_T[0] && !D.ding) { D.ding = true; if (!snd('star', { rate: 1.15 })) BEEP.coin(); }
+  if (e >= DOOR_T[0] + DOOR_T[1] / 2 && G.nyIn !== D.to) { G.nyIn = D.to; G.camSnap = true; }
+  if (e >= DOOR_T[0] + DOOR_T[1] + DOOR_T[2]) G.nyDoor = null;
+}
+// the wipe itself, drawn over everything. edge: the trip's own trim round the doorway (New York: autumn leaves)
+function doorWipe(D, edge) {
+  if (!D) return;
+  const e = G.t - D.t0, [c, hd, o] = DOOR_T, feet = sy(G.p.y);
+  let X = Math.max(2 * U, Math.min(W - 2 * U, sx(G.p.x + ARun.PW / 2)));   // on A, but never off the edge of the screen
+  if (e < c || D.X === undefined) D.X = X;                                                      // where it shut: the coin flips there,
+  else if (e < c + hd) X = D.X; else X = D.X + (X - D.X) * Math.min(1, (e - c - hd) / o);   // and it opens from there, sliding over to A
+  const full = Math.max(feet / (2.1 * U), (H - feet) / (0.3 * U), Math.max(X, W - X) / (1.5 * U)) + 0.3;
+  const s = e < c ? full * (1 - e / c) * (1 - e / c) : e < c + hd ? 0 : full * Math.min(1, (e - c - hd) / o) ** 2;
+  const w = 1.5 * s * U, h = 2.4 * s * U, by = feet + 0.3 * s * U;
+  const path = () => { ctx.beginPath(); ctx.moveTo(X - w, by); ctx.lineTo(X - w, by - h); ctx.arc(X, by - h, w, Math.PI, 0); ctx.lineTo(X + w, by); ctx.closePath(); };
+  ctx.save(); ctx.beginPath(); ctx.rect(-10, -10, W + 20, H + 20);
+  if (s > 0.01) { ctx.moveTo(X - w, by); ctx.lineTo(X - w, by - h); ctx.arc(X, by - h, w, Math.PI, 0); ctx.lineTo(X + w, by); ctx.closePath(); }
+  ctx.fillStyle = edge.dark; ctx.fill('evenodd'); ctx.restore();
+  if (s > 0.12) {
+    ctx.save(); path(); ctx.strokeStyle = '#0a0b18'; ctx.lineWidth = 0.34 * U; ctx.stroke(); path(); ctx.strokeStyle = edge.rim; ctx.lineWidth = 0.2 * U; ctx.stroke(); ctx.restore();
+    const d = 0.55 * U * Math.min(1, 0.45 + s * 0.4);
+    for (let i = 0; i < 14; i++) {   // the trim, all round the edge
+      const a = Math.PI + (i / 13) * Math.PI, lx = i < 3 ? X - w : i > 10 ? X + w : X + Math.cos(a) * w, ly = i < 3 ? by - h * (i / 3) : i > 10 ? by - h * ((13 - i) / 3) : by - h + Math.sin(a) * w;
+      const im = IMG[edge.trim[i % edge.trim.length]]; if (!im) continue;
+      ctx.save(); ctx.translate(lx, ly); ctx.rotate(i * 1.3 + e * 2); ctx.drawImage(im, -d / 2, -d / 2, d, d); ctx.restore();
+    }
+  }
+  const k = (e - c + 0.07) / (hd + 0.14);   // the coin pops up as it shuts, flips over once, and goes as it opens
+  if (k > 0 && k < 1 && IMG.coin_face) {
+    const Y = feet - 0.95 * U, dd = 1.6 * U * Math.min(1, Math.sin(k * Math.PI) * 2.2);
+    ctx.save(); ctx.globalAlpha = 0.35; ctx.fillStyle = '#ffc94a'; ctx.beginPath(); ctx.arc(X, Y, dd * 0.75, 0, Math.PI * 2); ctx.fill(); ctx.restore();
+    const f = Math.cos(k * Math.PI * 2);
+    ctx.save(); ctx.translate(X, Y);
+    if (Math.abs(f) < 0.15 && IMG.coin_edge) { const ew = dd * IMG.coin_edge.width / IMG.coin_edge.height; ctx.drawImage(IMG.coin_edge, -ew / 2, -dd / 2, ew, dd); }
+    else { ctx.scale(Math.abs(f), 1); ctx.drawImage(IMG.coin_face, -dd / 2, -dd / 2, dd, dd); }
+    ctx.restore();
+  }
+}
+const NY_EDGE = { dark: '#2a1a12', rim: '#e9873a', trim: ['ny_leaf1', 'ny_leaf2', 'ny_leaf3', 'ny_leaf4', 'ny_leaf5'] };
+// a deep stone archway between two halls, drawn in front of A: thick walls each side, the arch over him, and its shadow on him
+function nyArchFront(x, h, C, f = 0) {
+  const w = 2.4, x0 = x - w / 2, x1 = x + w / 2, P = 1.0; if (sx(x1 + P) < 0 || sx(x0 - P) > W) return;
+  const R = (a, b, y0, y1, c) => { ctx.fillStyle = c; ctx.fillRect(sx(a), sy(y1), (b - a) * U, (y1 - y0) * U + 1); };
+  const st = '#d9c7a6', dk = '#a8916c';
+  ctx.fillStyle = 'rgba(10,6,4,.42)'; ctx.fillRect(sx(x0), sy(h), w * U, (h - f) * U + 2);   // the shadow inside the arch
+  R(x0 - P, x0, 0, C, st); R(x1, x1 + P, 0, C, st);                                     // the thick wall each side
+  R(x0 - 0.15, x0, f, h, dk); R(x1, x1 + 0.15, f, h, dk);                               // the depth of the opening
+  ctx.save(); ctx.beginPath(); ctx.rect(sx(x0), sy(C), w * U, (C - h) * U); ctx.moveTo(sx(x0), sy(h)); ctx.ellipse(sx(x), sy(h), w / 2 * U, 0.9 * U, 0, Math.PI, 0); ctx.closePath(); ctx.fillStyle = st; ctx.fill('evenodd'); ctx.restore();
+  ctx.strokeStyle = dk; ctx.lineWidth = 0.15 * U; ctx.beginPath(); ctx.ellipse(sx(x), sy(h), (w / 2 + 0.07) * U, 0.97 * U, 0, Math.PI, 0); ctx.stroke();
+  R(x - 0.35, x + 0.35, h + 0.95, Math.min(C, h + 1.55), '#c9a35c');                  // keystone
+  R(x0 - P, x0 - P + 0.12, 0, C, 'rgba(120,95,60,.35)'); R(x1 + P - 0.12, x1 + P, 0, C, 'rgba(120,95,60,.35)');
+  R(x0 - P - 0.1, x1 + P + 0.1, 0, 0.35, '#c4b08f');                                    // plinth
+}
+// the museum from outside: the old stone wings, then the Central Park West front, its doors where A comes out
+function nyMuOutside(M) {
+  const X1 = M.x1, h = 7.6, cw = bxW('ny_cpw', h), xc = X1 + 0.6 - cw / 2, ew = bxW('ny_cpw_endl', h);
+  // the pavement in front of it (the hall's floor is behind the wall)
+  nyGround({ x: M.box, y: -40, w: (M.box + X1) / 2 - M.box, h: 40, style: 'nypave' }); nyGround({ x: (M.box + X1) / 2, y: -40, w: X1 - (M.box + X1) / 2, h: 40, style: 'nyhex' });
+  weClip(M.box, X1, () => {
+    const g = ctx.createLinearGradient(0, sy(6.2), 0, sy(0)); g.addColorStop(0, '#d6c4a6'); g.addColorStop(1, '#bfa98a');   // the stone wall the wings stand against
+    ctx.fillStyle = g; ctx.fillRect(sx(M.box), sy(6.2), (X1 - M.box) * U, 6.2 * U + 2);
+    for (let x = M.box - 0.4, i = 0; x < xc + 0.5; x += ew - 0.03, i++) { if (sx(x + ew) > 0 && sx(x) < W) bxImg(i % 2 ? 'ny_cpw_endl' : 'ny_cpw_endr', x, 0, h); }
+    bxImg('ny_cpw', xc, 0, h);
+  });
+}
 function nyMuseum() {
   const L = G.L, M = L.nyMu; if (!M || sx(M.x1 + 12) < 0 || sx(M.x0 - 2) > W) return;
   const up = M.up, BX = M.box, X1 = M.x1, C = M.ceil;
   bxImg('ny_gc_wall', M.x0, 0, 4.55); bxImg('ny_gc_entr', M.ent, 0, 6.0);
+  if (!G.nyIn) return;   // outside: the hall is behind the closed front (drawn over it, see nyMuFront)
   // the hall walls go up out of sight above the cut-away, so the backdrops can change in here
   const top = C + 40, stone = (a, b, c1, c2) => { const g = ctx.createLinearGradient(0, sy(C + 4), 0, sy(C)); g.addColorStop(0, c1); g.addColorStop(1, c2); ctx.fillStyle = g; ctx.fillRect(sx(a), sy(top), (b - a) * U, (top - C) * U + 1); };
   stone(BX - 0.3, X1 + 0.3, '#b9a58f', '#cdb9a2');
@@ -6820,8 +6909,12 @@ function nyMuseum() {
     for (const [k, x, y, h] of L.nyBridges || []) bxImg(k, x, y, h);
     // the stairs up to the dinosaur hall, its raised floor, the skeletons
     bxImg('ny_atr_stairs', SU - 0.2, 0, up * 1.02);
-    const fg = ctx.createLinearGradient(0, sy(up), 0, sy(0)); fg.addColorStop(0, '#e9dcc2'); fg.addColorStop(1, '#cdbb9c');
-    ctx.fillStyle = fg; ctx.fillRect(sx(DH), sy(up), (OH - DH) * U, up * U);
+    // under the dinosaur hall's raised floor: the gallery on the floor below, a little in shadow
+    if (!IMG.ny_dino_low && IMG.ny_dino_wall) {
+      const im = IMG.ny_dino_wall, c = document.createElement('canvas'), x = c.getContext('2d'); c.width = im.width; c.height = im.height;
+      x.drawImage(im, 0, 0); x.globalCompositeOperation = 'source-atop'; x.fillStyle = 'rgba(60,40,24,.28)'; x.fillRect(0, 0, c.width, c.height); IMG.ny_dino_low = c;
+    }
+    weClip(DH, OH, () => nyRow('ny_dino_low', DH - 1.0, OH, 0, up));
     nyRow('ny_atr_edge', DH, OH, up - 0.75, 0.9);
     for (const [k, x, h] of L.nyDinos || []) bxImg(k, x, up, h);
     // the balcony over the ocean hall, the stairs down, the whale overhead
@@ -6833,15 +6926,20 @@ function nyMuseum() {
     // the Barosaurus rears up in the rotunda; the bronze doors stand open at the far end
     bxImg('ny_baro', RT + 2.6, 0, 7.6);
     bxImg('ny_rot_doors', X1 - 5.6, 0, 6.0);
+    for (const [x, , f] of L.nyArches || []) {   // the dark inside of each archway, over its floor (stone below an upper-floor arch)
+      const g = ctx.createLinearGradient(sx(x - 1.2), 0, sx(x + 1.2), 0); g.addColorStop(0, 'rgba(20,14,10,.8)'); g.addColorStop(0.5, 'rgba(10,6,4,.95)'); g.addColorStop(1, 'rgba(20,14,10,.8)');
+      ctx.fillStyle = g; ctx.fillRect(sx(x - 1.2), sy(C), 2.4 * U, (C - f) * U + 2);
+      if (f > 0) { ctx.fillStyle = '#d9c7a6'; ctx.fillRect(sx(x - 1.2), sy(f), 2.4 * U, f * U + 2); ctx.fillStyle = '#a8916c'; ctx.fillRect(sx(x - 1.2), sy(f), 2.4 * U, 0.12 * U); }
+    }
     ctx.fillStyle = '#f2e8d4'; ctx.fillRect(sx(BX), sy(C + 0.05), (X1 - BX) * U, 0.12 * U);
   });
 }
 function nyMuFront() {
   const M = G.L.nyMu; if (!M || sx(M.x1 + 12) < 0 || sx(M.x0 - 2) > W) return;
   weClip(M.ent + 10.725 * 0.72, M.box + 0.05, () => bxImg('ny_gc_entr', M.ent, 0, 6.0));   // A walks in behind the far side of the arch
+  if (!G.nyIn) { nyMuOutside(M); return; }
+  for (const [x, h, f] of G.L.nyArches || []) nyArchFront(x, h, M.ceil, f);
   weClip(M.x1 - 1.1, M.x1 + 0.6, () => bxImg('ny_rot_doors', M.x1 - 5.6, 0, 6.0));         // and out past the right-hand door
-  // the end walls of the cut-away
-  for (const [x, y0] of [[M.box - 0.3, 6.0], [M.x1, 0]]) { ctx.fillStyle = '#c9b49c'; ctx.fillRect(sx(x), sy(M.ceil + 40), 0.3 * U, (M.ceil + 40 - y0) * U); }
 }
 // ---------- the park ----------
 function nyPark() {
@@ -6872,6 +6970,32 @@ function nyLake() {
   const B = L.nyBoat; if (B) {   // the rowing boat waits at the dock, carries A, then stays by the terrace
     const z = G.p.ride, s = z && z.i === 0 ? z.s : (G.p.rideN || 0) > 0 ? B.pts[B.pts.length - 1][0] : B.x0;
     bxImg('ny_rowboat', s - 1.62, nyWY - 0.22 + Math.sin(t * 2.2) * 0.04, 0.95);
+  }
+}
+// the landing at Bethesda Terrace: stone steps go down into the water, the boat is tied to a post at the top
+function nyLanding() {
+  const Ld = G.L.nyLanding, B = G.L.nyBoat; if (!Ld || sx(Ld.x + 4) < 0 || sx(Ld.x - 6) > W) return;
+  const x = Ld.x, wy = nyWY + 0.35, t = animT;
+  // the terrace's edge is a built stone quay: dressed blocks going down into the water
+  const q0 = sx(x - 0.05), q1 = sx(x + 2.2), top = sy(-0.02);
+  const qg = ctx.createLinearGradient(0, top, 0, H); qg.addColorStop(0, '#b99d7c'); qg.addColorStop(0.5, '#8a7259'); qg.addColorStop(1, '#5e4c3a');
+  ctx.fillStyle = qg; ctx.fillRect(q0, top, q1 - q0, H - top);
+  ctx.strokeStyle = 'rgba(60,44,30,.55)'; ctx.lineWidth = Math.max(1, 0.05 * U);
+  for (let r = 0, y = 0; sy(y) < H; r++, y -= 0.45) {
+    ctx.beginPath(); ctx.moveTo(q0, sy(y)); ctx.lineTo(q1, sy(y)); ctx.stroke();
+    for (let bx = x - 0.05 + (r % 2 ? 0.45 : 0); bx < x + 2.2; bx += 0.9) { ctx.beginPath(); ctx.moveTo(sx(bx), sy(y)); ctx.lineTo(sx(bx), sy(y - 0.45)); ctx.stroke(); }
+  }
+  ctx.fillStyle = '#d9c3a2'; ctx.fillRect(q0, sy(0.02), q1 - q0, 0.14 * U);   // the coping stones along the top
+  bxImg('ny_steps', x - 1.6, -1.45, 1.5);
+  const a = sx(x - 1.7), b = sx(x + 2.2);   // the water laps over the bottom steps and the foot of the quay
+  ctx.fillStyle = 'rgba(47,127,134,.55)'; ctx.fillRect(a, sy(wy), b - a, sy(-1.3) - sy(wy));
+  const g = ctx.createLinearGradient(0, sy(-1.3), 0, H); g.addColorStop(0, '#2a7780'); g.addColorStop(1, '#12464f'); ctx.fillStyle = g; ctx.fillRect(a, sy(-1.3), sx(x) - a, H - sy(-1.3));
+  bxStrip('ny_g_lake', 1.0, x - 1.7, x + 2.2, wy, 0.12 + Math.sin(t * 1.4) * 0.03);
+  // the mooring post, and the rope to the boat's bow once it's tied up
+  const px = x + 1.45; shadow(px + 0.12, 0.03, 0.5, 0.2); bxImg('ct_bollard', px, 0, 0.42);
+  const z = G.p.ride; if (B && !(z && z.i === 0) && (G.p.rideN || 0) > 0) {
+    const bx = B.pts[B.pts.length - 1][0] + 1.2, by = nyWY + 0.2 + Math.sin(t * 2.2) * 0.04;
+    ctx.strokeStyle = '#8a6a3c'; ctx.lineWidth = Math.max(2, 0.07 * U); ctx.beginPath(); ctx.moveTo(sx(bx), sy(by)); ctx.quadraticCurveTo(sx((bx + px) / 2), sy(by - 0.35), sx(px + 0.15), sy(0.3)); ctx.stroke();
   }
 }
 function nyBoatFront() {
@@ -6931,6 +7055,7 @@ function nyDuskFront() {
 }
 function drawCentralPark(dt) {
   const L = G.L;
+  nyDoorTick();
   nySky(); nyBands();
   nyStreet();
   nyArt(a => a.back && a.key !== 'ny_wtower');
@@ -6941,12 +7066,14 @@ function drawCentralPark(dt) {
   nyPonds();
   nyLake();
   for (const s of L.solids) if (s.kind === 'ground') nyGround(s);
+  nyLanding();
   nyArt(a => !a.back);
   nyTaxi(false);
 }
 function drawNyFront() {
   nyTaxi(true); nyMuFront(); nyArcade(true); nyBowFront();
   nyDuskFront();
+  doorWipe(G.nyDoor, NY_EDGE);
   const F = G.flag; if (G.L.nyFinale && F && F.ride !== undefined && F.ride > 0.3 && !$('hud').hidden) $('hud').hidden = true;
 }
 // A: stepping out of the cab, sitting in the rowing boat, watching the towers light up from behind
@@ -6963,8 +7090,8 @@ function drawNyRideA(cx, by, RUN_H, JUMP_H) {
     if (F.ride === undefined) { drawSprite('a_run', Math.floor(F.t2 * 9) % 6, cx, by + 0.04 * U, RUN_H, false); return true; }
     const kb = ctKidBack();
     if (kb !== null) { if (!kb) return true; const s = 1.16 * U / (kb.lwH - kb.lwEar); ctx.drawImage(kb, cx - (kb.lwPX + kb.lwFeet) * s, by + 0.04 * U - kb.height * s, kb.width * s, kb.height * s); return true; }
-    const im = IMG.dt_aback; if (!im) return false;
-    const fw = im.width / 2, h = 1.62 * U, w = h * fw / im.height, fi = F.ride > 2.8 ? 1 : 0; ctx.drawImage(im, fi * fw, 0, fw, im.height, cx - w / 2, by + 0.04 * U - h, w, h);
+    const im = IMG.a_back_ldn; if (!im) return false;   // A in his own New York clothes (cap + hoodie), not the Dubai tee
+    const h = 1.62 * U, w = h * im.width / im.height; ctx.drawImage(im, cx - w / 2, by + 0.04 * U - h, w, h);
     return true;
   }
   const z = p.ride; if (!z) return false;
@@ -7014,10 +7141,10 @@ function maRow(key, x0, x1, yb, hU) {
   for (let x = x0 + Math.max(0, Math.floor((cam.x - x0) / w) - 1) * w; x < x1 && sx(x) < W; x += w - 0.02) bxImg(key, x, yb, hU);
   ctx.restore();
 }
-function maBand(key, par, hU, botY) {
+function maBand(key, par, hU, botY, off = 0) {   // off: slide the band along (units), e.g. to have a landmark on screen at the start
   const im = IMG[key]; if (!im) return;
   const h = hU * U, w = h * im.width / im.height, bot = sy(botY, par);
-  let x0 = -((cam.x * U * par) % w); if (x0 > 0) x0 -= w;
+  let x0 = -((cam.x * U * par + off * U) % w); if (x0 > 0) x0 -= w;
   for (let x = x0; x < W; x += w - 1) ctx.drawImage(im, x, bot - h, w, h);
 }
 function maGround(s) {
