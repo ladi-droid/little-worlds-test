@@ -2649,7 +2649,7 @@ const ALL_LEVELS = [
     solid(RT + 3.05, 5.9, 0.22);
     b.arc(RT + 2.6, 1.3, 6, 6.6, 1.2);
     Object.assign(L.nyMu, { oh: OH, dh: DH, x1: OUT });
-    L.nyArches = [[DH + 0.25, UP + 3.2, UP - 0.6], [OH + 1.6, UP + 3.2, UP], [RT + 0.3, 4.6, 0]];   // [x, top of the opening, its floor]   // deep stone archways between the halls (rule 7): the walls change in their shadow
+    L.nyArches = [[DH + 0.25, UP + 2.4, UP - 0.6], [OH + 1.6, UP + 2.4, UP], [RT + 0.3, CEIL - 2.5, 0]];   // [x, where the arch springs, its floor]   // deep stone archways between the halls (rule 7): the walls change in their shadow
     ground(L.nyRowEnd - 1, OUT + 1, 'nycream');
     L.solids.forEach(q => { if (q.style === 'nypave') q.w = MU + 2 - q.x; });
     ground(MU + 2, BX, 'nypave');
