@@ -3019,6 +3019,161 @@ const ALL_LEVELS = [
     b.end(PG + 19.0);
   },
 },
+{
+  id: 'paris', name: 'Paris', plate: 'Paris', area: 'paris', city: 'Paris',
+  build(b) {
+    const L = b.L;
+    // Paris on a summer evening, drawn from Ladi's art (src/paris/cut.py). Plan: london-runner/paris/paris-stops.md
+    // up the Metro steps at Trocadéro -> the fountains -> Pont d'Iéna over the Seine -> the carousel (catch the ring) -> inside the Eiffel Tower
+    // (the old lift wheels, up between the iron, the slanting lift, the glass floor, the lift down) -> Champ de Mars (Guignol, the playground)
+    // -> the picnic lawn: the clock strikes the hour and the tower sparkles
+    const TER = 1.75;                                                // the Trocadéro terrace
+    L.killY = -8; L.startX = 2.0; L.startY = TER; L.camMin = -12; L.introCam = 'centre';   // A starts in the middle of the screen (Ladi 2026-11-07)
+    const art = (key, x, y, h, o = {}) => (L.prArt = L.prArt || []).push(Object.assign({ key, x, y, h }, o));   // a picture standing at (x, y), h units tall
+    const back = (key, x, y, h, o = {}) => art(key, x, y, h, Object.assign({ back: true }, o));
+    const solid = (x, w, h, y = 0, o = {}) => L.solids.push(Object.assign({ kind: 'block', x, y, w, h, style: 'hidden' }, o));
+    const ledge = (x, y, w) => b.ledge(x, y, w);
+    const ground = (x0, x1, style, y = 0) => L.solids.push({ kind: 'ground', x: x0, y: y - 40, w: x1 - x0, h: 40, style });
+    // knee-high things A hops by himself, and taller ones he leans on and jumps onto
+    const lean = (k, x, h, sx, sw, sh, y = 0) => { art(k, x, y, h); solid(x + sx, sw, sh, y); ledge(x + sx, y + sh, sw); };
+    const bollard = (x, y = 0) => { art('pr_bollard', x, y, 0.8); solid(x + 0.02, 0.28, 0.75, y); };
+    const bench = (x) => { art('pr_bench', x, 0, 0.8); solid(x + 0.1, 1.33, 0.5); };
+    const crepe = (x) => { lean('pr_crepe', x, 2.63, 0.05, 2.2, 2.45); (L.prCrepe = L.prCrepe || []).push(x); };   // the stand: lean, then up on its roof; the crepe seller flips crepes behind the counter
+
+    // ---------- 1. Trocadéro: up the Metro steps onto the terrace, the Eiffel Tower across the river; down past the fountains ----------
+    b.wall(-12.5, 1, 22);
+    ground(-14, 14.2, 'prterrace', TER);
+    L.prMetro = { x: 0.6 };                                          // A walks up out of the Metro's green iron entrance
+    back('pr_wing', -13.5, TER, 6.0);                                // the end of the palace's wing
+    back('pr_lamp', -2.2, TER, 3.0); back('pr_lamp', 12.6, TER, 3.0);
+    lean('pr_wallace', 6.4, 2.33, 0.08, 0.6, 2.2, TER); b.coins(6.45, TER + 3.0, 2, 0.6);   // a green Wallace drinking fountain: lean, then over it
+    L.prSteps = { x: 14.0 };                                         // the wide stone steps down into the gardens
+    b.slope(14.0, TER, 14.0 + 7.37, 0.0);
+    b.coins(14.8, TER + 0.9, 5, 1.3, -0.33);
+    ground(14.2, 48.5, 'prgravel');
+    L.prPool = [21.5, 47.5];                                         // the long fountain pool behind the path, its jets always on (never timed)
+    art('pr_cannon', 24.0, 0, 1.0); solid(24.2, 2.35, 0.95);         // the water cannons' low stone housing: A hops it
+    lean('pr_gold', 28.0, 4.54, 0.25, 1.45, 1.75);                   // a gold statue on its plinth: lean, then up beside her
+    b.coins(28.4, 2.6, 2, 0.7); b.arc(29.4, 3.2, 5, 3.8, 2.4);
+    b.special(31.0, 6.2);                                            // 1: above the fountains, from the statue's plinth
+    art('pr_cannon', 35.5, 0, 1.0); solid(35.7, 2.35, 0.95);
+    b.pigeon(40.0);
+    bollard(44.2); bollard(45.2);
+    b.coins(41.5, 1.1, 3, 1.0);
+
+    // ---------- 2. Pont d'Iéna over the Seine ----------
+    const PB = 48.5, PE = 95.0;
+    ground(PB, PE, 'prbridge');
+    L.prBridge = [PB, PE];                                           // the stone parapet and the lamps along the far side
+    L.prBLamps = [PB + 6, PB + 16, PB + 26, PB + 36];
+    L.prBend = [PB - 2.6, PE - 1.9];                                 // the bridge's ends: the quay steps go down beside them
+    lean('pr_horse', PB + 1.0, 3.68, 0.3, 1.3, 1.75);                // a stone horse on its plinth: lean, then onto the plinth
+    b.coins(PB + 1.3, 2.6, 2, 0.6);
+    b.coins(PB + 6.0, 1.1, 4, 1.0);
+    crepe(PB + 13.0); b.coins(PB + 13.2, 3.4, 3, 0.8);
+    bollard(PB + 21.0); bollard(PB + 22.2);
+    b.pigeon(PB + 27.5);
+    b.coins(PB + 30.0, 1.1, 4, 1.0);
+    back('pr_column', PB + 34.0, 0, 3.0);
+    lean('pr_horse', PB + 40.0, 3.68, 0.3, 1.3, 1.75); b.coins(PB + 40.3, 2.6, 2, 0.6);
+    L.prSwap1 = PE + 2.0;                                            // the backdrops change behind the big plane trees at the end of the bridge
+
+    // ---------- 3. The carousel: up onto its top deck, catch the ring ----------
+    ground(PE, 125.5, 'prgravel');
+    L.prTrees = [[PE - 0.6, 7.6], [PE + 2.2, 8.2], [PE + 4.2, 7.2]];   // big plane trees, standing on the ground
+    const CX = PE + 7.5;                                             // the carousel (Ladi's picture 16), 7.9 tall
+    L.prCarousel = { x: CX };
+    solid(CX + 0.3, 7.3, 0.5);                                       // its round step: A hops up
+    solid(CX + 0.9, 6.1, 4.0); ledge(CX + 0.9, 4.0, 6.1);            // the lower ring and its horses: lean on it, then jump up onto the top deck
+    b.coins(CX + 0.5, 1.4, 2, 0.6); b.coins(CX + 1.4, 4.9, 5, 1.1);
+    L.prRing = { x: CX + 7.1, y: 4.3 };                              // the ring holder sticks out at the side
+    b.special(CX + 7.85, 6.3);                                       // 2: the brass ring: jump for it from the top deck
+    b.coins(CX + 8.8, 3.6, 3, 0.8, -1.0);
+    lean('pr_booth', CX + 11.0, 2.6, 0.15, 1.75, 2.45); b.coins(CX + 11.3, 3.4, 2, 0.7);   // the ticket booth
+    art('pr_planter', CX + 15.4, 0, 0.9); solid(CX + 15.45, 0.9, 0.85);
+
+    // ---------- 4. Inside the Eiffel Tower ----------
+    const BX = 126.5, DOOR = 128.0, OUT = 191.0;
+    L.prIn = { box: BX, x1: OUT };
+    L.prLeg = { x: DOOR - 3.6 };                                     // the foot of the north leg, its gate open
+    L.prDoor = [DOOR, OUT - 1.4];
+    ground(125.5, OUT + 0.5, 'priron');
+    solid(DOOR + 0.3, 0.2, 40, 0, { backOnly: true, noGrab: true });   // no going back out once inside (Ladi 2026-11-07)
+    // the old lift machinery: its giant red wheels turning, a low iron housing to hop
+    L.prWheels = { x: DOOR + 1.6 };
+    art('pr_housing', DOOR + 8.0, 0, 1.0); solid(DOOR + 8.1, 2.9, 0.95);
+    b.coins(DOOR + 2.0, 1.1, 5, 1.0);
+    // the climb: an iron pier on a girder (A runs under it) and the walkway's iron wall facing it; A jumps from one to the other (like the Greenwich towers)
+    const F = 7.0, P1 = [DOOR + 13.0, DOOR + 15.4], WX = P1[1] + 3.0;
+    solid(P1[0], P1[1] - P1[0], 40, 3.6);
+    solid(WX, 6.0, F);
+    L.prPiers = [[P1[0], P1[1], 3.6, 40], [WX, WX + 1.4, 0, F, 'r']];
+    b.coins(DOOR + 12.6, 1.1, 3, 1.0);
+    [[WX - 0.9, 3.4], [P1[1] + 0.6, 5.3], [WX - 0.9, 7.2], [WX + 0.8, F + 1.2]].forEach(([x, y]) => b.coins(x, y, 1));
+    // the slanting lift up the curved leg: it waits at the walkway, carries A up to the first floor and he walks out
+    const LX = WX + 4.6, DECK = 16.0, LE = LX + 16.0;
+    const car = { kind: 'prlift', x0: LX, pts: [[LX, F], [LX + 1.2, F + 0.35], [LE - 1.2, DECK - 0.35], [LE, DECK]], v: 4.2, acc: 2.0, w0: 0.9, w1: 0.7, input: false, seat: 0, up: 0, down: 0, exitY: DECK };
+    L.rides = L.rides || []; L.rides.push(car); L.prCar = car;
+    solid(WX + 6.0, LX - WX - 6.0 + 0.4, F);
+    for (let x = LX + 3.0; x < LE - 1.5; x += 2.6) b.coins(x, rideY(car, x) + 1.0, 1);
+    // the first floor: the glass floor, Paris far below, out in the evening air
+    solid(LE - 0.4, 19.0, DECK);
+    L.prDeck = { x0: LE - 0.4, x1: LE + 18.6, y: DECK, glass: LE + 6.0 };
+    b.coins(LE + 1.0, DECK + 1.1, 3, 1.0); b.arc(LE + 5.0, DECK + 1.4, 6, 6.0, 3.0);
+    b.special(LE + 8.0, DECK + 3.7);                                 // 3: over the glass floor
+    back('pr_scope', LE + 2.6, DECK, 1.86);
+    art('pr_dbench', LE + 12.4, DECK, 0.85); solid(LE + 12.5, 1.7, 0.5, DECK);
+    lean('pr_kiosk', LE + 15.2, 2.0, 0.1, 2.3, 1.9, DECK); b.coins(LE + 15.5, DECK + 2.8, 3, 0.8);
+    // the lift down: it waits for A, takes him to the bottom, and he walks out through the gate to the Champ de Mars
+    const DL = LE + 18.6;
+    const lift = { kind: 'lift', mover: true, trig: 'prLift', x: DL, w: 2.4, y: DECK, y0: DECK, y1: 0, up: 3.6, d0: 0.45 };
+    (L.movers = L.movers || []).push(lift); L.oneways.push(lift); L.prLift = lift;
+    solid(DL + 2.4, 0.3, 30, 2.0, { noGrab: true });                // the lift's far side: he rides it down and walks out at the bottom
+    b.coins(DL + 2.9, 1.0, 2, 0.8);
+    solid(OUT - 1.1, 0.2, 40, 0, { backOnly: true, noGrab: true });  // out on the Champ de Mars: no going back in
+    L.camFloor = [[WX, LX + 0.6, F], [LE - 0.4, DL + 2.4, DECK]];
+    L.prSwap2 = WX + 2.0;                                            // the backdrops change while A is inside
+
+    // ---------- 5. Champ de Mars: Guignol, the playground ----------
+    ground(OUT + 0.5, 300, 'prgravel');
+    bench(OUT + 3.0);
+    b.coins(OUT + 5.0, 1.1, 4, 1.0);
+    const GT = OUT + 11.0;                                           // the little puppet theatre (Ladi's picture 22)
+    L.prTheatre = { x: GT };
+    solid(GT + 0.15, 1.1, 1.2); ledge(GT + 0.15, 1.2, 1.1);          // its porch steps and rail: lean, then up
+    solid(GT + 1.25, 3.25, 3.55); ledge(GT + 1.25, 3.55, 3.25);      // the theatre itself: jump up onto its roof
+    b.special(GT + 2.9, 7.0);                                        // 4: above the theatre's little gable
+    b.coins(GT + 0.3, 2.1, 2, 0.6); b.coins(GT + 1.6, 4.4, 3, 1.0); b.coins(GT + 5.2, 3.6, 3, 0.8, -1.0);
+    L.prGuignol = GT + 2.6;                                          // Guignol and the policeman pop up as A comes by; the crowd shouts
+    art('pr_pbench', GT + 7.0, 0, 0.66); solid(GT + 7.05, 1.65, 0.45);
+    art('pr_pbench', GT + 9.2, 0, 0.66); solid(GT + 9.25, 1.65, 0.45);
+    b.pigeon(GT + 15.0);
+    back('pr_tree', GT + 17.0, 0, 7.5);
+    const PF = GT + 22.0;                                            // the playground's climbing frame (Ladi's picture 23)
+    L.prFrame = { x: PF };
+    solid(PF + 0.6, 2.4, 2.35); ledge(PF + 0.6, 2.35, 2.4);          // up the ladder onto the low deck (lean, then up)
+    solid(PF + 3.0, 1.7, 3.0); ledge(PF + 3.0, 3.0, 1.7);            // the tower's deck: a hop
+    b.slope(PF + 4.7, 3.0, PF + 7.0, 0.1);                           // and down the slide
+    b.special(PF + 3.85, 5.5);                                       // 5: on top of the climbing frame, under its little roof
+    b.coins(PF + 0.4, 1.2, 1, 1); b.coins(PF + 1.0, 3.25, 2, 0.9); b.coins(PF + 5.1, 3.2, 3, 0.8, -0.9);
+    art('pr_sandpit', PF + 9.0, 0, 0.6); solid(PF + 9.05, 1.95, 0.55);
+    back('pr_rockhorse', PF + 12.0, 0, 1.1);
+    b.coins(PF + 13.5, 1.1, 4, 1.0);
+    crepe(PF + 18.0); b.coins(PF + 18.2, 3.4, 3, 0.8);
+    b.pigeon(PF + 25.0);
+    art('pr_basket', PF + 29.5, 0, 0.85); solid(PF + 29.55, 0.8, 0.7);
+    back('pr_tree', PF + 31.0, 0, 7.5);
+
+    // ---------- 6. The ending: on the picnic lawn the park clock strikes the hour, and the tower sparkles ----------
+    const CL = PF + 35.0;
+    L.prClock = { x: CL };
+    b.flag(CL + 1.8); L.flagY = 0;
+    L.finale = CL + 6.0; L.prFinale = true;
+    L.prBlanket = CL + 4.8;
+    b.wall(CL + 16.0, 1, 40);
+    b.end(CL + 19.5);
+  },
+},
 ];
 // Tower Bridge is parked for now (Ladi 2026-10-28): its build and art stay, it just isn't in the game.
 const PARKED = ['towerbridge', 'practice'];
