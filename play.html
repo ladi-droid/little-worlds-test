@@ -432,14 +432,16 @@ html.lw-loading .splash{visibility:hidden}
   </div>
 </section>
 
-<script src="kids/kids-meta.js?v=1794053760"></script>
-<script src="kids/kids.js?v=1794053760"></script>
-<script src="sfx.js?v=1794053760"></script>
-<script src="game.js?v=1794053760"></script>
+<script src="kids/kids-meta.js?v=1794053923"></script>
+<script src="kids/kids.js?v=1794053923"></script>
+<script src="sfx.js?v=1794053923"></script>
+<script src="game.js?v=1794053923"></script>
 <script>
 (() => {
 'use strict';
 const ARun = window.ARun;
+// A's World build only (tools/build-as-world.py): LW_TRIPS = the trips it keeps, LW_HAVE = the files it ships
+if (window.LW_TRIPS) { const keep = ARun.LEVELS.filter(l => window.LW_TRIPS.includes(l.id)); ARun.LEVELS.length = 0; ARun.LEVELS.push(...keep); }
 const cv = document.getElementById('game');
 const ctx = cv.getContext('2d');
 const $ = id => document.getElementById(id);
@@ -716,6 +718,7 @@ function loadImg(key, src) {
   if (key === 'dt_aback' || key === 'a_back_ldn') lwKidBack();
   if (key === 'a_back_ldn') lwKidBack('hero_back_win');
   if (kc && KidArt.has(kc, key)) return KidArt.build(kc, key).then(c => { if (c) IMG[key] = c; });
+  if (src && window.LW_HAVE && !window.LW_HAVE[ATLAS_OF[key] || src]) return Promise.resolve();   // a trip this build left out
   if (!src) return Promise.resolve();   // a child's own picture (e.g. the winter coat) that A doesn't have
   const f = ATLAS_OF[key];
   if (f) return atlasPic(f).then(im => {
@@ -1020,7 +1023,7 @@ let pickIndex = 0;
 const LOCK_CODE = '0000';   // a locked world opens early with this code (remembered on the device)
 function lvOpen(i) {
   if (LW) { const lv = ARun.LEVELS[i]; if (lv.practice) return true; if (!LW.paid) return false; return lvSave(lv.id).done || (i > 0 && lvSave(ARun.LEVELS[i - 1].id).done); }
-  return (save.codeOpen || {})[ARun.LEVELS[i].id] || i === 0 || lvSave(ARun.LEVELS[i].id).done || lvSave(ARun.LEVELS[i - 1].id).done; }
+  return !!window.LW_ALL_OPEN || (save.codeOpen || {})[ARun.LEVELS[i].id] || i === 0 || lvSave(ARun.LEVELS[i].id).done || lvSave(ARun.LEVELS[i - 1].id).done; }
 /* the child on the trip cards: key = the child's picture, f = frame, x, y = where the frame's point ax, ay (shares of the frame; default middle of the feet) lands, as a share of the card
    picture, h = the frame's height as a share of the picture, rot = degrees, flip = facing left. empty = the picture without A, for
    cards whose own picture shows A (the child is only drawn once that file exists) */
@@ -1274,7 +1277,7 @@ $('retryBtn').addEventListener('click', () => startLevel(levelIndex));
 // If the builder opened this tab, close it and show the builder again; otherwise open the builder with this child's world filled in.
 let lwJoinEnd = false;
 function lwBackToBuilder() {
-  const url = 'builder.html?v=1794053760&w=' + lwEncode(LW);
+  const url = 'builder.html?v=1794053923&w=' + lwEncode(LW);
   try { if (window.opener && !window.opener.closed && /builder\.html/.test(window.opener.location.pathname)) { window.opener.focus(); window.close(); setTimeout(() => { location.href = url; }, 400); return; } } catch (e) {}
   location.href = url;
 }
