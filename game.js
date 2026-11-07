@@ -1166,9 +1166,9 @@ const ALL_LEVELS = [
     flake(18.5, 3.4); b.coins(19.2, 7.4, 3, 0.9);
     b.pigeon(23.5);
     bench(27.0); b.coins(27.2, 1.6, 3, 0.7);
-    flake(31.0, 3.6, true);
+    flake(31.0, 3.6);                                         // (Ladi 2026-11-07: no big star; a snowflake instead)
     bigman(33.6); b.coins(33.7, 3.2, 2, 0.6);
-    b.special(32.9, 8.0);                                     // 1: above the big gold star, from the snowman's hat
+    b.special(32.9, 8.0);                                     // 1: above the snowflake, from the snowman's hat
     lamp(38.0); grit(40.0);
     b.coins(42.0, 1.1, 4, 0.8);
     flake(45.0, 3.4); drift(46.0); b.coins(45.6, 7.4, 3, 0.9);
@@ -1256,7 +1256,7 @@ const ALL_LEVELS = [
     // ---------- 4. Carnaby Street ----------
     const CB = 221.0;
     ground(220, 261, 'wecobble');
-    L.weCbSwap = CB + 20; L.weRows.push({ kind: 'carnaby', x0: CB + 0.5, x1: 260.5 });
+    L.weCbSwap = CB - 3.0; L.weRows.push({ kind: 'carnaby', x0: CB + 0.5, x1: 260.5 });
     art('we_cb_arch', CB + 1.0, 0, 4.2, { mid: true }); ledge(CB + 1.2, 4.05, 5.5);
     L.weArch = { x: CB + 1.0 };
     bigman(CB - 1.6); b.coins(CB + 1.6, 4.9, 5, 0.8);         // along the top of the Carnaby arch
@@ -1322,8 +1322,8 @@ const ALL_LEVELS = [
     bigman(HI + 3.2);
     bench(HI + 6.0); b.coins(HI + 6.2, 1.6, 3, 0.7);
     b.coins(HI + 6.0, 4.4, 12, 1.1);
-    art('we_mh_ball_r', HI + 13.0, 5.1, 1.3, { hang: true }); ledge(HI + 13.1, 6.35, 1.0); b.special(HI + 13.6, 7.0);   // 4: on top of the giant red bauble
-    art('we_mh_ball_s', HI + 21.0, 5.1, 1.3, { hang: true }); ledge(HI + 21.1, 6.35, 1.0);
+    art('we_mh_ball_r', HI + 13.0, 5.1, 1.3, { hang: true, hall: true }); ledge(HI + 13.1, 6.35, 1.0); b.special(HI + 13.6, 7.0);   // 4: on top of the giant red bauble
+    art('we_mh_ball_s', HI + 21.0, 5.1, 1.3, { hang: true, hall: true }); ledge(HI + 21.1, 6.35, 1.0);
     b.pigeon(HI + 18.0); b.pigeon(HI + 20.0, 3.6);
     bigman(HI + 25.0); b.coins(HI + 25.0, 3.4, 2, 0.6);
     b.pigeon(HI + 30.5);

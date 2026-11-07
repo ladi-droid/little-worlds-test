@@ -26,7 +26,7 @@ html,body{height:100%;min-height:100lvh}
 <link rel="preload" as="image" href="ui_splash_wide.webp" fetchpriority="high">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bowlby+One&family=Figtree:wght@500;700;800&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bowlby+One&family=Figtree:wght@500;700;800&family=Yellowtail&display=swap">
 <style>
 /* Layout: one full-screen canvas; HUD and menus float over it. Single blue-hour look. */
 :root{
@@ -432,10 +432,10 @@ html.lw-loading .splash{visibility:hidden}
   </div>
 </section>
 
-<script src="kids/kids-meta.js?v=1794044926"></script>
-<script src="kids/kids.js?v=1794044926"></script>
-<script src="sfx.js?v=1794044926"></script>
-<script src="game.js?v=1794044926"></script>
+<script src="kids/kids-meta.js?v=1794048102"></script>
+<script src="kids/kids.js?v=1794048102"></script>
+<script src="sfx.js?v=1794048102"></script>
+<script src="game.js?v=1794048102"></script>
 <script>
 (() => {
 'use strict';
@@ -1274,7 +1274,7 @@ $('retryBtn').addEventListener('click', () => startLevel(levelIndex));
 // If the builder opened this tab, close it and show the builder again; otherwise open the builder with this child's world filled in.
 let lwJoinEnd = false;
 function lwBackToBuilder() {
-  const url = 'builder.html?v=1794044926&w=' + lwEncode(LW);
+  const url = 'builder.html?v=1794048102&w=' + lwEncode(LW);
   try { if (window.opener && !window.opener.closed && /builder\.html/.test(window.opener.location.pathname)) { window.opener.focus(); window.close(); setTimeout(() => { location.href = url; }, 400); return; } } catch (e) {}
   location.href = url;
 }
@@ -5797,7 +5797,7 @@ const WE_IMAGES = ['we_far1', 'we_far2', 'we_mid1', 'we_mid2', 'we_mid3', 'we_g_
   'we_mh_out', 'we_mh_arch', 'we_mh_in', 'we_mh_rail', 'we_mh_roof', 'we_mh_ball_r', 'we_mh_ball_s', 'we_mh_garland', 'we_cg_tree', 'we_reindeer', 'we_chalets', 'we_chestnut',
   'we_tf_centre', 'we_tf_ramp', 'we_tf_basin', 'we_tf_column', 'we_tf_ng', 'we_tf_ngend', 'we_tf_lion',
   'we_mid4', 'we_pc_bld', 'we_pc_endl', 'we_pc_endr', 'we_gw_l', 'we_gw_m', 'we_gw_r', 'we_gw_ladder', 'we_gw_bracket', 'we_pc_fountain', 'we_pc_sign', 'we_pc_cart',
-  'we_pc_flowers', 'we_pc_barrier', 'we_ad1', 'we_ad2', 'we_ad3', 'we_ad4', 'we_ad5', 'we_ad6'];
+  'we_pc_flowers', 'we_pc_barrier', 'we_ad1', 'we_ad2', 'we_ad3', 'we_ad4', 'we_ad5', 'we_ad6', 'ma_lambo', 'ma_sl'];
 const WE_GROUND = { wepave: ['we_g_pave', 1.2, 0.3, '#5c6272', '#2c303d'], wemarble: ['we_g_marble', 0.8, 0.22, '#8c6f4c', '#4a3826'],
   wecobble: ['we_g_cobble', 1.0, 0.28, '#50525e', '#2a2b33'], wegranite: ['we_g_granite', 1.0, 0.28, '#5a5d6a', '#2e3038'] };
 const weA = () => G && AREAS[G.L.area].westend;
@@ -5815,7 +5815,7 @@ if (WE_KID.length) {
 function weBox(key, x, y, w, h) { const im = IMG[key]; if (!im) return; const X = sx(x); if (X > W || X + w * U < 0) return; ctx.drawImage(im, X, sy(y + h), w * U, h * U); }
 // a picture drawn only between world x0 and x1
 function weClip(x0, x1, fn) { const a = Math.max(-2, sx(x0)), b = Math.min(W + 2, sx(x1)); if (b <= a) return; ctx.save(); ctx.beginPath(); ctx.rect(a, -10, b - a, H + 20); ctx.clip(); fn(); ctx.restore(); }
-// the yellow Elfridges stone: the cream upper floors washed yellow (made once)
+// the Elfridges stone above the store: the sandy upper floors turned pale grey-cream like Portland stone (Ladi 2026-11-07, made once)
 let weYellow = null;
 function weYel(key) {
   weYellow = weYellow || {};
@@ -5823,9 +5823,23 @@ function weYel(key) {
   const im = IMG[key]; if (!im) return null;
   const c = document.createElement('canvas'); c.width = im.width; c.height = im.height;
   const g = c.getContext('2d'); g.drawImage(im, 0, 0);
-  g.globalCompositeOperation = 'multiply'; g.fillStyle = 'rgb(255,214,70)'; g.fillRect(0, 0, c.width, c.height);
+  g.globalCompositeOperation = 'saturation'; g.globalAlpha = 0.68; g.fillStyle = '#808080'; g.fillRect(0, 0, c.width, c.height);
+  g.globalAlpha = 1; g.globalCompositeOperation = 'screen'; g.fillStyle = 'rgb(56,54,48)'; g.fillRect(0, 0, c.width, c.height);
   g.globalCompositeOperation = 'destination-in'; g.drawImage(im, 0, 0);
   return (weYellow[key] = c);
+}
+// grain on the backdrops (Ladi 2026-11-07): the far one has some, the middle one a little less, the street none (made once per picture)
+const WE_GRAIN = {};
+function weGrain(key, amt) {
+  const id = key + '~' + amt; if (WE_GRAIN[id] !== undefined) return WE_GRAIN[id] ? id : key;
+  const im = IMG[key]; if (!im) return key;
+  const c = document.createElement('canvas'); c.width = im.width; c.height = im.height;
+  const g = c.getContext('2d'); g.drawImage(im, 0, 0);
+  try {
+    const d = g.getImageData(0, 0, c.width, c.height), a = d.data; let r = 99991;
+    for (let i = 0; i < a.length; i += 4) { if (!a[i + 3]) continue; r = (r * 1103515245 + 12345) & 0x7fffffff; const n = (r % (2 * amt + 1)) - amt; a[i] += n; a[i + 1] += n; a[i + 2] += n; }
+    g.putImageData(d, 0, 0); IMG[id] = c; WE_GRAIN[id] = true; return id;
+  } catch (e) { WE_GRAIN[id] = false; return key; }
 }
 // a canvas picture repeated along [x0, x1] at height y, hU tall
 function weRowC(c, x0, x1, y, hU) {
@@ -5858,14 +5872,14 @@ function weSnow(layer) {
 // backdrops: far rooftops with the BT Tower until Elfridges, then Nelson's Column, Big Ben and the Eye.
 // The middle strip changes inside Elfridges and behind the Carnaby row, where the buildings hide the seam.
 function weBands() {
-  const L = G.L, s1 = L.weEf ? (L.weEf.box + L.weInside.x1) / 2 : 1e9, s2 = L.weCbSwap || 1e9, [s3, s4] = L.wePc ? L.wePc.swap : [1e9, 1e9];
-  const band = (key, par, hU, bot) => maBand(key, par, hU, bot);
-  const S1 = sx(s1), S2 = sx(s2), S3 = sx(s3), S4 = sx(s4);
+  const L = G.L, s1 = L.weEf ? (L.weEf.box + L.weInside.x1) / 2 : 1e9, s2 = L.weCbSwap || 1e9, [, s4] = L.wePc ? L.wePc.swap : [1e9, 1e9];
+  const band = (key, par, hU, bot) => maBand(weGrain(key, par < 0.2 ? 18 : 8), par, hU, bot);
+  const S1 = sx(s1), S2 = sx(s2), S4 = sx(s4);
   const part = (a, b, fn) => { if (b <= a) return; ctx.save(); ctx.beginPath(); ctx.rect(a, -10, b - a, H + 20); ctx.clip(); fn(); ctx.restore(); };
-  part(-10, Math.min(W + 10, S1), () => { band('we_far1', 0.1, 13.0, 0.3); band('we_mid1', 0.3, 7.6, -0.4); });
-  part(Math.max(-10, S1), Math.min(W + 10, S2), () => { band('we_far2', 0.1, 13.0, 0.3); band('we_mid2', 0.3, 7.6, -0.4); });
-  part(Math.max(-10, S2), Math.min(W + 10, S3), () => { band('we_far2', 0.1, 14.5, 0.3); band('we_mid3', 0.3, 8.4, -0.5); });
-  part(Math.max(-10, S3), Math.min(W + 10, S4), () => { band('we_far2', 0.1, 14.5, 0.3); band('we_mid4', 0.3, 8.4, -0.5); });   // Piccadilly Circus (behind the Carnaby row and the screens building's end)
+  // Oxford Street: the rooftops and the BT Tower stand up above the lower shop rows (Ladi 2026-11-07: something to see from the start)
+  part(-10, Math.min(W + 10, S1), () => { band('we_far1', 0.1, 15.5, 0.3); band('we_mid1', 0.3, 7.6, -0.4); });
+  part(Math.max(-10, S1), Math.min(W + 10, S2), () => { band('we_far2', 0.1, 14.5, 0.3); band('we_mid2', 0.3, 7.6, -0.4); });
+  part(Math.max(-10, S2), Math.min(W + 10, S4), () => { band('we_far2', 0.1, 14.5, 0.3); band('we_mid4', 0.3, 8.4, -0.5); });   // Carnaby Street and Piccadilly Circus (changes behind Regent Street's tall end)
   part(Math.max(-10, S4), W + 10, () => { band('we_far2', 0.1, 14.5, 0.3); band('we_mid3', 0.3, 8.4, -0.5); });
   weSnow(0);
 }
@@ -5883,18 +5897,20 @@ function weRows() {
     if (sx(r.x1 + 7) < 0 || sx(r.x0 - 7) > W) continue;
     if (r.kind === 'oxford') {
       for (const [, x, w] of L.weShops) bxImg('we_of_pier', x + w - 0.01, 0, 5.0);
-      maRow('we_of_upper', r.x0, r.x1, 3.5, 5.4);
+      // the upper floors sink down behind the shop fronts: two floors, or one, in groups, so the skyline shows above them
+      const tw = bxW('we_of_upper', 5.4); let x = r.x0;
+      for (const [n, d] of [[2, 3.3], [3, 1.65], [3, 3.3], [2, 1.65], [3, 3.3], [9, 3.3]]) { const x1 = Math.min(r.x1, x + n * tw); if (x1 > x) maRow('we_of_upper', x, x1 + 0.02, 3.5 - d, 5.4); x = x1; }
       for (const [k, x] of L.weShops) bxImg(k, x, 0, 3.6);
       for (const [, x, w] of L.weShops) weClip(x + w - 0.02, x + w + 0.82, () => bxImg('we_of_pier', x + w - 0.01, -1.4, 5.0));
-      weBox('we_of_pier', r.x0 - 0.5, 0, 0.6, 9.0);
+      weBox('we_of_pier', r.x0 - 0.5, 0, 0.6, 7.25);
     } else if (r.kind === 'regent') {
       maRow('we_rg_upper', r.x0 + 3, r.x1 - 3, 3.5, 6.0);
       maRow('we_rg_ground', r.x0 + 3, r.x1 - 3, 0, 3.6);
       bxImg('we_rg_endl', r.x0, 0, 9.5); bxImg('we_rg_endr', r.x1 - bxW('we_rg_endr', 9.5), 0, 9.5);
     } else if (r.kind === 'carnaby') {
-      maRow('we_cb_upper', r.x0 + 2, r.x1 - 2, 5.0, 3.1);
-      maRow('we_cb_row', r.x0 + 2, r.x1 - 2, 0, 5.2);
-      bxImg('we_cb_endl', r.x0, 0, 8.1); bxImg('we_cb_endr', r.x1 - bxW('we_cb_endr', 8.1), 0, 8.1);
+      const eh = 5.2 * 327 / 342;   // the corner houses drawn at the row's own scale
+      maRow('we_cb_row', r.x0 + bxW('we_cb_endl', eh) - 0.1, r.x1 - bxW('we_cb_endr', eh) + 0.1, 0, 5.2);
+      bxImg('we_cb_endl', r.x0, 0, eh); bxImg('we_cb_endr', r.x1 - bxW('we_cb_endr', eh), 0, eh);
     }
   }
 }
@@ -5912,7 +5928,7 @@ function weStrings() {
     ctx.beginPath(); ctx.moveTo(sx(a.x + w * 0.3), sy(top - 0.1)); ctx.lineTo(sx(a.x + w * 0.3), sy(sy0)); ctx.moveTo(sx(a.x + w * 0.7), sy(top - 0.1)); ctx.lineTo(sx(a.x + w * 0.7), sy(sy0)); ctx.stroke();
   }
 }
-function weArt(fn) { for (const a of G.L.weArt || []) if (fn(a)) { if (!a.back && !a.hang && a.y === 0) shadow(a.x + bxW(a.key, a.h) / 2, 0.03, bxW(a.key, a.h) * 1.1, 0.3); bxImg(a.key, a.x, a.y, a.h, a.flip); } }
+function weArt(fn) { for (const a of G.L.weArt || []) if (fn(a) && (!a.hall || G.weIn)) { if (!a.back && !a.hang && a.y === 0) shadow(a.x + bxW(a.key, a.h) / 2, 0.03, bxW(a.key, a.h) * 1.1, 0.3); bxImg(a.key, a.x, a.y, a.h, a.flip); } }
 // one bus and one cab in Oxford Street and Regent Street, snow on their roofs
 function weTraffic() {
   const car = (key, x, h, roof) => {
@@ -5992,24 +6008,73 @@ function weSign() {
   ctx.font = `${Math.round(0.62 * U)}px "Bowlby One", Impact, sans-serif`; ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
   ctx.fillStyle = '#2a1a0a'; ctx.fillText('ELFRIDGES', cx, cy + 0.04 * U);
 }
-// Covent Garden market hall: in through the arch, two floors of little shops, out through the far arch
-function weHall(front) {
-  const Hh = G.L.weHall; if (!Hh || sx(Hh.x1 + 12) < 0 || sx(Hh.box - 16) > W) return;
+// Covent Garden market hall (rules v3, Ladi 2026-11-07): from outside it is closed, a long stone market building; A goes in
+// through the middle of the front arch and out through the far arch, each time with the snowy doorway wipe. Inside, the arcade
+// of little shops and the glass roof fill the whole screen, so nothing shows past its walls.
+function weHallGeo() {
+  const Hh = G.L.weHall; if (!Hh) return null;
   const FH = 8.65, fw = bxW('we_mh_out', FH), fx = Hh.box - fw * 0.78, ax = Hh.x1 - 1.3, aw = bxW('we_mh_arch', FH);
+  return { Hh, FH, fw, fx, ax, aw, dIn: fx + fw * 0.5, dOut: ax + aw * 0.32 };   // in at the middle of the front arch, out as he reaches the far arch's opening
+}
+function weDoorTick() {
+  const g = weHallGeo(); if (!g) return;
+  const x = G.p.x + ARun.PW / 2, want = x > g.dIn && x < g.dOut;
+  if (G.weIn === undefined) G.weIn = want;
+  let D = G.weDoor;
+  if (!D && want !== G.weIn) D = G.weDoor = { t0: G.t, to: want };
+  if (!D) return;
+  const e = G.t - D.t0;
+  if (e >= DOOR_T[0] && !D.ding) { D.ding = true; if (!snd('star', { rate: 1.15 })) BEEP.coin(); }
+  if (e >= DOOR_T[0] + DOOR_T[1] / 2 && G.weIn !== D.to) { G.weIn = D.to; G.camSnap = true; }
+  if (e >= DOOR_T[0] + DOOR_T[1] + DOOR_T[2]) G.weDoor = null;
+}
+// snowflakes round the doorway (drawn once into little pictures)
+const WE_EDGE = { dark: '#0c1430', rim: '#eaf3ff', trim: ['we_trim0', 'we_trim1', 'we_trim2'] };
+function weTrim() {
+  if (IMG.we_trim0) return;
+  for (let k = 0; k < 3; k++) {
+    const c = document.createElement('canvas'); c.width = c.height = 64; const g = c.getContext('2d');
+    g.translate(32, 32); g.lineCap = 'round';
+    for (const [col, lw] of [['#1b2a55', 9], ['#ffffff', 5]]) {
+      g.strokeStyle = col; g.lineWidth = lw;
+      for (let i = 0; i < 6; i++) { g.save(); g.rotate(i * Math.PI / 3 + k * 0.3); g.beginPath(); g.moveTo(0, 0); g.lineTo(0, -26);
+        g.moveTo(0, -14); g.lineTo(-8 + k, -21); g.moveTo(0, -14); g.lineTo(8 - k, -21); g.stroke(); g.restore(); }
+    }
+    IMG['we_trim' + k] = c;
+  }
+}
+// a strip of a picture (its columns u0 to u1) repeated along x0 to x1
+function weCropRow(key, u0, u1, x0, x1, yb, hU) {
+  const im = IMG[key]; if (!im || sx(x1) < 0 || sx(x0) > W) return;
+  const sw = (u1 - u0) * im.width, w = hU * sw / im.height;
+  weClip(x0, x1, () => { for (let x = x0; x < x1 && sx(x) < W; x += w - 0.02) if (sx(x + w) > 0) ctx.drawImage(im, u0 * im.width, 0, sw, im.height, sx(x), sy(yb + hU), w * U + 1, hU * U); });
+}
+function weHall(front) {
+  const g = weHallGeo(); if (!g) return; const { Hh, FH, fw, fx, ax, aw } = g;
+  if (sx(ax + aw + 4) < 0 || sx(fx - 2) > W) return;
   if (front) {
-    weClip(Hh.box - fw * 0.13, Hh.box, () => bxImg('we_mh_out', fx, 0, FH));
-    weClip(ax, ax + aw * 0.25, () => bxImg('we_mh_arch', ax, 0, FH));
+    if (G.weIn) return;
+    // outside: the front and the long side of the hall are closed, in front of everything inside it
+    weClip(g.dIn, ax + 0.4, () => {
+      const top = FH * 0.62;
+      ctx.fillStyle = '#cdbb98'; ctx.fillRect(sx(fx + fw - 0.2), sy(top), (ax - fx - fw + 0.6) * U, top * U + 2);
+      weCropRow('we_mh_out', 0.0, 0.335, fx + fw - 0.3, ax + 0.5, 0, FH);   // the wing with its windows, columns and chimney, along the side
+      bxImg('we_mh_out', fx, 0, FH);
+    });
+    weClip(ax, ax + aw * 0.25, () => bxImg('we_mh_arch', ax, 0, FH));   // the far arch's first pillars, as A walks out
     return;
   }
-  weClip(fx, Hh.box, () => bxImg('we_mh_out', fx, 0, FH));
-  weClip(Hh.box, Hh.x1, () => {
-    bxImg('we_mh_in', Hh.box - 4, 0, 7.4);
-    weBox('we_mh_roof', Hh.box - 1, 7.2, Hh.x1 - Hh.box + 2, 1.45);
-    ctx.fillStyle = '#e8d9b4'; ctx.fillRect(sx(Hh.x0 + 4), sy(Hh.up), (Hh.x1 - Hh.x0 - 8) * U, 0.3 * U);
-    maRow('we_mh_rail', Hh.x0 + 4, Hh.x1 - 4, Hh.up - 0.05, 1.25);
-    maRow('we_mh_garland', Hh.box, Hh.x1, 6.5, 0.8);
-  });
-  bxImg('we_mh_arch', ax, 0, FH);
+  if (!G.weIn) { bxImg('we_mh_out', fx, 0, FH); bxImg('we_mh_arch', ax, 0, FH); return; }
+  // inside: the glass roof going up out of sight, the arcade on two floors, the first-floor walkway
+  const x0 = fx - 22, x1 = ax + aw + 22;
+  for (let y = 7.2, i = 0; i < 12 && sy(y) > -2 * U; y += 1.43, i++) {
+    weBox('we_mh_roof', x0, y, x1 - x0, 1.45);
+    ctx.fillStyle = `rgba(8,14,34,${Math.min(0.75, 0.12 + i * 0.16)})`; ctx.fillRect(sx(x0), sy(y + 1.45), (x1 - x0) * U, 1.45 * U + 1);
+  }
+  weCropRow('we_mh_in', 0.004, 0.996, x0, x1, 0, 7.4);   // (trimmed: the picture's edges have a pink fringe)
+  ctx.fillStyle = '#e8d9b4'; ctx.fillRect(sx(Hh.x0 + 4), sy(Hh.up), (Hh.x1 - Hh.x0 - 8) * U, 0.3 * U);
+  maRow('we_mh_rail', Hh.x0 + 4, Hh.x1 - 4, Hh.up - 0.05, 1.25);
+  maRow('we_mh_garland', x0, x1, 6.5, 0.8);
 }
 // Trafalgar Square: the National Gallery, the lions, the frozen fountains
 function weTrafalgar() {
@@ -6027,27 +6092,93 @@ function weTrafalgar() {
 // Piccadilly Circus: the giant screens (the adverts change on their own; each wide screen shows a few side by side),
 // the gantry across them, and the window cleaners' cradle that lowers A to the street
 const WE_PC_H = 11.0, WE_PC_W = 19.914, WE_PC_SCREENS = [[0.0754, 0.1882, 0.6246, 0.3736], [0.6302, 0.1911, 0.9254, 0.3736], [0.0754, 0.3721, 0.3238, 0.5388], [0.3294, 0.3707, 0.746, 0.5345], [0.7516, 0.375, 0.9246, 0.5388], [0.0754, 0.5417, 0.9246, 0.717]];
+// the made-up adverts (Ladi 2026-11-07: simpler, mostly words on flat colour like the real screens; a play on the red cola one)
+function weAdText(txt, font, X, Y, w, h, maxW, maxH, col, sp = 0) {
+  let size = maxH * h;
+  ctx.font = font.replace('#', size + 'px'); if ('letterSpacing' in ctx) ctx.letterSpacing = sp * size + 'px';
+  const tw = ctx.measureText(txt).width; if (tw > maxW * w) { size *= maxW * w / tw; ctx.font = font.replace('#', size + 'px'); if ('letterSpacing' in ctx) ctx.letterSpacing = sp * size + 'px'; }
+  ctx.fillStyle = col; ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.fillText(txt, X, Y);
+  if ('letterSpacing' in ctx) ctx.letterSpacing = '0px';
+  return size;
+}
+const WE_AD_START = [0, 1, 2, 3, 4, 5];   // with the staggered timing this keeps every screen different
+const WE_ADS = [
+  (X, Y, w, h) => {   // Rock 'n' Roller: white curly writing on red, with a white ribbon under it (Ladi's play on the red cola advert)
+    const g = ctx.createLinearGradient(X, Y, X, Y + h); g.addColorStop(0, '#f2262b'); g.addColorStop(1, '#c80f1a'); ctx.fillStyle = g; ctx.fillRect(X, Y, w, h);
+    ctx.fillStyle = 'rgba(255,255,255,.06)'; for (let y = Y; y < Y + h; y += Math.max(3, h / 26)) ctx.fillRect(X, y, w, Math.max(1, h / 60));
+    const sz = weAdText("Rock 'n' Roller", 'italic #' + ' "Yellowtail", "Brush Script MT", cursive', X + w / 2, Y + h * 0.44, w, h, 0.78, 0.5, '#fff');
+    ctx.strokeStyle = '#fff'; ctx.lineWidth = Math.max(1.5, sz * 0.07); ctx.beginPath();
+    ctx.moveTo(X + w * 0.22, Y + h * 0.7); ctx.bezierCurveTo(X + w * 0.4, Y + h * 0.58, X + w * 0.6, Y + h * 0.82, X + w * 0.8, Y + h * 0.64); ctx.stroke();
+  },
+  (X, Y, w, h) => {   // LADI'S HOUSE: white letters on black
+    ctx.fillStyle = '#0c0c10'; ctx.fillRect(X, Y, w, h);
+    weAdText("LADI'S HOUSE", '800 # Figtree, sans-serif', X + w / 2, Y + h * 0.52, w, h, 0.66, 0.22, '#f4f4f8', 0.16);
+  },
+  (X, Y, w, h) => {   // a car advert: the green supercar on plain white, one word in front of it
+    ctx.fillStyle = '#f4f5f7'; ctx.fillRect(X, Y, w, h);
+    const im = IMG.ma_lambo; if (im) { const iw = Math.min(w * 0.55, h * 0.75 * im.width / im.height), ih = iw * im.height / im.width; ctx.drawImage(im, X + w * 0.5 - iw / 2, Y + h * 0.86 - ih, iw, ih); }
+    weAdText('ZOOM', '800 # Figtree, sans-serif', X + w / 2, Y + h * 0.36, w, h, 0.42, 0.34, '#111216', 0.04);   // the word in front of the car
+  },
+  (X, Y, w, h) => {   // the child on the big screen: standing on a bright colour, their own name in front
+    const g = ctx.createLinearGradient(X, Y, X, Y + h); g.addColorStop(0, '#ffd23f'); g.addColorStop(1, '#ffb01f'); ctx.fillStyle = g; ctx.fillRect(X, Y, w, h);
+    const im = IMG.a_side; if (im) { const ih = h * 0.92, iw = ih * im.width / im.height; ctx.drawImage(im, X + w * 0.7 - iw / 2, Y + h - ih, iw, ih); }
+    const c = typeof lwKidCfg === 'function' && lwKidCfg(), nm = ((c && c.name) || 'A').toUpperCase();
+    weAdText(nm, '400 # "Bowlby One", Impact, sans-serif', X + w * 0.36, Y + h * 0.5, w, h, 0.5, 0.42, '#1a1a1f');
+  },
+  (X, Y, w, h) => {   // a car advert: the silver classic on black, one word in front
+    ctx.fillStyle = '#0c0c10'; ctx.fillRect(X, Y, w, h);
+    const im = IMG.ma_sl; if (im) { const iw = Math.min(w * 0.55, h * 0.6 * im.width / im.height), ih = iw * im.height / im.width; ctx.drawImage(im, X + w * 0.5 - iw / 2, Y + h * 0.88 - ih, iw, ih); }
+    weAdText('CLASSIC', '500 # Figtree, sans-serif', X + w / 2, Y + h * 0.3, w, h, 0.5, 0.2, '#f4f4f8', 0.35);
+  },
+  (X, Y, w, h) => {   // open presents: white words on red to pink
+    const g = ctx.createLinearGradient(X, Y, X + w, Y); g.addColorStop(0, '#e8202f'); g.addColorStop(1, '#ff4f6e'); ctx.fillStyle = g; ctx.fillRect(X, Y, w, h);
+    weAdText('open presents', '700 # Figtree, sans-serif', X + w / 2, Y + h * 0.5, w, h, 0.8, 0.36, '#fff');
+  },
+  (X, Y, w, h) => {   // HYUNDEER: an oval badge with a snowflake, white on black
+    ctx.fillStyle = '#0c0c10'; ctx.fillRect(X, Y, w, h);
+    const cx = X + w / 2, cy = Y + h * 0.36, r = Math.min(w * 0.12, h * 0.2);
+    ctx.strokeStyle = '#f4f4f8'; ctx.lineWidth = r * 0.16; ctx.beginPath(); ctx.ellipse(cx, cy, r * 1.5, r, 0, 0, Math.PI * 2); ctx.stroke();
+    ctx.lineWidth = r * 0.14; ctx.lineCap = 'round'; ctx.beginPath();
+    for (let k = 0; k < 6; k++) { const a = k * Math.PI / 3; ctx.moveTo(cx, cy); ctx.lineTo(cx + Math.cos(a) * r * 0.62, cy + Math.sin(a) * r * 0.62); }
+    ctx.stroke();
+    weAdText('HYUNDEER', '800 # Figtree, sans-serif', cx, Y + h * 0.74, w, h, 0.6, 0.2, '#f4f4f8', 0.12);
+  },
+  (X, Y, w, h) => {   // HOLLY ORIGINAL: a red box on white with raindrops
+    ctx.fillStyle = '#f6f3f4'; ctx.fillRect(X, Y, w, h);
+    ctx.fillStyle = 'rgba(160,170,190,.35)';
+    for (let k = 0; k < 14; k++) { const u = (Math.sin(k * 12.9) * 4375.5) % 1, v = (Math.sin(k * 7.1) * 911.3) % 1; ctx.beginPath(); ctx.ellipse(X + Math.abs(u) * w, Y + Math.abs(v) * h, h * 0.02, h * 0.035, 0, 0, Math.PI * 2); ctx.fill(); }
+    const bw = Math.min(w * 0.5, h * 1.1), bh = bw * 0.3, bx = X + w / 2 - bw / 2, by = Y + h * 0.42 - bh / 2;
+    ctx.strokeStyle = '#d4202a'; ctx.lineWidth = bh * 0.12; ctx.strokeRect(bx, by, bw, bh);
+    weAdText('HOLLY', '800 # Figtree, sans-serif', X + w / 2, by + bh / 2, bw, bh, 0.8, 0.6, '#3a3a40', 0.1);
+    weAdText('ORIGINAL', '700 # Figtree, sans-serif', X + w / 2, by + bh * 1.45, bw, bh, 0.6, 0.28, '#3a3a40', 0.25);
+  },
+  (X, Y, w, h) => {   // STELLA McTINSEL: thin white letters on a black strip over pale pink
+    const g = ctx.createLinearGradient(X, Y, X + w, Y + h); g.addColorStop(0, '#fbe3ea'); g.addColorStop(1, '#f3c9d6'); ctx.fillStyle = g; ctx.fillRect(X, Y, w, h);
+    const bw = w * 0.7, bh = h * 0.2; ctx.fillStyle = '#1a1a1f'; ctx.fillRect(X + (w - bw) / 2, Y + h * 0.5 - bh / 2, bw, bh);
+    weAdText('STELLA McTINSEL', '500 # Figtree, sans-serif', X + w / 2, Y + h * 0.5, bw, bh, 0.86, 0.5, '#f5f5f5', 0.16);
+  },
+  (X, Y, w, h) => {   // the penguin with his hot chocolate, from the old screens, with one word
+    ctx.fillStyle = '#0d2350'; ctx.fillRect(X, Y, w, h);
+    const im = IMG.we_ad1; if (im) { const ih = h, iw = ih * im.width / im.height; ctx.drawImage(im, X + w - iw, Y, iw, ih); }
+    weAdText('cosy.', '800 # Figtree, sans-serif', X + w * 0.22, Y + h * 0.5, w, h, 0.36, 0.3, '#fff');
+  },
+];
+if (document.fonts && document.fonts.load) document.fonts.load('40px "Yellowtail"').catch(() => {});
 function wePiccadilly() {
   const P = G.L.wePc; if (!P || sx(P.x1 + 7) < 0 || sx(P.x0 - 1) > W) return;
   const t = animT;
-  // the adverts, behind the building's see-through screens
+  // the adverts, behind the building's see-through screens: one big advert per screen, each changing every few seconds
   WE_PC_SCREENS.forEach(([a, b, c, d], i) => {
     const x0 = P.bm + a * WE_PC_W, x1 = P.bm + c * WE_PC_W, y1 = WE_PC_H * (1 - b), y0 = WE_PC_H * (1 - d), sw = x1 - x0, sh = y1 - y0;
     if (sx(x1) < 0 || sx(x0) > W) return;
     ctx.fillStyle = '#10183a'; ctx.fillRect(sx(x0 - 0.05), sy(y1 + 0.05), (sw + 0.1) * U, (sh + 0.1) * U);
-    const n = Math.max(1, Math.round(sw / (sh * 1.78))), cw = sw / n;
-    for (let j = 0; j < n; j++) {
-      const k = i * 3 + j, ph = (t + k * 0.55) / 3.5, cur = Math.floor(ph), f = ph - cur;   // neighbouring screens never show the same advert
-      const ad = q => IMG['we_ad' + (1 + (q + k) % 6)];
-      const X = sx(x0 + j * cw), Y = sy(y1), w = cw * U, h = sh * U;
-      const cover = (im, dy) => { if (!im) return; const r = Math.max(w / im.width, h / im.height), iw = w / r, ih = h / r;
-        ctx.drawImage(im, (im.width - iw) / 2, (im.height - ih) / 2, iw, ih, X, Y + dy, w, h); };
-      ctx.save(); ctx.beginPath(); ctx.rect(X, Y, w, h); ctx.clip();
-      const wipe = f > 0.88 ? (f - 0.88) / 0.12 : 0;   // the next advert slides down over the last one
-      cover(ad(cur), 0); if (wipe) cover(ad(cur + 1), (wipe - 1) * h);
-      ctx.restore();
-      if (j) { ctx.fillStyle = '#1b1c26'; ctx.fillRect(X - 0.03 * U, Y, 0.06 * U, h); }
-    }
+    const ph = (t + i * 0.9) / 4.5, cur = Math.floor(ph), f = ph - cur, n = WE_ADS.length;
+    const ad = q => WE_ADS[((q + WE_AD_START[i]) % n + n) % n];   // screens start apart, so two never show the same advert
+    const X = sx(x0), Y = sy(y1), w = sw * U, h = sh * U;
+    ctx.save(); ctx.beginPath(); ctx.rect(X, Y, w, h); ctx.clip();
+    const wipe = f > 0.9 ? (f - 0.9) / 0.1 : 0;   // the next advert slides down over the last one
+    ad(cur)(X, Y, w, h); if (wipe) ad(cur + 1)(X, Y + (wipe - 1) * h, w, h);
+    ctx.restore();
   });
   // the building over them, and its two side buildings
   bxImg('we_pc_bld', P.bm, 0, WE_PC_H);
@@ -6095,6 +6226,7 @@ function weTree() {
 }
 function drawWestEnd(dt) {
   const L = G.L;
+  weDoorTick(); weTrim();
   weSky(); weBands();
   weStation(false);
   weRows();
@@ -6113,11 +6245,12 @@ function drawWestEnd(dt) {
   for (const s of L.solids) if (s.kind === 'ground') weGround(s);
   weArt(a => a.hang);
   weArt(a => !a.back && !a.mid && !a.hang);
-  weSnow(1);
+  if (!G.weIn) weSnow(1);
 }
 function drawWeFront() {
   weStation(true); weElfFront(); weHall(true);
-  weSnow(2);
+  if (!G.weIn) weSnow(2);
+  doorWipe(G.weDoor, WE_EDGE);
   const F = G.flag; if (G.L.weFinale && F && F.ride !== undefined && F.ride > 0.3 && !$('hud').hidden) $('hud').hidden = true;
 }
 // A: walking out of the station, sliding on the ice, and watching the tree from behind at the end
