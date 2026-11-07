@@ -33,8 +33,20 @@ A's World keeps only the **5 latest trips** in trip order (Ladi 2026-11-07), all
 when a new one is added at the end. The test site keeps every trip. A new trip needs an `AREA_LISTS` entry
 (and any pictures it borrows from older trips in `BORROWS`) in `tools/build-as-world.py`.
 
-## Checks (keep them light)
-- Small tweak (a prop, a colour, a word, one picture): one screenshot at 590x540 of the spot that changed.
+## Level rules: every change, not just new levels
+Ladi (2026-11-07): every fix, tweak, new level and build must follow ALL the level rules in the doc
+"A's World: rules for every world" (https://claude.ai/artifact/2CQUSWDYfUY5roALDZ24Sw; same list in
+project memory `london-runner-world-rules.md`). Small breaks in fixes are what he keeps finding. Before
+handing back any change, look at the changed spot and what sits next to it and check at least:
+- Everything stands on the ground or a ledge: props, trees, buildings, stalls. Nothing floats.
+- No gaps between pieces that should touch (building ends, ground strips, walls, steps, quays) and no
+  visible straight seams; joins happen at a door, arch, kerb, step or gate.
+- Nothing cut off by the screen edge, a roof or a ledge; the far skyline still shows above the front rows.
+- A starts in the centre of the screen; never more than 6s without a tap; specials and flag reachable.
+
+## Checks (keep them light, but always against the rules above)
+- Small tweak (a prop, a colour, a word, one picture): screenshots at 590x540 and 844x390 of the spot
+  that changed and its neighbours, checked against the level rules.
 - New or moved platforms/specials in a level: also run the level checkers (`bot.js`, `handsoff.js`
   in the project folder `london-runner/src/`).
 - Whole new world: full checks (all specials reachable, 6s hands-off, screenshots of each part).
