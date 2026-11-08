@@ -33,6 +33,14 @@ A's World keeps only the **5 latest trips** in trip order (Ladi 2026-11-07), all
 when a new one is added at the end. The test site keeps every trip. A new trip needs an `AREA_LISTS` entry
 (and any pictures it borrows from older trips in `BORROWS`) in `tools/build-as-world.py`.
 
+## Level kit (read before any level work)
+`kit/README.md`: the gold standard is **Marina and Greenwich** (Ladi 2026-11-08), with reference shots in `kit/reference/`,
+everything Ladi has spotted before in `kit/feedback-log.md`, picture prompt templates in `kit/prompts.md`, and the step list in
+`kit/checklist.md`. Build new trips from the shared pieces (`b.kitRow`, `b.kitProp`, `b.kitStalls`, `b.kitClimb`, `b.kitDoor`,
+`b.kitSwap` in game.js; `drawKit`, `kitBand`, `kitDoorTick` in play.html). Before Ladi sees anything:
+`node tools/kit-check.js <trip id>` and `node tools/shot-sheet.js <trip id> '[["name", x, y], ...]'` (sheets go to Ladi before merge).
+Add every new piece of Ladi's feedback to `kit/feedback-log.md` and the rules doc's Feedback log tab.
+
 ## Level rules: every change, not just new levels
 Ladi (2026-11-07): every fix, tweak, new level and build must follow ALL the level rules in the doc
 "A's World: rules for every world" (https://claude.ai/artifact/2CQUSWDYfUY5roALDZ24Sw; same list in
@@ -45,6 +53,7 @@ handing back any change, look at the changed spot and what sits next to it and c
 - A starts in the centre of the screen; never more than 6s without a tap; specials and flag reachable.
 
 ## Checks (keep them light, but always against the rules above)
+- Every change: `node tools/kit-check.js <trip id>` (nothing floating, no gaps, 5 specials, doors one-way).
 - Small tweak (a prop, a colour, a word, one picture): screenshots at 590x540 and 844x390 of the spot
   that changed and its neighbours, checked against the level rules.
 - New or moved platforms/specials in a level: also run the level checkers (`bot.js`, `handsoff.js`

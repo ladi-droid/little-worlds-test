@@ -436,10 +436,10 @@ html.lw-loading .splash{visibility:hidden}
   </div>
 </section>
 
-<script src="kids/kids-meta.js?v=1794140890"></script>
-<script src="kids/kids.js?v=1794140890"></script>
-<script src="sfx.js?v=1794140890"></script>
-<script src="game.js?v=1794140890"></script>
+<script src="kids/kids-meta.js?v=1794143688"></script>
+<script src="kids/kids.js?v=1794143688"></script>
+<script src="sfx.js?v=1794143688"></script>
+<script src="game.js?v=1794143688"></script>
 <script>
 (() => {
 'use strict';
@@ -1288,7 +1288,7 @@ $('retryBtn').addEventListener('click', () => startLevel(levelIndex));
 // If the builder opened this tab, close it and show the builder again; otherwise open the builder with this child's world filled in.
 let lwJoinEnd = false;
 function lwBackToBuilder() {
-  const url = 'builder.html?v=1794140890&w=' + lwEncode(LW);
+  const url = 'builder.html?v=1794143688&w=' + lwEncode(LW);
   try { if (window.opener && !window.opener.closed && /builder\.html/.test(window.opener.location.pathname)) { window.opener.focus(); window.close(); setTimeout(() => { location.href = url; }, 400); return; } } catch (e) {}
   location.href = url;
 }
@@ -6999,6 +6999,50 @@ function doorWipe(D, edge) {
   }
 }
 /* ===== DOOR WIPE END ===== */
+/* ===== LEVEL KIT START ===== */
+// Drawing for the kit pieces in game.js (kitArt, kitRow, kitStalls, kitClimb, kitDoor, kitSwap). A new trip calls these
+// from its own draw function instead of writing its own copies (kit/README.md has the order).
+// the pictures the kit placed: fn picks which (a => a.back for behind A, a => !a.back for in front). Grounded props get a contact shadow.
+function drawKit(fn) {
+  for (const a of G.L.kitArt || []) if (fn(a)) {
+    if (!IMG[a.key]) { if (!a.asked) { a.asked = true; loadImg(a.key, a.key + '.webp'); } continue; }
+    if (a.grounded && !a.back) { const w = a.w || bxW(a.key, a.h); shadow(a.x + w / 2, a.y + 0.03, w * 1.05, 0.26); }
+    gwImg(a.key, a.x, a.y, a.h, a.flip);
+  }
+}
+// a backdrop band (rule 1): far = par ~0.1 with grain 0.3, mid = par ~0.3 with grain 0.16, foreground no grain.
+// haze: the sky colour laid over it ('r,g,b'), so the far band sits back. Never zoom, tilt or crossfade a band.
+const KIT_HAZE = {};
+function kitBand(key, par, hU, botY, haze, grain) {
+  const im = IMG[key]; if (!im) return;
+  const h = hU * U, w = h * im.width / im.height, bot = sy(botY, par);
+  let x0 = -((cam.x * U * par) % w); if (x0 > 0) x0 -= w;
+  for (let x = x0; x < W; x += w - 1) ctx.drawImage(im, x, bot - h, w, h);
+  if (haze && grain) { ctx.fillStyle = `rgba(${haze},${grain})`; ctx.fillRect(0, bot - h, W, h); }
+}
+// the backdrop to use at the camera's middle: the last kitSwap passed (they only happen at doors)
+function kitScene(first) {
+  let s = first; const mid = cam.x + viewW() / 2;
+  for (const w of G.L.kitSwaps || []) if (mid > w.x) s = w.to;
+  return s;
+}
+// doors: the doorway wipe (rule 6) when A passes a kitDoor; G.kitIn says if he's inside. Call kitDoorTick() each frame
+// before drawing, and drawKitDoor(edge) last, over everything. edge = { dark, rim, trim: [picture keys] } in the trip's own look.
+function kitDoorTick() {
+  const L = G.L; if (!L.kitDoors) return;
+  const x = G.p.x + ARun.PW / 2; let want = false;
+  for (const d of L.kitDoors) if (x > d.x) want = d.inside;
+  if (G.kitIn === undefined) G.kitIn = want;
+  let D = G.kitDoorW;
+  if (!D && want !== G.kitIn) D = G.kitDoorW = { t0: G.t, to: want };
+  if (!D) return;
+  const e = G.t - D.t0;
+  if (e >= DOOR_T[0] && !D.ding) { D.ding = true; if (!snd('star', { rate: 1.15 })) BEEP.coin(); }
+  if (e >= DOOR_T[0] + DOOR_T[1] / 2 && G.kitIn !== D.to) { G.kitIn = D.to; G.camSnap = true; }
+  if (e >= DOOR_T[0] + DOOR_T[1] + DOOR_T[2]) G.kitDoorW = null;
+}
+function drawKitDoor(edge) { doorWipe(G.kitDoorW, edge); }
+/* ===== LEVEL KIT END ===== */
 /* ===== WESTMINSTER START ===== */
 // Westminster on a spring morning, drawn from Ladi's art (pieces cut by src/westminster/cut.py into atlas_wm*.webp; sizes in src/westminster/pieces.json)
 const WM_IMAGES = ['wm_ab', 'wm_bh', 'wm_roofb', 'wm_roofa', 'wm_chim', 'wm_aerial', 'wm_pots', 'wm_skylt', 'wm_mid2',  'wm_mid3',  'wm_far1',  'wm_far2',  'wm_far3',  'wm_dial_walk',  'wm_vsteps',  'wm_picket',  'wm_walk',  'wm_cottage',  'wm_bel_wall',  'wm_st_wall',  'wm_works',  'wm_g_bank',  'wm_g_water',  'wm_hg',  'wm_bb_rail',  'wm_bluebr',  'wm_palace',  'wm_g_wood',  'wm_g_stone',  'wm_g_path',  'wm_g_mall',  'wm_g_lake',  'wm_g_pave',  'wm_g_gravel',  'wm_g_bridge',  'wm_bel_floor',  'wm_g_daff',  'wm_fountain',  'wm_tulips2',  'wm_tulips',  'wm_bench',  'wm_pel4',  'wm_daff',  'wm_sq2',  'wm_kerb',  'wm_sq3',  'wm_sq4',  'wm_sq1',  'wm_sq0',  'wm_pet5',  'wm_pet2',  'wm_pet1',  'wm_pet6',  'wm_pet4',  'wm_pet3',  'wm_bus',  'wm_dial_wall',  'wm_vmem',  'wm_st_land',  'wm_prail',  'wm_qbells',  'wm_bluel',  'wm_bluer',  'wm_bell',  'wm_plane',  'wm_wtree',  'wm_cab_open',  'wm_wh_bld',  'wm_wh_upper',  'wm_st_steps',  'wm_cab_blue',  'wm_cab',  'wm_parl',  'wm_prock',  'wm_bb_base',  'wm_dial',  'wm_lawnrail',  'wm_st_door',  'wm_bel_steps',  'wm_icevan',  'wm_lift_door',  'wm_rail',  'wm_pkiosk',  'wm_irail',  'wm_hg_arch',  'wm_arch',  'wm_gear1',  'wm_btree',  'wm_pwall',  'wm_pel3',  'wm_motor',  'wm_kiosk',  'wm_gear2',  'wm_gear3',  'wm_goose1',  'wm_goose0',  'wm_bin',  'wm_duck0',  'wm_duck2',  'wm_duck3',  'wm_duck1',  'wm_bollard',  'wm_mg0',  'wm_mg1',  'wm_mg2',  'wm_mg3',  'wm_mg4',  'wm_mg5',  'wm_mg6',  'wm_mg7',  'wm_willow',  'wm_lift',  'wm_gpier',  'wm_shaft',  'wm_lift_front',  'wm_pgatel',  'wm_pgater',  'wm_phone',  'wm_bb_wall',  'wm_wh_endr',  'wm_hg_endl',  'wm_hg_endr',  'wm_wh_endl',  'wm_pel2',  'wm_pier',  'wm_pel0',  'wm_bb_door',  'wm_pel1',  'wm_deck',  'wm_pendulum',  'wm_hg_box',  'wm_gd16',  'wm_gd15',  'wm_gd17',  'wm_gd12',  'wm_gd14',  'wm_gd13',  'wm_nutcart',  'wm_sentry',  'wm_gd1',  'wm_gd4',  'wm_gd0',  'wm_gd6',  'wm_gd3',  'wm_gd7',  'wm_st_pierr',  'wm_gd8',  'wm_st_pierl',  'wm_lamp',  'wm_gd9',  'wm_gd10',  'wm_gd5',  'wm_gd2',  'wm_gd11',  'wm_gater',  'wm_gatel',  'wm_sqlamp',  'wm_arch_front',  'wm_cab_door',  'wm_bb_cornl',  'wm_bb_cornr',  'wm_pillar',  'wm_malllamp'];
