@@ -20,6 +20,14 @@ One trip at a time. Tick each step; don't skip ahead.
 - [ ] Every box says one picture number = one image; one-by-one file offered.
 - [ ] When they come in: check each against its prompt (time of day, no ending landmark in backdrops, nothing cut off).
 
+## Before the first render (Barcelona rebuild, 11-08: each of these cost a fix round)
+- [ ] Far backdrops: none shows a landmark A visits up close (or two of it on one screen). Paint it out if the art has it.
+- [ ] Every backdrop change: the thing hiding it reaches above the far band's top, or the sky fades across it. No straight line in open sky.
+- [ ] Every single wide picture (ending view, interior): at least 1.4x the widest screen (844x390) and tall enough when the camera rises.
+- [ ] One ground fill colour below the street for the whole trip; each ground change sits under a pier, arch pillar or prop.
+- [ ] Rides: under 6s, or something that needs a tap on them.
+- [ ] Camera: `L.camFloor` on every raised floor A ends on (the ending terrace), so the floor sits at the bottom and the view fills the screen.
+
 ## Build
 - [ ] Cut on magenta, webp q88, sizes written in units.
 - [ ] Place with `kitRow`, `kitProp`, `kitStalls`, `kitClimb`, `kitDoor`, `kitSwap`. Draw with `drawKit`, `kitBand`, `kitDoorTick`/`drawKitDoor`.
