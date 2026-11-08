@@ -3032,6 +3032,196 @@ const ALL_LEVELS = [
     b.end(PG + 19.0);
   },
 },
+{
+  id: 'orangecounty', name: 'Orange County', plate: 'Orange County', area: 'orangecounty', city: 'Orange County',
+  build(b) {
+    const L = b.L;
+    // The Orange County coast on a summer day, drawn from Ladi's art (src/orangecounty/cut.py). Plan: london-runner/orangecounty/orangecounty-plan.md
+    // the woody drops A at Huntington Beach -> the lifeguard tower, over and under the pier -> surf down the coast -> Newport: through the Fun Zone arch,
+    // round on the Ferris wheel -> inside the undersea dark ride -> the ferry to Balboa Island -> the woody down the coast road -> Laguna Beach:
+    // Heisler Park, the gazebo, down the steps to Main Beach and the lifeguard tower at sunset
+    L.killY = -9; L.startX = 2.0; L.camMin = -12; L.introCam = 'centre';   // A starts in the middle of the screen
+    const art = (key, x, y, h, o = {}) => (L.ocArt = L.ocArt || []).push(Object.assign({ key, x, y, h }, o));   // a picture standing at (x, y), h units tall
+    const back = (key, x, y, h, o = {}) => art(key, x, y, h, Object.assign({ back: true }, o));
+    const solid = (x, w, h, y = 0, o = {}) => L.solids.push(Object.assign({ kind: 'block', x, y, w, h, style: 'hidden' }, o));
+    const ledge = (x, y, w) => b.ledge(x, y, w);
+    const ground = (x0, x1, style, y = 0) => L.solids.push({ kind: 'ground', x: x0, y: y - 40, w: x1 - x0, h: 40, style });
+    const lean = (k, x, h, sx, sw, sh, y = 0) => { art(k, x, y, h); solid(x + sx, sw, sh, y); ledge(x + sx, y + sh, sw); };   // lean on it, then jump up
+    const hop = (k, x, h, sx, sw, sh, y = 0) => { art(k, x, y, h); solid(x + sx, sw, sh, y); };                               // knee-high: A hops it
+    L.rides = []; L.camFloor = []; L.ocJoins = [];
+
+    // ---------- 1. Huntington Beach: the woody drops A off; the lifeguard tower, over and under the pier ----------
+    b.wall(-12.5, 1, 22);
+    L.ocCar = { x: -6.6 };                                          // the woody (facing left), its back door open: A steps out, it drives off
+    back('oc_palm', -10.5, 0, 7.0); back('oc_palm', 7.6, 0, 7.4); back('oc_fire', 9.2, 0, 0.6);
+    hop('oc_net', 3.8, 1.35, 1.45, 0.2, 1.2);                       // the volleyball net: hop it
+    b.coins(4.4, 1.9, 3, 0.8);
+    lean('oc_rack', 10.4, 1.6, 0.1, 2.15, 1.4); b.coins(10.7, 2.3, 3, 0.7);
+    // the lifeguard tower (picture 10): up its ramp onto the deck, lean on the hut, up onto its roof
+    const T = 15.0;
+    art('oc_tower', T, 0, 5.2, { back: true });
+    b.slope(T + 0.25, 0.05, T + 5.0, 1.72); solid(T + 5.0, 5.0, 1.72); ledge(T + 5.0, 1.72, 5.0);
+    solid(T + 6.05, 3.7, 2.1, 1.72); ledge(T + 5.35, 4.13, 4.75);
+    b.coins(T + 1.0, 1.1, 4, 1.0, 0.33); b.coins(T + 6.0, 5.1, 3, 1.0);
+    b.special(T + 7.7, 6.7);                                         // 1: above the lifeguard tower's roof
+    // the pier (picture 11, seen end-on): hop across from the tower roof onto its deck, or run under it
+    const PR = 26.4;
+    back('oc_pier', PR, 0, 8.6); ledge(PR + 0.15, 4.6, 7.1);
+    b.arc(T + 9.6, 4.9, 3, 2.0, 0.7); b.coins(PR + 1.0, 5.5, 5, 1.1); b.coins(PR + 1.2, 1.1, 5, 1.0);
+    back('oc_palm', 35.0, 0, 6.8);
+    hop('oc_cooler', 36.6, 0.75, 0.05, 0.8, 0.7);
+    lean('oc_truck', 40.2, 2.0, 0.15, 4.05, 1.5); b.coins(40.6, 2.4, 4, 0.9);
+    b.gull(47.0, 1.3);
+    hop('oc_bench_s', 49.0, 0.6, 0.15, 1.95, 0.5); b.coins(49.0, 1.4, 3, 0.9);
+    back('oc_palm', 53.0, 0, 7.2);
+    hop('oc_fire', 54.0, 0.7, 0.05, 0.95, 0.6);
+    // down the sand to the water's edge, where A paddles out
+    ground(-14, 57, 'ocsand'); b.slope(57.0, 0, 60.0, -0.55); solid(60.0, 0.6, 0.3, -0.85);
+    L.ocShore = [[55.6, 0, 'oc_shore_l']];
+
+    // ---------- 2. The surf ride: A rides the waves down the coast (tap = hop the board) ----------
+    const S0 = 60.6, S1 = 123.0, WY = -0.55;
+    ground(57.0, S1 - 0.5, 'ocsea', -1.2);
+    const pts = [[S0, WY], [65, WY], [68, 0.2], [71, 0.9], [74, 0.3], [78, WY], [83, 0.4], [87, 1.4], [91, 1.6], [95, 0.6], [100, WY], [105, 0.3], [109, 0.8], [113, 0.2], [117, WY], [S1 - 0.6, WY]];
+    const surf = { kind: 'surf', x0: S0, pts, v: 9.5, acc: 6, w0: 0.6, w1: 0.4, input: true, seat: 0.05, up: 0, down: 0, jump: 11.5, grav: 22, hits: [], exitY: 0, exitDx: 0.6 };
+    L.rides.push(surf); L.ocSurf = surf;
+    const sy = x => rideY({ pts }, x);
+    const lo = x => b.coins(x, sy(x) + 0.75, 1), hi = x => b.coins(x, sy(x) + 2.7, 1);
+    [63, 64.5, 66].forEach(lo); [69, 70.5, 72].forEach(hi); [75, 76.5, 78, 79.5].forEach(lo);
+    L.ocWave = { x: 83.2, y: -1.15 };                                // the big wave: A rides inside its curl
+    b.special(89.5, sy(89.5) + 2.9);                                 // 2: inside the curl of the big wave
+    [96, 97.5, 99].forEach(lo); [103, 104.5, 106].forEach(hi); [110, 111.5, 113, 114.5].forEach(lo); [117.5, 119].forEach(hi);
+    L.ocDolphins = [[99.0, 0], [106.5, 1.3], [114.0, 2.6]];         // dolphins leap alongside
+    // he rides onto the sand at Newport and steps off
+    ground(S1 - 0.5, 138.3, 'ocsand'); L.ocShore.push([S1 - 5.6, 0, 'oc_shore_r']);
+
+    // ---------- 3. Newport: through the Fun Zone arch, round on the Ferris wheel ----------
+    back('oc_ltower', 124.4, 0, 2.3);
+    hop('oc_bench', 127.8, 0.85, 0.1, 1.2, 0.5); b.coins(127.6, 1.4, 3, 0.8);
+    back('oc_palm', 131.3, 0, 6.6); lean('oc_rack', 130.2, 1.6, 0.1, 2.15, 1.4); b.coins(130.5, 2.3, 3, 0.7);
+    const FZ = 133.0;                                                // the Fun Zone front (picture 13): A goes through its arch; the backdrops change in its shade
+    L.ocFz = { x: FZ };
+    solid(FZ + 3.4, 3.8, 4.6, 3.6, { noGrab: true });
+    L.ocSwap1 = FZ + 5.3;
+    ground(FZ + 5.3, 178.6, 'ocboard');
+    b.coins(FZ + 3.6, 1.1, 4, 1.0);
+    back('oc_carousel', 145.0, 0, 4.2);
+    lean('oc_arcade', 150.0, 1.95, 0.05, 1.05, 1.8); b.coins(150.0, 2.7, 2, 0.6);
+    lean('oc_popcorn', 152.9, 1.4, 0.05, 1.0, 1.25); b.coins(152.9, 2.2, 2, 0.6);
+    // the Ferris wheel (picture 15): step into the gondola at the bottom; it goes once round (special at the very top); out at the bottom
+    const WX = 156.0, HX = WX + 5.17, HY = 7.75, R = 4.95;
+    L.ocWheel = { x: WX, hx: HX, hy: HY, R };
+    art('oc_wdeck', HX - 2.73, 0, 1.1, { back: true }); solid(HX - 2.5, 5.0, 0.45, 0, { noGrab: true }); ledge(HX - 2.5, 0.45, 5.0);
+    const seat = -2.15;                                              // A stands in the gondola, its floor 2.15 below where it hangs from the wheel
+    const wheel = { kind: 'wheel', x0: HX - 0.1, pts: [[HX - 0.1, 0.45], [HX - 0.1 + 2 * Math.PI * R, 0.45]], circ: { x: HX, y: HY, R, a0: -Math.PI / 2 },
+      v: 5.6, acc: 3, w0: 0.5, w1: 0.5, input: false, seat, up: 0, down: 0, hits: [], exitX: HX, exitY: 0.45, exitDx: 0.7 };
+    L.rides.push(wheel); L.ocWheelRide = wheel;
+    for (let i = 1; i < 12; i++) { if (i === 6) continue; const a = -Math.PI / 2 + i * Math.PI / 6; b.coins(HX + Math.cos(a) * R, HY + Math.sin(a) * R + seat + 0.9, 1); }
+    b.special(HX, HY + R + seat + 0.9);                              // 3: at the top of the Ferris wheel
+    hop('oc_bench', 166.0, 0.85, 0.1, 1.2, 0.5); b.coins(165.8, 1.4, 3, 0.8);
+    lean('oc_booth', 169.0, 2.3, 0.1, 1.45, 2.0); b.coins(169.2, 2.9, 2, 0.6);
+
+    // ---------- 4. Inside the undersea dark ride: the queue, the climb to the station, the ride ----------
+    const DR = 172.0, DIN = DR + 6.0, DOUT = 258.0, F = 6.0;       // the dark ride's front (picture 16), its big doorway at DIN
+    L.ocDr = [DR, DOUT - 11.62];                                     // the front from outside: going in, and coming out of its little exit door
+    L.ocIn = { box: DIN, x1: DOUT };
+    ground(DIN, DOUT, 'ocdark');
+    solid(DIN + 0.6, 0.2, 40, 0, { backOnly: true, noGrab: true });   // no going back out
+    b.coins(DIN + 1.4, 1.1, 5, 1.0);
+    L.ocQueue = [DIN + 1.0, DIN + 9.0];                              // the queue rail along the back
+    lean('oc_dq_sign', 184.2, 1.9, 0.1, 1.0, 1.75); b.coins(184.3, 2.7, 2, 0.6);
+    // the climb to the station: a pillar standing on a shell archway (A runs under it) facing the station's wall; he jumps between them
+    const P1 = 188.0, ST = 193.9, D0 = 200.0, STE = 202.5;
+    solid(P1 + 0.1, 2.8, 40, 3.6);
+    solid(ST, STE - ST, F);
+    L.ocPiers = [[P1, P1 + 3.02, 3.6, 40], [ST, ST + 1.2, 0, F, 'r']]; L.ocShell = P1; L.ocStation = [ST, STE, F];
+    [[192.4, 3.4], [191.5, 5.2], [192.6, 7.0]].forEach(([x, y]) => b.coins(x, y, 1));
+    b.coins(ST + 0.8, F + 1.0, 3, 0.9);
+    L.camFloor.push([ST, D0 + 0.5, F]);
+    // the ride: the little yellow submarine sets off along the glowing track. Tap = pop up, swipe down = duck under the low bits
+    const DE = 252.0;
+    const dpts = [[D0, F], [STE + 1.0, F], [207, 1.0], [216, 1.0], [219, 4.0], [226, 4.0], [229, 1.0], [236, 1.0], [238, 0], [DE, 0]];
+    const ride = { kind: 'darkride', x0: D0, pts: dpts, v: 7.5, acc: 6, w0: 0.6, w1: 0.45, input: true, seat: 0.48, up: 1.2, down: 1.0, hits: [{ x: 210.2, kind: 'ctbonk' }, { x: 242.6, kind: 'ctbonk' }], exitY: 0, exitDx: 0.6 };
+    L.rides.push(ride); L.ocRide = ride;
+    const dy = x => rideY({ pts: dpts }, x);
+    const dlo = x => b.coins(x, dy(x) + 1.15, 1), dhi = x => b.coins(x, dy(x) + 2.45, 1);
+    [203.5, 205, 206.5].forEach(dlo);
+    L.ocShip = { x: 209.4 };                                         // the shipwreck: duck under its bowsprit
+    [212.5, 214, 215.5].forEach(dlo);
+    L.ocClam = 220.6; L.ocJellies = [[219.6, 6.6], [222.8, 7.3], [225.4, 6.4]];   // the giant clam, glowing jellyfish over the track
+    [220, 221.5, 223, 224.5].forEach(dhi);
+    L.ocCave = 229.6;                                                // the treasure cave: pop up for the special
+    b.special(232.0, dy(232) + 2.45);                                // 4: in the treasure cave
+    [230.2, 233.8].forEach(dlo);
+    L.ocOcto = 236.2; L.ocArm = 241.2;                               // the friendly octopus: duck under its arm
+    [244.5, 246, 247.5, 249].forEach(dhi);
+    L.ocLight = 246.6;                                               // the sunken lighthouse
+    b.coins(DE + 1.4, 1.1, 3, 1.0);
+    solid(DOUT + 0.4, 0.2, 40, 0, { backOnly: true, noGrab: true });
+
+    // ---------- 5. The Balboa Island ferry across the harbour ----------
+    ground(DOUT, 262.6, 'ocboard');
+    const FY = -0.75, FL = 291.0, FX0 = 263.3;
+    ground(262.6, FL, 'ocharbour', -1.4);
+    L.ocQuay = [[257.6, 'oc_quay_l'], [FL - 2.2, 'oc_quay_r']];
+    const ferry = { kind: 'boat', x0: FX0, pts: [[FX0, FY], [FL - 3.0, FY]], v: 7.0, acc: 5, w0: 0.5, w1: 0.45, input: true, seat: 0.0, up: 1.2, down: 0.6, hits: [], exitY: 0, exitDx: 1.9 };
+    L.rides.push(ferry); L.ocFerry = ferry;
+    const flo = x => b.coins(x, 1.2, 1), fhi = x => b.coins(x, 2.6, 1);
+    [267, 268.5, 270].forEach(flo); [272, 273.5, 275].forEach(fhi); [278, 279.5, 281].forEach(flo); [283, 284.5].forEach(fhi);
+    L.ocSeals = [[272.5, 0], [279.5, 1]];                            // sea lions on red buoys, barking
+    ground(FL - 1.0, 311.0, 'ocwalk'); L.ocJoins.push(FL - 1.0);
+
+    // ---------- 6. Balboa Island: frozen bananas, cottages, the woody waiting ----------
+    back('oc_cottage', 292.2, 0, 6.4); back('oc_cot_l', 298.2, 0, 3.2); back('oc_cot_r', 301.2, 0, 3.2); back('oc_palm3', 303.8, 0, 4.4); back('oc_cottage', 307.4, 0, 6.4);
+    hop('oc_fence', 293.6, 1.0, 0.1, 1.5, 0.85); b.coins(293.6, 1.8, 3, 0.7);
+    lean('oc_banana', 297.0, 3.7, 0.15, 2.65, 2.2); b.coins(297.3, 3.0, 3, 0.8);
+    b.pigeon(302.0);
+    lean('oc_bikes', 304.4, 1.25, 0.15, 2.3, 1.0); b.coins(304.6, 1.9, 3, 0.7);
+    hop('oc_fbox', 308.6, 0.95, 0.05, 0.95, 0.8);
+    // to Laguna: A climbs into the woody's open back door; the doorway wipe; it opens on the woody driving down the coast road
+    const WD = 311.0;
+    L.ocWoodyPark = { x: WD };                                      // parked, its back door open (picture 8)
+    // the drive: tap = A pops up through the open roof hatch for the high coins
+    const W0 = WD + 0.55, W1 = 343.0;
+    ground(WD, W1 + 4.0, 'ocroad');
+    const woody = { kind: 'car', x0: W0, pts: [[W0, 0], [W1, 0]], v: 7.0, acc: 4.5, w0: 1.6, w1: 0.6, input: true, seat: 0.85, up: 1.2, down: 0.45, hits: [], exitY: 0, exitDx: 1.6 };
+    L.rides.push(woody); L.ocWoody = woody; L.ocSwap2 = WD;
+    [318, 319.5, 321].forEach(x => b.coins(x, 2.2, 1)); [324, 325.5, 327, 328.5].forEach(x => b.coins(x, 3.6, 1)); [332, 333.5, 335].forEach(x => b.coins(x, 2.2, 1)); [337, 338.5].forEach(x => b.coins(x, 3.6, 1));
+    L.ocJoins.push(W1 + 4.0);
+
+    // ---------- 7. Laguna Beach: Heisler Park on the clifftop, the gazebo, down the steps to Main Beach ----------
+    ground(W1 + 4.0, 382.6, 'ocpath');
+    back('oc_palm2', 348.0, 0, 6.4); back('oc_bougain', 350.8, 0, 1.6);
+    hop('oc_fbed', 353.0, 0.9, 0.1, 1.6, 0.75); b.coins(352.9, 1.6, 3, 0.8);
+    hop('oc_bench2', 356.6, 0.85, 0.05, 1.45, 0.5);
+    // the gazebo (picture 23): lean on the stone planter, up onto it, then onto the gazebo's roof
+    const GZ = 363.0;
+    lean('oc_planter', GZ - 2.6, 1.4, 0.1, 1.9, 1.3); b.coins(GZ - 2.4, 2.2, 2, 0.8);
+    art('oc_gazebo', GZ, 0, 4.7, { back: true }); solid(GZ + 0.25, 5.3, 0.4); ledge(GZ + 0.25, 0.4, 5.3); ledge(GZ + 0.35, 3.3, 5.1);
+    b.coins(GZ + 0.8, 4.2, 4, 1.1); b.special(GZ + 2.9, 6.4);       // 5: above the gazebo roof
+    b.coins(GZ + 1.0, 1.4, 4, 1.0);
+    back('oc_palm2', 370.0, 0, 6.8);
+    hop('oc_bench2', 372.4, 0.85, 0.05, 1.45, 0.5); b.coins(372.2, 1.4, 3, 0.8);
+    lean('oc_scope', 377.6, 1.8, 0.1, 0.9, 1.65); b.coins(377.6, 2.5, 2, 0.6);
+    // the stone steps down the cliff to the sand (picture 24)
+    const STP = 381.0;
+    L.ocSteps = { x: STP, y: -2.6 }; L.ocCliff = [W1 + 4.0, STP + 0.6];   // the rocky cliff under the clifftop path (seen from the beach)
+    b.slope(STP + 1.6, 0, STP + 6.4, -2.35); ground(STP + 1.6, 470, 'ocbeach', -2.4);
+    L.camFloor.push([STP + 1.6, STP + 6.4, 0, -2.4], [STP + 6.4, 470, -2.4]);
+    b.coins(STP + 2.2, 0.8, 4, 1.1, -0.5);
+    hop('oc_pool0', 392.0, 0.95, 0.2, 2.4, 0.7, -2.4); b.coins(392.3, -1.0, 3, 0.8);
+    hop('oc_pool1', 397.4, 0.95, 0.2, 2.3, 0.7, -2.4);
+    b.coins(395.2, -1.4, 2, 1.0); b.coins(400.4, -1.4, 4, 1.0);
+
+    // ---------- 8. The ending: Main Beach, the blue-and-white lifeguard tower, the sun going down ----------
+    const LT = 408.0;
+    L.ocLt = LT; L.ocSea = LT + 2.0;                                 // the tower stands where the clifftop park gives way to the open sea
+    b.flag(LT - 2.0); L.flagY = -2.4;
+    L.finale = LT + 6.5; L.ocFinale = true; L.finaleT = 6.0;
+    b.wall(LT + 13.0, 1, 40);
+    b.end(LT + 15.0);
+  },
+},
 ];
 // Tower Bridge is parked for now (Ladi 2026-10-28): its build and art stay, it just isn't in the game.
 const PARKED = ['towerbridge', 'practice'];
@@ -3186,13 +3376,14 @@ function rideTick(g, dt) {
     z.end += dt;
     if (z.end >= r.w1) {
       p.ride = null; p.rideN = z.i + 1;
-      p.x = end - PW / 2 + (r.exitDx || 0); p.y = r.exitY + 0.02; p.vy = 0; p.vx = 0; p.onGround = false; p.dir = 1; p.coyote = 0;
+      p.x = (r.exitX !== undefined ? r.exitX : end) - PW / 2 + (r.exitDx || 0); p.y = r.exitY + 0.02; p.vy = 0; p.vx = 0; p.onGround = false; p.dir = 1; p.coyote = 0;
       g.events.push({ type: 'rideEnd', kind: r.kind });
       return true;
     }
   }
   const y = rideY(r, z.s);
   p.x = z.s - PW / 2; p.y = y + r.seat + (z.off > 0 ? z.off * r.up : z.off * r.down) + (z.jy || 0);
+  if (r.circ) { const C = r.circ, an = C.a0 + (z.s - r.x0) / C.R; p.x = C.x + Math.cos(an) * C.R - PW / 2; p.y = C.y + Math.sin(an) * C.R + r.seat; }   // round a wheel (Orange County's Ferris wheel)
   p.vx = z.v; p.vy = 0; p.onGround = false; p.coyote = 0; p.wall = 0; p.blocked = false; p.airT = 0; p.dir = 1; p.rising = false;
   pickUp(g);
   return true;
