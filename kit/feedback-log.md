@@ -53,6 +53,8 @@ Each entry: **level, date** — what Ladi saw → what fixed it → where to loo
 
 ## 4. Doors, insides and exits (rules 6, 7, 14)
 
+- **All levels, 11-08** — "only have one, maximum one scene change with a door per level. Never two, never more." Ladi then said going in and back out counts as one → one inside visit per level at most: one door in, one door out, no other door changes (`tools/kit-check.js` fails on more). Older trips with more doors are left as they are until they're next touched.
+
 - **Airport Rush, 10-28** — A faded out at the final door → A walks through and disappears behind the far part of the door; applies to buses and trains too (`drawRideA`, `hwDoorFront`).
 - **Tower Bridge, 10-25** — let A walk into the bus so you see him disappear into it → same rule.
 - **Canary Wharf, 11-04** — boarding the train looked glitchy (hard box over A, doors snapping shut) → A framed in the door, doors slide shut, pause, A waves from the window (`CW_DOOR`, `cwDoorD`).

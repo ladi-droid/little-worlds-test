@@ -6,7 +6,7 @@ One trip at a time. Tick each step; don't skip ahead.
 - [ ] Read the rules doc, `kit/feedback-log.md`, `kit/README.md`, and look at `kit/reference/`.
 - [ ] Route of 5-7 parts: famous skyline in the first 5s, one wow inside part, an in-scene ending whose landmark is never in a backdrop before.
 - [ ] Each of the 5 specials is a different move on something A climbs or rides (no two the same climb, none without a tap).
-- [ ] Every scene change happens at a door (or a ride); list the doors.
+- [ ] At most ONE inside visit per level: one door in, one door out, never more (Ladi 11-08). Name the doors.
 - [ ] Arrival vehicle and the short ride out to the next trip.
 - [ ] Ladi's picks asked in one message, with a recommendation.
 

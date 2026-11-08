@@ -23,7 +23,7 @@ const LEVEL = {
     const st = k => ({ key: 'xx_stall' + k, w: 2.8, h: 2.6, top: 2.4 });
     const mEnd = b.kitStalls(cEnd + 6, [st(1), st(2), st(3)]);
     b.coins(cEnd + 6.4, 3.4, 7, 1.1);
-    // ---------- 5. in through a door to the inside part; the backdrop changes at the door ----------
+    // ---------- 5. the level's ONE inside visit (Ladi 11-08): one door in, one door out, no other doors ----------
     const D1 = mEnd + 5;
     b.kitDoor(D1, { inside: true, key: 'xx_door', w: 2.2, h: 3.4 }); b.kitSwap(D1, 'inside');
     b.groundTop(60, D1 + 40, 0, 'xxfloor');

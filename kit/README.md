@@ -24,6 +24,7 @@ The art is made fresh for each city; the kit is what stays the same.
 - **A climbs the place.** Greenwich: wall-jump the Union Wharf towers, up the Avocado flats' balconies, onto the market roofs, the Cutty Sark's rigging. Marina: superyacht flybridge, Pier 7 roof, the zip line, the bridge arch. Specials sit on those climbs, each a different move.
 - **Close, varied front rows.** Marina's towers stand right behind the walk, different heights, gaps that show the skyline. Greenwich's market shops touch wall to wall with an arch.
 - **The full screen is used.** Play reaches 8-20 units up; the top of the screen has skyline, clouds, birds; the ground has a kerb and a deep stone face, never a plain band.
+- **One inside visit per level at most** (Ladi 11-08): one door in and one door out, never more door changes.
 - **Scenes change behind something.** Marina swaps backdrops while Pier 7 and its towers fill the screen; Greenwich goes underground through the foot tunnel shaft.
 - **Life.** Boats, gulls, yachts, cars at the kerb, cafés with tables, shadows under every prop.
 
@@ -37,7 +38,7 @@ Each places the picture *and* what A stands on together, so the rules hold by de
 | `b.kitRow(x, pieces, {capL, capR})` | buildings **wall to wall**, end piece at each side; warns if heights don't vary | 2, 3, 8 |
 | `b.kitStalls(x, stalls)` | stalls side by side; warns under 3 | 4 |
 | `b.kitClimb(x, {gap, hL, hR, keyL, keyR, special})` | **two walls facing each other**, zigzag coins, special above | 11 |
-| `b.kitDoor(x, {inside})` | doorway wipe point + **backOnly** wall | 6 |
+| `b.kitDoor(x, {inside})` | doorway wipe point + **backOnly** wall; **one inside visit per level at most: one in, one out** (Ladi 11-08) | 6 |
 | `b.kitSwap(x, to)` | backdrop change; warns unless at a door | 8 |
 | `b.kitFloor(x)` | top of what A would stand on at x | |
 
@@ -50,7 +51,7 @@ Already shared before the kit: `doorWipe`/`DOOR_T` (doorway wipe), `L.introCam =
 Use the kit pieces for everything new. Older trips keep their own code; move a piece into the kit when you touch it.
 
 ## Checks before Ladi sees anything
-1. `node tools/kit-check.js <trip id>`: 5 specials + flag, nothing floating, no gaps in rows, stalls 3+, doors one-way, swaps at doors.
+1. `node tools/kit-check.js <trip id>`: 5 specials + flag, nothing floating, no gaps in rows, stalls 3+, doors one-way, one inside visit at most, swaps at doors.
 2. `bot.js` (flag and each special) and `handsoff.js` (6s), in the project folder `london-runner/src/`.
 3. `node tools/shot-sheet.js <trip id> '[...]'` with a spot for every part. Look at each picture against every rule, fix, re-shoot.
 4. Send Ladi the two sheets **before** merging (Barcelona went live without this).
