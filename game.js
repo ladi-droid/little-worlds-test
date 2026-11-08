@@ -2910,6 +2910,7 @@ const ALL_LEVELS = [
     const R1 = row(40, ['bc_flat_endl', 'bc_flat1', 'bc_flat2', 'bc_flat3', 'bc_flat4', 'bc_flat1', 'bc_flat_endr']);
     lean('bc_icecart', 44.0, 2.2, 1.5); b.coins(44.3, 2.8, 3, 0.9);
     b.coins(47.6, 4.6, 5, 1.0); b.coins(53.6, 6.6, 4, 1.0);
+    lean('bc_scooters', 54.6, 1.35, 1.3); b.coins(55.0, 2.4, 3, 0.9);              // parked blue/white e-scooters under the cable: hop
     // the middle tower (Torre Jaume I): off the end of its deck he drops back down to the boardwalk, down a trail of coins
     CT(T2, true);
     for (let i = 0; i < 7; i++) b.coins(T2 + 5.7 + i * 0.55, 14.9 - 0.3 * i * i, 1);
@@ -2937,7 +2938,7 @@ const ALL_LEVELS = [
     b.special(TX + TW / 2, 10.9);                                                   // 2: where the child at the top stands
     // two castellers from the team just before the tower: he jumps onto their hands and they spring him to the top (Ladi 2026-11-08)
     const SP = TX - 3.6;
-    L.bcSpring = { x: SP, s: solid(SP + 0.25, 1.2, 1.15, 0, { bounce: 8.8, noGrab: true }) };
+    L.bcSpring = { x: SP, s: solid(SP + 0.25, 1.2, 1.35, 0, { bounce: 8.6, noGrab: true }) };
     b.coins(SP + 0.9, 3.0, 1); b.coins(SP + 1.6, 5.4, 1); b.coins(SP + 2.4, 7.6, 1);
     // ---------- the rooftop run: off the top of the human tower, over the old town's roof terraces to the Bishop's Bridge ----------
     // each house: its roof terrace and the little hut / bell turret on it (measured from the pictures: [dx, y, w])
@@ -2957,6 +2958,7 @@ const ALL_LEVELS = [
     b.coins(TX + TW / 2 + 1.2, 9.6, 3, 1.0); b.coins(rx.bc_roof3 + 0.6, 8.9, 4, 0.8); b.coins(rx.bc_roof2 + 0.6, 11.0, 4, 1.0);
     b.arc(WL + 0.6, 10.6, 6, 4.4, 2.6); b.coins(rx.bc_roof4 + 2.0, 10.2, 3, 0.9);
     L.bcLife.push(['bc_pigeon1', rx.bc_roof4 + 4.1, 9.94, 'sit']);
+    lean('bc_cafe', rx.bc_roof2 + 1.0, 2.1, 1.3); lean('bc_flowercart', rx.bc_roof4 + 1.2, 1.9, 1.3);   // down in the lane under the roofs: cafe tables, a flower cart
     // over the rooftops to the Bishop's Bridge (Carrer del Bisbe): palace, the bridge, the canons' house, in one picture
     const BR = RE + 0.4, D = BR - (TX + TW + 0.4), BRH = 7.6, BRW = aw('bc_bridge', BRH), k = BRH / 8.6;
     back('bc_bridge', BR, BRH); b.ledge(BR + 0.1, 8.45 * k, BRW - 0.2);
@@ -2995,7 +2997,7 @@ const ALL_LEVELS = [
     // Placa de Catalunya: fountain rim, pigeons, the metro sign, then the e-scooter
     hop('bc_fountainrim', RA + 8.0, 0.9); b.coins(RA + 8.4, 2.0, 5, 0.9);
     b.pigeon(RA + 14.0); b.pigeon(RA + 17.0);
-    const SC = RA + 24.0, SE = SC + 38.0;
+    const SC = RA + 24.0, SE = SC + 32.0;
     lean('bc_metrosign', SC - 2.0 - aw('bc_metrosign', 2.8) / 2, 2.8, 1.6);          // (stands on the join of the Rambla and the road)
     L.bcScooter = { x: SC - 1.6 };                                                  // the e-scooter A hops on (parked at the kerb)
     // ---------- the e-scooter ride up to Passeig de Gracia: tap to hop for the high coins ----------
