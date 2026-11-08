@@ -2833,7 +2833,7 @@ const ALL_LEVELS = [
   // Pictures: art/barcelona/NN_*.png, cut by src/barcelona2/cut.py; BC_ASP = width / height of each piece.
   id: 'barcelona', name: 'Barcelona', plate: 'Barcelona', area: 'barcelona', city: 'Barcelona',
   build(b) {
-    const L = b.L, BC_ASP = {"bc_taxi":2.2167,"bc_taxi_open":2.2167,"bc_beachbar":2.014,"bc_cubes":0.3415,"bc_umb_blue":1.124,"bc_umb_red":1.128,"bc_lifeguard":0.9139,"bc_lounger":2.0133,"bc_palm":0.7269,"bc_icecart":1.0591,"bc_bench":1.9,"bc_scooters":2.7154,"bc_flat1":0.6079,"bc_flat2":0.5014,"bc_flat_endl":0.3262,"bc_flat3":0.6793,"bc_flat4":0.666,"bc_flat_endr":0.3368,"bc_arch":0.8675,"bc_goth1":0.463,"bc_goth2":0.4439,"bc_goth3":0.5042,"bc_goth_endl":0.2186,"bc_goth4":0.6326,"bc_goth5":0.6659,"bc_goth6":0.6971,"bc_goth_endr":0.2482,"bc_cityhall":1.03,"bc_castell":0.4343,"bc_bridge":2.8387,"bc_flowercart":1.3263,"bc_wallfount":0.7833,"bc_stonebench":2.4333,"bc_pots":1.1056,"bc_cafe":1.0667,"bc_bollards":1.72,"bc_planetree":1.0183,"bc_statue":0.5103,"bc_metrosign":0.5964,"bc_miro":14.75,"bc_flowerbox":1.75,"bc_rbench":2.2,"bc_fountainrim":4.0333,"bc_gate":1.3137,"bc_corner":0.983,"bc_manzana":2.1495,"bc_ptower":0.3208,"bc_pedrera":1.0952,"bc_war3":0.6714,"bc_war2":0.8333,"bc_war1":0.8478,"bc_roofwave":2.7062,"bc_eix1":0.7089,"bc_eix2":0.5902,"bc_eix3":0.7371,"bc_eix_endl":0.3758,"bc_eix4":0.8512,"bc_eix_endr":0.3758,"bc_benchlamp":0.9472,"bc_newsstand":0.8933,"bc_planter":1.3,"bc_plane2":0.8668,"bc_kiosk":1.2808,"bc_bikes":2.7154,"bc_nativity":0.6812,"bc_door_leaf":0.6364,"bc_door":1.3273,"bc_door_half":0.6568,"bc_gallery":3.9517,"bc_liftshaft":0.4511,"bc_canopy":1.9231,"bc_altar":2.2706,"bc_chairs":3.0211,"bc_font":0.8812,"bc_snail":0.8515,"bc_stairarch":2.534,"bc_grac2":0.507,"bc_grac1":0.7273,"bc_grac_endl":0.3478,"bc_grac_endr":0.3593,"bc_bins":3.8333,"bc_stonewall":3.2571,"bc_escalator":2.0459,"bc_gatehouses":2.6935,"bc_lizstairs":1.6344,"bc_hypostyle":2.9207,"bc_mosaicpot":1.1154,"bc_cloud0":2.4285,"bc_cloud1":2.1135,"bc_cloud2":1.9127,"bc_cloud3":3.4491,"bc_cloud4":1.579,"bc_gull0":1.35,"bc_gull1":4.1,"bc_gull2":1.6333,"bc_para0":1.325,"bc_para1":3.0,"bc_para2":1.8308,"bc_pigeon0":1.0968,"bc_pigeon1":1.74,"bc_boat0":1.0967,"bc_boat1":1.0045,"bc_flowers0":1.3844,"bc_flowers1":1.3844,"bc_flowers2":1.3844,"bc_stall0":1.15,"bc_stall1":1.15,"bc_stall2":1.15};
+    const L = b.L, BC_ASP = {"bc_taxi":2.2167,"bc_taxi_open":2.2167,"bc_beachbar":2.014,"bc_cubes":0.3415,"bc_umb_blue":1.124,"bc_umb_red":1.128,"bc_lifeguard":0.9139,"bc_lounger":2.0133,"bc_palm":0.7269,"bc_icecart":1.0591,"bc_bench":1.9,"bc_scooters":2.7154,"bc_flat1":0.6079,"bc_flat2":0.5014,"bc_flat_endl":0.3262,"bc_flat3":0.6793,"bc_flat4":0.666,"bc_flat_endr":0.3368,"bc_arch":0.8675,"bc_goth1":0.463,"bc_goth2":0.4439,"bc_goth3":0.5042,"bc_goth_endl":0.2186,"bc_goth4":0.6326,"bc_goth5":0.6659,"bc_goth6":0.6971,"bc_goth_endr":0.2482,"bc_cityhall":1.03,"bc_castell":0.4343,"bc_bridge":2.8387,"bc_flowercart":1.3263,"bc_wallfount":0.7833,"bc_stonebench":2.4333,"bc_pots":1.1056,"bc_cafe":1.0667,"bc_bollards":1.72,"bc_planetree":1.0183,"bc_statue":0.5103,"bc_metrosign":0.5964,"bc_miro":14.75,"bc_flowerbox":1.75,"bc_rbench":2.2,"bc_fountainrim":4.0333,"bc_gate":1.3137,"bc_corner":0.983,"bc_manzana":2.1495,"bc_ptower":0.3208,"bc_pedrera":1.0952,"bc_war3":0.6714,"bc_war2":0.8333,"bc_war1":0.8478,"bc_roofwave":2.7062,"bc_eix1":0.7089,"bc_eix2":0.5902,"bc_eix3":0.7371,"bc_eix_endl":0.3758,"bc_eix4":0.8512,"bc_eix_endr":0.3758,"bc_benchlamp":0.9472,"bc_newsstand":0.8933,"bc_planter":1.3,"bc_plane2":0.8668,"bc_kiosk":1.2808,"bc_bikes":2.7154,"bc_nativity":0.6812,"bc_door_leaf":0.6364,"bc_door":1.3273,"bc_door_half":0.6568,"bc_gallery":3.9517,"bc_liftshaft":0.4511,"bc_canopy":1.9231,"bc_altar":2.2706,"bc_chairs":3.0211,"bc_font":0.8812,"bc_snail":0.8515,"bc_stairarch":2.534,"bc_grac2":0.507,"bc_grac1":0.7273,"bc_grac_endl":0.3478,"bc_grac_endr":0.3593,"bc_bins":3.8333,"bc_stonewall":3.2571,"bc_escalator":2.0459,"bc_gatehouses":2.6935,"bc_lizstairs":1.6344,"bc_hypostyle":2.9207,"bc_mosaicpot":1.1154,"bc_cloud0":2.4285,"bc_cloud1":2.1135,"bc_cloud2":1.9127,"bc_cloud3":3.4491,"bc_cloud4":1.579,"bc_gull0":1.35,"bc_gull1":4.1,"bc_gull2":1.6333,"bc_para0":1.325,"bc_para1":3.0,"bc_para2":1.8308,"bc_pigeon0":1.0968,"bc_pigeon1":1.74,"bc_boat0":1.0967,"bc_boat1":1.0045,"bc_flowers0":1.3844,"bc_flowers1":1.3844,"bc_flowers2":1.3844,"bc_stall0":1.15,"bc_stall1":1.15,"bc_stall2":1.15,"bc_cctower":0.3241,"bc_cabin":0.8132,"bc_roof1":0.5316,"bc_roof2":0.4987,"bc_roof3":0.5483,"bc_roof4":0.4964,"bc_washing":1.7961,"bc_chimney":0.4125,"bc_chimneys":1.0205,"bc_tank":0.6743,"bc_planter2":0.8394,"bc_solar":1.8535,"bc_spring0":0.785,"bc_spring1":0.8486};
     L.outfit = 'dxb';                                    // the summer outfit (Ladi 2026-11-08)
     L.killY = -8; L.startX = 2.0; L.camMin = -12; L.introCam = 'centre';
     const aw = (k, h) => BC_ASP[k] * h;                  // a picture's width when drawn h units tall
@@ -2883,14 +2883,36 @@ const ALL_LEVELS = [
     b.arc(9.8, 3.0, 5, 4.2, 2.6); b.coins(BB + 4.6, 9.2, 3, 0.9, 0.6);
     b.special(CB + 1.75, 12.3);                                                     // 1
     prop('bc_lounger', CB + 5.0, 0.75);
-    lean('bc_lifeguard', 33.0, 3.6, 2.2); b.coins(33.4, 3.4, 3, 0.8);              // lifeguard tower: lean, hop on
+    // ---------- the port cable car (Ladi 2026-11-08: the first half higher up and more exciting) ----------
+    // Torre de Sant Sebastia: wall-jump up between its two steel legs (its left leg stands on a base he runs past), onto the station deck
+    const CT = (x, flip) => {                                          // one tower: picture + legs + deck. (pieces measured from the picture)
+      const m = (a, w) => flip ? x + 5.51 - a - w : x + a;
+      back('bc_cctower', x, 17.0, { flip: !!flip });
+      b.ledge(m(0.29, 4.56), 14.6, 4.56);                              // the station deck (he jumps up through it from below)
+      return { legL: [m(0.89, 0.98), 0.98], legR: [m(3.27, 0.97), 0.97] };
+    };
+    const T1 = 30.0, t1 = CT(T1);
+    solid(t1.legL[0], 0.6, 14.35 - 3.2, 3.2, { noGrab: true });         // (the left leg's base is in front: he runs, or hops, past it into the gap;
+    solid(t1.legL[0] + 0.6, t1.legL[1] - 0.6, 14.35 - 3.2, 3.2);        //  its outer side is no wall to kick off, its inner side is)
+    solid(t1.legR[0], t1.legR[1], 14.35);
+    solid(T1 + 0.2, 0.3, 2.0, 14.6, { noGrab: true });                      // (the deck's railing at its far end: off the top of the climb he lands on the deck)
+    for (let i = 0, y = 1.6; y < 14.0; i++, y += 1.5) b.coins(i % 2 ? T1 + 2.3 : T1 + 2.85, y, 1);   // zigzag up the gap
+    // the cabin waits at the station; A steps onto its flat roof and rides it high over the beach and the harbour
+    b.ledge(T1 + 4.85, 14.6, 1.2);                                     // (the cabin's roof beside the deck)
+    const T2 = 63.0, CX0 = T1 + 5.5, CX1 = T2 + 0.45;
+    L.rides = L.rides || [];
+    const cable = { kind: 'bccable', x0: CX0, pts: [[CX0, 14.6], [CX1, 14.6]], v: 9.0, acc: 4.0, w0: 0.6, w1: 0.4, input: true, jump: 9.0, grav: 30, seat: 0.0, up: 0, down: 0, exitY: 14.6, exitDx: 0.5 };
+    L.rides.push(cable); L.bcCable = { ride: cable, y: 16.25, x0: T1 + 4.6, x1: T2 + 0.91 };
+    for (let x = CX0 + 5; x < CX1 - 4; x += 7) for (let i = 0; i < 4; i++) b.coins(x + i * 1.3, 15.4 + 1.1 * Math.sin(Math.PI * i / 3), 1);   // hop arcs over the cabin
+    L.bcLife.push(['bc_gull1', 44, 18.5, 'fly'], ['bc_gull0', 58, 19.5, 'fly']);
     prop('bc_palm', 37.0, 7.0);
     // Barceloneta flats close behind, different heights, washing on the balconies; balconies are ledges
     const R1 = row(40, ['bc_flat_endl', 'bc_flat1', 'bc_flat2', 'bc_flat3', 'bc_flat4', 'bc_flat1', 'bc_flat_endr']);
     lean('bc_icecart', 44.0, 2.2, 1.5); b.coins(44.3, 2.8, 3, 0.9);
     b.coins(47.6, 4.6, 5, 1.0); b.coins(53.6, 6.6, 4, 1.0);
-    prop('bc_palm', R1 + 1.0, 7.0);
-    lean('bc_scooters', R1 + 5.0, 1.35, 1.3); b.coins(R1 + 5.4, 2.4, 3, 0.9);       // parked blue/white e-scooters: hop
+    // the middle tower (Torre Jaume I): off the end of its deck he drops back down to the boardwalk, down a trail of coins
+    CT(T2, true);
+    for (let i = 0; i < 7; i++) b.coins(T2 + 5.7 + i * 0.55, 14.9 - 0.3 * i * i, 1);
     hop('bc_bench', R1 + 10.5, 1.0); b.pigeon(R1 + 14.0);
     // into the old town under a deep stone arch: the backdrops change in its shade (an arch, not a door)
     const AR = 73.9;
@@ -2899,12 +2921,11 @@ const ALL_LEVELS = [
     swapAt(AR + 3.5, 'oldtown', 'deep stone arch'); L.bcJoins.push(AR + 5.8);   // (the ground changes behind the arch's right pillar)
 
     // ---------- 2. Gothic Quarter: narrow lanes, the human tower, the Bishop's Bridge ----------
-    ground(79.7, 176, 'bcsetts');
     const R2 = row(81, ['bc_goth_endl', 'bc_goth1', 'bc_goth4', 'bc_goth2', 'bc_goth5', 'bc_goth_endr']);
     lean('bc_flowercart', 85.6, 1.9, 1.3); b.coins(86.0, 2.6, 3, 0.8);
     b.coins(89.0, 4.4, 4, 1.0); b.coins(93.0, 6.6, 3, 1.0);
     prop('bc_wallfount', R2 + 0.4, 2.4);
-    hop('bc_stonebench', R2 + 3.4, 0.9);
+    hop('bc_stonebench', R2 + 2.5, 0.9);
     b.pigeon(R2 + 6.6);
     // Placa Sant Jaume: City Hall, and the castellers' tower in front of it. Special 2 = TAP-CLIMB the human tower, level by level
     const CH = 103.6; back('bc_cityhall', CH, 8.0); b.ledge(CH + 2.6, 2.75, 3.0); b.ledge(CH + 0.2, 6.4, 7.9);
@@ -2914,8 +2935,30 @@ const ALL_LEVELS = [
     solid(TX + TW - 0.9, 0.9, 8.7, 0, { noGrab: true });                            // the crowd at its foot: he can't walk through, he climbs
     L.bcCastell = { x: TX, w: TW, h: 10.2 };
     b.special(TX + TW / 2, 10.9);                                                   // 2: where the child at the top stands
+    // two castellers from the team just before the tower: he jumps onto their hands and they spring him to the top (Ladi 2026-11-08)
+    const SP = TX - 3.6;
+    L.bcSpring = { x: SP, s: solid(SP + 0.25, 1.2, 1.15, 0, { bounce: 8.8, noGrab: true }) };
+    b.coins(SP + 0.9, 3.0, 1); b.coins(SP + 1.6, 5.4, 1); b.coins(SP + 2.4, 7.6, 1);
+    // ---------- the rooftop run: off the top of the human tower, over the old town's roof terraces to the Bishop's Bridge ----------
+    // each house: its roof terrace and the little hut / bell turret on it (measured from the pictures: [dx, y, w])
+    const ROOF = { bc_roof1: [[0.35, 8.34, 2.75], [3.2, 8.97, 1.3]], bc_roof2: [[0.38, 9.94, 1.35], [1.8, 9.1, 2.5], [4.36, 9.19, 0.35]],
+      bc_roof3: [[0.35, 7.66, 2.58], [3.0, 8.47, 1.3]], bc_roof4: [[0.3, 10.67, 1.1], [1.65, 9.07, 2.1], [3.85, 9.94, 1.3]] };
+    const RH = { bc_roof1: 9.014, bc_roof2: 10.007, bc_roof3: 8.505, bc_roof4: 11.0 };
+    const roofH = k => ({ key: k, w: aw(k, RH[k]), h: RH[k], ledges: ROOF[k] });
+    const RX = TX + TW + 0.2 - aw('bc_goth_endl', H.bc_goth_endl), RK = ['bc_roof3', 'bc_roof2', 'bc_roof1', 'bc_roof4'];
+    const RE = b.kitRow(RX, RK.map(roofH), { capL: house('bc_goth_endl'), capR: house('bc_goth_endr') });
+    const rx = {}; { let cx = RX + aw('bc_goth_endl', H.bc_goth_endl) - 0.05; for (const k of RK) { rx[k] = cx; cx += aw(k, RH[k]) - 0.05; } }
+    prop('bc_solar', rx.bc_roof3 + 0.45, 1.3, 7.66);
+    lean('bc_chimney', rx.bc_roof2 + 3.0, 2.4, 1.4, 9.1);                           // a tall chimney on the terrace: lean, hop over
+    // the washing line on a roof terrace is springy: land on it and it bounces him up to the bell turret
+    const WL = rx.bc_roof1 + 0.3, WW = aw('bc_washing', 1.7);
+    prop('bc_washing', WL, 1.7, 8.34); solid(WL + 0.5, WW - 1.0, 0.3, 8.34 + 0.95, { bounce: 3.4 });
+    prop('bc_tank', rx.bc_roof4 + 1.75, 2.18, 9.07);
+    b.coins(TX + TW / 2 + 1.2, 9.6, 3, 1.0); b.coins(rx.bc_roof3 + 0.6, 8.9, 4, 0.8); b.coins(rx.bc_roof2 + 0.6, 11.0, 4, 1.0);
+    b.arc(WL + 0.6, 10.6, 6, 4.4, 2.6); b.coins(rx.bc_roof4 + 2.0, 10.2, 3, 0.9);
+    L.bcLife.push(['bc_pigeon1', rx.bc_roof4 + 4.1, 9.94, 'sit']);
     // over the rooftops to the Bishop's Bridge (Carrer del Bisbe): palace, the bridge, the canons' house, in one picture
-    const BR = TX + TW + 0.4, BRH = 7.6, BRW = aw('bc_bridge', BRH), k = BRH / 8.6;
+    const BR = RE + 0.4, D = BR - (TX + TW + 0.4), BRH = 7.6, BRW = aw('bc_bridge', BRH), k = BRH / 8.6;
     back('bc_bridge', BR, BRH); b.ledge(BR + 0.1, 8.45 * k, BRW - 0.2);
     b.ledge(BR + 15.0 * k, 3.5 * k, 6.3 * k); b.ledge(BR + 15.5 * k, 6.0 * k, 2.0 * k); b.ledge(BR + 19.6 * k, 6.0 * k, 2.0 * k);
     b.ledge(BR + 1.0 * k, 3.6 * k, 2.4 * k);
@@ -2927,12 +2970,13 @@ const ALL_LEVELS = [
     const R3 = row(G2 + 4.0, ['bc_goth_endl', 'bc_goth3', 'bc_goth6', 'bc_goth1', 'bc_goth4', 'bc_goth_endr']);
     b.coins(G2 + 5.0, 4.4, 4, 1.0); b.coins(G2 + 9.0, 6.4, 4, 1.0);
     lean('bc_cafe', R3 + 1.4, 2.1, 1.3); b.coins(R3 + 1.8, 2.6, 3, 0.9);
-    hop('bc_bollards', 169.0, 1.0); L.bcJoins.push(176);
+    ground(79.7, 176 + D, 'bcsetts');
+    hop('bc_bollards', 169.0 + D, 1.0); L.bcJoins.push(176 + D);
 
     // ---------- 3. La Rambla and La Boqueria (from outside) ----------
     const fk = i => ({ key: 'bc_flowers' + i, w: aw('bc_flowers' + i, 3.2), h: 3.2, top: 3.0 });
-    lean('bc_flowerbox', 175.0, 1.35, 1.3);
-    const FK = b.kitStalls(179.8, [fk(0), fk(1), fk(2)]); b.coins(180.4, 4.2, 11, 1.1);
+    lean('bc_flowerbox', 175.0 + D, 1.35, 1.3);
+    const FK = b.kitStalls(179.8 + D, [fk(0), fk(1), fk(2)]); b.coins(180.4 + D, 4.2, 11, 1.1);
     prop('bc_planetree', FK + 0.6, 7.5);
     prop('bc_statue', FK + 4.6, 2.9); lean('bc_pots', FK + 8.6, 1.8, 1.4);                                               // the golden human statue on his box
     prop('bc_miro', FK + 6.6, 0.12);                                                // Miro's tiles in the pavement
@@ -2955,11 +2999,13 @@ const ALL_LEVELS = [
     lean('bc_metrosign', SC - 2.0 - aw('bc_metrosign', 2.8) / 2, 2.8, 1.6);          // (stands on the join of the Rambla and the road)
     L.bcScooter = { x: SC - 1.6 };                                                  // the e-scooter A hops on (parked at the kerb)
     // ---------- the e-scooter ride up to Passeig de Gracia: tap to hop for the high coins ----------
-    ground(176, SC - 2.0, 'bcrambla'); ground(SC - 2.0, SE + 4.0, 'bcroad'); L.bcJoins.push(SC - 2.0);
+    ground(176 + D, SC - 2.0, 'bcrambla'); ground(SC - 2.0, SE + 4.0, 'bcroad'); L.bcJoins.push(SC - 2.0);
     L.rides = L.rides || [];
-    const ride = { kind: 'scooter', x0: SC, pts: [[SC, 0], [SE, 0]], v: 7.0, acc: 3.0, w0: 0.5, w1: 0.4, input: true, jump: 9.0, grav: 30, seat: 0.0, up: 0, down: 0, exitY: 0 };
+    const ride = { kind: 'scooter', x0: SC, pts: [[SC, 0], [SE, 0]], v: 13.0, acc: 8.0, w0: 0.5, w1: 0.4, input: true, jump: 9.0, grav: 30,   // (fast: Ladi 2026-11-08)
+      seat: 0.0, up: 0, down: 0, exitY: 0 };
     L.rides.push(ride); L.bcRide = ride;
-    for (let x = SC + 6; x < SE - 4; x += 5) b.coins(x, x % 10 < 5 ? 0.8 : 2.4, 1);
+    b.coins(SC + 5, 0.8, 4, 1.2);                                                   // a line of coins as it speeds up, then hop arcs over the road
+    for (let x = SC + 12; x < SE - 8; x += 10) for (let i = 0; i < 5; i++) b.coins(x + i * 1.5, 0.8 + 1.4 * Math.sin(Math.PI * i / 4), 1);
     const CO = SC + 18.0; back('bc_corner', CO, 13.0);                              // a big Placa de Catalunya corner building fills the screen as he rides past
     swapAt(CO + 6.4, 'eixample', 'behind the big corner building A rides past');
 
@@ -3068,6 +3114,7 @@ const ALL_LEVELS = [
     prop('bc_mosaicpot', HX + 16.4, 1.3, TT); lean('bc_mosaicpot', HX + 3.0, 1.3, 1.3, TT);
     b.coins(HX + 1.0, TT + 1.2, 6, 1.0);
     b.flag(HX + 9.0); L.flagY = TT;
+    L.bcFinale = true;                                                              // (no fireworks sound here: Ladi 2026-11-08)
     L.finale = HX + 12.0; L.finaleT = 7;                                             // A walks to the bench, stands and looks out over the grid (back view)
     L.bcView = HX + 12.0;
     const HE = HX + aw('bc_hypostyle', 7.0);
