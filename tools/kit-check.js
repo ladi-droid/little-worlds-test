@@ -74,6 +74,8 @@ function check(i) {
     for (let k = 1; k < arr.length; k++) { const e = arr[k - 1].x + widthU(arr[k - 1]); if (arr[k].x - e > 0.02) fail.push(`gap of ${(arr[k].x - e).toFixed(2)} between ${arr[k - 1].key} and ${arr[k].key} at x ${e.toFixed(1)}`); }
   }
   // doors: going through one is one-way
+  { const ds = L.kitDoors || [], ins = ds.filter(d => d.inside).length;   // Ladi 2026-11-08: one inside visit per level at most
+    if (ins > 1 || ds.length - ins > 1) fail.push(`${ds.length} doors (${ins} in): one inside visit per level at most, one door in and one out`); }
   for (const d of L.kitDoors || []) if (!L.solids.some(s => s.backOnly && Math.abs(s.x - d.x) < 1)) fail.push(`door at ${d.x} has no backOnly wall`);
   return { id: def.id, i, fail, note };
 }
