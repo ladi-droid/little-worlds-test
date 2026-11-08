@@ -266,8 +266,8 @@ const DOMAIN='myworld.games',GAME='play.html?v=1794144791';
 const playLink=g=>{const c={};['name','kid','style','acc','skin','hair','hood','jog','shoe','worlds','slug'].forEach(k=>{if(g[k]!==undefined)c[k]=g[k]});c.paid=true;
   return GAME+'&w='+btoa(unescape(encodeURIComponent(JSON.stringify(c)))).replace(/\+/g,'-').replace(/\//g,'_').replace(/=+$/,'')};
 const TRIPS={woolwich:['Woolwich','ui_card_woolwich.webp','#6d3fc0'],brixton:['Brixton','ui_card_brixton.webp','#e8701c'],greenwich:['Greenwich','ui_card_greenwich.webp','#00a4a7'],canarywharf:['Canary Wharf','ui_card_canarywharf.webp','#1f62b4'],
-  heathrow:['Airport Rush','ui_card_heathrow.webp','#2b7fd0'],olddubai:['Old Dubai','ui_card_olddubai.webp','#d98a2b'],downtown:['Downtown','ui_card_downtown.webp','#7a4fd0'],palm:['The Palm','ui_card_palm.webp','#0aa3b8'],marina:['Marina','ui_card_marina.webp','#e0a020'],desert:['Desert Race','ui_card_desert.webp','#e07a20'],capetown:['Cape Town','ui_card_capetown.webp','#1a8f6a'],westminster:['Westminster','ui_card_westminster.webp','#c8283c']};
-const NEWEST=['westminster','capetown','desert','marina']; // most recent trips first (mock)
+  heathrow:['Airport Rush','ui_card_heathrow.webp','#2b7fd0'],olddubai:['Old Dubai','ui_card_olddubai.webp','#d98a2b'],downtown:['Downtown','ui_card_downtown.webp','#7a4fd0'],palm:['The Palm','ui_card_palm.webp','#0aa3b8'],marina:['Marina','ui_card_marina.webp','#e0a020'],desert:['Desert Race','ui_card_desert.webp','#e07a20'],capetown:['Cape Town','ui_card_capetown.webp','#1a8f6a'],westminster:['Westminster','ui_card_westminster.webp','#c8283c'],barcelona:['Barcelona','ui_card_barcelona.webp','#d8402c']};
+const NEWEST=['barcelona','westminster','capetown','desert']; // most recent trips first (mock)
 const PRICES={one:{m:'?',y:'?',label:'One game',max:1,desc:'1 world (1 child)'},family:{m:'?',y:'?',label:'Family',max:4,desc:'Up to 4 worlds (up to 4 children)'}};
 const KEY='lw_account',SESSION='lw_session';
 const get=k=>{try{return JSON.parse(localStorage.getItem(k)||'null')}catch(e){return null}};

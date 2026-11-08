@@ -2826,6 +2826,256 @@ const ALL_LEVELS = [
     b.end(PG + 19.0);
   },
 },
+{
+  // Barcelona, rebuilt from scratch from the level kit (plan: claude.ai/artifact/NGEdrYdSqXXcPNrqtVn1XT; Ladi's picks and block OK 2026-11-08).
+  // Sea to hill on a summer afternoon into sunset: Barceloneta -> Gothic Quarter (castellers, Bishop's Bridge) -> La Rambla + La Boqueria
+  // gate -> e-scooter -> Passeig de Gracia (Batllo, La Pedrera roof) -> Sagrada Familia (the ONE door) -> escalators -> Park Guell.
+  // Pictures: art/barcelona/NN_*.png, cut by src/barcelona2/cut.py; BC_ASP = width / height of each piece.
+  id: 'barcelona', name: 'Barcelona', plate: 'Barcelona', area: 'barcelona', city: 'Barcelona',
+  build(b) {
+    const L = b.L, BC_ASP = {"bc_taxi":2.2167,"bc_taxi_open":2.2167,"bc_beachbar":2.014,"bc_cubes":0.3415,"bc_umb_blue":1.124,"bc_umb_red":1.128,"bc_lifeguard":0.9139,"bc_lounger":2.0133,"bc_palm":0.7269,"bc_icecart":1.0591,"bc_bench":1.9,"bc_scooters":2.7154,"bc_flat1":0.6079,"bc_flat2":0.5014,"bc_flat_endl":0.3262,"bc_flat3":0.6793,"bc_flat4":0.666,"bc_flat_endr":0.3368,"bc_arch":0.8675,"bc_goth1":0.463,"bc_goth2":0.4439,"bc_goth3":0.5042,"bc_goth_endl":0.2186,"bc_goth4":0.6326,"bc_goth5":0.6659,"bc_goth6":0.6971,"bc_goth_endr":0.2482,"bc_cityhall":1.03,"bc_castell":0.4343,"bc_bridge":2.8387,"bc_flowercart":1.3263,"bc_wallfount":0.7833,"bc_stonebench":2.4333,"bc_pots":1.1056,"bc_cafe":1.0667,"bc_bollards":1.72,"bc_planetree":1.0183,"bc_statue":0.5103,"bc_metrosign":0.5964,"bc_miro":14.75,"bc_flowerbox":1.75,"bc_rbench":2.2,"bc_fountainrim":4.0333,"bc_gate":1.3137,"bc_corner":0.983,"bc_manzana":2.1495,"bc_ptower":0.3208,"bc_pedrera":1.0952,"bc_war3":0.6714,"bc_war2":0.8333,"bc_war1":0.8478,"bc_roofwave":2.7062,"bc_eix1":0.7089,"bc_eix2":0.5902,"bc_eix3":0.7371,"bc_eix_endl":0.3758,"bc_eix4":0.8512,"bc_eix_endr":0.3758,"bc_benchlamp":0.9472,"bc_newsstand":0.8933,"bc_planter":1.3,"bc_plane2":0.8668,"bc_kiosk":1.2808,"bc_bikes":2.7154,"bc_nativity":0.6812,"bc_door_leaf":0.6364,"bc_door":1.3273,"bc_door_half":0.6568,"bc_gallery":3.9517,"bc_liftshaft":0.4511,"bc_canopy":1.9231,"bc_altar":2.2706,"bc_chairs":3.0211,"bc_font":0.8812,"bc_snail":0.8515,"bc_stairarch":2.534,"bc_grac2":0.507,"bc_grac1":0.7273,"bc_grac_endl":0.3478,"bc_grac_endr":0.3593,"bc_bins":3.8333,"bc_stonewall":3.2571,"bc_escalator":2.0459,"bc_gatehouses":2.6935,"bc_lizstairs":1.6344,"bc_hypostyle":2.9207,"bc_mosaicpot":1.1154,"bc_cloud0":2.4285,"bc_cloud1":2.1135,"bc_cloud2":1.9127,"bc_cloud3":3.4491,"bc_cloud4":1.579,"bc_gull0":1.35,"bc_gull1":4.1,"bc_gull2":1.6333,"bc_para0":1.325,"bc_para1":3.0,"bc_para2":1.8308,"bc_pigeon0":1.0968,"bc_pigeon1":1.74,"bc_boat0":1.0967,"bc_boat1":1.0045,"bc_flowers0":1.3844,"bc_flowers1":1.3844,"bc_flowers2":1.3844,"bc_stall0":1.15,"bc_stall1":1.15,"bc_stall2":1.15};
+    L.outfit = 'dxb';                                    // the summer outfit (Ladi 2026-11-08)
+    L.killY = -8; L.startX = 2.0; L.camMin = -12; L.introCam = 'centre';
+    const aw = (k, h) => BC_ASP[k] * h;                  // a picture's width when drawn h units tall
+    const ground = (x0, x1, style, y = 0) => b.groundTop(x0, x1, y, style);
+    const art = (key, x, y, h, o = {}) => b.kitArt(key, x, y, h, Object.assign({ w: aw(key, h) }, o));
+    const back = (key, x, h, o = {}) => art(key, x, o.y || 0, h, Object.assign({ back: true }, o));
+    const solid = (x, w, h, y = 0, o = {}) => { const s = Object.assign({ kind: 'block', x, y, w, h, style: 'hidden' }, o); L.solids.push(s); return s; };
+    // props: stand on the floor at y (given, so a prop in front of a row isn't stood on the row's top balcony)
+    const lean = (key, x, h, sh, y = 0) => { const w = aw(key, h); return b.kitProp(key, x, w, h, { y, solid: [0.1, w - 0.2, sh], ledge: [0.1, sh, w - 0.2] }); };   // taller than a knee: lean, then hop on
+    const hop = (key, x, h, y = 0, sh = Math.min(h, 1.0)) => { const w = aw(key, h); return b.kitProp(key, x, w, h, { y, solid: [0.1, w - 0.2, sh] }); };   // knee-high: he hops it by himself
+    const prop = (key, x, h, y = 0) => b.kitProp(key, x, aw(key, h), h, { y });
+    // a row of houses wall to wall; each house: [key, ledge heights (balconies, roof)] at the sheet's own scale
+    const RS = { flat: 7.6 / 7.6, goth: 1, eix: 1, grac: 1 };
+    const H = { bc_flat1: 6.577, bc_flat2: 7.6, bc_flat3: 5.301, bc_flat4: 5.928, bc_flat_endl: 5.279, bc_flat_endr: 5.279,
+      bc_goth1: 7.722, bc_goth2: 8.2, bc_goth3: 7.587, bc_goth4: 5.626, bc_goth5: 5.54, bc_goth6: 5.503, bc_goth_endl: 5.0, bc_goth_endr: 5.013,
+      bc_eix1: 7.615, bc_eix2: 9.0, bc_eix3: 7.295, bc_eix4: 5.974, bc_eix_endl: 6.256, bc_eix_endr: 6.256,
+      bc_grac1: 5.401, bc_grac2: 7.4, bc_grac_endl: 5.494, bc_grac_endr: 5.494 };
+    const LED = { bc_flat1: [2.2, 4.1, 6.3], bc_flat2: [3.3, 5.6, 7.3], bc_flat3: [2.9, 4.9], bc_flat4: [2.3, 4.0, 5.5], bc_flat_endl: [5.1], bc_flat_endr: [5.1],
+      bc_goth1: [3.3, 5.6, 7.4], bc_goth2: [3.3, 5.5, 7.9], bc_goth3: [3.1, 5.5, 7.3], bc_goth4: [3.0, 5.2], bc_goth5: [3.0, 5.2], bc_goth6: [3.0, 5.1],
+      bc_goth_endl: [4.85], bc_goth_endr: [4.85],
+      bc_eix1: [3.0, 4.6, 6.0, 7.2], bc_eix2: [3.2, 4.6, 5.9, 7.2, 8.6], bc_eix3: [2.9, 4.6, 6.0, 6.9], bc_eix4: [2.8, 4.2, 5.6], bc_eix_endl: [6.0], bc_eix_endr: [6.0],
+      bc_grac1: [2.4, 4.4], bc_grac2: [2.0, 4.6, 6.6], bc_grac_endl: [5.35], bc_grac_endr: [5.35] };
+    const house = k => { const w = aw(k, H[k]); return { key: k, w, h: H[k], ledges: LED[k].map(y => [0.35, y, w - 0.7]) }; };
+    const row = (x, keys, y = 0) => {
+      const r = b.kitRow(x, keys.slice(1, -1).map(house), { capL: house(keys[0]), capR: house(keys[keys.length - 1]) });
+      if (y) for (const a of L.kitArt) if (a.row === x) a.y = y;
+      return r;
+    };
+    const swapAt = (x, to, why) => (L.kitSwaps = L.kitSwaps || []).push({ x, to, why });   // an arch, a gate, behind a building: not a door
+    L.bcJoins = [];                                        // where two kinds of ground meet (each one behind a prop or under an arch)
+    L.bcLife = [];                                         // birds and boats: [key, x, y, kind]
+
+    // ---------- 1. Barceloneta: the taxi drops A on the boardwalk by the beach ----------
+    b.wall(-12.5, 1, 22);
+    ground(-14, 79.7, 'bcboard');
+    L.bcCar = { x: -4.4 };                                 // yellow-and-black taxi: A steps out, it drives off
+    L.bcLife.push(['bc_boat0', -8, 0.9, 'boat'], ['bc_boat1', 30, 0.9, 'boat'], ['bc_gull0', 8, 9.5, 'fly'], ['bc_gull2', 48, 10.5, 'fly']);
+    hop('bc_bench', 5.0, 1.0);
+    // special 1 = BOUNCE: beach umbrella -> beach bar roof -> umbrella on the roof -> top of L'Estel Ferit (the stacked cubes)
+    prop('bc_umb_blue', 10.2, 2.5); solid(10.5, 2.2, 0.3, 2.15, { bounce: 3.6 });
+    const BB = 13.4, BH = 4.4, BW = aw('bc_beachbar', BH);
+    back('bc_beachbar', BB, BH); b.ledge(BB + 0.13 * BW, 0.84 * BH, 0.74 * BW);                       // its roof terrace
+    b.ledge(BB + 0.815 * BW, 0.5 * BH, 0.12 * BW); b.ledge(BB + 0.865 * BW, 0.28 * BH, 0.125 * BW);       // the steps at its side
+    prop('bc_umb_red', BB + 3.9, 2.5, 0.84 * BH); solid(BB + 4.2, 2.2, 0.3, 0.84 * BH + 2.15, { bounce: 4.6 });
+    const CB = BB + BW + 0.6;
+    back('bc_cubes', CB, 10.6); b.ledge(CB + 0.35, 10.3, 2.8);
+    b.arc(9.8, 3.0, 5, 4.2, 2.6); b.coins(BB + 4.6, 9.2, 3, 0.9, 0.6);
+    b.special(CB + 1.75, 12.3);                                                     // 1
+    prop('bc_lounger', CB + 5.0, 0.75);
+    lean('bc_lifeguard', 33.0, 3.6, 2.2); b.coins(33.4, 3.4, 3, 0.8);              // lifeguard tower: lean, hop on
+    prop('bc_palm', 37.0, 7.0);
+    // Barceloneta flats close behind, different heights, washing on the balconies; balconies are ledges
+    const R1 = row(40, ['bc_flat_endl', 'bc_flat1', 'bc_flat2', 'bc_flat3', 'bc_flat4', 'bc_flat1', 'bc_flat_endr']);
+    lean('bc_icecart', 44.0, 2.2, 1.5); b.coins(44.3, 2.8, 3, 0.9);
+    b.coins(47.6, 4.6, 5, 1.0); b.coins(53.6, 6.6, 4, 1.0);
+    prop('bc_palm', R1 + 1.0, 7.0);
+    lean('bc_scooters', R1 + 5.0, 1.35, 1.3); b.coins(R1 + 5.4, 2.4, 3, 0.9);       // parked blue/white e-scooters: hop
+    hop('bc_bench', R1 + 10.5, 1.0); b.pigeon(R1 + 14.0);
+    // into the old town under a deep stone arch: the backdrops change in its shade (an arch, not a door)
+    const AR = 73.9;
+    back('bc_arch', AR, 8.0); b.ledge(AR + 1.4, 7.1, 4.2); b.ledge(AR + 0.05, 5.3, 1.2); b.ledge(AR + 5.65, 5.3, 1.2);
+    L.bcArch = { x: AR, h: 8.0 };
+    swapAt(AR + 3.5, 'oldtown', 'deep stone arch'); L.bcJoins.push(AR + 5.8);   // (the ground changes behind the arch's right pillar)
+
+    // ---------- 2. Gothic Quarter: narrow lanes, the human tower, the Bishop's Bridge ----------
+    ground(79.7, 176, 'bcsetts');
+    const R2 = row(81, ['bc_goth_endl', 'bc_goth1', 'bc_goth4', 'bc_goth2', 'bc_goth5', 'bc_goth_endr']);
+    lean('bc_flowercart', 85.6, 1.9, 1.3); b.coins(86.0, 2.6, 3, 0.8);
+    b.coins(89.0, 4.4, 4, 1.0); b.coins(93.0, 6.6, 3, 1.0);
+    prop('bc_wallfount', R2 + 0.4, 2.4);
+    hop('bc_stonebench', R2 + 3.4, 0.9);
+    b.pigeon(R2 + 6.6);
+    // Placa Sant Jaume: City Hall, and the castellers' tower in front of it. Special 2 = TAP-CLIMB the human tower, level by level
+    const CH = 103.6; back('bc_cityhall', CH, 8.0); b.ledge(CH + 2.6, 2.75, 3.0); b.ledge(CH + 0.2, 6.4, 7.9);
+    const TX = 106.4, TW = aw('bc_castell', 10.2);
+    back('bc_castell', TX, 10.2);
+    for (const [i, y] of [[0, 2.4], [1, 4.5], [2, 6.6], [3, 8.7]].map((y, i) => [i, y[1]])) { b.ledge(TX + 0.3, y, TW - 0.6); b.coins(TX + TW / 2, y + 1.3, 1); }
+    solid(TX + TW - 0.9, 0.9, 8.7, 0, { noGrab: true });                            // the crowd at its foot: he can't walk through, he climbs
+    L.bcCastell = { x: TX, w: TW, h: 10.2 };
+    b.special(TX + TW / 2, 10.9);                                                   // 2: where the child at the top stands
+    // over the rooftops to the Bishop's Bridge (Carrer del Bisbe): palace, the bridge, the canons' house, in one picture
+    const BR = TX + TW + 0.4, BRH = 7.6, BRW = aw('bc_bridge', BRH), k = BRH / 8.6;
+    back('bc_bridge', BR, BRH); b.ledge(BR + 0.1, 8.45 * k, BRW - 0.2);
+    b.ledge(BR + 15.0 * k, 3.5 * k, 6.3 * k); b.ledge(BR + 15.5 * k, 6.0 * k, 2.0 * k); b.ledge(BR + 19.6 * k, 6.0 * k, 2.0 * k);
+    b.ledge(BR + 1.0 * k, 3.6 * k, 2.4 * k);
+    lean('bc_pots', BR + 9.6 * k, 1.8, 1.4, 8.45 * k);
+    b.coins(BR + 1.0, 8.6, 6, 1.0); b.arc(BR + 8.0, 8.4, 5, 5.0, 1.2); b.coins(BR + 14.0, 8.6, 5, 1.0);
+    L.bcLife.push(['bc_pigeon0', BR + 4.0, 8.45 * k, 'sit'], ['bc_gull1', BR + 12, 11.0, 'fly']);
+    const G2 = BR + BRW + 3.0;
+    lean('bc_pots', G2, 1.8, 1.4);
+    const R3 = row(G2 + 4.0, ['bc_goth_endl', 'bc_goth3', 'bc_goth6', 'bc_goth1', 'bc_goth4', 'bc_goth_endr']);
+    b.coins(G2 + 5.0, 4.4, 4, 1.0); b.coins(G2 + 9.0, 6.4, 4, 1.0);
+    lean('bc_cafe', R3 + 1.4, 2.1, 1.3); b.coins(R3 + 1.8, 2.6, 3, 0.9);
+    hop('bc_bollards', 169.0, 1.0); L.bcJoins.push(176);
+
+    // ---------- 3. La Rambla and La Boqueria (from outside) ----------
+    const fk = i => ({ key: 'bc_flowers' + i, w: aw('bc_flowers' + i, 3.2), h: 3.2, top: 3.0 });
+    lean('bc_flowerbox', 175.0, 1.35, 1.3);
+    const FK = b.kitStalls(179.8, [fk(0), fk(1), fk(2)]); b.coins(180.4, 4.2, 11, 1.1);
+    prop('bc_planetree', FK + 0.6, 7.5);
+    prop('bc_statue', FK + 4.6, 2.9); lean('bc_pots', FK + 8.6, 1.8, 1.4);                                               // the golden human statue on his box
+    prop('bc_miro', FK + 6.6, 0.12);                                                // Miro's tiles in the pavement
+    // special 3 = STALL ROOFS -> GATE: fruit, juice, sweets stalls, the gate's iron pillar, its cornice, along the top of the stained-glass arch
+    const sk = i => ({ key: 'bc_stall' + i, w: aw('bc_stall' + i, 2.8), h: 2.8, top: 2.65 });
+    const SK = b.kitStalls(FK + 12.0, [sk(0), sk(1), sk(2)]); b.coins(FK + 12.4, 3.8, 8, 1.1);
+    const GX = SK + 0.6, GH = 11.0, gk = GH / 11.0;
+    back('bc_gate', GX, GH); L.bcGate = { x: GX, h: GH };
+    b.ledge(GX + 0.6 * gk, 4.6 * gk, 1.7 * gk);                                     // the pillar's capital
+    b.ledge(GX + 1.8 * gk, 6.9 * gk, 10.8 * gk);                                     // the iron cornice over the gate
+    b.slope(GX + 1.6 * gk, 7.0 * gk, GX + 7.2 * gk, 11.0 * gk); b.slope(GX + 7.2 * gk, 11.0 * gk, GX + 12.9 * gk, 7.0 * gk);   // the curved top
+    b.coins(GX + 1.0, 5.8, 1); b.coins(GX + 2.6, 8.0, 5, 1.0); b.arc(GX + 2.0, 9.2, 7, 10.6, 1.8);
+    b.special(GX + 7.2 * gk, 12.8);                                                 // 3: above the stained glass
+    const RA = GX + aw('bc_gate', GH) + 2.0;
+    prop('bc_planetree', RA, 7.5); lean('bc_flowerbox', RA + 4.0, 1.35, 1.3);
+    // Placa de Catalunya: fountain rim, pigeons, the metro sign, then the e-scooter
+    hop('bc_fountainrim', RA + 8.0, 0.9); b.coins(RA + 8.4, 2.0, 5, 0.9);
+    b.pigeon(RA + 14.0); b.pigeon(RA + 17.0);
+    const SC = RA + 24.0, SE = SC + 38.0;
+    lean('bc_metrosign', SC - 2.0 - aw('bc_metrosign', 2.8) / 2, 2.8, 1.6);          // (stands on the join of the Rambla and the road)
+    L.bcScooter = { x: SC - 1.6 };                                                  // the e-scooter A hops on (parked at the kerb)
+    // ---------- the e-scooter ride up to Passeig de Gracia: tap to hop for the high coins ----------
+    ground(176, SC - 2.0, 'bcrambla'); ground(SC - 2.0, SE + 4.0, 'bcroad'); L.bcJoins.push(SC - 2.0);
+    L.rides = L.rides || [];
+    const ride = { kind: 'scooter', x0: SC, pts: [[SC, 0], [SE, 0]], v: 7.0, acc: 3.0, w0: 0.5, w1: 0.4, input: true, jump: 9.0, grav: 30, seat: 0.0, up: 0, down: 0, exitY: 0 };
+    L.rides.push(ride); L.bcRide = ride;
+    for (let x = SC + 6; x < SE - 4; x += 5) b.coins(x, x % 10 < 5 ? 0.8 : 2.4, 1);
+    const CO = SC + 18.0; back('bc_corner', CO, 13.0);                              // a big Placa de Catalunya corner building fills the screen as he rides past
+    swapAt(CO + 6.4, 'eixample', 'behind the big corner building A rides past');
+
+    // ---------- 4. Passeig de Gracia: the Block of Discord (Lleo Morera, Amatller, Batllo), then up La Pedrera ----------
+    const PG0 = SE + 4.0;
+    L.bcJoins.push(PG0);
+    hop('bc_benchlamp', PG0 - 1.0, 3.6, 0, 1.3);                                    // (stands on the join: a kerb with a bench)
+    const MZ = PG0 + 4.0, MH = 10.6, mk = MH / 10.6;
+    back('bc_manzana', MZ, MH);
+    b.ledge(MZ + 1.0 * mk, 3.1 * mk, 6.5 * mk); b.ledge(MZ + 1.4 * mk, 7.3 * mk, 6.2 * mk);                          // Casa Lleo Morera
+    b.ledge(MZ + 8.0 * mk, 5.6 * mk, 6.0 * mk); b.ledge(MZ + 9.6 * mk, 8.3 * mk, 3.4 * mk);                          // Casa Amatller's stepped gable
+    b.ledge(MZ + 15.0 * mk, 4.4 * mk, 6.0 * mk); b.ledge(MZ + 15.2 * mk, 6.6 * mk, 5.8 * mk); b.ledge(MZ + 16.2 * mk, 9.0 * mk, 3.8 * mk);   // Casa Batllo's bone balconies, its dragon roof
+    b.coins(MZ + 1.6, 4.2, 6, 1.0); b.coins(MZ + 8.6, 6.8, 5, 1.0); b.arc(MZ + 15.6, 7.8, 6, 5.0, 2.0);
+    L.bcLife.push(['bc_para0', MZ + 6, 11.5, 'fly'], ['bc_para2', MZ + 18, 12.4, 'fly']);
+    const MZE = MZ + aw('bc_manzana', MH);
+    lean('bc_newsstand', MZE + 1.2, 3.0, 2.8);
+    // special 4 = WALL-JUMP + WARRIOR LEAPS: under the corner building's arcade, up the gap, onto La Pedrera's roof, chimney to chimney
+    const CX = MZE + 5.6, CH2 = 13.0, CW = aw('bc_ptower', CH2), GAP = 1.8, PX = CX + CW + GAP, PH2 = 13.4, PW2 = aw('bc_pedrera', PH2), PT = 12.2;
+    back('bc_ptower', CX, CH2); solid(CX + 0.2, CW - 0.4, CH2 - 0.6 - 1.9, 1.9);    // its ground floor is an arcade he runs under
+    b.ledge(CX + 0.4, CH2 - 0.6, CW - 0.8);
+    back('bc_pedrera', PX, PH2); solid(PX, PW2, PT);
+    (L.kitClimbs = L.kitClimbs || []).push({ x: CX, xr: PX, gap: GAP, hL: CH2 - 0.6, hR: PT });
+    for (let i = 0, y = 2.4; y < PT - 0.4; i++, y += 1.5) b.coins(CX + CW + (i % 2 ? GAP - 0.55 : 0.15), y, 1);   // zigzag up the gap
+    const war = (key, dx, h) => { const w = aw(key, h); art(key, PX + dx, PT, h, { back: true }); solid(PX + dx + 0.2, w - 0.4, h - 0.1, PT); b.ledge(PX + dx + 0.15, PT + h - 0.1, w - 0.3); return w; };
+    art('bc_roofwave', PX + 0.6, PT, 1.6, { back: true }); b.ledge(PX + 0.7, PT + 1.0, 1.0);
+    war('bc_war1', 4.4, 2.3); war('bc_war2', 7.4, 3.0); const w3 = war('bc_war3', 11.0, 4.2);
+    b.coins(PX + 5.3, PT + 3.2, 1); b.coins(PX + 8.6, PT + 4.0, 1); b.arc(PX + 9.0, PT + 4.4, 4, 3.0, 1.2);
+    b.special(PX + 11.0 + w3 / 2, PT + 5.9);                                        // 4: on the tallest warrior's helmet
+    L.bcLife.push(['bc_gull2', PX + 2, PT + 6, 'fly']);
+    // down the far side, on the next houses' balconies
+    const R4 = row(PX + PW2 - 0.1, ['bc_eix_endl', 'bc_eix2', 'bc_eix3', 'bc_eix_endr']);
+    for (const a of L.kitArt) if (a.key === 'bc_eix_endl' && Math.abs(a.x - (PX + PW2 - 0.1)) < 0.01) a.hide = true;   // (the end piece would sit behind La Pedrera)
+    b.coins(PX + PW2 + 1.0, 9.6, 4, 1.0, -1.6);
+    prop('bc_plane2', R4 + 0.8, 6.5);
+    hop('bc_benchlamp', R4 + 4.6, 3.6, 0, 1.3);
+    b.pigeon(R4 + 9.0);
+    lean('bc_bikes', R4 + 11.0, 1.35, 1.3); b.coins(R4 + 11.4, 2.4, 3, 1.0);          // blue/white bike dock
+    const R5 = row(R4 + 16.0, ['bc_eix_endl', 'bc_eix1', 'bc_eix4', 'bc_eix3', 'bc_eix_endr']);
+    b.coins(R4 + 17.4, 4.0, 5, 1.0); b.coins(R4 + 23.0, 6.4, 5, 1.0);
+    lean('bc_kiosk', R5 + 1.0, 2.6, 2.4);
+    hop('bc_planter', R5 + 5.4, 1.5, 0, 1.0);
+
+    // ---------- 5. Sagrada Familia: THE ONE DOOR. In at the Nativity door, out at the Passion door ----------
+    const SD = R5 + 12.0, NH = 24.0;
+    back('bc_nativity', SD - aw('bc_nativity', NH) / 2, NH);
+    b.kitDoor(SD, { inside: true }); b.kitSwap(SD, 'sagrada'); L.bcDoorIn = SD;
+    ground(PG0, SD, 'bchex');
+    hop('bc_chairs', SD + 3.4, 0.95); b.coins(SD + 3.8, 1.9, 3, 1.0);
+    // the lift up to the choir gallery: it waits for A, takes him up, he walks out (rule 12)
+    const GF = 6.0, LX = SD + 8.0, LW = aw('bc_liftshaft', GF + 3.0);
+    back('bc_liftshaft', LX, GF + 3.0);
+    const lift = { kind: 'lift', mover: true, trig: 'bcLift', x: LX + 0.15 * LW, w: 0.7 * LW, y: 0, y0: 0, y1: GF, up: 2.0, d0: 0.25 };
+    (L.movers = L.movers || []).push(lift); L.oneways.push(lift); L.bcLift = lift;
+    solid(lift.x + lift.w, 0.35, GF, 0, { noGrab: true });                           // the shaft's far wall: he waits in the car
+    b.coins(LX + LW / 2, 3.0, 3, 0, 1.6);
+    const GH2 = GF / 4.65 * 6.0, GX2 = LX + LW - 0.3, GW = aw('bc_gallery', GH2), GE = GX2 + GW;
+    back('bc_gallery', GX2, GH2); b.ledge(GX2 + 0.2, GF, GW - 0.4);                  // the choir gallery on its tree arches (he can run under it too)
+    b.coins(GX2 + 1.5, GF + 1.0, 9, 1.1); lean('bc_chairs', GX2 + 12.0, 1.35, 1.3, GF); lean('bc_chairs', GX2 + 9.0, 1.35, 1.3); b.coins(GX2 + 16.0, GF + 2.2, 5, 1.0);
+    // special 5 = BIG LEAP: off the end of the gallery onto the canopy hanging over the altar
+    const CN = GE + 2.4, CNY = GF + 0.3;
+    art('bc_canopy', CN, CNY, 2.6, { back: true, hang: true }); b.ledge(CN + 0.2, CNY + 1.35, 4.6);
+    b.arc(GE - 0.4, GF + 1.4, 5, 4.4, 2.2);
+    b.special(CN + 2.5, GF + 4.2);                                                  // 5
+    back('bc_altar', CN + 0.6, 1.7); b.ledge(CN + 0.75, 1.6, 3.5);
+    // the snail stair down from the canopy, then the stone arch bridge, the font, the Passion door
+    const S0 = CN + 5.6, SH = GF / (5.5 / 6.0), SW = aw('bc_snail', SH);
+    back('bc_snail', S0, SH); b.ledge(S0 + 0.1, GF, 1.7); b.slope(S0 + 1.8, GF, S0 + SW - 0.2, 0.0);
+    b.coins(S0 + 2.2, GF - 0.2, 4, 0.9, -1.4);
+    L.bcInSwap = S0 + 0.5 * SW;                                                       // the blue-green side gives way to the warm side behind its column
+    const SA = S0 + SW + 2.5; lean('bc_stairarch', SA, 3.0, 2.85); b.coins(SA + 0.6, 4.0, 6, 1.1);
+    lean('bc_font', SA + aw('bc_stairarch', 3.0) + 3.0, 1.6, 1.35);
+    const D2 = SA + aw('bc_stairarch', 3.0) + 9.0;
+    b.kitDoor(D2, { inside: false }); b.kitSwap(D2, 'gracia'); L.bcDoorOut = D2;
+    ground(SD, D2, 'bcnave');
+    L.camFloor = [[GX2, GE, GF]];
+
+    // ---------- 6. Up to Park Guell: Gracia's streets, the outdoor escalators, the gate, the lizard stair, the terrace at sunset ----------
+    const EH = 6.0, ES = EH / 4.9 * 7.4, EW = aw('bc_escalator', ES), ek = ES / 7.4;
+    const R6 = row(D2 + 3.0, ['bc_grac_endl', 'bc_grac1', 'bc_grac2', 'bc_grac1', 'bc_grac_endr']);
+    prop('bc_bins', R6 + 0.6, 1.2); lean('bc_stonewall', R6 + 4.4, 1.4, 1.35); b.coins(R6 + 4.8, 2.6, 4, 0.9);
+    const EX = R6 + 10.0;
+    ground(D2, EX + 15.3 * ek, 'bchill');
+    art('bc_escalator', EX, 0, ES);                                                   // (in front of the hill's wall: its top landing hides where the wall starts)
+    b.slope(EX + 3.0 * ek, 0, EX + 12.8 * ek, EH); L.slopes[L.slopes.length - 1].belt = 3.0;   // the escalator: it carries him up, he walks off at the top
+    ground(EX + 12.8 * ek, 900, 'bchill', EH);
+    b.coins(EX + 4.0 * ek, 1.6, 6, 1.6 * ek, 0.82);
+    lean('bc_stonewall', EX + EW - 1.0, 1.4, 1.35, EH); b.coins(EX + EW - 0.6, EH + 2.6, 4, 0.9);
+    L.camFloor.push([EX + 3.0 * ek, EX + 12.8 * ek, 0, EH], [EX + 12.8 * ek, 900, EH]);
+    // Park Guell's gate between the two gingerbread gatehouses: the backdrop changes in the gateway (a gate, not a door)
+    const PG = EX + EW + 4.5, GHh = 7.4, gw = GHh / 7.4;
+    back('bc_gatehouses', PG, GHh, { y: EH }); L.bcGatehouses = { x: PG, h: GHh, y: EH };
+    b.ledge(PG + 3.6 * gw, EH + 4.4 * gw, 2.0 * gw); b.ledge(PG + 13.9 * gw, EH + 4.4 * gw, 1.4 * gw);
+    solid(PG + 5.6 * gw, 1.9 * gw, 1.6 * gw, EH); b.ledge(PG + 5.6 * gw, EH + 1.6 * gw, 1.9 * gw); b.ledge(PG + 12.5 * gw, EH + 1.6 * gw, 1.4 * gw);
+    b.coins(PG + 1.0, EH + 5.6, 4, 1.0); b.coins(PG + 14.2, EH + 5.6, 3, 1.0);
+    swapAt(PG + 9.9 * gw, 'parkguell', 'gateway between the gatehouses');
+    // the double stairway with the mosaic dragon, up to the Hypostyle Hall; its roof is the terrace
+    const SX = PG + 19.93 * gw + 3.0, LH = 9.0, lk = LH / 9.0;
+    back('bc_lizstairs', SX, LH, { y: EH });
+    b.slope(SX + 2.2 * lk, EH, SX + 10.5 * lk, EH + 4.6 * lk); b.ledge(SX + 10.4 * lk, EH + 4.6 * lk, 4.0 * lk);
+    b.ledge(SX + 9.8 * lk, EH + 8.6 * lk, 4.6 * lk);
+    b.coins(SX + 3.0, EH + 1.4, 7, 1.0, 0.55); b.coins(SX + 10.2, EH + 9.6, 4, 1.1);
+    L.bcLife.push(['bc_para1', SX + 4, EH + 9.5, 'fly']);
+    const HX = SX + aw('bc_lizstairs', LH) - 0.3, TT = EH + 5.2;
+    back('bc_hypostyle', HX, 7.0, { y: EH }); solid(HX + 0.1, aw('bc_hypostyle', 7.0) - 0.2, 5.2, EH, { noGrab: true });
+    L.camFloor.push([HX, 900, TT]);                                                    // up on the terrace: the terrace at the bottom of the screen, the view above
+    prop('bc_mosaicpot', HX + 16.4, 1.3, TT); lean('bc_mosaicpot', HX + 3.0, 1.3, 1.3, TT);
+    b.coins(HX + 1.0, TT + 1.2, 6, 1.0);
+    b.flag(HX + 9.0); L.flagY = TT;
+    L.finale = HX + 12.0; L.finaleT = 7;                                             // A walks to the bench, stands and looks out over the grid (back view)
+    L.bcView = HX + 12.0;
+    const HE = HX + aw('bc_hypostyle', 7.0);
+    b.wall(HE - 0.2, 1, 40);
+    b.end(HE - 0.2);
+    L.bcTop = { x: HX, y: TT };
+  },
+},
 ];
 // Tower Bridge is parked for now (Ladi 2026-10-28): its build and art stay, it just isn't in the game.
 const PARKED = ['towerbridge', 'practice'];

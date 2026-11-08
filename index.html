@@ -623,7 +623,7 @@ const W=[
  ['Canary Wharf','ui_card_canarywharf.webp','#1f62b4','london'],['West End','ui_card_westend.webp','#c8283c','london'],['Airport Rush','ui_card_heathrow.webp','#2b7fd0','london',1],
  ['Old Dubai','ui_card_olddubai.webp','#d98a2b','dubai'],['Downtown','ui_card_downtown.webp','#7a4fd0','dubai'],['The Palm','ui_card_palm.webp','#0aa3b8','dubai'],
  ['Marina','ui_card_marina.webp','#e0a020','dubai'],['Desert Race','ui_card_desert.webp','#e07a20','dubai',1],
- ['Cape Town','ui_card_capetown.webp','#1a8f6a','capetown'],['Westminster','ui_card_westminster.webp','#c8283c','london']];
+ ['Cape Town','ui_card_capetown.webp','#1a8f6a','capetown'],['Westminster','ui_card_westminster.webp','#c8283c','london'],['Barcelona','ui_card_barcelona.webp','#d8402c','spain']];
 const tr=$('#wtrack');
 tr.innerHTML=W.map(w=>`<article class="wc" style="--c:${w[2]}"><img class="pic" src="${w[1]}" alt="" loading="lazy"><img class="stamp" src="ui_stamp_${w[3]}.webp" alt=""><div class="plate"><b>${w[0]}</b>${w[4]?'<span class="bonus">Bonus</span>':''}</div></article>`).join('')
  +`<article class="wc more"><div><b>More places on the way</b><p style="font-weight:600;color:var(--muted);margin-top:8px">Members get each new place as soon as we finish it.</p></div></article>`;
