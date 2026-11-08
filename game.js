@@ -438,6 +438,87 @@ function makeBuilder(area) {
     crow(x, y = 0) { L.enemies.push({ kind: 'raven', skin: 'crow', x, y, w: 0.9, h: 0.75, speed: 0.9, shy: true }); },
     flag(x) { L.flagX = x; },
     end(x) { L.endX = x; },
+
+    /* ===== LEVEL KIT START =====
+       Shared pieces for every new trip (kit/README.md). Each one places the picture AND what A
+       stands on together, so the level rules hold by default: props stand on the floor, rows of
+       buildings touch and have end pieces, stalls come in 3+, every climb is two walls facing
+       each other, every building switch is a door A can't go back through.
+       A broken rule is written to L.kitWarn; tools/kit-check.js fails on it. */
+    // the top of whatever A would stand on at x (ground, solid or ledge), at or below y
+    kitFloor(x, y = 99) {
+      let top = -99;
+      for (const s of L.solids) if (x >= s.x && x <= s.x + s.w && s.y + s.h <= y + 0.01 && s.style !== 'ceiling') top = Math.max(top, s.y + s.h);
+      for (const o of L.oneways) if (!o.mover && x >= o.x && x <= o.x + o.w && o.y <= y + 0.01) top = Math.max(top, o.y);
+      return top;
+    },
+    kitWarn(msg) { (L.kitWarn = L.kitWarn || []).push(msg); },
+    // a picture standing at (x, y), h units tall. o: back (behind A), front (in front of A), flip, hang (allowed off the floor)
+    kitArt(key, x, y, h, o = {}) { const a = Object.assign({ key, x, y, h }, o); (L.kitArt = L.kitArt || []).push(a); return a; },
+    // a prop: w = its width in units (from the picture), grounded on the floor under its middle unless o.y is given.
+    // o.solid = [dx, w, h] something to bump into / hop; o.ledge = [dx, y, w] somewhere to land (y above the prop's base)
+    kitProp(key, x, w, h, o = {}) {
+      const y = o.y !== undefined ? o.y : Math.max(0, b.kitFloor(x + w / 2));
+      const a = b.kitArt(key, x, y, h, Object.assign({ w, grounded: true }, o));
+      if (o.solid) L.solids.push({ kind: 'block', x: x + o.solid[0], y, w: o.solid[1], h: o.solid[2], style: 'hidden' });
+      if (o.ledge) b.ledge(x + o.ledge[0], y + o.ledge[1], o.ledge[2]);
+      return a;
+    },
+    // a row of buildings standing wall to wall (no gaps), with an end piece at each side (no abrupt stops).
+    // pieces: [{ key, w, h, ledges: [[dx, y, w], ...], floors }]; o.capL / o.capR: the end pieces, same shape. Returns the row's right edge.
+    kitRow(x, pieces, o = {}) {
+      const LAP = 0.05;   // each piece overlaps the one before a touch, so no sky shows between them
+      if (!o.capL || !o.capR) b.kitWarn(`kitRow at ${x}: needs an end piece at both ends (capL and capR)`);
+      const hs = pieces.map(p => p.h + (p.floors || 0));
+      if (pieces.length >= 3 && new Set(hs.map(h => Math.round(h * 4))).size < 2) b.kitWarn(`kitRow at ${x}: front buildings all the same height (vary them, Marina)`);
+      let cx = x;
+      for (const p of [o.capL, ...pieces, o.capR]) {
+        if (!p) continue;
+        b.kitArt(p.key, cx, 0, p.h, { w: p.w, back: true, floors: p.floors, row: x });
+        for (const [dx, y, w] of p.ledges || []) b.ledge(cx + dx, y, w);
+        cx += p.w - LAP;
+      }
+      return cx + LAP;
+    },
+    // market stalls side by side, never fewer than 3 (Ladi 2026-10-22). stalls: [{ key, w, h, top }] (top = awning A can land on)
+    kitStalls(x, stalls) {
+      if (stalls.length < 3) b.kitWarn(`kitStalls at ${x}: only ${stalls.length} stalls (3 or more)`);
+      let cx = x;
+      for (const s of stalls) { b.kitArt(s.key, cx, 0, s.h, { w: s.w, back: true, stall: x }); if (s.top) b.ledge(cx + 0.1, s.top, s.w - 0.2); cx += s.w - 0.05; }
+      return cx + 0.05;
+    },
+    // a climb: two solid walls facing each other, A wall-jumps up between them (Greenwich towers, Westminster piers).
+    // o: { gap (between the walls, 1.4-2.2), hL, hR (wall heights), wL, wR (wall widths), keyL, keyR (pictures, drawn wall-height),
+    //      special: true puts a special above the higher wall, prize visible from the bottom }
+    kitClimb(x, o) {
+      const gap = o.gap || 1.8, wL = o.wL || 2.2, wR = o.wR || 2.2, hL = o.hL || 8, hR = o.hR || 6;
+      if (gap < 1.2 || gap > 2.6) b.kitWarn(`kitClimb at ${x}: gap ${gap} (keep 1.2-2.6 so the wall-jump reads)`);
+      const xr = x + wL + gap;
+      L.solids.push({ kind: 'block', x, y: 0, w: wL, h: hL, style: 'hidden' });
+      L.solids.push({ kind: 'block', x: xr, y: 0, w: wR, h: hR, style: 'hidden' });
+      if (o.keyL) b.kitArt(o.keyL, x, 0, hL, { w: wL, climb: x });
+      if (o.keyR) b.kitArt(o.keyR, xr, 0, hR, { w: wR, climb: x });
+      const top = Math.max(hL, hR);
+      for (let i = 0, y = 1.4; y < top - 0.4; i++, y += 1.5) L.coins.push({ x: x + wL + (i % 2 ? gap - 0.55 : 0.15), y });   // zigzag between the walls
+      if (o.special) b.special(hL >= hR ? x + wL / 2 : xr + wR / 2, top + 1.6);
+      (L.kitClimbs = L.kitClimbs || []).push({ x, xr, gap, hL, hR });
+      return xr + wR;
+    },
+    // a doorway A goes through: the doorway wipe plays here (drawKitDoor in play.html), and a backOnly wall stops him going back.
+    // o: { inside: true going in, false coming out; key, w, h: the door picture; front: x where the door's far side is redrawn over A }
+    kitDoor(x, o = {}) {
+      (L.kitDoors = L.kitDoors || []).push({ x, inside: !!o.inside });
+      L.solids.push({ kind: 'block', x: x + 0.3, y: 0, w: 0.2, h: 40, style: 'hidden', backOnly: true, noGrab: true });
+      if (o.key) b.kitArt(o.key, x - (o.w || 2) / 2, 0, o.h || 3.2, { w: o.w, back: true, door: true });
+      return x;
+    },
+    // where a backdrop changes: only at a door (or a cutaway); anything else is a visible switch (rule 8)
+    kitSwap(x, to) {
+      const near = (L.kitDoors || []).some(d => Math.abs(d.x - x) < 1.5);
+      if (!near) b.kitWarn(`kitSwap at ${x}: backdrop change isn't at a door`);
+      (L.kitSwaps = L.kitSwaps || []).push({ x, to });
+    },
+    /* ===== LEVEL KIT END ===== */
   };
   return b;
 }
@@ -1616,7 +1697,7 @@ const ALL_LEVELS = [
     b.coins(55.0, 1.0, 4, 1.1);
     const MX = 67.4, M = 0.021145;
     const HX = MX - 1.0, HY = 0.5;                              // the peace hand sits on the first grass of the museum's hill
-    L.props.push({ kind: 'bx', key: 'dt_hand', x: HX, y: HY, h: 4.746 });
+    L.props.push({ kind: 'bx', key: 'dt_hand', x: HX, y: HY, h: 4.746, onArt: true });   // onArt: its grass is in the museum picture
     for (const [a, c, h] of [[0.15, 3.55, 2.4], [3.55, 4.36, 4.7], [4.36, 6.9, 2.5], [6.9, 8.6, 2.2]]) L.solids.push({ kind: 'block', x: HX + a, y: 0, w: c - a, h: h + HY, style: 'hidden' });
     b.slope(HX + 1.9, 2.42 + HY, HX + 3.55, 3.35 + HY);         // up the palm to the thumb
     b.slope(HX + 4.36, 2.75 + HY, HX + 7.95, 4.07 + HY);        // up the two fingers
