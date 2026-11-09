@@ -12,6 +12,7 @@ The art is made fresh for each city; the kit is what stays the same.
 | Shared level pieces | `game.js` "LEVEL KIT" block (builders) and `play.html` "LEVEL KIT" block (drawing) |
 | Rule checker | `node tools/kit-check.js <trip id>` |
 | Screenshot sheet for Ladi | `node tools/shot-sheet.js <trip id> '[["name", x, y], ...]'` |
+| Ride sheet for Ladi (frames of a ride, no video) | `node tools/ride-sheet.js <trip id> <name> <x> <y> <t1,t2,...> [--tap] [--ride=N]` |
 | Step by step | `kit/checklist.md` |
 | Starting point for a new trip | `kit/level-template.js` |
 
