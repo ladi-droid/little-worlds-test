@@ -51,6 +51,7 @@ Each entry: **level, date** — what Ladi saw → what fixed it → where to loo
 - **Marina, 10-30** — towers should feel close, right behind the walk; front blocks all the same height → towers at parallax 0.8 close behind, front blocks with extra floors so heights vary (`ma_pod` with `floors`). Gold standard.
 - **Westminster, 11-07** — Buckingham Palace in the backdrop from 46s, though it's the ending → ending landmark only at the end (rule 13). Same lesson in **Paris** ("only show the tower at the end, and make it massive").
 - **Barcelona video, 11-08** — the Sagrada's inside picture was drawn far bigger than the screen (zoomed in, soft) → an inside backdrop shows the whole picture at about screen height, still up and down.
+- **Barcelona, 11-09** — "the images look large, not the place": an inside backdrop at screen height still looked zoomed in → show it at ~0.7 of screen height, with its top mirrored above to fill the screen.
 
 ## 4. Doors, insides and exits (rules 6, 7, 14)
 
@@ -79,6 +80,7 @@ Each entry: **level, date** — what Ladi saw → what fixed it → where to loo
 - **Westminster, 11-07** — lift too slow; guards took too long at the end → lift ~2s, ending wait 5s.
 - **Barcelona, 11-08** (quality review) — two specials the same pillar-to-wall climb, one needs no taps; play mostly low → each special a different, earned move; use the height of the screen.
 - **Barcelona video, 11-08** — human tower too hard to climb → two castellers before it spring A to the top. The first half was flat and boring → go higher (cable car up a tower, rooftop run), never a second inside. A ride must be fast and fun (e-scooter nearly 2x faster, coin arcs, speed lines) or removed; a vehicle always faces the way it goes.
+- **Barcelona, 11-09** — the special moves must ALWAYS happen (castellers fling A whether he jumps or walks; the giant always lifts him). A ride where A just goes straight is boring → give it a shape and a reason to tap (cable car swoops low and speeds downhill, a tap swings the cabin up for high coins; scooter kicker ramps + boost arrows; giants carry A, tap to hop for coins), then the rides can be longer (~6-7s). A rides INSIDE a cabin, never on its roof. Long walks after a big moment need something new (Gegants parade).
 
 ## 6. Richness: make it a world, not a strip (rules 3, 5)
 
