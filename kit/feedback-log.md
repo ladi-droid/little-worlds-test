@@ -53,6 +53,7 @@ Each entry: **level, date** — what Ladi saw → what fixed it → where to loo
 - **Barcelona video, 11-08** — the Sagrada's inside picture was drawn far bigger than the screen (zoomed in, soft) → an inside backdrop shows the whole picture at about screen height, still up and down.
 - **Barcelona, 11-09** — "the images look large, not the place": an inside backdrop at screen height still looked zoomed in → show it at ~0.7 of screen height, with its top mirrored above to fill the screen.
 - **Barcelona, 11-09 (round 4)** — still too zoomed in at 0.7 → inside backdrop at ~0.55 of screen height, its vaulted top repeated (mirrored, then not) up to the top of the screen.
+- **Barcelona, 11-09 (round 5)** — the camera rising onto the Sagrada gallery wasn't wanted → camera stays at floor level inside; gallery lowered and the special moved down so everything fits.
 
 ## 4. Doors, insides and exits (rules 6, 7, 14)
 
@@ -83,6 +84,7 @@ Each entry: **level, date** — what Ladi saw → what fixed it → where to loo
 - **Barcelona video, 11-08** — human tower too hard to climb → two castellers before it spring A to the top. The first half was flat and boring → go higher (cable car up a tower, rooftop run), never a second inside. A ride must be fast and fun (e-scooter nearly 2x faster, coin arcs, speed lines) or removed; a vehicle always faces the way it goes.
 - **Barcelona, 11-09** — the special moves must ALWAYS happen (castellers fling A whether he jumps or walks; the giant always lifts him). A ride where A just goes straight is boring → give it a shape and a reason to tap (cable car swoops low and speeds downhill, a tap swings the cabin up for high coins; scooter kicker ramps + boost arrows; giants carry A, tap to hop for coins), then the rides can be longer (~6-7s). A rides INSIDE a cabin, never on its roof. Long walks after a big moment need something new (Gegants parade).
 - **Barcelona, 11-09 (round 4)** — no tapping/jumping inside a cable car cabin. A ride slows only to walking pace and A walks off; the vehicle stays parked where he left it, never vanishes. Escalators carry A up slowly. Hit by a pigeon down on the street → float back to a spot on the street, never back up to the tower/roof he came from. The giants carrying A didn't land → replaced.
+- **Barcelona, 11-09 (round 5)** — getting out of any vehicle is smooth: A walks out at running pace while it glides to a stop (cable car, like the scooter). Ride lift-offs are quick. A in a bubble drifts about and moves (paddles, sways). No hop obstacle right where A gets off a ride. Climbs are wall-to-wall bounces, not lifts. No camera shift inside a building: keep the zoomed-out view. No splash/whoosh sound on an escalator.
 
 ## 6. Richness: make it a world, not a strip (rules 3, 5)
 

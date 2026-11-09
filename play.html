@@ -440,10 +440,10 @@ html.lw-loading .splash{visibility:hidden}
   </div>
 </section>
 
-<script src="kids/kids-meta.js?v=1794243580"></script>
-<script src="kids/kids.js?v=1794243580"></script>
-<script src="sfx.js?v=1794243580"></script>
-<script src="game.js?v=1794243580"></script>
+<script src="kids/kids-meta.js?v=1794246363"></script>
+<script src="kids/kids.js?v=1794246363"></script>
+<script src="sfx.js?v=1794246363"></script>
+<script src="game.js?v=1794246363"></script>
 <script>
 (() => {
 'use strict';
@@ -914,7 +914,7 @@ function sndTick() {
   sndLoop('swim', play && !!((gr && gr.swim) || p.diveT));
   sndLoop('boat', !!(gr && gr.kind === 'boat'));
   sndLoop('zipline', play && (!!p.zip || !!(p.ride && p.ride.i === 0 && p.ride.v > 2)));
-  sndLoop('lift', play && !!(p.ride && p.ride.i === 1 && p.ride.v > 0.3 && p.ride.end <= 0));
+  sndLoop('lift', play && !L.bcBubble && !!(p.ride && p.ride.i === 1 && p.ride.v > 0.3 && p.ride.end <= 0));
   once('ctTaxi', state === 'ready' && (L.ctTaxi !== undefined || L.wmCab !== undefined) && G.intro && introT() > 1.1, () => { snd('car_door'); snd('car_drive', { delay: 0.25 }); });
   sndLoop('buggy_engine', play && !!L.race && !!G.race && !G.race.won);
   sndLoop('fireworks_show', L.finale !== undefined && !L.weFinale && !L.ctFinale && !L.wmFinale && !L.bcFinale && !!G.flag && G.flag.ride !== undefined);
@@ -929,7 +929,7 @@ function sndTick() {
     } return; }
   // one-shots
   if (p.diveT && !G._sdive) snd('dive'); G._sdive = !!p.diveT;
-  const sl = !!(gr && gr.belt && (gr.slope || gr.belt >= 4)); if (sl && !G._sslide) snd('water_slide'); G._sslide = sl;
+  const sl = !!(gr && gr.belt && (gr.slope || gr.belt >= 4)) && L.area !== 'barcelona';   // (no splash on Barcelona's escalator: Ladi 2026-11-09) if (sl && !G._sslide) snd('water_slide'); G._sslide = sl;
   const lf = !!(gr && gr.kind === 'lift'); if (lf && !G._slift) snd('lift'); G._slift = lf;
   if (L.area === 'heathrow') once('scan', p.x > 19.6, () => snd('scanner'));
   // a long fall lands with a bigger thump
@@ -1294,7 +1294,7 @@ $('retryBtn').addEventListener('click', () => startLevel(levelIndex));
 // If the builder opened this tab, close it and show the builder again; otherwise open the builder with this child's world filled in.
 let lwJoinEnd = false;
 function lwBackToBuilder() {
-  const url = 'builder.html?v=1794243580&w=' + lwEncode(LW);
+  const url = 'builder.html?v=1794246363&w=' + lwEncode(LW);
   try { if (window.opener && !window.opener.closed && /builder\.html/.test(window.opener.location.pathname)) { window.opener.focus(); window.close(); setTimeout(() => { location.href = url; }, 400); return; } } catch (e) {}
   location.href = url;
 }
@@ -1522,7 +1522,8 @@ function updateCamera(dt) {
   const cable = G.L.ctCab && p.ride && G.L.rides[p.ride.i] === G.L.ctCab;   // Cape Town's cable car: keep the cabin and the climb ahead in view
   const bcab = G.L.bcCable && p.ride && G.L.rides[p.ride.i] === G.L.bcCable.ride;   // Barcelona's cable car: keep the whole cabin in the middle as it swoops
   const bbub = G.L.bcBubble && p.ride && G.L.rides[p.ride.i] === G.L.bcBubble.ride;   // the bubble: keep it in the middle as it floats up
-  const ty = bbub ? Math.max(floor, p.y + 0.8 - vh * 0.5) : bcab ? ARun.rideY(G.L.bcCable.ride, p.ride.s + 1.0) + 1.9 - vh * 0.5 : cable ? ARun.rideY(G.L.ctCab, p.ride.s + 1.2) + 2.2 - vh * 0.5 : Math.max(floor, (riding ? p.y + ARun.moverY(p.ground, G.t + 0.3) - p.ground.y : p.y) + 1.5 - vh * 0.55);
+  const bcIn = G.L.bcDoorIn !== undefined && G.kitIn;   // inside the Sagrada: the camera stays put, zoomed out (Ladi 2026-11-09)
+  const ty = bcIn ? 0 : bbub ? Math.max(floor, p.y + 0.8 - vh * 0.5) : bcab ? ARun.rideY(G.L.bcCable.ride, p.ride.s + 1.0) + 1.9 - vh * 0.5 : cable ? ARun.rideY(G.L.ctCab, p.ride.s + 1.2) + 2.2 - vh * 0.5 : Math.max(floor, (riding ? p.y + ARun.moverY(p.ground, G.t + 0.3) - p.ground.y : p.y) + 1.5 - vh * 0.55);
   if (G.camSnap) { cam.y = ty; G.camSnap = false; }
   else cam.y += (ty - cam.y) * Math.min(1, dt * (riding || cable ? 14 : bcab || bbub ? 6 : 3));
 }
@@ -7017,7 +7018,10 @@ function drawKit(fn) {
   for (const a of G.L.kitArt || []) if (fn(a)) {
     if (!IMG[a.key]) { if (!a.asked) { a.asked = true; loadImg(a.key, a.key + '.webp'); } continue; }
     if (a.grounded && !a.back) { const w = a.w || bxW(a.key, a.h); shadow(a.x + w / 2, a.y + 0.03, w * 1.05, 0.26); }
-    gwImg(a.key, a.x, a.y, a.h, a.flip);
+    if (a.clip) {   // only part of the picture (Barcelona: one column of the old lift shaft), with a dark outline along the cut
+      weClip(a.x + a.clip[0], a.x + a.clip[1], () => gwImg(a.key, a.x, a.y, a.h, a.flip));
+      const X = sx(a.x + a.clip[1]) - 0.035 * U; ctx.fillStyle = '#3b2a1e'; ctx.fillRect(X, sy(a.y + a.h * 0.91), 0.035 * U, sy(a.y) - sy(a.y + a.h * 0.91));
+    } else gwImg(a.key, a.x, a.y, a.h, a.flip);
   }
 }
 // a backdrop band (rule 1): far = par ~0.1 with grain 0.3, mid = par ~0.3 with grain 0.16, foreground no grain.
@@ -7221,15 +7225,21 @@ function bcCabinAt() {
 // floats him up over the roofs, and pops (a tap, or by itself at the end) with a little burst of droplets
 const bcOnBub = () => { const z = G.p.ride, Q = G.L.bcBubble; return z && Q && G.L.rides[z.i] === Q.ride ? z : null; };
 let bcPop = null;
-function bcBubbleBob() { const z = bcOnBub(); return z ? Math.sin(z.t * 2.3) * 0.12 : 0; }
+function bcBubbleBob() { return 0; }   // (the bob is in the ride now: drift)
 function bcBubbles() {
   const Q = G.L.bcBubble; if (!Q) return;
   const z = bcOnBub(), p = G.p;
   if (z) {
     const cx = p.x + ARun.PW / 2, cy = p.y + 0.78 + bcBubbleBob(), r = 1.25 * Math.min(1, 0.25 + z.t / Q.ride.w0 * 0.75);
-    bcBubbleDraw(cx, cy, r, z.t);
+    G.bcTrail = G.bcTrail || [];   // little bubbles shaken off behind it as it floats
+    if (z.t > Q.ride.w0 && (!G.bcTrailT || animT - G.bcTrailT > 0.28)) { G.bcTrailT = animT; G.bcTrail.push({ x: cx - r * 0.7, y: cy - r * 0.5 + Math.random() * r, r: 0.1 + Math.random() * 0.12, t: animT }); }
+    bcBubbleDraw(cx, cy, r, z.t, z.t - Q.ride.w0);
     G.bcBubWas = { x: cx, y: cy, r };
   } else if (G.bcBubWas) { bcPop = { x: G.bcBubWas.x, y: G.bcBubWas.y, r: G.bcBubWas.r, t: animT }; G.bcBubWas = null; }
+  if (G.bcTrail) G.bcTrail = G.bcTrail.filter(b => {   // (the little bubbles rise, drift back and fade)
+    const k = (animT - b.t) / 1.6; if (k > 1) return false;
+    ctx.save(); ctx.globalAlpha = 1 - k; bcBubbleDraw(b.x - k * 0.6, b.y + k * 0.9, b.r, animT); ctx.restore(); return true;
+  });
   if (bcPop) {   // the pop: a ring of soapy droplets flying out and fading
     const k = (animT - bcPop.t) / 0.35; if (k > 1) { bcPop = null; return; }
     ctx.save(); ctx.globalAlpha = 1 - k; ctx.fillStyle = 'rgba(220,240,255,0.9)';
@@ -7238,17 +7248,19 @@ function bcBubbles() {
   }
 }
 // a soap bubble drawn in code: see-through, a rainbow sheen round its rim that slowly turns, a white shine at the top left
-function bcBubbleDraw(x, y, r, t) {
+function bcBubbleDraw(x, y, r, t, up) {
   const X = sx(x), Y = sy(y), R = r * U;
+  // up: seconds since it lifted off: it stretches tall as it leaves the ground, then wobbles and settles
+  const st = up !== undefined && up > 0 ? 0.12 * Math.exp(-up * 2.2) * Math.cos(up * 9) : 0, wb = Math.sin(t * 3.1) * 0.035;
   ctx.save();
-  ctx.beginPath(); ctx.ellipse(X, Y, R * (1 + Math.sin(t * 3.1) * 0.025), R * (1 - Math.sin(t * 3.1) * 0.025), 0, 0, 7);
+  ctx.beginPath(); ctx.ellipse(X, Y, R * (1 + wb - st), R * (1 - wb + st), 0, 0, 7);
   const g = ctx.createRadialGradient(X, Y, R * 0.55, X, Y, R);
   g.addColorStop(0, 'rgba(255,255,255,0.06)'); g.addColorStop(0.75, 'rgba(190,225,255,0.22)'); g.addColorStop(1, 'rgba(255,255,255,0.6)');
   ctx.fillStyle = g; ctx.fill();
   ctx.lineWidth = 0.11 * U;
   const cg = ctx.createConicGradient ? ctx.createConicGradient(t * 0.8, X, Y) : null;
   if (cg) { ['#ff9ad5', '#ffe58a', '#9df7c4', '#8fd3ff', '#c7a6ff', '#ff9ad5'].forEach((c, i) => cg.addColorStop(i / 5, c)); ctx.strokeStyle = cg; } else ctx.strokeStyle = 'rgba(190,225,255,0.85)';
-  ctx.globalAlpha = 0.95; ctx.stroke(); ctx.globalAlpha = 1;
+  const a0 = ctx.globalAlpha; ctx.globalAlpha = a0 * 0.95; ctx.stroke(); ctx.globalAlpha = a0;
   ctx.beginPath(); ctx.ellipse(X - R * 0.42, Y - R * 0.45, R * 0.26, R * 0.13, -0.7, 0, 7); ctx.fillStyle = 'rgba(255,255,255,0.9)'; ctx.fill();
   ctx.beginPath(); ctx.arc(X + R * 0.5, Y + R * 0.42, R * 0.06, 0, 7); ctx.fillStyle = 'rgba(255,255,255,0.55)'; ctx.fill();
   ctx.restore();
@@ -7415,8 +7427,14 @@ function drawBcRideA(cx, by, RUN_H, JUMP_H) {
     return true;
   }
   const zc = bcOnCable();
-  if (zc) { drawSprite('a_run', 0, cx, by + 0.04 * U, RUN_H, false); return true; }   // standing in the cabin, looking out
-  if (bcOnBub()) { drawSprite('a_run', 0, cx, by + 0.04 * U - bcBubbleBob() * U, RUN_H, false); return true; }   // floating in the bubble (drawn round him after)
+  if (zc) { drawSprite('a_run', zc.wx !== undefined ? Math.floor(zc.wx / 0.42) % 6 : 0, cx, by + 0.04 * U, RUN_H, false); return true; }   // standing in the cabin, looking out; then walking out of it
+  const zb = bcOnBub();
+  if (zb) {   // floating in the bubble (drawn round him after): he paddles his legs slowly and sways with the drift, like a hamster ball in the air
+    const tl = Math.cos((zb.t - G.L.bcBubble.ride.w0) * 1.3) * 0.16 * Math.min(1, zb.t / 0.8), my = by + 0.04 * U - RUN_H * U * 0.45;
+    ctx.save(); ctx.translate(cx, my); ctx.rotate(tl); ctx.translate(-cx, -my);
+    drawSprite('a_run', Math.floor(zb.t * 7) % 6, cx, by + 0.04 * U, RUN_H, false);
+    ctx.restore(); return true;
+  }
   const z = bcOnRide(); if (!z) return false;
   const bob = z.v > 0.5 && !(z.jy > 0) ? Math.sin(animT * 22) * 0.012 * U : 0, X = sx(z.s);
   shadow(z.s + 0.2, 0.03, 1.0, 0.26);
