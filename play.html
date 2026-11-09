@@ -440,10 +440,10 @@ html.lw-loading .splash{visibility:hidden}
   </div>
 </section>
 
-<script src="kids/kids-meta.js?v=1794236244"></script>
-<script src="kids/kids.js?v=1794236244"></script>
-<script src="sfx.js?v=1794236244"></script>
-<script src="game.js?v=1794236244"></script>
+<script src="kids/kids-meta.js?v=1794236968"></script>
+<script src="kids/kids.js?v=1794236968"></script>
+<script src="sfx.js?v=1794236968"></script>
+<script src="game.js?v=1794236968"></script>
 <script>
 (() => {
 'use strict';
@@ -1294,7 +1294,7 @@ $('retryBtn').addEventListener('click', () => startLevel(levelIndex));
 // If the builder opened this tab, close it and show the builder again; otherwise open the builder with this child's world filled in.
 let lwJoinEnd = false;
 function lwBackToBuilder() {
-  const url = 'builder.html?v=1794236244&w=' + lwEncode(LW);
+  const url = 'builder.html?v=1794236968&w=' + lwEncode(LW);
   try { if (window.opener && !window.opener.closed && /builder\.html/.test(window.opener.location.pathname)) { window.opener.focus(); window.close(); setTimeout(() => { location.href = url; }, 400); return; } } catch (e) {}
   location.href = url;
 }
@@ -1521,9 +1521,10 @@ function updateCamera(dt) {
   const riding = p.onGround && p.ground && p.ground.mover && p.ground.ax !== 'x';   // on a moving cradle: look where it's going
   const cable = G.L.ctCab && p.ride && G.L.rides[p.ride.i] === G.L.ctCab;   // Cape Town's cable car: keep the cabin and the climb ahead in view
   const bcab = G.L.bcCable && p.ride && G.L.rides[p.ride.i] === G.L.bcCable.ride;   // Barcelona's cable car: keep the whole cabin in the middle as it swoops
-  const ty = bcab ? ARun.rideY(G.L.bcCable.ride, p.ride.s + 1.0) + 1.9 - vh * 0.5 : cable ? ARun.rideY(G.L.ctCab, p.ride.s + 1.2) + 2.2 - vh * 0.5 : Math.max(floor, (riding ? p.y + ARun.moverY(p.ground, G.t + 0.3) - p.ground.y : p.y) + 1.5 - vh * 0.55);
+  const bbub = G.L.bcBubble && p.ride && G.L.rides[p.ride.i] === G.L.bcBubble.ride;   // the bubble: keep it in the middle as it floats up
+  const ty = bbub ? Math.max(floor, p.y + 0.8 - vh * 0.5) : bcab ? ARun.rideY(G.L.bcCable.ride, p.ride.s + 1.0) + 1.9 - vh * 0.5 : cable ? ARun.rideY(G.L.ctCab, p.ride.s + 1.2) + 2.2 - vh * 0.5 : Math.max(floor, (riding ? p.y + ARun.moverY(p.ground, G.t + 0.3) - p.ground.y : p.y) + 1.5 - vh * 0.55);
   if (G.camSnap) { cam.y = ty; G.camSnap = false; }
-  else cam.y += (ty - cam.y) * Math.min(1, dt * (riding || cable ? 14 : bcab ? 6 : 3));
+  else cam.y += (ty - cam.y) * Math.min(1, dt * (riding || cable ? 14 : bcab || bbub ? 6 : 3));
 }
 
 function drawSky() {
@@ -7216,26 +7217,43 @@ function bcCabinAt() {
   const s = z ? z.s : done ? end : r.x0, sw = z && z.v > 0.5 ? Math.sin(animT * 2.2) * 0.04 : 0, lift = z && z.off > 0 ? z.off * r.up : 0;
   return { x: s - 0.9, y: ARun.rideY(r, s) + lift - 0.2 + sw, lift };
 }
-// the Gegants parade (Ladi 2026-11-09): the king carries A on his shoulders, the queen and the fisherman walk behind him.
-// They wait in the lane, walk while he rides, and stop where he hops off. Each sways from foot to foot as it walks
-const bcOnGeg = () => { const z = G.p.ride, Q = G.L.bcGegants; return z && Q && G.L.rides[z.i] === Q.ride ? z : null; };
-function bcGegS() {
-  const Q = G.L.bcGegants, z = bcOnGeg(), r = Q.ride, done = (G.p.rideN || 0) > G.L.rides.indexOf(r);
-  return { s: z ? z.s : done ? Q.x1 : Q.x0, walking: !!(z && z.v > 0.3) };
-}
-function bcGegBob(i) { const w = bcGegS().walking; return w ? Math.abs(Math.sin(animT * 4.2 + i * 1.3)) * 0.07 : 0; }
-function bcGegants() {
-  const Q = G.L.bcGegants; if (!Q) return;
-  const S = bcGegS(); if (sx(S.s + 4) < 0 || sx(S.s - 9) > W) return;
-  const list = [['bc_gegant2', -6.0, 2], ['bc_gegant1', -2.9, 1], ['bc_gegant0', -0.75, 0]];   // (A stands on the king's back shoulder, behind his head)
-  for (const [k, dx, i] of list) {
-    const im = IMG[k]; if (!im) continue;
-    const h = BC_GEG_H[k], w = h * im.width / im.height, x = S.s + dx, a = S.walking ? Math.sin(animT * 4.2 + i * 1.3) * 0.035 : 0;
-    shadow(x + w / 2, 0.03, w * 0.8, 0.3);
-    ctx.save(); ctx.translate(sx(x + w / 2), sy(bcGegBob(i))); ctx.rotate(a); ctx.drawImage(im, -w * U / 2, -h * U, w * U, h * U); ctx.restore();
+// the street bubble artist (Ladi 2026-11-09): he stands in the lane with his rope wand; the giant bubble forms round A,
+// floats him up over the roofs, and pops (a tap, or by itself at the end) with a little burst of droplets
+const bcOnBub = () => { const z = G.p.ride, Q = G.L.bcBubble; return z && Q && G.L.rides[z.i] === Q.ride ? z : null; };
+let bcPop = null;
+function bcBubbleBob() { const z = bcOnBub(); return z ? Math.sin(z.t * 2.3) * 0.12 : 0; }
+function bcBubbles() {
+  const Q = G.L.bcBubble; if (!Q) return;
+  const z = bcOnBub(), p = G.p;
+  if (z) {
+    const cx = p.x + ARun.PW / 2, cy = p.y + 0.78 + bcBubbleBob(), r = 1.25 * Math.min(1, 0.25 + z.t / Q.ride.w0 * 0.75);
+    bcBubbleDraw(cx, cy, r, z.t);
+    G.bcBubWas = { x: cx, y: cy, r };
+  } else if (G.bcBubWas) { bcPop = { x: G.bcBubWas.x, y: G.bcBubWas.y, r: G.bcBubWas.r, t: animT }; G.bcBubWas = null; }
+  if (bcPop) {   // the pop: a ring of soapy droplets flying out and fading
+    const k = (animT - bcPop.t) / 0.35; if (k > 1) { bcPop = null; return; }
+    ctx.save(); ctx.globalAlpha = 1 - k; ctx.fillStyle = 'rgba(220,240,255,0.9)';
+    for (let i = 0; i < 12; i++) { const a = i / 12 * Math.PI * 2, d = bcPop.r * (1 + k * 0.8); ctx.beginPath(); ctx.arc(sx(bcPop.x + Math.cos(a) * d), sy(bcPop.y + Math.sin(a) * d), 0.07 * U, 0, 7); ctx.fill(); }
+    ctx.restore();
   }
 }
-const BC_GEG_H = { bc_gegant0: 5.2, bc_gegant1: 5.135, bc_gegant2: 5.176 };
+// a soap bubble drawn in code: see-through, a rainbow sheen round its rim that slowly turns, a white shine at the top left
+function bcBubbleDraw(x, y, r, t) {
+  const X = sx(x), Y = sy(y), R = r * U;
+  ctx.save();
+  ctx.beginPath(); ctx.ellipse(X, Y, R * (1 + Math.sin(t * 3.1) * 0.025), R * (1 - Math.sin(t * 3.1) * 0.025), 0, 0, 7);
+  const g = ctx.createRadialGradient(X, Y, R * 0.55, X, Y, R);
+  g.addColorStop(0, 'rgba(255,255,255,0.06)'); g.addColorStop(0.75, 'rgba(190,225,255,0.22)'); g.addColorStop(1, 'rgba(255,255,255,0.6)');
+  ctx.fillStyle = g; ctx.fill();
+  ctx.lineWidth = 0.11 * U;
+  const cg = ctx.createConicGradient ? ctx.createConicGradient(t * 0.8, X, Y) : null;
+  if (cg) { ['#ff9ad5', '#ffe58a', '#9df7c4', '#8fd3ff', '#c7a6ff', '#ff9ad5'].forEach((c, i) => cg.addColorStop(i / 5, c)); ctx.strokeStyle = cg; } else ctx.strokeStyle = 'rgba(190,225,255,0.85)';
+  ctx.globalAlpha = 0.95; ctx.stroke(); ctx.globalAlpha = 1;
+  ctx.beginPath(); ctx.ellipse(X - R * 0.42, Y - R * 0.45, R * 0.26, R * 0.13, -0.7, 0, 7); ctx.fillStyle = 'rgba(255,255,255,0.9)'; ctx.fill();
+  ctx.beginPath(); ctx.arc(X + R * 0.5, Y + R * 0.42, R * 0.06, 0, 7); ctx.fillStyle = 'rgba(255,255,255,0.55)'; ctx.fill();
+  ctx.restore();
+}
+const BC_BUSK_H = { bc_busker: 3.2, bc_bucket: 0.6, bc_hat: 0.3 };
 // in front of A: the cabin's red lower half and a tint of glass, so he is inside it
 function bcCabinFront() {
   const C = G.L.bcCable, im = IMG.bc_cabin; if (!C || !im) return;
@@ -7355,11 +7373,12 @@ function drawBarcelona(dt) {
   drawKit(a => !a.back && !inside(a));
   bcTaxiIntro();
   bcScooter();
-  bcGegants();
+  if (G.L.bcBubble) { const Q = G.L.bcBubble; if (IMG.bc_busker && sx(Q.x + 3) > 0 && sx(Q.x - 1) < W) { bxImg('bc_bucket', Q.x - 0.9, 0, BC_BUSK_H.bc_bucket); bxImg('bc_busker', Q.x, 0, BC_BUSK_H.bc_busker); bxImg('bc_hat', Q.x + 2.0, 0, BC_BUSK_H.bc_hat); } }
 }
 function drawBcFront() {
   if (G.kitIn) bcInsideFront(); else { bcArchFront(); bcSfOut(true); }
   if (!G.kitIn && G.L.bcCable) bcCabinFront();
+  if (!G.kitIn && G.L.bcBubble) bcBubbles();   // (the bubble goes over A)
   drawKitDoor(BC_EDGE);
   bcFlock();
   const F = G.flag; if (G.L.finale !== undefined && F && F.ride !== undefined && F.ride > 0.3 && !$('hud').hidden) $('hud').hidden = true;
@@ -7397,12 +7416,7 @@ function drawBcRideA(cx, by, RUN_H, JUMP_H) {
   }
   const zc = bcOnCable();
   if (zc) { drawSprite('a_run', 0, cx, by + 0.04 * U, RUN_H, false); return true; }   // standing in the cabin, looking out
-  const zg = bcOnGeg();
-  if (zg) {   // on the king giant's shoulders: standing, or a hop for the coins
-    const up = zg.jy > 0.15;
-    drawSprite(up ? 'a_jump' : 'a_run', up ? 1 : 0, cx, by + (up ? -0.82 * U : 0.04 * U) - bcGegBob(0) * U, up ? JUMP_H : RUN_H, false, up ? { center: true } : {});
-    return true;
-  }
+  if (bcOnBub()) { drawSprite('a_run', 0, cx, by + 0.04 * U - bcBubbleBob() * U, RUN_H, false); return true; }   // floating in the bubble (drawn round him after)
   const z = bcOnRide(); if (!z) return false;
   const bob = z.v > 0.5 && !(z.jy > 0) ? Math.sin(animT * 22) * 0.012 * U : 0, X = sx(z.s);
   shadow(z.s + 0.2, 0.03, 1.0, 0.26);

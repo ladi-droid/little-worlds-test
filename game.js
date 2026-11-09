@@ -2980,19 +2980,18 @@ const ALL_LEVELS = [
     L.bcLife.push(['bc_pigeon0', BR + 4.0, 8.45 * k, 'sit'], ['bc_gull1', BR + 12, 11.0, 'fly']);
     const G2 = BR + BRW + 3.0;
     const R3 = row(G2 + 4.0, ['bc_goth_endl', 'bc_goth3', 'bc_goth6', 'bc_goth1', 'bc_goth4', 'bc_goth_endr']);
-    // the Gegants (festival giants) parade down the lane (Ladi 2026-11-09): the king lifts A onto his shoulders and carries him,
-    // the queen and the fisherman walk behind; a tap hops A up for the coins. Whether he jumps or walks up, the king always picks him up
-    const GX0 = G2 + 3.0, GY = 3.74, GX1 = GX0 + 28.0;
-    const geg = { kind: 'bcgegant', x0: GX0, pts: [[GX0, GY], [GX1, GY]], v: 6.0, acc: 3.5, w0: 0.5, w1: 0.35, liftIn: 0.5, input: true, jump: 10.0, grav: 30,
-      seat: 0.0, up: 0, down: 0, exitY: GY, exitDx: 0.9 };
-    L.rides.push(geg); L.bcGegants = { ride: geg, x0: GX0, x1: GX1 };
-    lean('bc_pots', G2 - 1.4, 1.8, 1.4);                                            // (flower pots in the lane where the giants wait)
-    for (let x = GX0 + 2.0; x < GX1 - 1; x += 1.5) {                  // coins along his ride, and three hops for the high ones
-      const k = [6.5, 13.5, 20.5].find(a => x >= a + GX0 - 0.1 && x < a + GX0 + 4.4);
-      b.coins(x, GY + (k === undefined ? 0.75 : 0.75 + 1.3 * Math.sin(Math.PI * (x - GX0 - k) / 4.5)), 1);
-    }
+    // the street bubble artist (Ladi 2026-11-09, instead of the giants): he blows a giant bubble round A and it floats him up past the
+    // balconies and over the roofs. A tap pops it (he drops onto the roofs or the lane); untouched, it pops by itself past the last roof
+    const GX0 = G2 + 3.0, GX1 = R3 + 1.5;
+    const bub = { kind: 'bcbubble', x0: GX0, pts: [[GX0, 0], [GX0 + 2.0, 1.2], [GX0 + 7.0, 5.0], [GX0 + 12.0, 8.0], [GX0 + 17.0, 9.4], [GX1, 9.6]],
+      v: 4.0, acc: 2.5, w0: 0.7, w1: 0.1, input: true, popTap: true, seat: 0.0, up: 0, down: 0, exitY: 9.6 };
+    L.rides.push(bub); L.bcBubble = { ride: bub, x: G2 + 0.4 };
+    lean('bc_pots', G2 - 1.4, 1.8, 1.4);                                            // (flower pots in the lane by the bubble artist)
+    { const P = bub.pts, by = x => { for (let i = 1; i < P.length; i++) if (x <= P[i][0]) { const a = P[i - 1], c = P[i]; return a[1] + (c[1] - a[1]) * (x - a[0]) / (c[0] - a[0]); } return 9.6; };
+      for (let x = GX0 + 1.5; x < GX1 - 0.5; x += 1.25) b.coins(x, by(x) + 0.75 + 0.5 * Math.sin((x - GX0) * 1.3), 1); }   // a wavy trail of coins up through the air
+    b.coins(G2 + 5.0, 8.4, 3, 0.9); b.coins(G2 + 13.0, 8.6, 3, 0.9); b.coins(G2 + 17.0, 6.2, 3, 0.9);   // (on the roofs and balconies, for popping early)
     ground(79.7 + E, 176 + D + E, 'bcsetts');
-    lean('bc_cafe', GX1 + 1.2, 2.1, 1.3); hop('bc_bollards', 172.0 + D + E, 1.0);   // (cafe tables where the giants stop) L.bcJoins.push(176 + D + E);
+    lean('bc_cafe', GX1 + 2.2, 2.1, 1.3); hop('bc_bollards', 172.0 + D + E, 1.0); L.bcJoins.push(176 + D + E);   // (cafe tables where the bubble lands him)
 
     // ---------- 3. La Rambla and La Boqueria (from outside) ----------
     const fk = i => ({ key: 'bc_flowers' + i, w: aw('bc_flowers' + i, 3.2), h: 3.2, top: 3.0 });
@@ -3293,6 +3292,12 @@ function rideTick(g, dt) {
   }
   const z = p.ride, r = R[z.i], end = r.pts[r.pts.length - 1][0];
   z.t += dt;
+  if (r.popTap && p.buffer > 0 && z.t > r.w0 + 0.3) {   // (Barcelona's bubble: a tap pops it and he drops from where he is)
+    p.buffer = 0; p.ride = null; p.rideN = z.i + 1;
+    p.vy = 0; p.vx = 0; p.onGround = false; p.dir = 1; p.coyote = 0; p.rising = false;
+    g.events.push({ type: 'rideEnd', kind: r.kind, pop: true });
+    return true;
+  }
   if (r.input) {
     if (p.buffer > 0) { if (r.jump) { if (!(z.jy > 0)) { z.jy = 0.001; z.jvy = r.jump; } } else { z.tgt = 1; z.tt = 0.55; } p.buffer = 0; }
     if (z.jy > 0) { z.jvy -= r.grav * dt; z.jy += z.jvy * dt; if (z.jy <= 0) { z.jy = 0; z.jvy = 0; } }
