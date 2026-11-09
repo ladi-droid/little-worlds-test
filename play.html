@@ -440,10 +440,10 @@ html.lw-loading .splash{visibility:hidden}
   </div>
 </section>
 
-<script src="kids/kids-meta.js?v=1794213962"></script>
-<script src="kids/kids.js?v=1794213962"></script>
-<script src="sfx.js?v=1794213962"></script>
-<script src="game.js?v=1794213962"></script>
+<script src="kids/kids-meta.js?v=1794236244"></script>
+<script src="kids/kids.js?v=1794236244"></script>
+<script src="sfx.js?v=1794236244"></script>
+<script src="game.js?v=1794236244"></script>
 <script>
 (() => {
 'use strict';
@@ -1294,7 +1294,7 @@ $('retryBtn').addEventListener('click', () => startLevel(levelIndex));
 // If the builder opened this tab, close it and show the builder again; otherwise open the builder with this child's world filled in.
 let lwJoinEnd = false;
 function lwBackToBuilder() {
-  const url = 'builder.html?v=1794213962&w=' + lwEncode(LW);
+  const url = 'builder.html?v=1794236244&w=' + lwEncode(LW);
   try { if (window.opener && !window.opener.closed && /builder\.html/.test(window.opener.location.pathname)) { window.opener.focus(); window.close(); setTimeout(() => { location.href = url; }, 400); return; } } catch (e) {}
   location.href = url;
 }
@@ -7264,7 +7264,7 @@ function bcTaxiIntro() {
 // ---------- the e-scooter: parked at the kerb, A rides it up to Passeig de Gracia, it stays parked at the top ----------
 function bcScooter() {
   const L = G.L, S = L.bcScooter; if (!S || bcOnRide()) return;
-  const x = bcRideDone() ? L.bcRide.pts[1][0] - 0.2 : L.bcRide.x0 - 0.4;
+  const x = bcRideDone() ? L.bcRide.pts[L.bcRide.pts.length - 1][0] - 0.2 : L.bcRide.x0 - 0.4;   // (left parked where he stepped off)
   if (sx(x + 2) < 0 || sx(x - 1) > W) return;
   shadow(x + 0.45, 0.03, 1.0, 0.26); bxImg('bc_scooter', x, 0, 1.45, true);   // (the picture faces left: flipped to face the way A goes)
 }
@@ -7288,13 +7288,18 @@ function bcInside() {
   // the nave picture at 70% of the screen height (Ladi 2026-11-09: further out, so its windows look the size of the place), still up and down
   const pic = (key, c = ctx) => {
     const im = IMG[key]; if (!im) return;
-    const h = H * 0.7, w = h * im.width / im.height, bot = H * 1.01, top = bot - h, vh = h * 0.3;
+    const h = H * 0.55, w = h * im.width / im.height, bot = H * 1.01, top = bot - h, vh = h * 0.3;   // (zoomed further out: Ladi 2026-11-09)
     let x0 = -(((cam.x - L.bcDoorIn) * U * 0.3) % w); if (x0 > 0) x0 -= w;
     for (let x = x0; x < W; x += w - 1) {
       c.drawImage(im, x, top, w, h);
       // above it the vaults go on up: the picture's own vaulted top, mirrored, so the stone trees meet in a ceiling (no seam)
-      c.save(); c.translate(0, top); c.scale(1, -1); c.drawImage(im, 0, 0, im.width, im.height * 0.3, x, -1, w, vh); c.restore();
-      if (top - vh > 0) { c.save(); c.translate(0, top - vh); c.drawImage(im, 0, 0, im.width, im.height * 0.3, x, -vh + 1, w, vh); c.restore(); }
+      // (bands of the vaulted top, mirrored then not, up to the top of the screen: each band's edge meets the same row of the next)
+      for (let y = top, k = 0; y > -1; y -= vh - 1, k++) {
+        c.save(); c.translate(0, y);
+        if (k % 2 === 0) { c.scale(1, -1); c.drawImage(im, 0, 0, im.width, im.height * 0.3, x, -1, w, vh); }
+        else c.drawImage(im, 0, 0, im.width, im.height * 0.3, x, -vh + 1, w, vh);
+        c.restore();
+      }
     }
   };
   if (a > 0) { ctx.save(); ctx.beginPath(); ctx.rect(-10, -10, Math.min(W + 10, b) + 10, H + 20); ctx.clip(); pic('bc_in_cool'); ctx.restore(); }   // the cool blue-green side,
