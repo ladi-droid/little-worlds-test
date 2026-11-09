@@ -2903,18 +2903,15 @@ const ALL_LEVELS = [
     const T2 = 63.0 + E, CX0 = T1 + 5.8, CX1 = T2 - 1.6;                // (where A stands in the cabin: 0.9 in from its left wall)
     L.rides = L.rides || [];
     // the swoop (Ladi 2026-11-09): out of the station it dips low over the flats like a rollercoaster, speeding up downhill,
-    // climbs, dips again and rises to the far tower. A tap swings the cabin up on its cable for the high coins
+    // climbs, dips again and rises to the far tower. No tapping in the cabin (Ladi 2026-11-09): he rides through the coins
     const CK = [[CX0, 14.6], [CX0 + 2.5, 14.6], [CX0 + 12.0, 9.6], [CX0 + 19.0, 9.6], [CX0 + 25.0, 12.8], [CX0 + 30.0, 10.4], [CX0 + 36.0, 10.4], [CX1 - 3.0, 14.6], [CX1, 14.6]];
     const CP = [CK[0]];                                                // (eased between those points, so the cable curves instead of kinking)
     for (let i = 1; i < CK.length; i++) { const [x0, y0] = CK[i - 1], [x1, y1] = CK[i], n = Math.max(1, Math.round(x1 - x0)); for (let j = 1; j <= n; j++) { const k = j / n; CP.push([x0 + (x1 - x0) * k, y0 + (y1 - y0) * k * k * (3 - 2 * k)]); } }
-    const cable = { kind: 'bccable', x0: CX0, pts: CP, v: 8.0, acc: 6.0, swoop: 1.6, w0: 0.6, w1: 0.5, input: true, seat: 0.0, up: 1.7, down: 0, exitY: 14.6 };
+    const cable = { kind: 'bccable', x0: CX0, pts: CP, v: 8.0, acc: 6.0, swoop: 1.6, w0: 0.6, w1: 0.5, input: false, seat: 0.0, up: 0, down: 0, exitY: 14.6 };
     L.rides.push(cable); L.bcCable = { ride: cable, y: 17.7, hang: 3.1, x0: T1 + 4.3, x1: T2 + 1.21, posts: [T1 + 4.3, T2 + 1.21] };
     b.ledge(CX1 - 0.9, 14.6, 3.2);                                     // (at the far tower he walks out of the cabin onto the deck)
     const cy = x => { for (let i = 1; i < CP.length; i++) if (x <= CP[i][0]) { const a = CP[i - 1], c = CP[i]; return a[1] + (c[1] - a[1]) * (x - a[0]) / (c[0] - a[0]); } return 14.6; };
-    for (let x = CX0 + 3.0; x < CX1 - 1; x += 1.3) {                   // a line of coins along the ride he swoops through,
-      const hi = (x > CX0 + 12.5 && x < CX0 + 18.5) || (x > CX0 + 30.5 && x < CX0 + 35.5);
-      b.coins(x, cy(x) + (hi ? 2.5 : 0.75), 1);   //  and on the low runs the high ones a tap swings him up to
-    }
+    for (let x = CX0 + 3.0; x < CX1 - 1; x += 1.3) b.coins(x, cy(x) + 0.75, 1);   // a line of coins along the swoop
     L.bcLife.push(['bc_gull1', 44, 18.5, 'fly'], ['bc_gull0', 58, 19.5, 'fly'], ['bc_gull2', 72, 18.0, 'fly']);
     prop('bc_palm', 37.0, 7.0);
     // Barceloneta flats close behind, different heights, washing on the balconies; balconies are ledges
@@ -2983,19 +2980,18 @@ const ALL_LEVELS = [
     L.bcLife.push(['bc_pigeon0', BR + 4.0, 8.45 * k, 'sit'], ['bc_gull1', BR + 12, 11.0, 'fly']);
     const G2 = BR + BRW + 3.0;
     const R3 = row(G2 + 4.0, ['bc_goth_endl', 'bc_goth3', 'bc_goth6', 'bc_goth1', 'bc_goth4', 'bc_goth_endr']);
-    // the Gegants (festival giants) parade down the lane (Ladi 2026-11-09): the king lifts A onto his shoulders and carries him,
-    // the queen and the fisherman walk behind; a tap hops A up for the coins. Whether he jumps or walks up, the king always picks him up
-    const GX0 = G2 + 3.0, GY = 3.74, GX1 = GX0 + 28.0;
-    const geg = { kind: 'bcgegant', x0: GX0, pts: [[GX0, GY], [GX1, GY]], v: 6.0, acc: 3.5, w0: 0.5, w1: 0.35, liftIn: 0.5, input: true, jump: 10.0, grav: 30,
-      seat: 0.0, up: 0, down: 0, exitY: GY, exitDx: 0.9 };
-    L.rides.push(geg); L.bcGegants = { ride: geg, x0: GX0, x1: GX1 };
-    lean('bc_pots', G2 - 1.4, 1.8, 1.4);                                            // (flower pots in the lane where the giants wait)
-    for (let x = GX0 + 2.0; x < GX1 - 1; x += 1.5) {                  // coins along his ride, and three hops for the high ones
-      const k = [6.5, 13.5, 20.5].find(a => x >= a + GX0 - 0.1 && x < a + GX0 + 4.4);
-      b.coins(x, GY + (k === undefined ? 0.75 : 0.75 + 1.3 * Math.sin(Math.PI * (x - GX0 - k) / 4.5)), 1);
-    }
+    // the street bubble artist (Ladi 2026-11-09, instead of the giants): he blows a giant bubble round A and it floats him up past the
+    // balconies and over the roofs. A tap pops it (he drops onto the roofs or the lane); untouched, it pops by itself past the last roof
+    const GX0 = G2 + 3.0, GX1 = R3 + 1.5;
+    const bub = { kind: 'bcbubble', x0: GX0, pts: [[GX0, 0], [GX0 + 2.0, 1.2], [GX0 + 7.0, 5.0], [GX0 + 12.0, 8.0], [GX0 + 17.0, 9.4], [GX1, 9.6]],
+      v: 4.0, acc: 2.5, w0: 0.7, w1: 0.1, input: true, popTap: true, seat: 0.0, up: 0, down: 0, exitY: 9.6 };
+    L.rides.push(bub); L.bcBubble = { ride: bub, x: GX0 - 2.4 };                    // (the artist: his rope loop is where the bubble forms round A)
+    lean('bc_pots', G2 - 1.4, 1.8, 1.4);                                            // (flower pots in the lane by the bubble artist)
+    { const P = bub.pts, by = x => { for (let i = 1; i < P.length; i++) if (x <= P[i][0]) { const a = P[i - 1], c = P[i]; return a[1] + (c[1] - a[1]) * (x - a[0]) / (c[0] - a[0]); } return 9.6; };
+      for (let x = GX0 + 1.5; x < GX1 - 0.5; x += 1.25) b.coins(x, by(x) + 0.75 + 0.5 * Math.sin((x - GX0) * 1.3), 1); }   // a wavy trail of coins up through the air
+    b.coins(G2 + 5.0, 8.4, 3, 0.9); b.coins(G2 + 13.0, 8.6, 3, 0.9); b.coins(G2 + 17.0, 6.2, 3, 0.9);   // (on the roofs and balconies, for popping early)
     ground(79.7 + E, 176 + D + E, 'bcsetts');
-    lean('bc_cafe', GX1 + 1.2, 2.1, 1.3); hop('bc_bollards', 172.0 + D + E, 1.0);   // (cafe tables where the giants stop) L.bcJoins.push(176 + D + E);
+    lean('bc_cafe', GX1 + 2.2, 2.1, 1.3); hop('bc_bollards', 172.0 + D + E, 1.0); L.bcJoins.push(176 + D + E);   // (cafe tables where the bubble lands him)
 
     // ---------- 3. La Rambla and La Boqueria (from outside) ----------
     const fk = i => ({ key: 'bc_flowers' + i, w: aw('bc_flowers' + i, 3.2), h: 3.2, top: 3.0 });
@@ -3037,7 +3033,8 @@ const ALL_LEVELS = [
     }
     for (const x of BST) prop('bc_boost', x, BC_RAMP.bc_boost);
     pts.push([SE, 0]);
-    const ride = { kind: 'scooter', x0: SC, pts, ramps, boosts: BST.map(x => [x, x + aw('bc_boost', BC_RAMP.bc_boost)]), v: 13.0, acc: 8.0, w0: 0.5, w1: 0.4, input: true, jump: 9.0, grav: 30,
+    const ride = { kind: 'scooter', x0: SC, pts, ramps, boosts: BST.map(x => [x, x + aw('bc_boost', BC_RAMP.bc_boost)]), v: 13.0, acc: 8.0, vEnd: 6.2, w0: 0.5, w1: 0, input: true, jump: 9.0, grav: 30,   // (slows to walking pace and he walks off: Ladi 2026-11-09)
+     
       seat: 0.0, up: 0, down: 0, exitY: 0 };
     L.rides.push(ride); L.bcRide = ride;
     for (const [dx, y] of [[2.0, 0.75], [3.6, 0.75], [5.2, 0.88], [6.8, 1.36], [8.4, 2.15], [10.0, 2.87], [11.6, 3.12], [13.2, 2.92], [14.8, 2.28], [16.4, 1.15], [18.0, 0.75], [19.6, 0.75], [21.2, 0.75], [22.8, 0.75], [24.4, 0.75], [26.0, 1.19], [27.6, 1.65], [29.2, 2.28], [30.8, 3.09], [32.4, 3.68], [34.0, 4.07], [35.6, 4.24], [37.2, 4.18], [38.8, 3.92], [40.4, 3.44], [42.0, 2.73], [43.6, 1.77], [45.2, 0.75], [46.8, 0.75], [48.4, 0.98], [50.0, 1.45], [51.6, 2.23], [53.2, 2.91], [54.8, 3.12], [56.4, 2.69], [58.0, 1.37]]) b.coins(SC + dx, y, 1);   // (along his flights off the ramps, from a test ride)
@@ -3124,7 +3121,7 @@ const ALL_LEVELS = [
     const EX = R6 + 10.0;
     ground(D2, EX + 15.3 * ek, 'bchill');
     art('bc_escalator', EX, 0, ES);                                                   // (in front of the hill's wall: its top landing hides where the wall starts)
-    b.slope(EX + 3.0 * ek, 0, EX + 12.8 * ek, EH); L.slopes[L.slopes.length - 1].belt = 3.0;   // the escalator: it carries him up, he walks off at the top
+    b.slope(EX + 3.0 * ek, 0, EX + 12.8 * ek, EH); L.slopes[L.slopes.length - 1].belt = 1.5;   // (slower: Ladi 2026-11-09)   // the escalator: it carries him up, he walks off at the top
     ground(EX + 12.8 * ek, 900, 'bchill', EH);
     b.coins(EX + 4.0 * ek, 1.6, 6, 1.6 * ek, 0.82);
     lean('bc_stonewall', EX + EW - 1.0, 1.4, 1.35, EH); b.coins(EX + EW - 0.6, EH + 2.6, 4, 0.9);
@@ -3256,6 +3253,11 @@ function hurt(g, why) {
   // float back to where A was standing a moment ago
   let target = g.safe.length ? g.safe[0] : { x: g.L.startX, y: g.L.startY || 0, dir: 1 };
   for (let i = g.safe.length - 1; i >= 0; i--) { if (g.t - g.safe[i].t >= 1.4) { target = g.safe[i]; break; } }
+  const fy = floorAt(g.L, p.x + PW / 2);
+  if (why !== 'fall' && p.y < fy + 1.5 && target.y > fy + 1.0) {   // hit down on the street: stay at street level, never float back up to a tower or roof (Ladi 2026-11-09)
+    const lv = g.safe.filter(s => Math.abs(s.y - fy) < 0.3);
+    target = lv.length ? lv[lv.length - 1] : { x: p.x - 1.5, y: fy, dir: 1 };
+  }
   g.bubble = { fx: p.x, fy: p.y, tx: target.x, ty: target.y, dir: target.dir, t: 0, dur: 1.1 };
   g.mode = 'bubble';
 }
@@ -3283,13 +3285,21 @@ function rideY(r, x) {
 function rideTick(g, dt) {
   const p = g.p, R = g.L.rides;
   if (!p.ride) {
-    const i = p.rideN || 0, r = R[i];
+    let i = p.rideN || 0;
+    while (R[i] && p.x > R[i].x0 + 3) { i++; p.rideN = i; }   // (a ride he got past without boarding, e.g. over the roofs: the next one still works)
+    const r = R[i];
     if (!r || p.x + PW / 2 < r.x0 || p.x > r.x0 + 3 || Math.abs(p.y - r.pts[0][1]) > 6) return false;
     p.ride = { i, s: r.x0, off: 0, tgt: 0, tt: 0, t: 0, v: 0, end: 0, y0: p.y };
     g.events.push({ type: 'ride', kind: r.kind });
   }
   const z = p.ride, r = R[z.i], end = r.pts[r.pts.length - 1][0];
   z.t += dt;
+  if (r.popTap && p.buffer > 0 && z.t > r.w0 + 0.3) {   // (Barcelona's bubble: a tap pops it and he drops from where he is)
+    p.buffer = 0; p.ride = null; p.rideN = z.i + 1;
+    p.vy = 0; p.vx = 0; p.onGround = false; p.dir = 1; p.coyote = 0; p.rising = false;
+    g.events.push({ type: 'rideEnd', kind: r.kind, pop: true });
+    return true;
+  }
   if (r.input) {
     if (p.buffer > 0) { if (r.jump) { if (!(z.jy > 0)) { z.jy = 0.001; z.jvy = r.jump; } } else { z.tgt = 1; z.tt = 0.55; } p.buffer = 0; }
     if (z.jy > 0) { z.jvy -= r.grav * dt; z.jy += z.jvy * dt; if (z.jy <= 0) { z.jy = 0; z.jvy = 0; } }
@@ -3302,7 +3312,7 @@ function rideTick(g, dt) {
     if (r.swoop) { const k = (rideY(r, z.s + 0.5) - rideY(r, z.s - 0.5)); vtop *= Math.max(0.7, Math.min(1.9, 1 - k * r.swoop)); }   // (Barcelona cable car: faster downhill)
     if (r.boosts) for (const b of r.boosts) if (z.s >= b[0] && z.s <= b[1]) { z.boostT = 1.2; }
     if (z.boostT > 0) { z.boostT -= dt; vtop *= 1.45; }                                                                    // (Barcelona scooter: boost arrows)
-    const vmax = Math.min(vtop, Math.sqrt(2 * r.acc * Math.max(0, end - z.s)) + 0.5);
+    const vmax = Math.min(vtop, Math.max(r.vEnd || 0, Math.sqrt(2 * r.acc * Math.max(0, end - z.s)) + 0.5));   // (r.vEnd: slows only to walking pace)
     z.v = z.v > vmax ? Math.max(vmax, z.v - r.acc * 2.5 * dt) : Math.min(vmax, z.v + r.acc * (z.boostT > 0 ? 4 : 1.6) * dt);
     const ps = z.s; z.s = Math.min(end, z.s + z.v * dt);
     for (const m of r.ramps || []) if (ps < m.x && z.s >= m.x) { z.jy = Math.max(0, z.jy || 0) + (m.h || 0) + 0.001; z.jvy = Math.max(z.jvy || 0, m.v); g.events.push({ type: 'jump' }); }   // (kicker ramps launch him)
