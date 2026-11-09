@@ -2907,7 +2907,8 @@ const ALL_LEVELS = [
     const CK = [[CX0, 14.6], [CX0 + 2.5, 14.6], [CX0 + 12.0, 9.6], [CX0 + 19.0, 9.6], [CX0 + 25.0, 12.8], [CX0 + 30.0, 10.4], [CX0 + 36.0, 10.4], [CX1 - 3.0, 14.6], [CX1, 14.6]];
     const CP = [CK[0]];                                                // (eased between those points, so the cable curves instead of kinking)
     for (let i = 1; i < CK.length; i++) { const [x0, y0] = CK[i - 1], [x1, y1] = CK[i], n = Math.max(1, Math.round(x1 - x0)); for (let j = 1; j <= n; j++) { const k = j / n; CP.push([x0 + (x1 - x0) * k, y0 + (y1 - y0) * k * k * (3 - 2 * k)]); } }
-    const cable = { kind: 'bccable', x0: CX0, pts: CP, v: 8.0, acc: 6.0, swoop: 1.6, w0: 0.6, w1: 0.5, input: false, seat: 0.0, up: 0, down: 0, exitY: 14.6 };
+    const cable = { kind: 'bccable', x0: CX0, pts: CP, v: 8.0, acc: 6.0, swoop: 1.6, w0: 0.6, w1: 0.5, vEnd: 6.2, walkOut: 3.2, input: false,   // (walks out as it glides in: Ladi 2026-11-09)
+      seat: 0.0, up: 0, down: 0, exitY: 14.6 };
     L.rides.push(cable); L.bcCable = { ride: cable, y: 17.7, hang: 3.1, x0: T1 + 4.3, x1: T2 + 1.21, posts: [T1 + 4.3, T2 + 1.21] };
     b.ledge(CX1 - 0.9, 14.6, 3.2);                                     // (at the far tower he walks out of the cabin onto the deck)
     const cy = x => { for (let i = 1; i < CP.length; i++) if (x <= CP[i][0]) { const a = CP[i - 1], c = CP[i]; return a[1] + (c[1] - a[1]) * (x - a[0]) / (c[0] - a[0]); } return 14.6; };
@@ -2983,8 +2984,8 @@ const ALL_LEVELS = [
     // the street bubble artist (Ladi 2026-11-09, instead of the giants): he blows a giant bubble round A and it floats him up past the
     // balconies and over the roofs. A tap pops it (he drops onto the roofs or the lane); untouched, it pops by itself past the last roof
     const GX0 = G2 + 3.0, GX1 = R3 + 1.5;
-    const bub = { kind: 'bcbubble', x0: GX0, pts: [[GX0, 0], [GX0 + 2.0, 1.2], [GX0 + 7.0, 5.0], [GX0 + 12.0, 8.0], [GX0 + 17.0, 9.4], [GX1, 9.6]],
-      v: 4.0, acc: 2.5, w0: 0.7, w1: 0.1, input: true, popTap: true, seat: 0.0, up: 0, down: 0, exitY: 9.6 };
+    const bub = { kind: 'bcbubble', x0: GX0, pts: [[GX0, 0], [GX0 + 1.5, 1.6], [GX0 + 6.0, 5.0], [GX0 + 11.0, 8.0], [GX0 + 16.0, 9.4], [GX1, 9.6]],   // (lifts off quicker, wanders about: Ladi 2026-11-09)
+      v: 4.3, acc: 5.0, drift: [0.45, 0.35], w0: 0.35, w1: 0.1, input: true, popTap: true, seat: 0.0, up: 0, down: 0, exitY: 9.6 };
     L.rides.push(bub); L.bcBubble = { ride: bub, x: GX0 - 2.4 };                    // (the artist: his rope loop is where the bubble forms round A)
     lean('bc_pots', G2 - 1.4, 1.8, 1.4);                                            // (flower pots in the lane by the bubble artist)
     { const P = bub.pts, by = x => { for (let i = 1; i < P.length; i++) if (x <= P[i][0]) { const a = P[i - 1], c = P[i]; return a[1] + (c[1] - a[1]) * (x - a[0]) / (c[0] - a[0]); } return 9.6; };
@@ -3044,7 +3045,7 @@ const ALL_LEVELS = [
     // ---------- 4. Passeig de Gracia: the Block of Discord (Lleo Morera, Amatller, Batllo), then up La Pedrera ----------
     const PG0 = SE + 4.0;
     L.bcJoins.push(PG0);
-    hop('bc_benchlamp', PG0 - 1.0, 3.6, 0, 1.3);                                    // (stands on the join: a kerb with a bench)
+    prop('bc_planetree', PG0 - aw('bc_planetree', 7.5) / 2, 7.5);                    // (a plane tree on the join: he runs straight past, Ladi 2026-11-09)
     const MZ = PG0 + 4.0, MH = 10.6, mk = MH / 10.6;
     back('bc_manzana', MZ, MH);
     b.ledge(MZ + 1.0 * mk, 3.1 * mk, 6.5 * mk); b.ledge(MZ + 1.4 * mk, 7.3 * mk, 6.2 * mk);                          // Casa Lleo Morera
@@ -3086,21 +3087,26 @@ const ALL_LEVELS = [
     b.kitDoor(SD, { inside: true }); b.kitSwap(SD, 'sagrada'); L.bcDoorIn = SD;
     ground(PG0, SD, 'bchex');
     hop('bc_chairs', SD + 3.4, 0.95); b.coins(SD + 3.8, 1.9, 3, 1.0);
-    // the lift up to the choir gallery: it waits for A, takes him up, he walks out (rule 12)
-    const GF = 6.0, LX = SD + 8.0, LW = aw('bc_liftshaft', GF + 3.0);
-    back('bc_liftshaft', LX, GF + 3.0);
-    const lift = { kind: 'lift', mover: true, trig: 'bcLift', x: LX + 0.15 * LW, w: 0.7 * LW, y: 0, y0: 0, y1: GF, up: 2.0, d0: 0.25 };
-    (L.movers = L.movers || []).push(lift); L.oneways.push(lift); L.bcLift = lift;
-    solid(lift.x + lift.w, 0.35, GF, 0, { noGrab: true });                           // the shaft's far wall: he waits in the car
-    b.coins(LX + LW / 2, 3.0, 3, 0, 1.6);
-    const GH2 = GF / 4.65 * 6.0, GX2 = LX + LW - 0.3, GW = aw('bc_gallery', GH2), GE = GX2 + GW;
-    back('bc_gallery', GX2, GH2); b.ledge(GX2 + 0.2, GF, GW - 0.4);                  // the choir gallery on its tree arches (he can run under it too)
+    // the wall bounce up to the choir gallery (Ladi 2026-11-09, instead of the lift): A wall-jumps between a stone tree column and the
+    // gallery's first pier, and comes out on top of the gallery
+    const GF = 5.0, LX = SD + 8.0, PSH = 7.2, PSW = aw('bc_liftshaft', PSH), PCW = PSW * 62 / 203, PGAP = 1.8;
+    back('bc_liftshaft', LX, PSH, { clip: [0, PCW] });                                // (the left column of the old lift shaft picture)
+    solid(LX + 0.15, 0.4, PSH - 2.5, 2.0, { noGrab: true });                          // the column (he runs past in front of its foot into the gap;
+    solid(LX + 0.55, PCW - 0.7, PSH - 2.5, 2.0);                                       //  its outer side is no wall to kick off, its inner side is)
+    b.ledge(LX + 0.15, PSH - 0.5, PCW - 0.3);
+    const LW = PCW + PGAP;
+    for (let i = 0, y = 1.6; y < GF + 0.5; i++, y += 1.4) b.coins(LX + PCW + (i % 2 ? PGAP - 0.5 : 0.25), y, 1);   // zigzag up the gap
+    const GH2 = GF / 4.65 * 6.0, GW = aw('bc_gallery', GH2), GX2 = LX + LW - GW * 72 / 1135, GE = GX2 + GW;
+    back('bc_gallery', GX2, GH2); b.ledge(GX2 + 0.2, GF, GW - 0.4);                  // the choir gallery on its tree arches
+    const GP = GX2 + GW * 72 / 1135;                                                  // (its first pier: the right-hand wall of the bounce)
+    solid(GP, GW * 50 / 1135, GF - 0.1);
+    (L.kitClimbs = L.kitClimbs || []).push({ x: LX, xr: GP, gap: GP - LX - PCW, hL: PSH - 0.5, hR: GF });
     b.coins(GX2 + 1.5, GF + 1.0, 9, 1.1); lean('bc_chairs', GX2 + 12.0, 1.35, 1.3, GF); lean('bc_chairs', GX2 + 9.0, 1.35, 1.3); b.coins(GX2 + 16.0, GF + 2.2, 5, 1.0);
     // special 5 = BIG LEAP: off the end of the gallery onto the canopy hanging over the altar
     const CN = GE + 2.4, CNY = GF + 0.3;
     art('bc_canopy', CN, CNY, 2.6, { back: true, hang: true }); b.ledge(CN + 0.2, CNY + 1.35, 4.6);
     b.arc(GE - 0.4, GF + 1.4, 5, 4.4, 2.2);
-    b.special(CN + 2.5, GF + 4.2);                                                  // 5
+    b.special(CN + 2.5, GF + 3.3);                                                  // 5 (lower: the camera stays down inside now)
     back('bc_altar', CN + 0.6, 1.7); b.ledge(CN + 0.75, 1.6, 3.5);
     // the snail stair down from the canopy, then the stone arch bridge, the font, the Passion door
     const S0 = CN + 5.6, SH = GF / (5.5 / 6.0), SW = aw('bc_snail', SH);
@@ -3112,7 +3118,7 @@ const ALL_LEVELS = [
     const D2 = SA + aw('bc_stairarch', 3.0) + 9.0;
     b.kitDoor(D2, { inside: false }); b.kitSwap(D2, 'gracia'); L.bcDoorOut = D2;
     ground(SD, D2, 'bcnave');
-    L.camFloor = [[GX2, GE, GF]];
+    L.camFloor = [];                                                                   // (no camera shift inside: Ladi 2026-11-09)
 
     // ---------- 6. Up to Park Guell: Gracia's streets, the outdoor escalators, the gate, the lizard stair, the terrace at sunset ----------
     const EH = 6.0, ES = EH / 4.9 * 7.4, EW = aw('bc_escalator', ES), ek = ES / 7.4;
@@ -3312,7 +3318,8 @@ function rideTick(g, dt) {
     if (r.swoop) { const k = (rideY(r, z.s + 0.5) - rideY(r, z.s - 0.5)); vtop *= Math.max(0.7, Math.min(1.9, 1 - k * r.swoop)); }   // (Barcelona cable car: faster downhill)
     if (r.boosts) for (const b of r.boosts) if (z.s >= b[0] && z.s <= b[1]) { z.boostT = 1.2; }
     if (z.boostT > 0) { z.boostT -= dt; vtop *= 1.45; }                                                                    // (Barcelona scooter: boost arrows)
-    const vmax = Math.min(vtop, Math.max(r.vEnd || 0, Math.sqrt(2 * r.acc * Math.max(0, end - z.s)) + 0.5));   // (r.vEnd: slows only to walking pace)
+    let vmax = Math.min(vtop, Math.max(r.vEnd || 0, Math.sqrt(2 * r.acc * Math.max(0, end - z.s)) + 0.5));   // (r.vEnd: slows only to walking pace)
+    if (z.wx !== undefined) vmax = Math.sqrt(2 * r.acc * Math.max(0, end - z.s)) + 0.1;                         // (he's walking out: the cabin glides to a stop)
     z.v = z.v > vmax ? Math.max(vmax, z.v - r.acc * 2.5 * dt) : Math.min(vmax, z.v + r.acc * (z.boostT > 0 ? 4 : 1.6) * dt);
     const ps = z.s; z.s = Math.min(end, z.s + z.v * dt);
     for (const m of r.ramps || []) if (ps < m.x && z.s >= m.x) { z.jy = Math.max(0, z.jy || 0) + (m.h || 0) + 0.001; z.jvy = Math.max(z.jvy || 0, m.v); g.events.push({ type: 'jump' }); }   // (kicker ramps launch him)
@@ -3322,6 +3329,22 @@ function rideTick(g, dt) {
       z[h.kind] = { t: z.t, hit };
       g.events.push({ type: h.kind, hit, x: z.s });
     }
+  }
+  // r.walkOut (Barcelona cable car, Ladi 2026-11-09): this far from the station he starts walking out at running pace while the cabin
+  // glides on and stops; the ride ends once it has stopped, with him already out on the deck and running
+  if (r.walkOut && z.wx === undefined && z.s >= end - r.walkOut) z.wx = z.s;
+  if (z.wx !== undefined) {
+    z.wx += r.vEnd * dt;
+    if (z.s >= end) {
+      p.ride = null; p.rideN = z.i + 1;
+      p.x = z.wx - PW / 2; p.y = r.exitY + 0.02; p.vy = 0; p.vx = r.vEnd; p.onGround = false; p.dir = 1; p.coyote = 0;
+      g.events.push({ type: 'rideEnd', kind: r.kind });
+      return true;
+    }
+    p.x = z.wx - PW / 2; p.y = (z.wx < end ? rideY(r, z.wx) : r.exitY) + r.seat;
+    p.vx = r.vEnd; p.vy = 0; p.onGround = false; p.coyote = 0; p.wall = 0; p.blocked = false; p.airT = 0; p.dir = 1; p.rising = false;
+    pickUp(g);
+    return true;
   }
   if (z.s >= end) {
     z.end += dt;
@@ -3334,6 +3357,7 @@ function rideTick(g, dt) {
   }
   const y = rideY(r, z.s);
   p.x = z.s - PW / 2; p.y = y + r.seat + (z.off > 0 ? z.off * r.up : z.off * r.down) + (z.jy || 0);
+  if (r.drift && z.t > r.w0) { const k = Math.min(1, (z.t - r.w0) / 0.8); p.x += k * r.drift[0] * Math.sin((z.t - r.w0) * 1.3); p.y += k * r.drift[1] * Math.sin((z.t - r.w0) * 2.1); }   // (the bubble wanders about as it floats)
   if (r.liftIn && z.t < r.liftIn) { const k = z.t / r.liftIn; p.y = z.y0 + (p.y - z.y0) * k * k * (3 - 2 * k); }   // (lifted up into his seat: the Barcelona giant)
   p.vx = z.v; p.vy = 0; p.onGround = false; p.coyote = 0; p.wall = 0; p.blocked = false; p.airT = 0; p.dir = 1; p.rising = false;
   pickUp(g);
