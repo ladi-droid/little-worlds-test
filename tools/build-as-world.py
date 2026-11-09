@@ -9,7 +9,7 @@ A's World: no child settings, no practice street.
   python3 tools/build-as-world.py --mark     # after publishing: remember what A's World now holds
 
 A's World keeps only the last KEEP trips in trip order (Ladi 2026-11-07): when a new trip is added at the
-end, the oldest one drops out. The test site keeps every trip. Every kept trip is always open.
+end, the oldest one drops out. Trips in ALSO stay as well (West End, Ladi 2026-11-09). The test site keeps every trip. Every kept trip is always open.
 A new trip needs its picture lists in AREA_LISTS below (the script stops if one is missing).
 
 Output:
@@ -32,6 +32,7 @@ LIMIT = 511            # claude.ai artifact file limit (page included)
 SITE_ONLY = re.compile(r'^(hero_.*|ui_card_.*_empty|ui_splash_empty)\.webp$')
 
 KEEP = 5               # how many of the latest trips A's World keeps
+ALSO = ['westend']     # older trips A's World keeps as well, in their trip order (Ladi 2026-11-09: West End, 6 trips)
 # each trip's picture lists in play.html (XX means `const XX_IMAGES = [...]`), plus pictures it borrows from older trips
 AREA_LISTS = {'woolwich': ['WW'], 'brixton': ['BX'], 'greenwich': ['GW2'], 'towerbridge': ['TB'], 'canarywharf': ['CW'],
               'westend': ['WE'], 'heathrow': ['HW'], 'olddubai': ['DX'], 'downtown': ['DT'], 'palm': ['PM'],
@@ -114,8 +115,15 @@ def needed_files(page, keep):
     return files
 
 
+def kept_trips():
+    t = trips()
+    latest = {i for i, _ in t[-KEEP:]}
+    assert all(i in {j for j, _ in t} for i in ALSO), 'a trip in ALSO is missing or parked'
+    return [(i, a) for i, a in t if i in latest or i in ALSO]
+
+
 def main():
-    keep = trips()[-KEEP:]
+    keep = kept_trips()
     files = needed_files(build_page(), keep)
     page = build_page(keep, files)
     os.makedirs(OUT, exist_ok=True)
