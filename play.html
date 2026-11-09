@@ -440,10 +440,10 @@ html.lw-loading .splash{visibility:hidden}
   </div>
 </section>
 
-<script src="kids/kids-meta.js?v=1794162311"></script>
-<script src="kids/kids.js?v=1794162311"></script>
-<script src="sfx.js?v=1794162311"></script>
-<script src="game.js?v=1794162311"></script>
+<script src="kids/kids-meta.js?v=1794200357"></script>
+<script src="kids/kids.js?v=1794200357"></script>
+<script src="sfx.js?v=1794200357"></script>
+<script src="game.js?v=1794200357"></script>
 <script>
 (() => {
 'use strict';
@@ -1294,7 +1294,7 @@ $('retryBtn').addEventListener('click', () => startLevel(levelIndex));
 // If the builder opened this tab, close it and show the builder again; otherwise open the builder with this child's world filled in.
 let lwJoinEnd = false;
 function lwBackToBuilder() {
-  const url = 'builder.html?v=1794162311&w=' + lwEncode(LW);
+  const url = 'builder.html?v=1794200357&w=' + lwEncode(LW);
   try { if (window.opener && !window.opener.closed && /builder\.html/.test(window.opener.location.pathname)) { window.opener.focus(); window.close(); setTimeout(() => { location.href = url; }, 400); return; } } catch (e) {}
   location.href = url;
 }
@@ -7187,9 +7187,28 @@ function bcCable() {
     ctx.save(); ctx.beginPath(); ctx.rect(sx(C.x0), y - 2, sx(C.x1) - sx(C.x0), ch + 4); ctx.clip();
     for (let x = sx(C.x0) + Math.floor((a - sx(C.x0)) / (tw - 1)) * (tw - 1); x < b; x += tw - 1) ctx.drawImage(cb, x, y, tw, ch);
     ctx.restore(); }
-  const z = bcOnCable(), r = C.ride, end = r.pts[1][0], done = (G.p.rideN || 0) > G.L.rides.indexOf(r);
-  const s = z ? z.s : done ? end : r.x0, sw = z && z.v > 0.5 ? Math.sin(animT * 2.2) * 0.05 : 0;
-  bxImg('bc_cabin', s - 0.6, 12.6 + sw, 3.8);
+  for (const x of C.posts) {   // the cable's steel posts on the station roofs, a wheel on top
+    const X = sx(x), y0 = sy(16.0), y1 = sy(C.y + 0.15);
+    ctx.fillStyle = '#2b2b30'; ctx.fillRect(X - 0.11 * U, y1, 0.22 * U, y0 - y1);
+    ctx.fillStyle = '#8f949c'; ctx.fillRect(X - 0.07 * U, y1, 0.14 * U, y0 - y1);
+    ctx.beginPath(); ctx.arc(X, sy(C.y), 0.2 * U, 0, 7); ctx.fillStyle = '#2b2b30'; ctx.fill(); ctx.beginPath(); ctx.arc(X, sy(C.y), 0.12 * U, 0, 7); ctx.fillStyle = '#b8bcc4'; ctx.fill();
+  }
+  const b = bcCabinAt(); bxImg('bc_cabin', b.x, b.y, 3.8);
+}
+// where the cabin hangs: waiting at the first tower, carrying A (he stands 0.9 in from its left wall), then at the far tower
+function bcCabinAt() {
+  const C = G.L.bcCable, z = bcOnCable(), r = C.ride, end = r.pts[1][0], done = (G.p.rideN || 0) > G.L.rides.indexOf(r);
+  const s = z ? z.s : done ? end : r.x0, sw = z && z.v > 0.5 ? Math.sin(animT * 2.2) * 0.04 : 0;
+  return { x: s - 0.9, y: 14.6 - 0.2 + sw };
+}
+// in front of A: the cabin's red lower half and a tint of glass, so he is inside it
+function bcCabinFront() {
+  const C = G.L.bcCable, im = IMG.bc_cabin; if (!C || !im) return;
+  const b = bcCabinAt(), h = 3.8 * U, w = h * im.width / im.height, X = sx(b.x), Y = sy(b.y) - h;
+  if (X > W || X + w < 0) return;
+  const g0 = 0.5, g1 = 0.79;   // (the window band and the red panel, as parts of the picture's height)
+  ctx.save(); ctx.globalAlpha = 0.28; ctx.drawImage(im, 0, im.height * g0, im.width, im.height * (g1 - g0), X, Y + h * g0, w, h * (g1 - g0)); ctx.restore();
+  ctx.drawImage(im, 0, im.height * g1, im.width, im.height * (1 - g1), X, Y + h * g1, w, h * (1 - g1));
 }
 // the two castellers before the human tower: ready, hands low; as he lands on their hands they swing their arms up and launch him
 function bcSpringers() {
@@ -7231,8 +7250,18 @@ function bcSfOut(front) {
 function bcInside() {
   const L = G.L, a = sx(L.bcInSwap - 4), b = sx(L.bcInSwap + 4);
   ctx.fillStyle = '#e8c69a'; ctx.fillRect(0, 0, W, H);
-  // the nave picture: the whole of it on screen, standing still up and down, sliding slowly sideways (Ladi 2026-11-08: not zoomed in)
-  const pic = (key, c = ctx) => { const im = IMG[key]; if (!im) return; const h = H * 1.04, w = h * im.width / im.height, bot = H * 1.02; let x0 = -(((cam.x - L.bcDoorIn) * U * 0.3) % w); if (x0 > 0) x0 -= w; for (let x = x0; x < W; x += w - 1) c.drawImage(im, x, bot - h, w, h); };
+  // the nave picture at 70% of the screen height (Ladi 2026-11-09: further out, so its windows look the size of the place), still up and down
+  const pic = (key, c = ctx) => {
+    const im = IMG[key]; if (!im) return;
+    const h = H * 0.7, w = h * im.width / im.height, bot = H * 1.01, top = bot - h, vh = h * 0.3;
+    let x0 = -(((cam.x - L.bcDoorIn) * U * 0.3) % w); if (x0 > 0) x0 -= w;
+    for (let x = x0; x < W; x += w - 1) {
+      c.drawImage(im, x, top, w, h);
+      // above it the vaults go on up: the picture's own vaulted top, mirrored, so the stone trees meet in a ceiling (no seam)
+      c.save(); c.translate(0, top); c.scale(1, -1); c.drawImage(im, 0, 0, im.width, im.height * 0.3, x, -1, w, vh); c.restore();
+      if (top - vh > 0) { c.save(); c.translate(0, top - vh); c.drawImage(im, 0, 0, im.width, im.height * 0.3, x, -vh + 1, w, vh); c.restore(); }
+    }
+  };
   if (a > 0) { ctx.save(); ctx.beginPath(); ctx.rect(-10, -10, Math.min(W + 10, b) + 10, H + 20); ctx.clip(); pic('bc_in_cool'); ctx.restore(); }   // the cool blue-green side,
   if (b < W) {   // then the warm red-orange side, the light changing across the snail stair (no seam)
     ctx.save(); ctx.beginPath(); ctx.rect(Math.max(-10, a), -10, W + 10 - Math.max(-10, a), H + 20); ctx.clip();
@@ -7289,6 +7318,7 @@ function drawBarcelona(dt) {
 }
 function drawBcFront() {
   if (G.kitIn) bcInsideFront(); else { bcArchFront(); bcSfOut(true); }
+  if (!G.kitIn && G.L.bcCable) bcCabinFront();
   drawKitDoor(BC_EDGE);
   bcFlock();
   const F = G.flag; if (G.L.finale !== undefined && F && F.ride !== undefined && F.ride > 0.3 && !$('hud').hidden) $('hud').hidden = true;
@@ -7325,11 +7355,7 @@ function drawBcRideA(cx, by, RUN_H, JUMP_H) {
     return true;
   }
   const zc = bcOnCable();
-  if (zc) {   // standing on the cabin's roof, holding on; a tap hops him up for the coins
-    const up = zc.jy > 0.15;
-    drawSprite(up ? 'a_jump' : 'a_run', up ? 1 : 0, cx, by + (up ? -0.82 * U : 0.04 * U), up ? JUMP_H : RUN_H, false, up ? { center: true } : {});
-    return true;
-  }
+  if (zc) { drawSprite('a_run', 0, cx, by + 0.04 * U, RUN_H, false); return true; }   // standing in the cabin, looking out
   const z = bcOnRide(); if (!z) return false;
   const bob = z.v > 0.5 && !(z.jy > 0) ? Math.sin(animT * 22) * 0.012 * U : 0, X = sx(z.s);
   shadow(z.s + 0.2, 0.03, 1.0, 0.26);

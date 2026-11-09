@@ -2897,13 +2897,14 @@ const ALL_LEVELS = [
     solid(t1.legR[0], t1.legR[1], 14.35);
     solid(T1 + 0.2, 0.3, 2.0, 14.6, { noGrab: true });                      // (the deck's railing at its far end: off the top of the climb he lands on the deck)
     for (let i = 0, y = 1.6; y < 14.0; i++, y += 1.5) b.coins(i % 2 ? T1 + 2.3 : T1 + 2.85, y, 1);   // zigzag up the gap
-    // the cabin waits at the station; A steps onto its flat roof and rides it high over the beach and the harbour
-    b.ledge(T1 + 4.85, 14.6, 1.2);                                     // (the cabin's roof beside the deck)
-    const T2 = 63.0, CX0 = T1 + 5.5, CX1 = T2 + 0.45;
+    // the cabin waits at the station with its floor level with the deck: A walks in, rides inside it high over the beach, walks out at the far tower
+    b.ledge(T1 + 4.85, 14.6, 1.6);                                     // (the cabin's floor beside the deck)
+    const T2 = 63.0, CX0 = T1 + 5.8, CX1 = T2 - 1.6;                    // (where A stands in the cabin: 0.9 in from its left wall)
     L.rides = L.rides || [];
-    const cable = { kind: 'bccable', x0: CX0, pts: [[CX0, 14.6], [CX1, 14.6]], v: 9.0, acc: 4.0, w0: 0.6, w1: 0.4, input: true, jump: 9.0, grav: 30, seat: 0.0, up: 0, down: 0, exitY: 14.6, exitDx: 0.5 };
-    L.rides.push(cable); L.bcCable = { ride: cable, y: 16.25, x0: T1 + 4.6, x1: T2 + 0.91 };
-    for (let x = CX0 + 5; x < CX1 - 4; x += 7) for (let i = 0; i < 4; i++) b.coins(x + i * 1.3, 15.4 + 1.1 * Math.sin(Math.PI * i / 3), 1);   // hop arcs over the cabin
+    const cable = { kind: 'bccable', x0: CX0, pts: [[CX0, 14.6], [CX1, 14.6]], v: 9.0, acc: 4.0, w0: 0.6, w1: 0.5, input: false, seat: 0.0, up: 0, down: 0, exitY: 14.6 };
+    L.rides.push(cable); L.bcCable = { ride: cable, y: 17.7, x0: T1 + 4.3, x1: T2 + 1.21, posts: [T1 + 4.3, T2 + 1.21] };
+    b.ledge(CX1 - 0.9, 14.6, 3.2);                                     // (at the far tower he walks out of the cabin onto the deck)
+    for (let x = CX0 + 3; x < CX1 - 1; x += 2.2) b.coins(x, 15.3, 1);   // coins along the ride, picked up as he goes
     L.bcLife.push(['bc_gull1', 44, 18.5, 'fly'], ['bc_gull0', 58, 19.5, 'fly']);
     prop('bc_palm', 37.0, 7.0);
     // Barceloneta flats close behind, different heights, washing on the balconies; balconies are ledges
@@ -2938,7 +2939,8 @@ const ALL_LEVELS = [
     b.special(TX + TW / 2, 10.9);                                                   // 2: where the child at the top stands
     // two castellers from the team just before the tower: he jumps onto their hands and they spring him to the top (Ladi 2026-11-08)
     const SP = TX - 3.6;
-    L.bcSpring = { x: SP, s: solid(SP + 0.25, 1.2, 1.35, 0, { bounce: 8.6, noGrab: true }) };
+    L.bcSpring = { x: SP, s: solid(SP + 0.25, 1.2, 1.1, 0, { bounce: 9.4, noGrab: true }) };   // (knee-high: he always hops on)
+    solid(SP + 1.45, 0.3, 5.0, 0, { noGrab: true });                                // (and can't jump past them: Ladi 2026-11-09, they always fling him)
     b.coins(SP + 0.9, 3.0, 1); b.coins(SP + 1.6, 5.4, 1); b.coins(SP + 2.4, 7.6, 1);
     // ---------- the rooftop run: off the top of the human tower, over the old town's roof terraces to the Bishop's Bridge ----------
     // each house: its roof terrace and the little hut / bell turret on it (measured from the pictures: [dx, y, w])
