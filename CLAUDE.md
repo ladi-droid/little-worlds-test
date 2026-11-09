@@ -29,8 +29,8 @@ Publish with the Artifact tool: `url` = A's World, `file_path` = `dist/as-world/
 `files` = the map in `changed.json` (at most 255 per call; send the rest in a second call).
 Then `python3 tools/build-as-world.py --mark` and commit `tools/as-world-published.json`.
 The artifact limit is 511 files; the script stops if the game needs more.
-A's World keeps only the **5 latest trips** in trip order (Ladi 2026-11-07), all always open; the oldest drops out
-when a new one is added at the end. The test site keeps every trip. A new trip needs an `AREA_LISTS` entry
+A's World keeps the **5 latest trips** plus **West End** (`ALSO` in the script, Ladi 2026-11-09), so 6 trips in trip order,
+all always open; the oldest of the 5 drops out when a new one is added at the end. The test site keeps every trip. A new trip needs an `AREA_LISTS` entry
 (and any pictures it borrows from older trips in `BORROWS`) in `tools/build-as-world.py`.
 
 ## Level kit (read before any level work)
