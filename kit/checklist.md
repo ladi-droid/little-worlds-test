@@ -25,8 +25,20 @@ One trip at a time. Tick each step; don't skip ahead.
 - [ ] Every backdrop change: the thing hiding it reaches above the far band's top, or the sky fades across it. No straight line in open sky.
 - [ ] Every single wide picture (ending view, interior): at least 1.4x the widest screen (844x390) and tall enough when the camera rises.
 - [ ] One ground fill colour below the street for the whole trip; each ground change sits under a pier, arch pillar or prop.
-- [ ] Rides: under 6s, or something that needs a tap on them.
-- [ ] Camera: `L.camFloor` on every raised floor A ends on (the ending terrace), so the floor sits at the bottom and the view fills the screen.
+- [ ] Rides: under 6s, or something that needs a tap on them (Ladi likes long rides when they are fun: swoops, ramps, boosts).
+- [ ] Camera outside: `L.camFloor` on every raised floor A ends on (the ending terrace), so the floor sits at the bottom and the view fills the screen.
+- [ ] Camera inside a building: it never moves up or down (Barcelona round 5). Keep every ledge, coin and special inside the phone view at floor level (about 10 units up at 844x390, below the top bar).
+
+## Rides and moving moments (Barcelona rounds 3-5, 11-09)
+- [ ] Getting on is quick (lift-off within about 0.3s); A never waits on a ride.
+- [ ] The ride has a shape and a reason to tap (dips, ramps, boost arrows, coins up high), and only where a tap makes sense: no jumping inside a cabin.
+- [ ] Getting off is smooth: the ride slows to running pace and A walks or runs straight off (ride fields `vEnd`, `walkOut`). The vehicle stays parked where he left it.
+- [ ] Nothing to hop or lean on right where A gets off a ride.
+- [ ] Anything A floats or rides in moves a little (drift, sway, wobble) and A moves inside it, never a still picture sliding along.
+- [ ] Climbs are wall-to-wall bounces, not lifts.
+- [ ] Knocked back after a hit: A returns to the level he was on (street stays street), never up to where he came from.
+- [ ] Every sound matches what is on screen (no splash on an escalator, no lift hum in a bubble, no fireworks sound without fireworks).
+- [ ] `node tools/ride-sheet.js <id> <name> <x> <y> <times>` for every ride: a row of frames goes to Ladi with the screenshot sheet.
 
 ## Build
 - [ ] Cut on magenta, webp q88, sizes written in units.
@@ -36,7 +48,7 @@ One trip at a time. Tick each step; don't skip ahead.
 ## Check (every build AND every later fix)
 - [ ] `node tools/kit-check.js <id>` passes.
 - [ ] bot.js (flag + each special), handsoff.js (6s).
-- [ ] `node tools/shot-sheet.js <id> '[...]'`, one spot per part; every picture checked against every rule:
+- [ ] `node tools/shot-sheet.js <id> '[...]'`, one spot per part, plus `tools/ride-sheet.js` for each ride; every picture checked against every rule:
   grounded, no gaps, no seams, nothing cut off, skyline above the front rows on the phone, top of screen not empty,
   ground has a kerb/edge, A behind door fronts, no fades.
 - [ ] Side by side with Marina and Greenwich on the sheet: is it as rich? If not, fix before sending.

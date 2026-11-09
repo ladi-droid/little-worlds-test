@@ -85,6 +85,7 @@ Each entry: **level, date** — what Ladi saw → what fixed it → where to loo
 - **Barcelona, 11-09** — the special moves must ALWAYS happen (castellers fling A whether he jumps or walks; the giant always lifts him). A ride where A just goes straight is boring → give it a shape and a reason to tap (cable car swoops low and speeds downhill, a tap swings the cabin up for high coins; scooter kicker ramps + boost arrows; giants carry A, tap to hop for coins), then the rides can be longer (~6-7s). A rides INSIDE a cabin, never on its roof. Long walks after a big moment need something new (Gegants parade).
 - **Barcelona, 11-09 (round 4)** — no tapping/jumping inside a cable car cabin. A ride slows only to walking pace and A walks off; the vehicle stays parked where he left it, never vanishes. Escalators carry A up slowly. Hit by a pigeon down on the street → float back to a spot on the street, never back up to the tower/roof he came from. The giants carrying A didn't land → replaced.
 - **Barcelona, 11-09 (round 5)** — getting out of any vehicle is smooth: A walks out at running pace while it glides to a stop (cable car, like the scooter). Ride lift-offs are quick. A in a bubble drifts about and moves (paddles, sways). No hop obstacle right where A gets off a ride. Climbs are wall-to-wall bounces, not lifts. No camera shift inside a building: keep the zoomed-out view. No splash/whoosh sound on an escalator.
+- **Barcelona, rounds 3-5, 11-09 (Ladi happy with the result)** — what made the rides good: a quick start, a shape (swoops, ramps, boosts), taps only where they make sense, a smooth walk-off at running pace with the vehicle left parked, and movement while riding (the bubble drifts, A paddles and sways). These are now a checklist section: `kit/checklist.md` "Rides and moving moments". Each ride goes to Ladi as a row of frames (`tools/ride-sheet.js`).
 
 ## 6. Richness: make it a world, not a strip (rules 3, 5)
 
@@ -98,6 +99,7 @@ Each entry: **level, date** — what Ladi saw → what fixed it → where to loo
 - **Palm, 10-29** — lots of unused blank space around the lift → filled.
 - **Barcelona, 11-08** (quality review) — landmarks were flat pictures A walks past; Greenwich lets A climb shops, towers and the Cutty Sark → front-row art must be climbable (picture prompts ask for it: `kit/prompts.md`).
 - **Barcelona video, 11-08** — birds and clouds hovered in one spot and birds grew and shrank (frames drawn at one height) → birds fly forwards at one scale for all frames, small; clouds drift forwards. No firework sounds without fireworks; the ending needs something happening (parakeet flock).
+- **Barcelona, 11-09 (round 5)** — the Park Güell escalator played a water-slide splash, and the bubble played the lift hum (sounds picked by ride number) → every sound checked against what is on screen; Barcelona switches both off.
 
 ## 7. Content and look
 
