@@ -2985,7 +2985,7 @@ const ALL_LEVELS = [
     const GX0 = G2 + 3.0, GX1 = R3 + 1.5;
     const bub = { kind: 'bcbubble', x0: GX0, pts: [[GX0, 0], [GX0 + 2.0, 1.2], [GX0 + 7.0, 5.0], [GX0 + 12.0, 8.0], [GX0 + 17.0, 9.4], [GX1, 9.6]],
       v: 4.0, acc: 2.5, w0: 0.7, w1: 0.1, input: true, popTap: true, seat: 0.0, up: 0, down: 0, exitY: 9.6 };
-    L.rides.push(bub); L.bcBubble = { ride: bub, x: G2 + 0.4 };
+    L.rides.push(bub); L.bcBubble = { ride: bub, x: GX0 - 2.4 };                    // (the artist: his rope loop is where the bubble forms round A)
     lean('bc_pots', G2 - 1.4, 1.8, 1.4);                                            // (flower pots in the lane by the bubble artist)
     { const P = bub.pts, by = x => { for (let i = 1; i < P.length; i++) if (x <= P[i][0]) { const a = P[i - 1], c = P[i]; return a[1] + (c[1] - a[1]) * (x - a[0]) / (c[0] - a[0]); } return 9.6; };
       for (let x = GX0 + 1.5; x < GX1 - 0.5; x += 1.25) b.coins(x, by(x) + 0.75 + 0.5 * Math.sin((x - GX0) * 1.3), 1); }   // a wavy trail of coins up through the air
@@ -3285,7 +3285,9 @@ function rideY(r, x) {
 function rideTick(g, dt) {
   const p = g.p, R = g.L.rides;
   if (!p.ride) {
-    const i = p.rideN || 0, r = R[i];
+    let i = p.rideN || 0;
+    while (R[i] && p.x > R[i].x0 + 3) { i++; p.rideN = i; }   // (a ride he got past without boarding, e.g. over the roofs: the next one still works)
+    const r = R[i];
     if (!r || p.x + PW / 2 < r.x0 || p.x > r.x0 + 3 || Math.abs(p.y - r.pts[0][1]) > 6) return false;
     p.ride = { i, s: r.x0, off: 0, tgt: 0, tt: 0, t: 0, v: 0, end: 0, y0: p.y };
     g.events.push({ type: 'ride', kind: r.kind });
