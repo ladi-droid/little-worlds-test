@@ -3884,13 +3884,14 @@ const ALL_LEVELS = [
     L.lgSea = [GT, 1e9];
 
     // ---------- 7. the Lekki-Ikoyi Link Bridge at dusk: up the walkway, the cables lit up, egrets flying ----------
-    const PE2 = HE + 9.0;
-    const WK = PE2 + PBW * 0.22 - 0.3, WKW = aw('lg_walkway', 4.6), DK = 1.15;   // the walkway starts behind the palm's trunk
+    // a tall block of flats on the Lekki shore: the view changes behind it (the palm trunk was too thin, Ladi 2026-11-10: "a sharp change of backdrop near the flag")
+    const J5 = HE + 10.0, AP2 = J5 + 1.0, APH2 = 13.5, APW2 = aw('lg_apt', APH2);
+    back('lg_apt', AP2, APH2); swapAt(AP2 + APW2 / 2, 'view', 'behind a tall block of flats on the Lekki shore');
+    L.lgGold = [T1 - 20, AP2 + APW2 / 2];
+    const WK = AP2 + APW2 - 1.0, WKW = aw('lg_walkway', 4.6), DK = 1.15;   // the walkway starts behind the flats
     back('lg_walkway', WK, 4.6);
-    back('lg_palm', PE2, PBH);
-    swapAt(PE2 + PBW * 0.22, 'view', 'behind the trunk of a second tall coconut palm (drawn whole)');
-    L.lgGold = [T1 - 20, PE2 + PBW * 0.22];
-    ground(GT + 0.9, WK + 0.3, 'lgsand');
+    ground(J5, WK + 0.3, 'lgpave'); L.lgJoins.push(J5, WK + 0.3);
+    ground(GT + 0.9, J5, 'lgsand');
     b.slope(WK + 0.3, 0.05, WK + 7.55, DK);
     ground(WK + 7.55, WK + WKW + 40, 'lghide', DK); L.lgWalk = WK + 7.55;
     L.camFloor.push([WK + 0.3, WK + 7.55, 0, DK], [WK + 7.55, 99999, DK]);
