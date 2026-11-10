@@ -3161,6 +3161,222 @@ const ALL_LEVELS = [
     L.bcTop = { x: HX, y: TT };
   },
 },
+{
+  // Sydney Harbour (plan: claude.ai/artifact/WudwvdMN2q7pib8MwQTCjW, Ladi's picks 2026-11-09), built from the level kit on Ladi's art
+  // (cut by london-runner/sydney/src/cut.py into atlas_sy*.webp). A bright summer morning, summer outfit.
+  // Seaplane ride -> Botanic Garden -> up the Opera House steps and its big sail, slide down the next -> inside the concert hall (the ONE door)
+  // -> Circular Quay + the Cahill Walk over the station -> The Rocks market canopies -> over the Harbour Bridge arch
+  // -> Luna Park's face + the giant slide -> jet boat ride -> Taronga Zoo giraffes.
+  id: 'sydney', name: 'Sydney Harbour', plate: 'Sydney Harbour', area: 'sydney', city: 'Sydney',
+  build(b) {
+    const L = b.L, SY_ASP = {"sy_pontoon":4.058,"sy_seawall":5.7,"sy_fence":4.3,"sy_plane":2.0038,"sy_plane_open":1.9048,"sy_jet":3.1235,"sy_jetspin":2.493,"sy_spray":0.8404,"sy_ferry":2.1133,"sy_wharf":2.4802,"sy_fig":1.3454,"sy_palm":0.5532,"sy_bench":1.6889,"sy_fountain":0.5875,"sy_lamp":0.33,"sy_pot":1.3,"sy_opera":2.8068,"sy_door_in":1.1425,"sy_door_out":1.125,"sy_organ":0.6614,"sy_gal_wall":0.5133,"sy_ring0":0.87,"sy_ring1":0.7143,"sy_ring2":0.8643,"sy_gal_front":6.3427,"sy_seats":4.3368,"sy_station":3.9922,"sy_icecream":1.1808,"sy_busker":0.9677,"sy_bin":0.5857,"sy_lookout":1.4071,"sy_bollards":1.425,"sy_gates":2.0,"sy_qbench":1.8333,"sy_rock_endl":0.3972,"sy_rock1":0.8185,"sy_rock2":0.7994,"sy_rock3":0.9213,"sy_rock_endr":0.3952,"sy_glamp":0.2176,"sy_cafe":0.9192,"sy_potree":0.7167,"sy_flowerbox":1.1692,"sy_stonewall":1.6692,"sy_pylon":0.3467,"sy_arch":3.2484,"sy_plinth":0.6848,"sy_flags":1.0795,"sy_gate":2.1286,"sy_train":6.5895,"sy_luna":1.1205,"sy_funslide":3.6138,"sy_floss":0.9,"sy_lpbench":0.9071,"sy_lpot":1.1667,"sy_gum":0.8297,"sy_kooka":1.9143,"sy_zbench":2.0,"sy_zfence":2.2818,"sy_giraffes":1.0478,"sy_cloud0":1.845,"sy_cloud1":1.7824,"sy_cloud2":1.7959,"sy_cloud3":1.7222,"sy_cloud4":1.7733,"sy_gull0":1.52,"sy_gull1":1.4875,"sy_gull2":1.6667,"sy_cock0":1.0727,"sy_cock1":1.0667,"sy_cock2":1.1375,"sy_boat0":0.9187,"sy_boat1":0.9214,"sy_cocksit":0.6333,"sy_kayak0":1.225,"sy_kayak1":1.2417,"sy_stall0":0.9214,"sy_stall1":0.9214,"sy_stall2":0.9214,"sy_stall3":0.9214};
+    L.outfit = 'dxb';                                    // the summer outfit
+    L.killY = -8; L.startX = -0.35; L.camMin = -12; L.introCam = 'centre';
+    const aw = (k, h) => SY_ASP[k] * h;
+    const ground = (x0, x1, style, y = 0) => b.groundTop(x0, x1, y, style);
+    const art = (key, x, y, h, o = {}) => b.kitArt(key, x, y, h, Object.assign({ w: aw(key, h) }, o));
+    const back = (key, x, h, o = {}) => art(key, x, o.y || 0, h, Object.assign({ back: true }, o));
+    const solid = (x, w, h, y = 0, o = {}) => { const s = Object.assign({ kind: 'block', x, y, w, h, style: 'hidden' }, o); L.solids.push(s); return s; };
+    const lean = (key, x, h, sh, y = 0) => { const w = aw(key, h); return b.kitProp(key, x, w, h, { y, solid: [0.1, w - 0.2, sh], ledge: [0.1, sh, w - 0.2] }); };
+    const hop = (key, x, h, y = 0, sh = Math.min(h, 1.0)) => { const w = aw(key, h); return b.kitProp(key, x, w, h, { y, solid: [0.1, w - 0.2, sh] }); };
+    const prop = (key, x, h, y = 0) => b.kitProp(key, x, aw(key, h), h, { y });
+    const path = (pts, id, belt) => { for (let i = 1; i < pts.length; i++) { b.slope(pts[i - 1][0], pts[i - 1][1], pts[i][0], pts[i][1]); const s = L.slopes[L.slopes.length - 1]; s.id = id; if (belt) s.belt = belt; } };
+    const swapAt = (x, to, why) => (L.kitSwaps = L.kitSwaps || []).push({ x, to, why });   // behind the bridge pylon: not a door
+    L.syLife = [];                                       // birds, boats and kayaks: [key, x, y, kind]
+    L.syFaces = [];                                      // raised stone floors drawn with their wall face: [x0, x1, y, style]
+    L.rides = []; L.camFloor = [];
+
+    // ---------- 1. the seaplane lands on Farm Cove: A rides it in, a tap hops it off the water for the coins ----------
+    b.wall(-12.5, 1, 22);
+    ground(-14, 26.4, 'sywater', -1.6);                  // harbour water (the plane skims it; nobody walks on it)
+    const PL = [[0, 3.4], [4, 2.2], [7, 0.9], [9.5, 0.15], [12, 0], [17.0, 0]];
+    const plane = { kind: 'syplane', x0: 0, pts: PL, v: 9.5, acc: 6.0, vEnd: 6.2, walkOut: 2.4, w0: 0.2, w1: 0, input: true, jump: 7.5, grav: 26, seat: 0, up: 0, down: 0, exitY: 0 };
+    L.rides.push(plane); L.syPlane = plane;
+    b.arc(4.5, 3.2, 5, 4, 1.6); b.arc(11.5, 1.4, 5, 5, 2.2);
+    const PT = 18.9;
+    solid(PT + 0.2, aw('sy_pontoon', 2.4) - 0.4, 1.6, -1.6);   // the pontoon (deck at 0)
+    art('sy_pontoon', PT, -1.16, 2.4, { front: true });
+    L.syLife.push(['sy_kayak0', -6, -0.85, 'kayak'], ['sy_boat0', 6, 0.5, 'boat'], ['sy_gull0', 8, 7.5, 'fly'], ['sy_gull1', 20, 8.5, 'fly']);
+    ground(26.4, 99, 'sysand');                           // sandstone paving along the seawall and the garden
+
+    // ---------- 2. Royal Botanic Garden ----------
+    prop('sy_lamp', 28.0, 3.0);
+    const FG = 31.0, fw = aw('sy_fig', 7.2);
+    b.kitProp('sy_fig', FG, fw, 7.2, { y: 0, solid: [fw * 0.36, fw * 0.24, 1.6] });   // the big fig: lean on its roots,
+    b.ledge(FG + fw * 0.36, 1.6, fw * 0.24); b.ledge(FG + fw * 0.12, 4.0, fw * 0.76);  // then up into its low branches
+    b.coins(FG + fw * 0.38, 2.7, 3, 0.8); b.coins(FG + fw * 0.2, 5.1, 6, 0.9);
+    L.syLife.push(['sy_cock0', FG + 6, 8.6, 'fly'], ['sy_cocksit', FG + fw * 0.7, 6.55, 'sit']);
+    hop('sy_bench', 44.0, 0.9);
+    lean('sy_fountain', 49.5, 1.6, 1.4); b.coins(49.6, 2.8, 3, 0.8);
+    prop('sy_palm', 53.5, 7.0);
+    lean('sy_pot', 57.5, 1.5, 1.4);
+
+    // ---------- 3. Opera House: up the Monumental Steps and the big sail (special 1 at its tip), slide down the next sail ----------
+    const OX = 62.0, OH = 16.7, PD = 4.03;                // the picture, its height, the podium top
+    back('sy_opera', OX, OH);
+    path([[OX + 0.3, 0.1], [OX + 6.5, 3.6]], 'systeps');  // the steps
+    const S1 = [[6.5, 3.6], [7.5, 4.29], [8.5, 4.86], [9.5, 5.64], [10.5, 6.7], [11.5, 7.86], [12.5, 9.12], [13.5, 10.27], [14.5, 11.33], [15.5, 12.32],
+      [16.5, 13.18], [17.5, 13.97], [18.5, 14.66], [19.5, 15.2], [20.5, 15.69], [21.5, 16.09], [22.5, 16.38], [23.1, 16.5]];
+    path(S1.map(([x, y]) => [OX + x, y]), 'sysail1');
+    for (let i = 3; i < S1.length - 1; i += 2) b.coins(OX + S1[i][0], S1[i][1] + 1.1, 1);
+    b.special(OX + 24.4, 18.8);                                                        // 1: jump off the tip of the big sail
+    const S2 = [[23.6, 12.75], [24.5, 12.8], [25.5, 12.7], [26.5, 12.45], [27.5, 12.0], [28.5, 11.25], [29.5, 10.15], [30.3, 8.8], [31.0, 7.0], [31.8, PD]];
+    path(S2.map(([x, y]) => [OX + x, y]), 'sysail2', 3.5);                              // the second sail: he slides down its back
+    for (let i = 1; i < S2.length - 2; i += 2) b.coins(OX + S2[i][0], S2[i][1] + 1.0, 1);
+    solid(OX + 9.5, 31.5, PD - 0.4, 0.4, { noGrab: true });                          // the podium (its own picture is its face)
+    ground(OX + 9.5, OX + 41.5, 'syopod', PD);                                         // (nothing drawn: the Opera House picture is the podium)
+    L.camFloor.push([OX, OX + 6.5, 0, PD], [OX + 6.5, OX + 41.5, PD]);
+    lean('sy_pot', OX + 34.5, 1.5, 1.4, PD);
+
+    // ---------- 4. inside the concert hall: THE ONE DOOR (in under the small sails, out through the glass foyer) ----------
+    const D1 = OX + 40.0, D2 = D1 + 42;
+    b.kitDoor(D1, { inside: true }); b.kitSwap(D1, 'hall'); L.syDoorIn = D1; L.syDoorOut = D2; L.syOpera = { x: OX, h: OH };
+    ground(D1 - 1.5, D2 + 1.0, 'syhall', PD); L.camFloor.push([D1 - 0.5, D2 + 0.5, PD]);
+    hop('sy_seats', D1 + 3.5, 0.95, PD); b.coins(D1 + 3.8, PD + 1.9, 3, 1.0);
+    hop('sy_seats', D1 + 9.5, 0.95, PD);
+    const OC = D1 + 15.5, ow = aw('sy_organ', 7.0), GX = OC + ow + 1.8;               // special 2: wall-jump between the organ and the gallery
+    solid(OC, ow, 7.0 - 2.6, PD + 2.6); back('sy_organ', OC, 7.0, { y: PD });          // (he runs in under the organ's arch)
+    b.ledge(OC + 0.3, PD + 5.4, ow - 0.6);
+    const GF = 1.8, GW = aw('sy_gal_front', GF), GT = PD + 5.6;                         // the gallery: wooden panels under a gold-railed front
+    solid(GX, GW, 5.6, PD, { noGrab: false });
+    for (let x = GX; x < GX + GW - 0.1; x += aw('sy_gal_wall', 4.7) - 0.05) back('sy_gal_wall', Math.min(x, GX + GW - aw('sy_gal_wall', 4.7)), 4.7, { y: PD });
+    back('sy_gal_front', GX, GF, { y: GT - 1.0 });
+    for (let i = 0, y = 1.4; y < 6.6; i++, y += 1.5) b.coins(OC + ow + (i % 2 ? 1.25 : 0.15), PD + y, 1);
+    (L.kitClimbs = L.kitClimbs || []).push({ x: OC, xr: GX, gap: 1.8, hL: 7.0, hR: 5.6 });
+    b.special(OC + ow + 0.9, PD + 9.0);                                                // 2: up under the sound reflectors
+    back('sy_ring0', OC - 2.0, 2.0, { y: PD + 9.4, hang: true }); back('sy_ring1', OC + 3.5, 2.6, { y: PD + 9.0, hang: true }); back('sy_ring2', GX + 4.0, 2.0, { y: PD + 9.4, hang: true });
+    b.coins(GX + 0.6, GT + 1.0, 8, 1.2);
+    lean('sy_gal_wall', GX + GW + 4.5, 1.6, 1.5, PD);                                    // a wooden stage box
+    b.kitDoor(D2, { inside: false }); b.kitSwap(D2, 'quay');
+
+    // ---------- 5. Circular Quay: down the forecourt steps, then up over the station on the Cahill Walk ----------
+    const Q0 = D2 + 6.0;
+    ground(D2 + 1.0, Q0, 'sypodium', PD);
+    path([[Q0, PD], [Q0 + 6.2, 0.05]], 'systepsdn'); L.sySteps = Q0;                  // the forecourt steps down (the Opera House's own steps)
+    L.syQ0 = Q0;
+    const QA = Q0 + 8;
+    lean('sy_icecream', QA, 2.6, 1.3); b.coins(QA + 0.4, 2.6, 3, 0.9);
+    prop('sy_busker', QA + 5.0, 1.55);
+    lean('sy_bin', QA + 8.0, 1.4, 1.3);
+    art('sy_wharf', QA + 10.5, -1.6, 4.6, { back: true });                              // a ferry wharf, its pier deck at the quay
+    L.syLife.push(['sy_gull2', QA + 6, 2.2, 'fly'], ['sy_cocksit', QA + 8.25, 1.4, 'sit']);
+    hop('sy_bollards', QA + 14.0, 0.8); lean('sy_lookout', QA + 18.5, 1.5, 1.4);
+    const SX = QA + 23.0, SH = 10.0, SW = aw('sy_station', SH);                         // the station, flipped: steps up on the left, its stone pier on the right
+    back('sy_station', SX, SH, { flip: true });
+    const PF = SH * 0.36, TR = SH * 0.67, WK = SH * 0.80, PR = SH * 0.957;
+    path([[SX + 0.3, 0.05], [SX + 4.5, PF]], 'systair');
+    b.ledge(SX + 4.5, PF, SW - 4.5 - 3.9); b.ledge(SX + 4.9, TR, SW - 9.4); b.ledge(SX + 4.1, WK, SW - 4.1 - 3.8);   // platform, train roof, the walk
+    solid(SX + SW - 3.8, 3.7, PR);                                                     // the pier at the far end: lean on it from the walk, drop off it
+    L.syStation = { x: SX, w: SW, h: SH };
+    lean('sy_bin', SX + 19.0, 1.4, 1.3, PF);                                           // a bin on the platform
+    b.coins(SX + 2, 2.6, 3, 1.2, 0.8); b.coins(SX + 6, WK + 1.2, 6, 1.4); b.arc(SX + 16, WK + 1.4, 6, 5, 2.4); b.coins(SX + 24, WK + 1.2, 6, 1.3);
+    L.camFloor.push([SX + 4.5, SX + SW - 0.2, WK, WK]);
+    hop('sy_qbench', SX + SW + 2.0, 0.9);
+
+    // ---------- 6. The Rocks: sandstone terraces and the weekend market's bouncy canopies ----------
+    const RK = SX + SW + 8.0, RH = 8.6 / 678;
+    const house = (k, px, ys) => { const h = px * RH, w = aw(k, h); return { key: k, w, h, ledges: ys.map(y => [0.4, y * h, w - 0.8]) }; };
+    const rEnd = b.kitRow(RK, [house('sy_rock1', 605, [0.45]), house('sy_rock2', 678, [0.47, 1]), house('sy_rock3', 493, [0.55])],
+      { capL: house('sy_rock_endl', 506, [1]), capR: house('sy_rock_endr', 506, [1]) });
+    lean('sy_flowerbox', RK + 3.0, 1.5, 1.4); b.coins(RK + 3.3, 2.5, 3, 0.8); b.coins(RK + 6.0, 4.6, 5, 1.0);
+    lean('sy_potree', rEnd + 0.3, 2.4, 1.4);
+    const MK = rEnd + 3.6, ST = 2.8, SWD = aw('sy_stall0', ST), BO = [3.2, 3.8, 4.6, 5.6];
+    b.kitStalls(MK, [0, 1, 2, 3].map(i => ({ key: 'sy_stall' + i, w: SWD, h: ST })));
+    BO.forEach((v, i) => solid(MK + i * (SWD - 0.05) + 0.25, SWD - 0.5, 0.3, 2.45, { bounce: v }));
+    BO.forEach((v, i) => b.coins(MK + i * (SWD - 0.05) + 1.0, 2.8 + v * 0.75, 2, 0.6));
+    b.special(MK + 3 * (SWD - 0.05) + 5.2, 2.8 + 6.2);                                 // 3: where the last bounce peaks
+    const ME = MK + 4 * (SWD - 0.05);
+    prop('sy_glamp', ME + 1.5, 3.4);
+    lean('sy_cafe', ME + 5.0, 2.6, 1.4);
+    L.syLife.push(['sy_cocksit', ME + 1.55, 3.35, 'sit'], ['sy_gull0', ME, 9.5, 'fly']);
+    lean('sy_stonewall', ME + 11.0, 1.3, 1.2);
+
+    // ---------- 7. up and over the Harbour Bridge: the pylon's own stair, the climbers' gate, along the arch, down the north pylon ----------
+    const PX = ME + 17.0, PYH = 18.0, PYW = aw('sy_pylon', PYH), BD = 4.9;            // south pylon (its plinth half under the paving), the deck
+    const AX = PX + 3.0, AY = BD - 2.9, NX = AX + 45.7;                                // the arch picture (its small end towers hide behind the pylons)
+    back('sy_arch', AX, 16.0, { y: AY });
+    back('sy_pylon', PX, PYH, { y: -1.0 }); back('sy_pylon', NX, PYH, { y: -1.0, flip: true });
+    L.syBridge = { px: PX, nx: NX, ax: AX, ay: AY, bd: BD };
+    solid(PX + 0.2, PYW - 0.4, 1.0); path([[PX + 0.95, 1.0], [PX + 4.11, BD]], 'sypylon_s');   // up the pylon's stair
+    swapAt(PX + PYW / 2, 'north', 'behind the south pylon');
+    solid(PX + 4.11, NX + 2.21 - PX - 4.11, BD + 1.6, -1.6, { noGrab: true });         // the road deck (the harbour below it)
+    ground(L.syQ0, PX + 6.0, 'sysand'); ground(PX + 6.0, NX + 0.3, 'sywater', -1.6); L.syNX = NX;
+    L.camFloor.push([PX, PX + 4.11, 0, BD], [PX + 4.11, NX + 2.21, BD]);
+    const ARCH = [[4, 6.5], [5, 6.9], [6, 7.4], [7, 8.0], [8, 8.6], [9, 9.25], [10, 9.78], [11, 10.25], [12, 10.75], [13, 11.16], [14, 11.62], [15, 11.92], [16, 12.28],
+      [17, 12.56], [18, 12.82], [19, 13.1], [20, 13.25], [21, 13.4], [22, 13.53], [23, 13.63], [24, 13.7], [25, 13.75], [26, 13.78], [27, 13.75], [28, 13.68], [29, 13.61],
+      [30, 13.53], [31, 13.4], [32, 13.22], [33, 13.07], [34, 12.82], [35, 12.56], [36, 12.25], [37, 11.9], [38, 11.59], [39, 11.11], [40, 10.75], [41, 10.3], [42, 9.71],
+      [43, 9.22], [44, 8.7], [45, 8.0], [46, 7.39], [47, 6.9], [48, 6.5]];
+    path(ARCH.map(([x, y]) => [AX + x, AY + y - 0.45]), 'syarch');
+    hop('sy_gate', AX + 0.6, 1.5, BD, 1.4); b.ledge(AX + 0.7, BD + 1.3, aw('sy_gate', 1.4) - 0.2);   // the climbers' gate: lean on it, then up onto the arch
+    for (let i = 2; i < ARCH.length - 2; i += 3) b.coins(AX + ARCH[i][0], AY + ARCH[i][1] + 0.9, 1);
+    L.wind = [AX + 5, AX + 47, 1.2, 0.55];                                              // the breeze up top: longer floaty jumps
+    lean('sy_plinth', AX + 14.0, 3.6, 2.0, BD); lean('sy_plinth', AX + 33.0, 3.6, 2.0, BD);   // the deck's stone lamp plinths
+    lean('sy_flags', AX + 25.2, 2.4, 1.4, AY + 13.78 - 0.45);                         // the two flags at the top
+    b.special(AX + 26.4, AY + 13.78 + 4.6);                                             // 4: over the two flags at the very top
+    L.syTrain = { x0: PX - 10, x1: NX + 6, y: BD - 0.05, at: AX + 20 };                // the train rumbles across the deck as he gets near the top
+    L.syLife.push(['sy_gull1', AX + 10, AY + 17.5, 'fly'], ['sy_gull0', AX + 36, AY + 18.5, 'fly']);
+    solid(NX + 0.2, PYW - 0.4, 1.0); path([[NX + 2.21, BD], [NX + 5.37, 1.0]], 'sypylon_n');   // down the north pylon's stair
+    L.camFloor.push([NX + 2.21, NX + 5.37, BD, 1.0]);
+
+    // ---------- 8. Luna Park: up the giant face (special 5 between the tower tops), then the funhouse's giant slide ----------
+    const LP = NX + PYW + 9.0, LH = 11.0, LW = aw('sy_luna', LH);
+    lean('sy_lpot', LP - 6.0, 1.5, 1.4);
+    back('sy_luna', LP, LH);                                                            // he can run straight in through its mouth, or climb the face
+    L.oneways.push({ kind: 'ledge', x: LP + LW * 0.27, y: 3.95, w: LW * 0.46, bounce: 8.2 });        // the big red lip is springy: land on it and it throws him up between the towers
+    b.ledge(LP + 0.1, 9.1, LW * 0.2); b.ledge(LP + LW * 0.79, 9.1, LW * 0.2);           // the towers' blue cornices,
+    b.ledge(LP + 0.2, 10.95, LW * 0.18); b.ledge(LP + LW * 0.8, 10.95, LW * 0.18);      // and their tops
+    b.coins(LP + LW * 0.38, 6.0, 3, 0.7, 2.0); b.coins(LP + LW * 0.62, 12.6, 2, 0.8);
+    b.special(LP + LW * 0.77, 13.2);                                                    // 5: thrown up by the lip, between the tower tops
+    L.syLife.push(['sy_cock1', LP + 3, 13.5, 'fly']);
+    lean('sy_lpot', LP + LW + 5.5, 1.5, 1.4);
+    const FH = LP + LW + 8.0, FS = 7.6;                                                 // the funhouse: up its stair, along its top, the giant slide
+    back('sy_funslide', FH, FS);
+    path([[FH + 0.6, 0.05], [FH + 5.2, 5.85]], 'syfunstair');
+    solid(FH + 5.2, 5.8, 5.85); L.camFloor.push([FH + 0.6, FH + 5.2, 0, 5.85]);
+    const SLD = [[11.2, 6.75], [11.5, 6.64], [12.0, 6.47], [12.5, 6.2], [13.0, 5.75], [13.5, 5.14], [14.0, 4.61], [14.5, 4.3], [15.0, 4.17], [15.5, 4.19], [16.0, 4.3], [16.5, 4.43],
+      [17.0, 4.47], [17.5, 4.41], [18.0, 4.22], [18.5, 3.86], [19.0, 3.32], [19.5, 2.93], [20.0, 2.71], [20.5, 2.67], [21.0, 2.76], [21.5, 2.87], [22.0, 2.91], [22.5, 2.84],
+      [23.0, 2.64], [23.5, 2.29], [24.0, 1.81], [24.5, 1.38], [25.0, 1.05], [25.5, 0.84], [26.0, 0.71], [26.5, 0.62], [27.4, 0.0]];
+    path(SLD.map(([x, y]) => [FH + x, y]), 'syslide', 4.5);
+    for (let i = 2; i < SLD.length - 1; i += 3) b.coins(FH + SLD[i][0], SLD[i][1] + 1.1, 1);
+    lean('sy_floss', FH + 31.0, 2.8, 1.4);
+    lean('sy_lpbench', FH + 36.0, 2.8, 1.4);
+
+    // ---------- 9. the jet boat from the Luna Park wharf to Taronga: wake bumps, a 360 spin in a wall of spray ----------
+    const JX = FH + 44.0, JE = JX + 50;
+    ground(L.syNX + 0.3, JX - 1, 'sysand'); ground(JX - 1, JE + 1, 'sywater', -1.6);
+    solid(JX - 6.6, aw('sy_pontoon', 2.4) - 0.4, 1.6, -1.6); art('sy_pontoon', JX - 6.8, -1.16, 2.4, { front: true });
+    const jp = [[JX, -0.4]]; for (let x = JX + 2; x < JE - 6; x += 2) jp.push([x, -0.4 + 0.25 * Math.sin((x - JX) * 0.7)]); jp.push([JE - 2, -0.3], [JE, 0]);
+    const ramps = [{ x: JX + 12, v: 8.5, h: 0.4 }, { x: JX + 34, v: 9.5, h: 0.4 }];
+    const jet = { kind: 'syjet', x0: JX, pts: jp, ramps, v: 13.5, acc: 8.0, vEnd: 6.2, walkOut: 3.0, w0: 0.2, w1: 0, input: true, jump: 8.0, grav: 28, seat: 0, up: 0, down: 0, exitY: 0 };
+    L.rides.push(jet); L.syJet = { ride: jet, spin: [JX + 19, JX + 25] };              // the spin: a wall of spray fills the screen and the view changes behind it
+    b.arc(JX + 12.5, 1.2, 5, 5, 2.4); b.arc(JX + 34.5, 1.2, 5, 5, 2.8);
+    b.coins(JX + 39, 0.6, 5, 1.4);
+    L.syLife.push(['sy_boat1', JX + 4, 0.5, 'boat'], ['sy_kayak1', JX + 44, -0.85, 'kayak'], ['sy_gull2', JX + 30, 6.5, 'fly']);
+    solid(JE - 3.8, aw('sy_pontoon', 2.4) - 0.4, 1.6, -1.6); art('sy_pontoon', JE - 4.0, -1.16, 2.4, { front: true });
+
+    // ---------- 10. Taronga Zoo: up the path past the koala, the giraffes and the view back over the harbour ----------
+    const TZ = JE + 6.0, TP = 6.0;
+    ground(JE + 1, TZ + 6, 'sypath');
+    const gw = aw('sy_gum', 7.4);
+    b.kitProp('sy_gum', TZ - 1.0, gw, 7.4, { y: 0, solid: [gw * 0.3, gw * 0.22, 1.5] }); b.ledge(TZ - 1.0 + gw * 0.3, 1.5, gw * 0.22);
+    b.ledge(TZ - 1.0 + gw * 0.25, 3.9, gw * 0.5);                                      // a gum tree with a koala asleep on its branch
+    b.coins(TZ + gw * 0.15, 2.7, 3, 0.8); b.coins(TZ, 5.0, 4, 0.8);
+    path([[TZ + 6, 0], [TZ + 22, TP]], 'syzoopath'); L.syHill = [TZ + 6, TZ + 22, TP];
+    L.camFloor.push([TZ + 6, TZ + 22, 0, TP]);
+    b.coins(TZ + 7, 1.4, 8, 2.0, 0.75);
+    lean('sy_kooka', TZ + 13.0, 1.4, 1.3, 7.0 * TP / 16);
+    ground(TZ + 22, TZ + 60, 'sypath', TP);
+    L.camFloor.push([TZ + 22, TZ + 60, TP]);
+    hop('sy_zbench', TZ + 25.0, 0.95, TP);
+    b.flag(TZ + 31.0); L.flagY = TP;
+    back('sy_zfence', TZ + 33.0, 1.1, { y: TP }); back('sy_zfence', TZ + 33.0 + aw('sy_zfence', 1.1) - 0.05, 1.1, { y: TP });
+    back('sy_giraffes', TZ + 38.5, 9.0, { y: TP });
+    L.finale = TZ + 36.0; L.finaleT = 7; L.syView = TZ + 36.0;                          // A at the rail from behind, the giraffes lean in, the harbour below
+    const TE = TZ + 38.5 + aw('sy_giraffes', 9.0) + 1.0;
+    b.wall(TE, 1, 40);
+    b.end(TE);
+  },
+},
 ];
 // Tower Bridge is parked for now (Ladi 2026-10-28): its build and art stay, it just isn't in the game.
 const PARKED = ['towerbridge', 'practice'];
