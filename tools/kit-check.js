@@ -75,7 +75,8 @@ function check(i) {
   }
   // doors: going through one is one-way
   { const ds = L.kitDoors || [], ins = ds.filter(d => d.inside).length;   // Ladi 2026-11-08: one inside visit per level at most
-    if (ins > 1 || ds.length - ins > 1) fail.push(`${ds.length} doors (${ins} in): one inside visit per level at most, one door in and one out`); }
+    const maxIn = L.kitInsides || 1;   // (Rome has two, Ladi 2026-11-10: "let's do both the Colosseum and the Pantheon")
+    if (ins > maxIn || ds.length - ins > maxIn) fail.push(`${ds.length} doors (${ins} in): one inside visit per level at most, one door in and one out`); }
   for (const d of L.kitDoors || []) if (!L.solids.some(s => s.backOnly && Math.abs(s.x - d.x) < 1)) fail.push(`door at ${d.x} has no backOnly wall`);
   return { id: def.id, i, fail, note };
 }
