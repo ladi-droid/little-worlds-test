@@ -141,3 +141,4 @@ Each entry: **level, date** — what Ladi saw → what fixed it → where to loo
 - No gliding: A doesn't float in the air (the Pantheon light beam float was removed). A longer inside part needs its own fun thing (Rome: rose petals falling through the oculus into heaps that bounce A higher each time).
 - The ride before the ending is A on a scooter (the e-scooter drawing), not a pedal cart.
 - No abrupt change of scenery before the ending: the light and sky turn slowly towards the ending's along the way (by position, never a fade in time), and the view comes in behind a tree.
+- (Ladi, 11-10 15:44) "The ending is still cut off with the backdrop": a backdrop change hidden behind something tall still shows if the sky differs on the two sides. Hide it behind something that reaches the top of the screen (Rome: the flag pole) and match the sky on both sides; a long rail or wall must start behind something (a trunk), never show its cut end.
