@@ -133,3 +133,11 @@ Each entry: **level, date** — what Ladi saw → what fixed it → where to loo
 - No fade between backdrops, even at the ending view: the ending view becomes the backdrop at a cutaway.
 - No fireworks sound at an ending unless there are fireworks (Downtown only).
 - A lean or hop on a slope judders: keep props on flat ground.
+
+## 10. Rome round 2 (Ladi, 11-10)
+
+- A place that is open to the sky (the Colosseum) is not an inside part: no door, A runs into it in one go (Rome: the arena opens up past the broken end of the outer wall).
+- No trees cut off at the top, in pictures or props; a tree that hides a backdrop change is drawn whole.
+- No gliding: A doesn't float in the air (the Pantheon light beam float was removed). A longer inside part needs its own fun thing (Rome: rose petals falling through the oculus into heaps that bounce A higher each time).
+- The ride before the ending is A on a scooter (the e-scooter drawing), not a pedal cart.
+- No abrupt change of scenery before the ending: the light and sky turn slowly towards the ending's along the way (by position, never a fade in time), and the view comes in behind a tree.
