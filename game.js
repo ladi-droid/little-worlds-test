@@ -3401,13 +3401,14 @@ const ALL_LEVELS = [
 {
   // Rome (plan: claude.ai/artifact/WtANzmDHimnuEaWVJHfrhX, Ladi's picks 2026-11-10), built from the level kit on art made with the image maker
   // (cut by london-runner/rome/src/cut.py into atlas_rm*.webp). A late autumn afternoon; A in his own London clothes.
-  // Taxi at the Colosseum -> Arch of Constantine -> inside the Colosseum (lift fling) -> the Forum's columns -> sidecar scooter ride
-  // -> inside the Pantheon (light beam) -> up an alley gap onto the rooftops -> Trevi -> Spanish Steps -> pedal cart in Villa Borghese -> Pincio at sunset.
-  // TWO inside parts (Ladi 2026-11-10: "let's do both the Colosseum and the Pantheon and see how it works"): L.kitInsides = 2.
+  // Taxi at the Colosseum -> Arch of Constantine -> past the Colosseum's outer wall into its open arena (lift fling) -> the Forum's columns
+  // -> sidecar scooter ride -> inside the Pantheon (rose petals, petal heaps) -> up an alley gap onto the rooftops -> Trevi -> Spanish Steps
+  // -> e-scooter in Villa Borghese -> Pincio at sunset.
+  // Round 2 (Ladi 2026-11-10): the Colosseum is open to the sky, so no door: the arena is outside, in one go. The Pantheon is the one inside.
   id: 'rome', name: 'Rome', plate: 'Rome', area: 'rome', city: 'Rome',
   build(b) {
     const L = b.L, RM_ASP = {"rm_taxi":1.9,"rm_taxi_open":1.9056,"rm_colo":2.0322,"rm_arch":1.1544,"rm_mwall1":1.1676,"rm_mwall2":1.1559,"rm_lift":0.9176,"rm_deck":2.42,"rm_seats":1.8417,"rm_iarch":0.9658,"rm_iarch_pier":0.261,"rm_mosaic":12.125,"rm_mosarch":0.775,"rm_bronze":0.1406,"rm_carch":0.6589,"rm_temple":0.5625,"rm_column":0.1933,"rm_stumps":1.6083,"rm_block":1.89,"rm_lowwall":2.37,"rm_cypress":0.4713,"rm_titus":1.1346,"rm_poppies":1.3,"rm_pal4":0.5145,"rm_pal2":0.6021,"rm_pal3":0.5952,"rm_pal1":0.7919,"rm_corner":0.5846,"rm_cafe":0.5962,"rm_gelato":0.6723,"rm_alley":0.6452,"rm_endl":0.7467,"rm_narrow":0.53,"rm_endr":0.7462,"rm_gwall":1.5135,"rm_nasone":0.8083,"rm_vespa1":1.2273,"rm_vespa2":1.375,"rm_car1":1.64,"rm_table":0.95,"rm_lamp":0.3472,"rm_lemon":0.875,"rm_car2":1.2643,"rm_side":1.0238,"rm_side_wave":1.0142,"rm_side_shell":1.2178,"rm_largo":3.4556,"rm_cat1":1.5167,"rm_cat2":0.8308,"rm_cat0":1.6444,"rm_hump":5.7143,"rm_pantheon":1.5679,"rm_niche":0.666,"rm_niche2":0.666,"rm_mstep":2.7286,"rm_mbench":2.5875,"rm_rope":1.84,"rm_obelisk":0.7846,"rm_cafes":2.2818,"rm_flowercart":1.275,"rm_roof1":6.4462,"rm_roofterr":2.6237,"rm_roof2":2.3071,"rm_chimneys":1.1765,"rm_aerial":0.7713,"rm_washing":1.6144,"rm_lantern":0.9104,"rm_trevi":1.9819,"rm_steps":2.0219,"rm_flowers":1.0364,"rm_gelcart":1.045,"rm_barca":2.3,"rm_cart":0.9577,"rm_cart_park":0.9538,"rm_cart_side":1.5843,"rm_clock":0.8389,"rm_bust1":0.6615,"rm_ramp":3.1,"rm_bust2":0.6846,"rm_hedge":2.0083,"rm_pbench":1.8273,"rm_pine":0.8336,"rm_plane":0.9283,"rm_plane2":0.8642,"rm_oak":1.0172,"rm_terrace":3.12,"rm_cloud0":2.155,"rm_cloud1":2.525,"rm_cloud2":2.3857,"rm_cloud3":2.1368,"rm_cloud4":2.3607,"rm_gull0":1.6,"rm_gull1":1.5857,"rm_gull2":1.6571,"rm_para0":1.3,"rm_para1":1.3167,"rm_para2":1.3833,"rm_catwall":2.1125,"rm_pigeon0":1.1818,"rm_pigeon1":1.2182,"rm_pigeonf0":0.9167,"rm_pigeonf1":0.9};
-    L.killY = -8; L.startX = 2.0; L.camMin = -12; L.introCam = 'centre'; L.kitInsides = 2;
+    L.killY = -8; L.startX = 2.0; L.camMin = -12; L.introCam = 'centre';
     const aw = (k, h) => RM_ASP[k] * h;
     const ground = (x0, x1, style, y = 0) => b.groundTop(x0, x1, y, style);
     const art = (key, x, y, h, o = {}) => b.kitArt(key, x, y, h, Object.assign({ w: aw(key, h) }, o));
@@ -3442,16 +3443,17 @@ const ALL_LEVELS = [
     b.coins(AC + 0.5, 3.0, 2, 0.8); b.coins(AC + 1.6, 5.2, 2, 0.8); b.coins(AC + 0.6, 7.5, 2, 1.0); b.coins(AC + 1.5, 10.1, 8, 1.0);
     b.special(AC + 9.6, 11.0);                                                                                         // 1: the far end of the attic
     L.rmLife.push(['rm_pigeon0', AC + 3.2, 9.0, 'sit'], ['rm_gull0', 14, 12.0, 'fly'], ['rm_para0', 30, 13.5, 'fly']);
-    const CO = 21.5, CH = 16.0, CW = aw('rm_colo', CH);  // the Colosseum's outer wall (its door: the dark arch in the middle of the bottom row)
+    const CO = 21.5, CH = 16.0, CW = aw('rm_colo', CH);  // the Colosseum's outer wall: A runs along it; its far end is broken and steps down
     back('rm_colo', CO, CH); L.rmColo = { x: CO, h: CH, w: CW };
     lean('rm_block', CO + 2.0, 1.4, 1.35);               // a fallen carved block: lean on it, then up
-    b.ledge(CO + 0.3, 3.4, 12.2);                         // the first cornice (it stops before the door)
+    b.ledge(CO + 0.3, 3.4, 12.2);                         // the first cornice
     b.coins(CO + 2.4, 2.3, 2, 0.8); b.coins(CO + 4.6, 4.5, 8, 1.0);
     prop('rm_stumps', CO + 9.0, 1.2); L.rmLife.push(['rm_pigeon1', CO + 11.6, 0, 'walk']);
-    const D1 = CO + CW * 0.4805;                          // THE FIRST DOOR: into the Colosseum
-    b.kitDoor(D1, { inside: true }); b.kitSwap(D1, 'colo_in'); L.rmDoor1 = D1;
+    swapAt(CO + CW * 0.543, 'arena', 'behind the tall middle of the Colosseum outer wall');   // (over its broken end: the arena inside)
+    lean('rm_block', CO + 19.0, 1.4, 1.35); b.coins(CO + 19.3, 2.4, 3, 0.8); b.coins(CO + 23.0, 1.4, 5, 1.0);
+    const D1 = CO + CW - 2.0;                             // (the arena's pieces start where the outer wall ends)
 
-    // ---------- 2. inside the Colosseum: the arena floor, the maze walls, the trapdoor lift (special 2: FLING), the arcade, the seats ----------
+    // ---------- 2. the Colosseum's arena, open to the sky (no door): the maze walls, the trapdoor lift (special 2: FLING), the arcade, the seats ----------
     lean('rm_mwall1', D1 + 3.5, 3.4, 3.3); b.coins(D1 + 4.0, 4.4, 4, 0.9);
     const M2 = D1 + 3.5 + aw('rm_mwall1', 3.4) + 1.8;
     b.arc(M2 - 1.9, 4.6, 3, 1.8, 0.9);
@@ -3470,12 +3472,15 @@ const ALL_LEVELS = [
     const ST = IE + 2.5, SW = aw('rm_seats', 2.4);       // two blocks of stone seats: up the steps
     for (const x of [ST, ST + SW + 1.6]) { back('rm_seats', x, 2.4); solid(x + 0.1, SW - 0.2, 0.9); solid(x + 1.2, SW - 1.3, 1.5); solid(x + 2.5, SW - 2.6, 2.3); b.coins(x + 1.4, 2.8, 3, 1.0, 0.4); }
     lean('rm_block', ST + 2 * SW + 5.0, 1.4, 1.35);
-    const D2 = ST + 2 * SW + 1.6 + 10.0;                   // out through the arch on the far side
-    L.rmDoor2 = D2; zone(D1, D2, 1);
-    b.kitDoor(D2, { inside: false }); b.kitSwap(D2, 'forum');
-    L.camFloor.push([D1 - 0.5, D2 + 0.5, 0]);
-    back('rm_colo', D2 - CW * 0.871, CH, { out: true });   // outside: the Colosseum's broken far end, A comes out of its last ground arch
-    for (const a of L.kitArt) if (a.out) a.zone = 0;
+    // the far side of the ring: the outer wall again (seen from inside, its broken end first); the Forum's view comes back behind its tall part
+    const XE = ST + 2 * SW + 7.5, CH2 = 13.0, CW2 = aw('rm_colo', CH2);
+    back('rm_colo', XE, CH2, { flip: true }); L.rmColo2 = { x: XE, h: CH2, w: CW2 };
+    swapAt(XE + CW2 * 0.457, 'forum', 'behind the tall part of the far Colosseum wall');
+    lean('rm_block', XE + CW2 * 0.6 - 2.2, 1.4, 1.35);
+    b.ledge(XE + CW2 * 0.615, 3.4 * CH2 / CH, CW2 * 0.375);  // its first cornice: run along it
+    b.coins(XE + CW2 * 0.62, 3.9, 8, 1.0); b.coins(XE + 3.0, 1.4, 4, 1.0);
+    prop('rm_stumps', XE + CW2 * 0.3, 1.2); L.rmLife.push(['rm_pigeon0', XE + CW2 * 0.8, 3.4 * CH2 / CH, 'sit']);
+    const D2 = XE + CW2 - 4.0;
 
     // ---------- 3. the Roman Forum: up between the Temple of Castor and Pollux and its lone column (special 3: WALL-JUMP) ----------
     lean('rm_lowwall', D2 + 4.0, 1.4, 1.35); prop('rm_poppies', D2 + 8.5, 0.8);
@@ -3523,7 +3528,7 @@ const ALL_LEVELS = [
     L.rmLife.push(['rm_para1', LA + 10, 11.5, 'fly'], ['rm_gull2', SC + 52, 12.5, 'fly']);
     ground(-14, CN + aw('rm_corner', CNH) / 2, 'rmforum');
 
-    // ---------- 5. Piazza della Rotonda and inside the Pantheon (THE SECOND DOOR): niches, then the light beam (special 4: FLOAT) ----------
+    // ---------- 5. Piazza della Rotonda and inside the Pantheon (THE DOOR): niches, rose petals falling through the oculus, petal heaps (special 4: BOUNCE) ----------
     const PQ = Math.max(SE + 4.0, R1 + 2.0);
     lean('rm_flowercart', PQ + 2.0, 1.6, 1.4); b.coins(PQ + 2.3, 2.5, 3, 0.8);
     const OB = PQ + 7.0, OBW = aw('rm_obelisk', 6.5);
@@ -3542,14 +3547,24 @@ const ALL_LEVELS = [
     const N2 = N1 + NW + 1.6;
     back('rm_niche2', N2, 5.0); solid(N2 + 0.1, NW - 0.2, 1.0); b.ledge(N2 + 0.1, 1.0, NW - 0.2); b.ledge(N2 + 0.05, 4.2, NW - 0.1);
     b.coins(N1 + 0.6, 2.0, 3, 1.0); b.coins(N1 + 0.5, 5.2, 3, 1.0); b.arc(N1 + NW - 0.4, 5.2, 3, 2.2, 0.9); b.coins(N2 + 0.5, 5.2, 3, 1.0);
-    const BX = N2 + NW + 2.6, BW = 3.6;                    // the beam of sunlight from the oculus: step into it and it floats him up
-    L.updrafts = [[BX, BX + BW, 6.4, 6.5, 0.3]];          // [from, to, up to y, rising speed, how much of his running speed is left]
+    // the beam of sunlight from the oculus, and red rose petals falling through it (Rome's Pentecost tradition): they lie in soft heaps
+    // on the marble; each heap bounces him higher than the last (Ladi 2026-11-10: no gliding in the beam, make it longer and more fun)
+    const BX = N2 + NW + 2.6, BW = 3.6;
     L.rmBeam = { x: BX, w: BW };
-    for (let i = 0; i < 6; i++) b.coins(BX + 0.6 + i * 0.45, 1.6 + i * 1.3, 1);
-    b.special(BX + BW - 0.8, 6.8);                                                       // 4: where the beam lets go of him
-    hop('rm_mbench', BX + BW + 3.0, 0.8); b.coins(BX + BW + 3.3, 1.8, 3, 0.8);
-    lean('rm_mstep', BX + BW + 6.5, 1.4, 1.35);
-    const D4 = BX + BW + 11.0;                            // out by the side door
+    const HEAPS = [[BX + 0.2, 3.2, 2.6], [BX + 6.8, 3.2, 4.0], [BX + 13.4, 3.4, 5.2]];   // [x, width, bounce height]
+    L.rmHeaps = HEAPS.map(([x, w, h]) => ({ x, w, s: solid(x + 0.4, w - 0.8, 0.8, 0, { bounce: h, noGrab: true }) }));
+    for (const [x, w, h] of HEAPS) b.arc(x + w / 2 + 0.6, 1.4, 6, 5.2, h * 0.85 + 0.6);
+    b.special(HEAPS[2][0] + HEAPS[2][1] / 2 + 2.4, 6.6);                                  // 4: at the top of the biggest bounce
+    lean('rm_mstep', HEAPS[2][0] + HEAPS[2][1] + 4.4, 1.4, 1.35);   // (a marble step where he lands from the last heap: lean, then up)
+    const N3 = HEAPS[2][0] + HEAPS[2][1] + 8.2;            // two more niches: along their cornice, down past the altar steps
+    back('rm_niche', N3, 5.0); solid(N3 + 0.1, NW - 0.2, 1.0); b.ledge(N3 + 0.1, 1.0, NW - 0.2); b.ledge(N3 + 0.05, 4.2, NW - 0.1);
+    const N4 = N3 + NW + 1.6;
+    back('rm_niche2', N4, 5.0); solid(N4 + 0.1, NW - 0.2, 1.0); b.ledge(N4 + 0.1, 1.0, NW - 0.2); b.ledge(N4 + 0.05, 4.2, NW - 0.1);
+    b.coins(N3 + 0.5, 5.2, 3, 1.0); b.arc(N3 + NW - 0.4, 5.2, 3, 2.2, 0.9); b.coins(N4 + 0.5, 5.2, 3, 1.0);
+    const AF = N4 + NW + 2.5;
+    hop('rm_mbench', AF + 1.0, 0.8); b.coins(AF + 1.3, 1.8, 3, 0.8);
+    lean('rm_mstep', AF + 4.5, 1.4, 1.35);
+    const D4 = AF + 9.0;                                  // out by the side door
     L.rmDoor4 = D4; zone(D3, D4, 2);
     b.kitDoor(D4, { inside: false }); b.kitSwap(D4, 'old2');
     L.camFloor.push([D3 - 0.5, D4 + 0.5, 0]);
@@ -3607,36 +3622,37 @@ const ALL_LEVELS = [
     L.camFloor.push([SP + 4.3, SP + 24.3, 0, TOP], [SP + 24.3, 9999, TOP]);
     ground(CN + aw('rm_corner', CNH) / 2, SP + SPW - 0.2, 'rmstreet');
 
-    // ---------- 8. Villa Borghese: the pedal cart, the ramp over the water clock's pond (special 5: RAMP JUMP) ----------
-    const PL = aw('rm_plane', 14.0), T1 = SP + SPW + 1.0;  // a giant plane tree: the park's view changes behind its trunk
-    back('rm_plane', T1, 14.0, { y: TOP }); swapAt(T1 + PL * 0.5, 'borghese', 'behind the trunk of a giant plane tree');
+    // ---------- 8. Villa Borghese: an e-scooter along the avenue, the ramp over the water clock's pond (special 5: RAMP JUMP) ----------
+    const PTH = 9.4, PL = aw('rm_plane', PTH), T1 = SP + SPW + 1.0;   // a big plane tree, whole on screen: the park's view changes behind it
+    back('rm_plane', T1, PTH, { y: TOP }); swapAt(T1 + PL * 0.5, 'borghese', 'behind the trunk of a giant plane tree');
     ground(SP + SPW - 0.2, T1 + PL * 0.5, 'rmstreet', TOP); ground(T1 + PL * 0.5, 9999, 'rmgravel', TOP); L.rmJoins.push(T1 + PL * 0.5);
     L.rmFace = [SP + SPW - 0.2, TOP];
     back('rm_bust1', T1 + PL + 0.5, 2.6, { y: TOP });
     lean('rm_hedge', T1 + PL + 3.0, 1.45, 1.4, TOP); b.coins(T1 + PL + 3.3, TOP + 2.2, 3, 0.9);
     back('rm_bust2', T1 + PL + 7.0, 2.6, { y: TOP });
-    const CR = T1 + PL + 10.0, CRE = CR + 46.0;           // the pedal cart: A drives it along the park's avenue
-    L.rmCart = { x: CR };
+    const CR = T1 + PL + 10.0, CRE = CR + 46.0;           // a blue and white e-scooter at the path's edge: A rides it along the avenue (Ladi 2026-11-10, not the pedal cart)
+    L.rmScoot = { x: CR };
     const RP = CR + 18.0, RPW = aw('rm_ramp', 0.9);
     const cp = [[CR, TOP], [RP, TOP]];
     for (const [f, y] of [[0.1, 0.1], [0.4, 0.3], [0.7, 0.6], [0.95, 0.88]]) cp.push([RP + f * RPW, TOP + y * 0.9]);
     cp.push([RP + 0.95 * RPW + 0.01, TOP], [CRE, TOP]);
-    const cart = { kind: 'rmcart', x0: CR, pts: cp, ramps: [{ x: RP + 0.95 * RPW, v: 13.0, h: 0.8 }], v: 10.5, acc: 7.0, vEnd: 6.2, walkOut: 2.6, w0: 0.3, w1: 0, input: true, jump: 7.5, grav: 26,
+    const scoot = { kind: 'rmscoot', x0: CR, pts: cp, ramps: [{ x: RP + 0.95 * RPW, v: 13.0, h: 0.8 }], v: 12.0, acc: 8.0, vEnd: 6.2, w0: 0.5, w1: 0, input: true, jump: 8.5, grav: 28,
       seat: 0.0, up: 0, down: 0, exitY: TOP };
-    L.rides.push(cart); L.rmCartRide = cart;
+    L.rides.push(scoot); L.rmScootRide = scoot;
     prop('rm_ramp', RP, 0.9, TOP);
     const WC = RP + RPW + 4.2, WCW = aw('rm_clock', 3.6);  // the water clock in its pond: he flies over it
     back('rm_clock', WC, 3.6, { y: TOP });
     b.special(WC + WCW / 2, TOP + 5.6);                    // 5: over the top of the water clock
     b.coins(CR + 3, TOP + 0.8, 8, 1.6); b.arc(RP + RPW - 0.5, TOP + 1.2, 7, 11.0, 4.2); b.coins(WC + 9, TOP + 0.8, 6, 1.6);
     for (const [k, x] of [['rm_bust1', CR + 6], ['rm_hedge', CR + 9], ['rm_bust2', CR + 13], ['rm_hedge', WC + 8], ['rm_bust1', WC + 12.5]]) back(k, x, k === 'rm_hedge' ? 1.2 : 2.6, { y: TOP });
-    prop('rm_pine', CR + 25.0 - 0.0, 9.0, TOP); L.rmPineX = CR + 25;
+    prop('rm_pine', CR + 25.0, 8.6, TOP); L.rmPineX = CR + 25;
     L.rmLife.push(['rm_para0', CR + 10, TOP + 9.5, 'fly'], ['rm_para2', CR + 30, TOP + 10.5, 'fly']);
     hop('rm_pbench', CRE + 4.0, 1.1, TOP);                 // (a few steps after he climbs out)
 
     // ---------- 9. the Pincio terrace at sunset: the view over the rooftops to St Peter's (only here), the starlings ----------
     const T2 = CRE + 8.0;
-    back('rm_plane', T2, 14.0, { y: TOP }); swapAt(T2 + PL * 0.5, 'view', 'behind the trunk of the second giant plane tree');
+    back('rm_plane', T2, PTH, { y: TOP }); swapAt(T2 + PL * 0.5, 'view', 'behind the second plane tree (the park light has gone golden to match)');
+    L.rmGold = [T1 + PL * 0.5, T2 + PL * 0.5];          // the sky and the park go slowly golden along the avenue, so the view isn't a jump
     const TR = T2 + PL - 2.0, TRW = aw('rm_terrace', 5.0);
     back('rm_terrace', TR, 5.0, { y: TOP });
     b.coins(TR + 1.0, TOP + 1.2, 4, 1.0);

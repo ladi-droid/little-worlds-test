@@ -440,10 +440,10 @@ html.lw-loading .splash{visibility:hidden}
   </div>
 </section>
 
-<script src="kids/kids-meta.js?v=1794295668"></script>
-<script src="kids/kids.js?v=1794295668"></script>
-<script src="sfx.js?v=1794295668"></script>
-<script src="game.js?v=1794295668"></script>
+<script src="kids/kids-meta.js?v=1794322573"></script>
+<script src="kids/kids.js?v=1794322573"></script>
+<script src="sfx.js?v=1794322573"></script>
+<script src="game.js?v=1794322573"></script>
 <script>
 (() => {
 'use strict';
@@ -889,7 +889,7 @@ function sndEvent(e) {
     case 'bonk': snd('bonk'); break;
     case 'ctbonk': if (e.hit) snd('bonk'); break;
     case 'ctsoak': snd('splash', { vol: e.hit ? 1 : 0.6 }); break;
-    case 'ride': if (e.kind === 'rmside') snd('scooter'); else if (e.kind === 'cable') snd('train_doors', { delay: 0.2 }); else if (e.kind === 'syferry') snd('boat', { rate: 0.8 }); else if (e.kind === 'syplane') snd('plane'); break;
+    case 'ride': if (e.kind === 'rmside' || e.kind === 'rmscoot') snd('scooter'); else if (e.kind === 'cable') snd('train_doors', { delay: 0.2 }); else if (e.kind === 'syferry') snd('boat', { rate: 0.8 }); else if (e.kind === 'syplane') snd('plane'); break;
     case 'rideEnd': if (e.kind === 'cable') snd('train_doors'); break;
     case 'splash': snd('splash'); break;
     case 'board': snd('plane', { delay: 1.4 }); break;
@@ -1298,7 +1298,7 @@ $('retryBtn').addEventListener('click', () => startLevel(levelIndex));
 // If the builder opened this tab, close it and show the builder again; otherwise open the builder with this child's world filled in.
 let lwJoinEnd = false;
 function lwBackToBuilder() {
-  const url = 'builder.html?v=1794295668&w=' + lwEncode(LW);
+  const url = 'builder.html?v=1794322573&w=' + lwEncode(LW);
   try { if (window.opener && !window.opener.closed && /builder\.html/.test(window.opener.location.pathname)) { window.opener.focus(); window.close(); setTimeout(() => { location.href = url; }, 400); return; } } catch (e) {}
   location.href = url;
 }
@@ -1512,7 +1512,7 @@ function updateCamera(dt) {
   let tx = p.x + ARun.PW / 2 - vw * lead;
   tx = Math.max(G.L.camMin !== undefined ? G.L.camMin : -2, Math.min(tx, G.L.endX - vw));
   if (G.L.introCam !== undefined && G.intro && state === 'ready') tx = G.L.introCam === 'centre' ? G.L.startX + ARun.PW / 2 - vw / 2 : G.L.introCam;   // the Marina: A in the middle of the screen   // the Marina: look at the speedboat while it pulls in
-  const In = G.L.rmDoor1 !== undefined ? rmCam() : G.L.syDoorIn !== undefined ? syCam() : G.L.bcDoorIn !== undefined ? bcCam() : G.L.wmIn && G.wmIn ? G.L.wmIn  : G.L.ctAq && G.ctIn ? { box: G.L.ctAq.box, x1: G.L.ctAq.x1 - 7.346 * 0.31 + 0.5 } : null;   // inside a building: the camera never looks past its walls
+  const In = G.L.rmDoor3 !== undefined ? rmCam() : G.L.syDoorIn !== undefined ? syCam() : G.L.bcDoorIn !== undefined ? bcCam() : G.L.wmIn && G.wmIn ? G.L.wmIn  : G.L.ctAq && G.ctIn ? { box: G.L.ctAq.box, x1: G.L.ctAq.x1 - 7.346 * 0.31 + 0.5 } : null;   // inside a building: the camera never looks past its walls
   if (In) tx = Math.max(In.box, Math.min(tx, In.x1 - vw));
   if (G.camSnap) cam.x = tx;   // the doorway has just shut: the new side is already in place when it opens
   else cam.x += (tx - cam.x) * Math.min(1, dt * (Math.abs(tx - cam.x) > 3 ? 3.2 : 6));
@@ -1527,7 +1527,7 @@ function updateCamera(dt) {
   const bcab = G.L.bcCable && p.ride && G.L.rides[p.ride.i] === G.L.bcCable.ride;   // Barcelona's cable car: keep the whole cabin in the middle as it swoops
   const bbub = G.L.bcBubble && p.ride && G.L.rides[p.ride.i] === G.L.bcBubble.ride;   // the bubble: keep it in the middle as it floats up
   const syLv = G.L.syCamLevel && p.x > G.L.syCamLevel[0] && p.x < G.L.syCamLevel[1] ? G.L.syCamLevel[2] : undefined;   // Sydney: level past the station (Ladi 2026-11-10)
-  const bcIn = (G.L.bcDoorIn !== undefined || G.L.syHallY !== undefined || G.L.rmDoor1 !== undefined) && G.kitIn;   // inside the Sagrada: the camera stays put, zoomed out (Ladi 2026-11-09)
+  const bcIn = (G.L.bcDoorIn !== undefined || G.L.syHallY !== undefined || G.L.rmDoor3 !== undefined) && G.kitIn;   // inside the Sagrada: the camera stays put, zoomed out (Ladi 2026-11-09)
   const ty = bcIn ? (G.L.syHallY !== undefined ? G.L.syHallY + 0.8 : 0) : syLv !== undefined ? syLv : bbub ? Math.max(floor, p.y + 0.8 - vh * 0.5) : bcab ? ARun.rideY(G.L.bcCable.ride, p.ride.s + 1.0) + 1.9 - vh * 0.5 : cable ? ARun.rideY(G.L.ctCab, p.ride.s + 1.2) + 2.2 - vh * 0.5 : Math.max(floor, (riding ? p.y + ARun.moverY(p.ground, G.t + 0.3) - p.ground.y : p.y) + 1.5 - vh * 0.55);
   if (G.camSnap) { cam.y = ty; G.camSnap = false; }
   else cam.y += (ty - cam.y) * Math.min(1, dt * (riding || cable ? 14 : bcab || bbub ? 6 : 3));
@@ -7793,7 +7793,7 @@ function drawSyRideA(cx, by, RUN_H, JUMP_H) {
 /* ===== ROME START ===== */
 // Rome (2026-11-10, from the level kit), drawn from art made with the image maker: pieces cut by rome/src/cut.py into atlas_rm*.webp,
 // backdrops, insides and ground strips as their own files. A late autumn afternoon going golden; the ending is the sunset from the Pincio.
-const RM_IMAGES = ["rm_temple", "rm_column", "rm_pantheon", "rm_arch", "rm_trevi", "rm_colo", "rm_steps", "rm_corner", "rm_pal4", "rm_pal3", "rm_pal2", "rm_plane", "rm_obelisk", "rm_pine", "rm_cafe", "rm_endl", "rm_endr", "rm_narrow", "rm_cypress", "rm_titus", "rm_gelato", "rm_plane2", "rm_oak", "rm_pal1", "rm_alley", "rm_niche", "rm_niche2", "rm_terrace", "rm_largo", "rm_bronze", "rm_mosarch", "rm_carch", "rm_gwall", "rm_lamp", "rm_clock", "rm_mwall1", "rm_mwall2", "rm_lift", "rm_iarch", "rm_iarch_pier", "rm_cart", "rm_cart_park", "rm_bust1", "rm_bust2", "rm_seats", "rm_table", "rm_cafes", "rm_flowers", "rm_side_wave", "rm_side", "rm_lantern", "rm_deck", "rm_lemon", "rm_gelcart", "rm_cloud0", "rm_roofterr", "rm_aerial", "rm_taxi", "rm_taxi_open", "rm_flowercart", "rm_barca", "rm_cloud1", "rm_catwall", "rm_chimneys", "rm_washing", "rm_car1", "rm_car2", "rm_cloud2", "rm_roof1", "rm_roof2", "rm_stumps", "rm_nasone", "rm_vespa2", "rm_hedge", "rm_vespa1", "rm_pbench", "rm_side_shell", "rm_block", "rm_lowwall", "rm_rope", "rm_cloud3", "rm_ramp", "rm_cart_side", "rm_poppies", "rm_mbench", "rm_mstep", "rm_gull0", "rm_gull1", "rm_gull2", "rm_cat2", "rm_cloud4", "rm_cat1", "rm_para0", "rm_para1", "rm_para2", "rm_pigeonf0", "rm_pigeonf1", "rm_pigeon0", "rm_pigeon1", "rm_cat0", "rm_mosaic", "rm_hump", "rm_far1", "rm_far2", "rm_far3", "rm_g_deck", "rm_g_forum", "rm_g_gravel", "rm_g_marble", "rm_g_street", "rm_in_colo", "rm_in_pan", "rm_mid1", "rm_mid2", "rm_mid3", "rm_view"];
+const RM_IMAGES = ["rm_temple", "rm_column", "rm_pantheon", "rm_arch", "rm_trevi", "rm_colo", "rm_steps", "rm_corner", "rm_pal4", "rm_pal3", "rm_pal2", "rm_plane", "rm_obelisk", "rm_pine", "rm_cafe", "rm_endl", "rm_endr", "rm_narrow", "rm_cypress", "rm_titus", "rm_gelato", "rm_plane2", "rm_oak", "rm_pal1", "rm_alley", "rm_niche", "rm_niche2", "rm_terrace", "rm_largo", "rm_bronze", "rm_mosarch", "rm_carch", "rm_gwall", "rm_lamp", "rm_clock", "rm_mwall1", "rm_mwall2", "rm_lift", "rm_iarch", "rm_iarch_pier", "rm_cart", "rm_cart_park", "rm_bust1", "rm_bust2", "rm_seats", "rm_table", "rm_cafes", "rm_flowers", "rm_side_wave", "rm_side", "rm_lantern", "rm_deck", "rm_lemon", "rm_gelcart", "rm_cloud0", "rm_roofterr", "rm_aerial", "rm_taxi", "rm_taxi_open", "rm_flowercart", "rm_barca", "rm_cloud1", "rm_catwall", "rm_chimneys", "rm_washing", "rm_car1", "rm_car2", "rm_cloud2", "rm_roof1", "rm_roof2", "rm_stumps", "rm_nasone", "rm_vespa2", "rm_hedge", "rm_vespa1", "rm_pbench", "rm_side_shell", "rm_block", "rm_lowwall", "rm_rope", "rm_cloud3", "rm_ramp", "rm_cart_side", "rm_poppies", "rm_mbench", "rm_mstep", "rm_gull0", "rm_gull1", "rm_gull2", "rm_cat2", "rm_cloud4", "rm_cat1", "rm_para0", "rm_para1", "rm_para2", "rm_pigeonf0", "rm_pigeonf1", "rm_pigeon0", "rm_pigeon1", "rm_cat0", "rm_mosaic", "rm_hump", "rm_arena", "rm_escooter", "rm_far1", "rm_far2", "rm_far3", "rm_g_deck", "rm_g_forum", "rm_g_gravel", "rm_g_marble", "rm_g_street", "rm_in_pan", "rm_mid1", "rm_mid2", "rm_mid3", "rm_view"];
 // ground strips: [tile, strip height, how much shows above the floor line, fill top, fill bottom] (one fill colour outdoors)
 const RM_GROUND = { rmforum: ['rm_g_forum', 1.2, 0.3, '#6a5444', '#3a2c22'], rmstreet: ['rm_g_street', 1.2, 0.3, '#6a5444', '#3a2c22'],
   rmgravel: ['rm_g_gravel', 1.0, 0.3, '#6a5444', '#3a2c22'], rmdeck: ['rm_g_deck', 1.2, 0.3, '#7a5236', '#3e2818'], rmmarble: ['rm_g_marble', 1.2, 0.3, '#b49a80', '#6e5a4a'] };
@@ -7802,20 +7802,22 @@ const RM_EDGE = { dark: '#2a1a10', rim: '#f0b040', trim: ['rm_mosaic'] };
 const rmOn = r => { const z = G.p.ride; return z && r && G.L.rides[z.i] === r ? z : null; };
 const rmDone = r => (G.p.rideN || 0) > G.L.rides.indexOf(r);
 const rmW = (k, h) => { const im = IMG[k]; return im ? h * im.width / im.height : h; };
-// which part A is in: 0 outside, 1 inside the Colosseum, 2 inside the Pantheon
-const rmIn = () => !G.kitIn ? 0 : G.p.x < G.L.rmDoor2 + 2 ? 1 : 2;
-// the camera: outside it never looks past the far end of the building he is about to go into; inside, never past its walls; once out, never back
+// which part A is in: 0 outside, 2 inside the Pantheon (the Colosseum is open to the sky: no door, Ladi 2026-11-10)
+const rmIn = () => G.kitIn ? 2 : 0;
+// the camera: outside it never looks past the far end of the Pantheon before he goes in; inside, never past its walls; once out, never back
 function rmCam() {
-  const L = G.L, x = G.p.x, z = rmIn();
-  if (z === 1) return { box: L.rmDoor1 - 0.5, x1: L.rmDoor2 + 3.0 };
-  if (z === 2) return { box: L.rmDoor3 - 0.5, x1: L.rmDoor4 + 3.0 };
-  if (x < L.rmDoor1) return { box: -1e9, x1: L.rmColo.x + L.rmColo.w - 0.3 };
-  if (x < L.rmDoor3) return { box: L.rmDoor2 + 0.4, x1: L.rmPan.x + L.rmPan.w - 0.3 };
+  const L = G.L, x = G.p.x;
+  if (rmIn()) return { box: L.rmDoor3 - 0.5, x1: L.rmDoor4 + 3.0 };
+  if (x < L.rmDoor3) return { box: -1e9, x1: L.rmPan.x + L.rmPan.w - 0.3 };
   return { box: L.rmDoor4 + 0.4, x1: 1e9 };
 }
-// the sky: a clear late autumn afternoon, blue going warm and golden low down
+// the sky: a clear late autumn afternoon, blue going warm and golden low down. Along Villa Borghese's avenue it slowly turns
+// to the sunset of the ending view, by where the camera is (no fading in time), so the view behind the second plane tree isn't a jump
+const RM_SKY_DAY = [[92, 150, 214], [164, 196, 226], [240, 206, 160], [246, 190, 130]], RM_SKY_SET = [[236, 128, 120], [246, 156, 120], [250, 186, 120], [252, 200, 130]];
+function rmGoldK() { const g = G.L.rmGold; if (!g) return 0; const m = cam.x + viewW() / 2; return Math.max(0, Math.min(1, (m - g[0]) / (g[1] - g[0]))); }
 function rmSky() {
-  const g = ctx.createLinearGradient(0, 0, 0, H); g.addColorStop(0, 'rgb(92,150,214)'); g.addColorStop(0.5, 'rgb(164,196,226)'); g.addColorStop(0.8, 'rgb(240,206,160)'); g.addColorStop(1, 'rgb(246,190,130)');
+  const k = rmGoldK(), c = i => 'rgb(' + RM_SKY_DAY[i].map((v, j) => Math.round(v + (RM_SKY_SET[i][j] - v) * k)).join(',') + ')';
+  const g = ctx.createLinearGradient(0, 0, 0, H); g.addColorStop(0, c(0)); g.addColorStop(0.5, c(1)); g.addColorStop(0.8, c(2)); g.addColorStop(1, c(3));
   ctx.fillStyle = g; ctx.fillRect(0, 0, W, H);
 }
 // clouds drifting forwards across the top of the sky
@@ -7833,17 +7835,31 @@ function rmClouds() {
 // and behind the trunks of the two giant plane trees in Villa Borghese (the second one: the sunset view from the Pincio)
 const RM_BANDS = { colo: [['rm_far1', 7.2, 0.5], ['rm_mid1', 5.0, -0.5]], old: [['rm_far2', 7.8, 0.5], ['rm_mid2', 5.0, -0.5]],
   borghese: [['rm_far3', 7.6, 0.5], ['rm_mid3', 6.2, -0.5]] };
-const RM_PART = { colo: 'colo', forum: 'colo', old: 'old', old2: 'old', borghese: 'borghese', view: 'view' };
+const RM_PART = { colo: 'colo', forum: 'colo', arena: 'arena', old: 'old', old2: 'old', borghese: 'borghese', view: 'view' };
+// the Colosseum's arena: the inside of the ring as the backdrop, open to the same sky (its own sky cut out, and the trees at its ends,
+// one was cut off at the top: Ladi 2026-11-10); every other copy is mirrored so the stands always join up
+const RM_ARENA_H = 8.6;
+function rmArena() {
+  const im = IMG.rm_arena; if (!im) return;
+  const h = RM_ARENA_H * U, w = h * im.width / im.height, bot = sy(-0.6, 0.3);
+  let x0 = -((cam.x * U * 0.15) % (2 * w)); if (x0 > 0) x0 -= 2 * w;
+  for (let x = x0, i = 0; x < W; x += w - 1, i++) {
+    if (i % 2) { ctx.save(); ctx.translate(x + w, 0); ctx.scale(-1, 1); ctx.drawImage(im, 0, bot - h, w, h); ctx.restore(); }
+    else ctx.drawImage(im, x, bot - h, w, h);
+  }
+}
 function rmBands() {
-  const L = G.L, sw = L.kitSwaps.filter(s => s.to !== 'colo_in' && s.to !== 'pan_in');
+  const L = G.L, sw = L.kitSwaps.filter(s => s.to !== 'pan_in');
   const part = (a, b, fn) => { a = Math.max(-10, a); b = Math.min(W + 10, b); if (b <= a) return; ctx.save(); ctx.beginPath(); ctx.rect(a, -10, b - a, H + 20); ctx.clip(); fn(); ctx.restore(); };
   const draw = name => {
     if (name === 'view') return rmView();
+    if (name === 'arena') return rmArena();
     const B = RM_BANDS[name];
     kitBand(weGrain(B[0][0], 14), 0.1, B[0][1], B[0][2]);
     const mb = sy(B[1][2], 0.3) - 2, g = ctx.createLinearGradient(0, mb, 0, H); g.addColorStop(0, '#6a5444'); g.addColorStop(1, '#3a2c22');
     ctx.fillStyle = g; ctx.fillRect(-10, mb, W + 20, H - mb + 10);   // (under the mid band, so a high camera never shows sky below it)
     kitBand(weGrain(B[1][0], 7), 0.3, B[1][1], B[1][2]);
+    if (name === 'borghese') { const k = rmGoldK(); if (k > 0) { ctx.fillStyle = `rgba(255,140,70,${0.22 * k})`; ctx.fillRect(-10, -10, W + 20, H + 20); } }   // (the park going golden)
   };
   let from = 'colo', a = -10;
   for (const s of sw) { const b = sx(s.x); if (RM_PART[s.to] !== RM_PART[from]) { part(a, b, () => draw(RM_PART[from])); a = b; } from = s.to; }
@@ -7948,32 +7964,20 @@ function rmBoosts() {
     }
   }
 }
-// ---------- the pedal cart in Villa Borghese: parked, A drives it along the avenue and over the ramp, parked at the end ----------
-const RM_CART_H = 2.6, RM_DRV = 1.05;
-function rmCartAt() {
-  const L = G.L, r = L.rmCartRide, z = rmOn(r), end = r.pts[r.pts.length - 1][0];
-  const s = z ? (z.wx !== undefined ? Math.min(z.s, end) : z.s) : rmDone(r) ? end : r.x0;
-  const jy = z && z.jy > 0 ? z.jy : 0, bob = z && z.v > 1 && !jy ? Math.abs(Math.sin(animT * 12)) * 0.03 : 0;
-  return { x: s - RM_DRV, y: ARun.rideY(r, s) + jy + bob, z, s, tilt: z && jy > 0 ? Math.max(-0.18, Math.min(0.18, -(z.jvy || 0) * 0.015)) : 0 };
+// ---------- the e-scooter in Villa Borghese (Ladi 2026-11-10: a scooter, not the pedal cart): parked at the path's edge, A rides it
+// along the avenue and over the ramp, it stays parked where he steps off. Blue and white, the same one as in Barcelona ----------
+const RM_SCOOT_H = 1.45;
+function rmScoot() {
+  const L = G.L, r = L.rmScootRide; if (!r || rmOn(r)) return;
+  const x = rmDone(r) ? r.pts[r.pts.length - 1][0] - 0.2 : r.x0 - 0.4;
+  if (sx(x + 2) < 0 || sx(x - 1) > W) return;
+  shadow(x + 0.45, r.exitY + 0.03, 1.0, 0.26); bxImg('rm_escooter', x, r.exitY, RM_SCOOT_H, true);   // (the picture faces left: flipped)
 }
-function rmCart(front) {
-  const L = G.L; if (!L.rmCartRide) return;
-  const C = rmCartAt(); if (sx(C.x + 3) < 0 || sx(C.x - 1) > W) return;
-  const rideA = C.z && C.z.wx === undefined;
-  if (!front) {
-    shadow(C.x + 1.24, L.rmCartRide.exitY + 0.03, 2.4, 0.28 * (C.z && C.z.jy > 1 ? 0.5 : 1));
-    rmTilt(C, () => bxImg('rm_cart_park', C.x, C.y, RM_CART_H));
-    return;
-  }
-  if (rideA) rmTilt(C, () => bxImg('rm_cart_side', C.x + 0.12, C.y + 0.32, 0.894));
-}
-function rmTilt(C, fn) { if (!C.tilt) return fn(); const X = sx(C.s), Y = sy(C.y); ctx.save(); ctx.translate(X, Y); ctx.rotate(C.tilt); ctx.translate(-X, -Y); fn(); ctx.restore(); }
 // ---------- the doors: the Colosseum's dark arch, the Pantheon's bronze doors; inside, the arches he came in by and goes out of ----------
 const RM_ARCH_H = 4.28, RM_MOS_H = 4.4;
 function rmDoorsOut(front) {
-  const L = G.L, C = L.rmColo, P = L.rmPan;
+  const L = G.L, P = L.rmPan;
   if (front) {   // A walks in behind the far side of each doorway
-    if (sx(L.rmDoor1 + 3) > 0 && sx(L.rmDoor1 - 3) < W) weClip(L.rmDoor1 + 0.3, L.rmDoor1 + 2.4, () => bxImg('rm_colo', C.x, 0, C.h));
     if (sx(L.rmDoor3 + 3) > 0 && sx(L.rmDoor3 - 3) < W) weClip(L.rmDoor3 + 0.5, L.rmDoor3 + 2.4, () => bxImg('rm_pantheon', P.x, 0, P.h));
     return;
   }
@@ -7990,23 +7994,19 @@ function rmDark(x0, x1, h, light) {   // the inside of a doorway: dark going out
 // the beam lifts A; above it the dome's coffers go on up (a slice from beside the oculus, mirrored band by band, so no second oculus)
 const RM_PAN_H = 8.0;
 function rmPanX0() { const B = G.L.rmBeam; return B.x + B.w / 2 - 2.4 - 0.5 * rmW('rm_in_pan', RM_PAN_H); }
-function rmInsidePic(z) {
-  if (z === 1) {
-    const im = IMG.rm_in_colo; if (!im) return;
-    const h = H * 0.8, w = h * im.width / im.height, bot = H * 1.01, top = bot - h;
-    const g = ctx.createLinearGradient(0, 0, 0, top + 4); g.addColorStop(0, 'rgb(84,150,224)'); g.addColorStop(1, 'rgb(124,196,252)');
-    ctx.fillStyle = g; ctx.fillRect(0, 0, W, top + 4);
-    let x0 = -(((cam.x - G.L.rmDoor1) * U * 0.3) % w); if (x0 > 0) x0 -= w;
-    for (let x = x0; x < W; x += w - 1) ctx.drawImage(im, x, top, w, h);
-    return;
-  }
+// the copies either side of the middle one are its left part and that part mirrored, so only one oculus ever shows (the long inside, round 2)
+function rmInsidePic() {
   const im = IMG.rm_in_pan; if (!im) return;
-  const h = RM_PAN_H * U, w = h * im.width / im.height, wu = w / U, Y = sy(-0.35) - h, x0 = rmPanX0();
+  const h = RM_PAN_H * U, w = h * im.width / im.height, wu = w / U, Y = sy(-0.35) - h, x0 = rmPanX0(), lf = 0.42, pw = w * lf, pu = pw / U;
   const sl = [im.width * 0.04, 0, im.width * 0.3, im.height * 0.3], sw = w * 0.3, vh = h * 0.3;   // (the coffer slice)
-  for (let k = -2; k <= 2; k++) {
-    const X = sx(x0 + k * wu); if (X > W || X + w < 0) continue;
-    ctx.drawImage(im, X, Y, w + 1, h);
-    for (let y = Y, j = 0; y > -1; y -= vh - 1, j++) for (let xs = X; xs < X + w; xs += sw - 1) {
+  const tiles = [[x0, w, 0]];
+  for (let k = 1; k <= 6; k++) tiles.push([x0 + wu + (k - 1) * pu, pw, k % 2 ? 1 : 2], [x0 - k * pu, pw, k % 2 ? 2 : 1]);   // 1: the left part, 2: it mirrored
+  for (const [xu, tw, kind] of tiles) {
+    const X = sx(xu); if (X > W || X + tw < 0) continue;
+    if (kind === 0) ctx.drawImage(im, X, Y, w + 1, h);
+    else if (kind === 1) ctx.drawImage(im, 0, 0, im.width * lf, im.height, X, Y, pw + 1, h);
+    else { ctx.save(); ctx.translate(X + pw, 0); ctx.scale(-1, 1); ctx.drawImage(im, 0, 0, im.width * lf, im.height, -1, Y, pw + 1, h); ctx.restore(); }
+    for (let y = Y, j = 0; y > -1; y -= vh - 1, j++) for (let xs = X; xs < X + tw; xs += sw - 1) {
       ctx.save(); ctx.translate(0, y);
       if (j % 2 === 0) { ctx.scale(1, -1); ctx.drawImage(im, sl[0], sl[1], sl[2], sl[3], xs, -1, sw, vh); }
       else ctx.drawImage(im, sl[0], sl[1], sl[2], sl[3], xs, -vh + 1, sw, vh);
@@ -8014,23 +8014,17 @@ function rmInsidePic(z) {
     }
   }
 }
-function rmInside(z) {
+function rmInside() {
   const L = G.L;
-  ctx.fillStyle = z === 1 ? '#e8c69a' : '#cdb79a'; ctx.fillRect(0, 0, W, H);
-  rmInsidePic(z);
+  ctx.fillStyle = '#cdb79a'; ctx.fillRect(0, 0, W, H);
+  rmInsidePic();
   ctx.fillStyle = 'rgba(40,24,10,.10)'; ctx.fillRect(0, 0, W, H);
-  if (z === 1) {
-    const a = rmW('rm_carch', RM_ARCH_H);
-    for (const [D, lit] of [[L.rmDoor1, false], [L.rmDoor2, true]]) { rmDark(D - a * 0.3, D + a * 0.3, 3.2, lit); bxImg('rm_carch', D - a / 2, 0, RM_ARCH_H); }
-  } else {
-    const a = rmW('rm_mosarch', RM_MOS_H);
-    for (const [D, lit] of [[L.rmDoor3, false], [L.rmDoor4, true]]) { rmDark(D - a * 0.3, D + a * 0.3, 3.4, lit); bxImg('rm_mosarch', D - a / 2, 0, RM_MOS_H); bxImg('rm_bronze', D + a / 2 - 0.05, 0, 4.41); }
-  }
+  const a = rmW('rm_mosarch', RM_MOS_H);
+  for (const [D, lit] of [[L.rmDoor3, false], [L.rmDoor4, true]]) { rmDark(D - a * 0.3, D + a * 0.3, 3.4, lit); bxImg('rm_mosarch', D - a / 2, 0, RM_MOS_H); bxImg('rm_bronze', D + a / 2 - 0.05, 0, 4.41); }
 }
-function rmInsideFront(z) {
-  const L = G.L;
-  if (z === 1) { const D = L.rmDoor2, a = rmW('rm_carch', RM_ARCH_H); weClip(D + a * 0.2, D + a / 2 + 0.2, () => bxImg('rm_carch', D - a / 2, 0, RM_ARCH_H)); }
-  else { const D = L.rmDoor4, a = rmW('rm_mosarch', RM_MOS_H); weClip(D + a * 0.22, D + a / 2 + 0.7, () => { bxImg('rm_mosarch', D - a / 2, 0, RM_MOS_H); bxImg('rm_bronze', D + a / 2 - 0.05, 0, 4.41); }); }
+function rmInsideFront() {
+  const L = G.L, D = L.rmDoor4, a = rmW('rm_mosarch', RM_MOS_H);
+  weClip(D + a * 0.22, D + a / 2 + 0.7, () => { bxImg('rm_mosarch', D - a / 2, 0, RM_MOS_H); bxImg('rm_bronze', D + a / 2 - 0.05, 0, 4.41); });
 }
 // the trapdoor lift in the arena: when he lands on its platform it shoots up and flings him into the air
 function rmLift() {
@@ -8072,36 +8066,67 @@ function rmToss() {
     for (let i = 0; i < 2; i++) { ctx.beginPath(); ctx.ellipse(sx(T.toss + 0.4), sy(1.15), (0.2 + k * 0.7 + i * 0.25) * U, (0.06 + k * 0.12) * U, 0, 0, 7); ctx.stroke(); }
   }
 }
+// rose petals falling through the oculus (on Pentecost Rome's firemen drop them from the roof): they drift down the beam and
+// lie in soft red heaps; a heap he lands on puffs up and bounces him, petals flying
+const RM_PETAL = ['#d81f3a', '#b8122c', '#f04a5e', '#e8364c'];
+function rmPetals() {
+  const L = G.L, B = L.rmBeam; if (!B || !L.rmHeaps) return;
+  const x0 = L.rmHeaps[0].x - 2, x1 = L.rmHeaps[L.rmHeaps.length - 1].x + 6; if (sx(x1) < 0 || sx(x0) > W) return;
+  const top = RM_PAN_H * 0.86 - 0.35, xt = rmPanX0() + 0.5 * rmW('rm_in_pan', RM_PAN_H);
+  for (let i = 0; i < 46; i++) {   // falling: from the oculus, spreading out as they drift down
+    const k = (animT * 0.07 + i * 0.0217) % 1, y = top * (1 - k), tx = x0 + 1 + ((i * 0.618) % 1) * (x1 - x0 - 2);
+    const x = xt + (tx - xt) * Math.min(1, k * 1.4) + Math.sin(animT * 1.6 + i) * 0.35, r = Math.sin(animT * 3 + i * 1.7);
+    ctx.fillStyle = RM_PETAL[i % 4]; ctx.beginPath(); ctx.ellipse(sx(x), sy(y), 0.11 * U, 0.06 * U * Math.abs(r) + 0.02 * U, animT * 2 + i, 0, 7); ctx.fill();
+  }
+  for (const Hp of L.rmHeaps) {
+    if (sx(Hp.x + Hp.w + 1) < 0 || sx(Hp.x - 1) > W) continue;
+    const e = Hp.s.bounceT !== undefined ? G.t - Hp.s.bounceT : 9, sq = e < 0.25 ? Math.sin(e / 0.25 * Math.PI) : 0;
+    const cx = Hp.x + Hp.w / 2, hh = 0.85 * (1 - 0.3 * sq), ww = Hp.w * (1 + 0.08 * sq);
+    shadow(cx, 0.03, ww * 1.05, 0.24);
+    const g = ctx.createLinearGradient(0, sy(hh), 0, sy(0)); g.addColorStop(0, '#e0304a'); g.addColorStop(1, '#7e0c1e');
+    ctx.fillStyle = g; ctx.beginPath(); ctx.ellipse(sx(cx), sy(0.02), ww / 2 * U, hh * U, 0, Math.PI, 2 * Math.PI); ctx.fill();
+    for (let i = 0; i < 70; i++) {   // the petals it is made of, lighter towards the top
+      const a = ((i * 0.618) % 1) * 2 - 1, f = (i * 0.377) % 1, ex = cx + a * ww * 0.46, ey = 0.05 + hh * Math.sqrt(Math.max(0, 1 - a * a)) * (0.25 + 0.75 * f) - 0.06;
+      ctx.fillStyle = RM_PETAL[(i * 3) % 4]; ctx.beginPath(); ctx.ellipse(sx(ex), sy(ey), 0.13 * U, 0.07 * U, i * 1.3, 0, 7); ctx.fill();
+      ctx.strokeStyle = 'rgba(90,6,20,.45)'; ctx.lineWidth = Math.max(1, 0.015 * U); ctx.stroke();
+    }
+    if (e < 1.1) for (let i = 0; i < 18; i++) {   // the puff: petals flying up and drifting down again
+      const a = i / 18 * Math.PI, v = 3 + (i % 3), px = cx + Math.cos(a) * v * 0.35 * e, py = 0.4 + Math.sin(a) * v * e - 4.5 * e * e;
+      if (py < 0) continue; ctx.globalAlpha = Math.min(1, (1.1 - e) * 2); ctx.fillStyle = RM_PETAL[i % 4];
+      ctx.beginPath(); ctx.ellipse(sx(px), sy(py), 0.11 * U, 0.05 * U, i + e * 6, 0, 7); ctx.fill(); ctx.globalAlpha = 1;
+    }
+  }
+}
 function drawRome(dt) {
   const L = G.L;
   kitDoorTick();
-  const z = rmIn();
-  if (z) {   // inside: nothing outside shows
-    rmInside(z);
-    if (z === 2) rmBeam();
-    drawKit(a => a.back && a.zone === z && a.key !== 'rm_lift');
-    if (z === 1) rmLift();
-    for (const s of L.solids) if (s.kind === 'ground' && s.x < (z === 1 ? L.rmDoor2 : L.rmDoor4) + 4 && s.x + s.w > (z === 1 ? L.rmDoor1 : L.rmDoor3) - 4)
-      rmGround(Object.assign({}, s, { style: z === 1 ? 'rmdeck' : 'rmmarble' }));   // (the floor runs on to the walls)
-    drawKit(a => !a.back && a.zone === z);
+  if (rmIn()) {   // inside the Pantheon: nothing outside shows
+    rmInside();
+    rmBeam();
+    drawKit(a => a.back && a.zone === 2);
+    for (const s of L.solids) if (s.kind === 'ground' && s.x < L.rmDoor4 + 4 && s.x + s.w > L.rmDoor3 - 4)
+      rmGround(Object.assign({}, s, { style: 'rmmarble' }));   // (the floor runs on to the walls)
+    rmPetals();
+    drawKit(a => !a.back && a.zone === 2);
     return;
   }
   rmSky();
   rmClouds();
   rmBands();
-  drawKit(a => a.back && !a.zone);
+  drawKit(a => a.back && !a.zone && a.key !== 'rm_lift');
+  rmLift();
   rmDoorsOut(false);
   for (const s of L.solids) if (s.kind === 'ground') rmGround(s);
   rmJoins(); rmBoosts();
   rmLife();
   drawKit(a => !a.back && !a.zone);
   rmTaxiIntro();
-  rmSide(); rmCart(false);
+  rmSide(); rmScoot();
   rmToss();
 }
 function drawRmFront() {
   const z = rmIn();
-  if (z) rmInsideFront(z); else { rmDoorsOut(true); rmSideFront(); rmCart(true); }
+  if (z) rmInsideFront(); else { rmDoorsOut(true); rmSideFront(); }
   drawKitDoor(RM_EDGE);
   rmStarlings();
   const F = G.flag; if (G.L.finale !== undefined && F && F.ride !== undefined && F.ride > 0.3 && !$('hud').hidden) $('hud').hidden = true;
@@ -8123,7 +8148,7 @@ function rmStarlings() {
   }
   ctx.restore();
 }
-// A: jumping out of the taxi; in the sidecar; driving the pedal cart; at the end, looking at the view from behind
+// A: jumping out of the taxi; in the sidecar; on the e-scooter; at the end, looking at the view from behind
 function drawRmRideA(cx, by, RUN_H, JUMP_H) {
   const L = G.L, p = G.p, F = G.flag; if (!rmA()) return false;
   if (G.intro && state === 'ready' && L.rmCar) {   // hidden in the taxi until it has stopped, then he jumps out of its back door (Sydney round 2)
@@ -8155,11 +8180,16 @@ function drawRmRideA(cx, by, RUN_H, JUMP_H) {
     drawSprite('a_run', 0, sx(S.s), sy(S.y + 0.05) + 0.04 * U, RUN_H, false);   // sitting in the sidecar (its shell is drawn over him after)
     return true;
   }
-  const zc = rmOn(L.rmCartRide);
-  if (zc) {
-    if (zc.wx !== undefined) { drawSprite('a_run', Math.floor(zc.wx / 0.42) % 6, cx, by + 0.04 * U, RUN_H, false); return true; }
-    const C = rmCartAt();
-    rmTilt(C, () => drawSprite('a_run', Math.floor(animT * 10) % 6, sx(C.s), sy(C.y + 0.55) + 0.04 * U, RUN_H * 0.92, false));   // pedalling (his legs go round under the side rail)
+  const z = rmOn(L.rmScootRide);
+  if (z) {   // standing on the e-scooter's deck, the handlebar in front of him (as in Barcelona); speed lines when it goes fast
+    const bob = z.v > 0.5 && !(z.jy > 0) ? Math.sin(animT * 22) * 0.012 * U : 0, X = sx(z.s);
+    shadow(z.s + 0.2, L.rmScootRide.exitY + 0.03, 1.0, 0.26);
+    bxImg('rm_escooter', z.s - 0.3, p.y + bob / U, RM_SCOOT_H, true);
+    if (z.v > 9) {
+      ctx.strokeStyle = 'rgba(255,255,255,' + Math.min(0.85, (z.v - 9) * 0.25) + ')'; ctx.lineWidth = 0.07 * U; ctx.lineCap = 'round';
+      for (let i = 0; i < 4; i++) { const ph = (animT * 3 + i * 0.37) % 1, y = by - (0.35 + i * 0.32) * U - (z.jy || 0) * U, x1 = X - (0.7 + ph * 1.6) * U; ctx.beginPath(); ctx.moveTo(x1, y); ctx.lineTo(x1 - (0.6 + 0.4 * (1 - ph)) * U, y); ctx.stroke(); }
+    }
+    drawSprite(z.jy > 0.15 ? 'a_jump' : 'a_run', z.jy > 0.15 ? 1 : 0, X - 0.05 * U, by - 0.2 * U + bob + (z.jy > 0.15 ? -0.82 * U : 0.04 * U), z.jy > 0.15 ? JUMP_H : RUN_H, false, z.jy > 0.15 ? { center: true } : {});
     return true;
   }
   return false;
