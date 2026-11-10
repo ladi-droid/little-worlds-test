@@ -3190,7 +3190,7 @@ const ALL_LEVELS = [
     b.wall(-12.5, 1, 22);
     ground(-14, 26.4, 'sywater', -1.6);                  // harbour water (the plane skims it; nobody walks on it)
     const PL = [[0, 3.4], [4, 2.2], [7, 0.9], [9.5, 0.15], [12, 0], [17.0, 0]];
-    const plane = { kind: 'syplane', x0: 0, pts: PL, v: 9.5, acc: 6.0, vEnd: 6.2, walkOut: 2.4, w0: 0.2, w1: 0, input: true, jump: 7.5, grav: 26, seat: 0, up: 0, down: 0, exitY: 0 };
+    const plane = { kind: 'syplane', x0: 0, pts: PL, v: 10.5, acc: 7.0, vEnd: 6.2, walkOut: 2.4, w0: 0.2, w1: 0, input: true, jump: 7.5, grav: 26, seat: 0, up: 0, down: 0, exitY: 0 };
     L.rides.push(plane); L.syPlane = plane;
     b.arc(4.5, 3.2, 5, 4, 1.6); b.arc(11.5, 1.4, 5, 5, 2.2);
     const PT = 18.9;
@@ -3360,18 +3360,20 @@ const ALL_LEVELS = [
     lean('sy_floss', FH + 31.0, 2.8, 1.4);
     lean('sy_lpbench', FH + 36.0, 2.8, 1.4);
 
-    // ---------- 9. the jet boat from the Luna Park wharf to Taronga: wake bumps, a 360 spin in a wall of spray ----------
-    const JX = FH + 44.0, JE = JX + 50;
+    // ---------- 9. the green-and-gold ferry from the Luna Park wharf to Taronga (Ladi's pick 2026-11-10, instead of the jet boat):
+    //            taps hop A between its two decks for the coins, dolphins leap alongside; one leaps right past and its splash fills
+    //            the screen, and the view behind changes inside it ----------
+    const JX = FH + 44.0, JE = JX + 42;
     ground(L.syNX + 0.3, JX - 1, 'sysand'); ground(JX - 1, JE + 1, 'sywater', -1.6);
     solid(JX - 6.6, aw('sy_pontoon', 2.4) - 0.4, 1.6, -1.6); art('sy_pontoon', JX - 6.8, -1.16, 2.4, { front: true });
-    const jp = [[JX, -0.4]]; for (let x = JX + 2; x < JE - 6; x += 2) jp.push([x, -0.4 + 0.25 * Math.sin((x - JX) * 0.7)]); jp.push([JE - 2, -0.3], [JE, 0]);
-    const ramps = [{ x: JX + 12, v: 8.5, h: 0.4 }, { x: JX + 34, v: 9.5, h: 0.4 }];
-    const jet = { kind: 'syjet', x0: JX, pts: jp, ramps, v: 13.5, acc: 8.0, vEnd: 6.2, walkOut: 3.0, w0: 0.2, w1: 0, input: true, jump: 8.0, grav: 28, seat: 0, up: 0, down: 0, exitY: 0 };
-    L.rides.push(jet); L.syJet = { ride: jet, spin: [JX + 19, JX + 25] };              // the spin: a wall of spray fills the screen and the view changes behind it
-    b.arc(JX + 12.5, 1.2, 5, 5, 2.4); b.arc(JX + 34.5, 1.2, 5, 5, 2.8);
-    b.coins(JX + 39, 0.6, 5, 1.4);
-    L.syLife.push(['sy_boat1', JX + 4, 0.5, 'boat'], ['sy_kayak1', JX + 44, -0.85, 'kayak'], ['sy_gull2', JX + 30, 6.5, 'fly']);
+    const FY = 0.3, DH = 0.85;                                                           // the lower deck's height, the upper deck above it
+    const fer = { kind: 'syferry', x0: JX, pts: [[JX, FY], [JE, FY]], v: 10.5, acc: 7.0, vEnd: 6.2, walkOut: 3.0, w0: 0.25, w1: 0, input: true, jump: 7.6, grav: 26, decks: [0, DH], seat: 0, up: 0, down: 0, exitY: 0 };
+    L.rides.push(fer); L.syFerry = { ride: fer, h: 4.4, splash: [JX + 24, JX + 28] };
+    for (const [x, up] of [[JX + 5, 1], [JX + 9, 0], [JX + 13, 1], [JX + 17, 0], [JX + 30.5, 1], [JX + 34, 0], [JX + 37.5, 1]]) b.coins(x, FY + 0.9 + (up ? DH + 0.25 : 0), 2, 0.9);
+    b.arc(JX + 21, FY + DH + 1.2, 4, 3, 1.0);                                          // over a dolphin's leap: a hop off the upper deck
+    L.syLife.push(['sy_boat1', JX + 4, 0.5, 'boat'], ['sy_kayak1', JX + 38, -0.85, 'kayak'], ['sy_gull2', JX + 30, 6.5, 'fly']);
     solid(JE - 3.8, aw('sy_pontoon', 2.4) - 0.4, 1.6, -1.6); art('sy_pontoon', JE - 4.0, -1.16, 2.4, { front: true });
+
 
     // ---------- 10. Taronga Zoo: up the path past the koala, the giraffes and the view back over the harbour ----------
     const TZ = JE + 6.0, TP = 6.0;
@@ -3541,7 +3543,14 @@ function rideTick(g, dt) {
     g.events.push({ type: 'rideEnd', kind: r.kind, pop: true });
     return true;
   }
-  if (r.input) {
+  if (r.decks) {   // (Sydney's ferry, Ladi 2026-11-10: a tap hops him between its two decks; z.dz is his height above the lower one)
+    if (p.buffer > 0) { if (!z.hop) { z.hop = true; z.jvy = r.jump; z.toDeck = 1 - (z.deck || 0); g.events.push({ type: 'jump', x: p.x, y: p.y }); } p.buffer = 0; }
+    if (z.hop) {
+      z.jvy -= r.grav * dt; z.dz = (z.dz || 0) + z.jvy * dt;
+      if (z.jvy < 0 && z.dz <= r.decks[z.toDeck]) { z.dz = r.decks[z.toDeck]; z.deck = z.toDeck; z.hop = false; z.jvy = 0; }
+    }
+    p.duck = false;
+  } else if (r.input) {
     if (p.buffer > 0) { if (r.jump) { if (!(z.jy > 0)) { z.jy = 0.001; z.jvy = r.jump; } } else { z.tgt = 1; z.tt = 0.55; } p.buffer = 0; }
     if (z.jy > 0) { z.jvy -= r.grav * dt; z.jy += z.jvy * dt; if (z.jy <= 0) { z.jy = 0; z.jvy = 0; } }
     if (p.duck) { z.tgt = -1; z.tt = 0.55; p.duck = false; }
@@ -3591,7 +3600,7 @@ function rideTick(g, dt) {
     }
   }
   const y = rideY(r, z.s);
-  p.x = z.s - PW / 2; p.y = y + r.seat + (z.off > 0 ? z.off * r.up : z.off * r.down) + (z.jy || 0);
+  p.x = z.s - PW / 2; p.y = y + r.seat + (z.off > 0 ? z.off * r.up : z.off * r.down) + (z.jy || 0) + (z.dz || 0);
   if (r.drift && z.t > r.w0) { const k = Math.min(1, (z.t - r.w0) / 0.8); p.x += k * r.drift[0] * Math.sin((z.t - r.w0) * 1.3); p.y += k * r.drift[1] * Math.sin((z.t - r.w0) * 2.1); }   // (the bubble wanders about as it floats)
   if (r.liftIn && z.t < r.liftIn) { const k = z.t / r.liftIn; p.y = z.y0 + (p.y - z.y0) * k * k * (3 - 2 * k); }   // (lifted up into his seat: the Barcelona giant)
   p.vx = z.v; p.vy = 0; p.onGround = false; p.coyote = 0; p.wall = 0; p.blocked = false; p.airT = 0; p.dir = 1; p.rising = false;
