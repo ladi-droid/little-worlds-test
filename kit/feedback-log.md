@@ -141,3 +141,4 @@ Each entry: **level, date** — what Ladi saw → what fixed it → where to loo
 - No gliding: A doesn't float in the air (the Pantheon light beam float was removed). A longer inside part needs its own fun thing (Rome: rose petals falling through the oculus into heaps that bounce A higher each time).
 - The ride before the ending is A on a scooter (the e-scooter drawing), not a pedal cart.
 - No abrupt change of scenery before the ending: the light and sky turn slowly towards the ending's along the way (by position, never a fade in time), and the view comes in behind a tree.
+- A backdrop change needs something wide and tall enough to hide it, not a thin palm trunk (Lagos 2026-11-10: "a sharp change of backdrop near the flag"; the Link Bridge view now comes in behind a tall block of flats).

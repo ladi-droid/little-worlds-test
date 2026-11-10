@@ -3666,6 +3666,246 @@ const ALL_LEVELS = [
     b.end(TE - 0.2);
   },
 },
+{
+  // Lagos (plan: claude.ai/artifact/Rpb8XJbLxAR4iT6LJ3orzt, Ladi's picks 2026-11-10: all recommended, plus okadas), built from the level kit
+  // on art made with the image maker (cut by london-runner/lagos/src/cut.py into atlas_lg*.webp). A hot sunny day going golden, then dusk;
+  // A in his summer outfit. A danfo drops A in Yaba -> the market (umbrella bounces, special 1) -> the National Theatre (the one inside:
+  // talking drums, special 2) -> go-slow on Third Mainland Bridge (over the danfo and bus roofs, special 3) -> a danfo off the bridge ->
+  // Victoria Island's glass towers (wall-jump, special 4) and roofs -> Landmark Beach (horse ride, the big wave, special 5)
+  // -> the Lekki-Ikoyi Link Bridge at dusk.
+  id: 'lagos', name: 'Lagos', plate: 'Lagos', area: 'lagos', city: 'Lagos',
+  build(b) {
+    const L = b.L, LG_ASP = {"lg_danfo":1.6565,"lg_danfo:h":2.3,"lg_danfo_open":1.6542,"lg_danfo_open:h":2.395,"lg_danfo_door":0.9609,"lg_danfo_door:h":2.3,"lg_okada1":1.02,"lg_okada1:h":2.0,"lg_okada2":1.07,"lg_okada2:h":2.0,"lg_okada0":1.4467,"lg_okada0:h":1.5,"lg_keke1":1.3895,"lg_keke1:h":1.9,"lg_keke2":1.3947,"lg_keke2:h":1.9,"lg_y4":0.4246,"lg_y4:h":9.575,"lg_y5":0.375,"lg_y5:h":10.812,"lg_y3":0.5111,"lg_y3:h":7.975,"lg_y2":0.6779,"lg_y2:h":6.062,"lg_market":1.1051,"lg_market:h":7.725,"lg_tech":0.7339,"lg_tech:h":7.488,"lg_buka":1.1913,"lg_buka:h":3.85,"lg_phone":1.1939,"lg_phone:h":3.788,"lg_endl":0.9408,"lg_endl:h":6.038,"lg_narrow":0.5097,"lg_narrow:h":5.9,"lg_endr":0.9262,"lg_endr:h":6.038,"lg_gatewall":2.0061,"lg_gatewall:h":4.2,"lg_suya":0.9792,"lg_suya:h":2.4,"lg_cooler":0.912,"lg_cooler:h":2.5,"lg_tank":0.6826,"lg_tank:h":2.3,"lg_corn":1.18,"lg_corn:h":1.0,"lg_lamp":0.7395,"lg_lamp:h":4.2,"lg_banana_pot":1.07,"lg_banana_pot:h":2.0,"lg_barrier":2.5333,"lg_barrier:h":0.9,"lg_table":2.0727,"lg_table:h":1.1,"lg_theatre":2.3192,"lg_theatre:h":13.0,"lg_palmpot":0.6378,"lg_palmpot:h":4.5,"lg_pillar1":0.3357,"lg_pillar1:h":8.0,"lg_pillar2":0.3339,"lg_pillar2:h":8.0,"lg_fountain":1.1938,"lg_fountain:h":1.6,"lg_bench":2.34,"lg_bench:h":1.0,"lg_seats":1.9767,"lg_seats:h":3.0,"lg_drum3":0.6231,"lg_drum3:h":2.6,"lg_drum2":0.635,"lg_drum2:h":2.0,"lg_drum1":0.6,"lg_drum1:h":1.35,"lg_djembe":0.8708,"lg_djembe:h":2.4,"lg_tpier":0.2914,"lg_tpier:h":4.4,"lg_tarch":1.1725,"lg_tarch:h":4.4,"lg_adire":9.85,"lg_adire:h":0.4,"lg_dframe":0.7318,"lg_dframe:h":4.4,"lg_glass":0.1496,"lg_glass:h":4.48,"lg_dpier":0.2,"lg_dpier:h":4.4,"lg_rail":11.7273,"lg_rail:h":1.1,"lg_blamp":0.6339,"lg_blamp:h":5.5,"lg_pier":0.88,"lg_pier:h":4.0,"lg_gantry":1.5813,"lg_gantry:h":6.2,"lg_brt":2.5903,"lg_brt:h":3.1,"lg_lorry":1.6133,"lg_lorry:h":3.0,"lg_car":1.65,"lg_car:h":1.6,"lg_suv":1.7676,"lg_suv:h":1.85,"lg_danfo2":1.5346,"lg_danfo2:h":2.6,"lg_hawk1":0.419,"lg_hawk1:h":2.1,"lg_hawk2":0.4095,"lg_hawk2:h":2.1,"lg_hawk3":0.419,"lg_hawk3:h":2.1,"lg_hawk4":0.5316,"lg_hawk4:h":1.9,"lg_apt":0.5411,"lg_apt:h":11.6,"lg_rest":0.7064,"lg_rest:h":8.029,"lg_hotel":0.6184,"lg_hotel:h":9.263,"lg_cafe":1.2545,"lg_cafe:h":4.965,"lg_helipad":3.2368,"lg_helipad:h":1.9,"lg_rtank":1.3783,"lg_rtank:h":2.3,"lg_rac":2.25,"lg_rac:h":1.4,"lg_pergola":2.1385,"lg_pergola:h":2.6,"lg_bgate":1.6238,"lg_bgate:h":4.2,"lg_hut1":1.7944,"lg_hut1:h":3.6,"lg_hut2":1.7944,"lg_hut2:h":3.6,"lg_net":2.2731,"lg_net:h":2.6,"lg_coco":1.1842,"lg_coco:h":1.9,"lg_umb":1.0731,"lg_umb:h":2.6,"lg_loungers":2.46,"lg_loungers:h":1.0,"lg_castle":1.5643,"lg_castle:h":1.4,"lg_castle2":1.6714,"lg_castle2:h":0.7,"lg_drift":2.1375,"lg_drift:h":0.8,"lg_ball":1.35,"lg_ball:h":0.6,"lg_horse":1.0818,"lg_horse:h":2.2,"lg_horse_g1":1.5131,"lg_horse_g1:h":1.906,"lg_horse_g2":1.2732,"lg_horse_g2:h":2.05,"lg_horse_hand":1.5874,"lg_horse_hand:h":2.233,"lg_bigwave":1.9727,"lg_bigwave:h":2.2,"lg_splash":1.3071,"lg_splash:h":1.4,"lg_wave":2.5889,"lg_wave:h":0.9,"lg_walkway":4.3783,"lg_walkway:h":4.6,"lg_palm":0.841,"lg_palm:h":7.5,"lg_oilpalm":0.9838,"lg_oilpalm:h":6.5,"lg_almond":1.2267,"lg_almond:h":6.5,"lg_bougain":1.4909,"lg_bougain:h":2.2,"lg_bananas":1.45,"lg_bananas:h":3.2,"lg_cloud0":1.865,"lg_cloud0:h":2.0,"lg_cloud1":1.8687,"lg_cloud1:h":1.6,"lg_cloud2":1.8071,"lg_cloud2:h":1.4,"lg_cloud3":1.77,"lg_cloud3:h":1.0,"lg_cloud4":1.7671,"lg_cloud4:h":0.8,"lg_egret0":1.3429,"lg_egret0:h":0.7,"lg_egret1":1.2286,"lg_egret1:h":0.7,"lg_egret2":1.2571,"lg_egret2:h":0.7,"lg_gull0":1.3833,"lg_gull0:h":0.6,"lg_gull1":1.4167,"lg_gull1:h":0.6,"lg_gull2":1.2833,"lg_gull2:h":0.6,"lg_egret_st":0.81,"lg_egret_st:h":1.0,"lg_agama_wall":1.4417,"lg_agama_wall:h":1.2,"lg_agama1":2.6,"lg_agama1:h":0.35,"lg_agama2":1.8889,"lg_agama2:h":0.45,"lg_stalls":3.6735,"lg_stalls:h":3.4,"lg_stall1":1.2235,"lg_stall1:h":3.4,"lg_stall2":1.2265,"lg_stall2:h":3.4,"lg_stall3":1.2235,"lg_stall3:h":3.4,"lg_umbs":2.964,"lg_umbs:h":5.0,"lg_umb1":0.9,"lg_umb1:h":5.0,"lg_umb2":0.772,"lg_umb2:h":5.0,"lg_umb3":0.908,"lg_umb3:h":5.0,"lg_umb4":0.796,"lg_umb4:h":5.0,"lg_tower1":0.2808,"lg_tower1:h":16.0,"lg_tower2":0.4583,"lg_tower2:h":13.694,"domes":[[0.1197,0.1083,3.759],[0.3429,0.1045,4.21],[0.6054,0.1257,4.619],[0.8653,0.1247,5.0]]};
+    L.killY = -8; L.startX = 2.0; L.camMin = -12; L.introCam = 'centre'; L.outfit = 'dxb';   // the summer outfit
+    const aw = (k, h) => LG_ASP[k] * h;
+    const ground = (x0, x1, style, y = 0) => b.groundTop(x0, x1, y, style);
+    const art = (key, x, y, h, o = {}) => b.kitArt(key, x, y, h, Object.assign({ w: aw(key, h) }, o));
+    const back = (key, x, h, o = {}) => art(key, x, o.y || 0, h, Object.assign({ back: true }, o));
+    const solid = (x, w, h, y = 0, o = {}) => { const s = Object.assign({ kind: 'block', x, y, w, h, style: 'hidden' }, o); L.solids.push(s); return s; };
+    const Y = y => ({ y: y || 0 });
+    const lean = (key, x, h, sh, y) => { const w = aw(key, h); return b.kitProp(key, x, w, h, Object.assign(Y(y), { solid: [0.1, w - 0.2, sh], ledge: [0.1, sh, w - 0.2] })); };
+    const hop = (key, x, h, y, sh = Math.min(h, 1.0)) => { const w = aw(key, h); return b.kitProp(key, x, w, h, Object.assign(Y(y), { solid: [0.1, w - 0.2, sh] })); };
+    const prop = (key, x, h, y) => b.kitProp(key, x, aw(key, h), h, Y(y));
+    const bounce = (x, w, y, h, note) => L.oneways.push({ kind: 'ledge', x, y, w, bounce: h, note });
+    const swapAt = (x, to, why) => (L.kitSwaps = L.kitSwaps || []).push({ x, to, why });   // behind something reaching above the sky band: not a door
+    const zone = (x0, x1, z) => { for (const a of L.kitArt) if (a.zone === undefined && !a.out && a.x > x0 - 0.1 && a.x < x1) a.zone = z; };
+    // buildings: their ledges (balconies, roofs) as parts of their height
+    const LED = { lg_y2: [0.62, 0.9], lg_y3: [0.5, 0.73, 0.92], lg_y4: [0.42, 0.6, 0.78, 0.93], lg_y5: [0.36, 0.52, 0.68, 0.84, 0.94],
+      lg_endl: [0.52, 0.96], lg_endr: [0.52, 0.96], lg_narrow: [0.5, 0.96], lg_market: [0.37, 0.68, 0.97], lg_tech: [0.36, 0.68, 0.96],
+      lg_buka: [0.9], lg_phone: [0.92], lg_hotel: [0.28, 0.46, 0.63, 0.8, 0.97], lg_rest: [0.34, 0.6, 0.86], lg_cafe: [0.55, 0.95], lg_apt: [0.3, 0.45, 0.6, 0.75, 0.97] };
+    const house = k => { const h = LG_ASP[k + ':h'], w = aw(k, h); return { key: k, w, h, ledges: LED[k].map(f => [0.35, f * h, w - 0.7]) }; };
+    const row = keys => x => b.kitRow(x, keys.slice(1, -1).map(house), { capL: house(keys[0]), capR: house(keys[keys.length - 1]) });
+    L.lgLife = [];                                       // birds, lizards, okadas, hawkers: [key, x, y, kind]
+    L.lgJoins = [];                                      // where two kinds of ground meet (a concrete pier stands there)
+    L.rides = []; L.camFloor = [];
+
+    // ---------- 1. Yaba: the danfo drops A; okadas and kekes; the market street ----------
+    b.wall(-12.5, 1, 22);
+    L.lgBus = { x: -3.4 };                               // a yellow danfo: A jumps out of its open door, it drives away
+    hop('lg_okada0', 5.0, 1.5, 0, 1.1);                  // a parked okada (he hops it)
+    prop('lg_corn', 9.0, 1.0); L.lgLife.push(['lg_agama1', 9.4, 0, 'lizard']);
+    const R1 = row(['lg_endl', 'lg_y2', 'lg_y4', 'lg_y3', 'lg_endr'])(12.0);
+    lean('lg_suya', 16.0, 2.4, 1.35);
+    b.coins(16.4, 2.6, 3, 0.8); b.coins(19.5, 4.6, 4, 1.0); b.coins(24.0, 7.2, 4, 1.0);
+    lean('lg_keke1', 22.0, 1.9, 1.35);
+    prop('lg_lamp', 27.5, 4.2);
+    L.lgLife.push(['lg_okada1', 20, 0, 'okada'], ['lg_agama_wall', R1 - 9.5, 0, 'wall'], ['lg_egret1', 14, 12.5, 'fly']);
+    // the fabric stalls (three in a row): run along their flat roofs
+    const FS = R1 + 5.0;
+    lean('lg_tank', R1 + 2.4, 2.3, 1.35);              // (a water tank by the end house: lean on it, then up)
+    const FE = b.kitStalls(FS, ['lg_stall1', 'lg_stall2', 'lg_stall3'].map(k => ({ key: k, w: aw(k, 3.4), h: 3.4, top: 3.35 })));
+    b.coins(FS + 1.0, 4.4, 9, 1.2);
+    lean('lg_cooler', FE + 1.8, 2.5, 1.35);
+    // ---------- special 1: up the market umbrellas, each bounces him higher, onto the Yaba market's roof ----------
+    const UM = FE + 6.0, UW = aw('lg_umbs', 5.0), DOMES = LG_ASP.domes;
+    back('lg_umbs', UM, 5.0);
+    const BNC = [3.4, 3.8, 4.3, 5.4], NOTE = [1.0, 1.12, 1.26, 1.5];
+    DOMES.forEach(([c, hw, top], i) => { bounce(UM + (c - hw * 0.7) * UW, hw * 1.4 * UW, top - 0.15, BNC[i], NOTE[i]); b.arc(UM + c * UW + 0.6, top + 0.6, 4, 3.0, BNC[i] * 0.75); });
+    lean('lg_table', UM - 3.0, 1.1, 1.0);                // (a table to hop up from, before the first umbrella)
+    const MK = UM + UW + 0.6;
+    const R2 = row(['lg_endl', 'lg_market', 'lg_tech', 'lg_narrow', 'lg_buka', 'lg_phone', 'lg_endr'])(MK - aw('lg_endl', LG_ASP['lg_endl:h']) + 0.05);
+    const MKH = LG_ASP['lg_market:h'] * 0.97, MKW = aw('lg_market', LG_ASP['lg_market:h']);
+    b.coins(MK + 0.8, MKH + 1.0, 6, 1.1);
+    b.special(MK + MKW - 1.2, MKH + 2.0);                                                 // 1: at the far end of the market roof
+    L.lgLife.push(['lg_agama2', MK + 2.0, MKH, 'lizard']);
+    lean('lg_banana_pot', MK + 2.5, 2.0, 1.35); hop('lg_okada0', MK + 9.0, 1.5, 0, 1.1); lean('lg_keke2', MK + 16.0, 1.9, 1.35);
+    prop('lg_tank', MK + 21.5, 2.3); hop('lg_corn', MK + 25.5, 1.0);
+    b.coins(MK + 10, 2.6, 4, 1.0); b.coins(MK + 18, 4.2, 4, 1.0);
+    L.lgLife.push(['lg_okada2', MK + 14, 0, 'okada'], ['lg_egret0', MK + 6, 13.0, 'fly']);
+    const J1 = R2 + 2.0;                                 // Yaba's paving meets the theatre plaza at a pier
+    ground(-14, J1, 'lgstreet'); L.lgJoins.push(J1);
+
+    // ---------- 2. the National Theatre: Creative Park's pillars (wall-jump for coins), the fountain, up the steps, THE DOOR ----------
+    lean('lg_tank', R2 + 0.2, 2.3, 1.35);              // (a water tank where the market street ends: lean on it, then up)
+    const P1 = J1 + 6.0, PW1 = aw('lg_pillar1', 8.0), GP = 1.8, P2 = P1 + PW1 + GP;
+    back('lg_pillar1', P1, 8.0); back('lg_pillar2', P2, 8.0);
+    solid(P1 + 0.2, PW1 - 0.2, 8.0 - 2.0, 2.0); solid(P2, aw('lg_pillar2', 8.0) - 0.2, 8.0 - 2.0, 2.0);   // (from just above his head: he runs under, or climbs)
+    b.ledge(P1 + 0.1, 8.0, PW1 - 0.2); b.ledge(P2 + 0.1, 8.0, aw('lg_pillar2', 8.0) - 0.2);
+    (L.kitClimbs = L.kitClimbs || []).push({ x: P1, xr: P2, gap: GP, hL: 8.0, hR: 8.0 });
+    for (let i = 0, y = 2.6; y < 7.6; i++, y += 1.4) b.coins(P1 + PW1 + (i % 2 ? GP - 0.5 : 0.25), y, 1);
+    b.coins(P1 + 0.6, 9.0, 6, 1.0);
+    const PE = P2 + aw('lg_pillar2', 8.0);
+    lean('lg_fountain', PE + 2.5, 1.6, 1.35); b.coins(PE + 2.8, 2.4, 3, 0.7);
+    hop('lg_bench', PE + 7.0, 1.0); prop('lg_palmpot', PE + 10.5, 4.5); lean('lg_cooler', PE + 13.6, 2.5, 1.35);
+    const TX = PE + 14.0, TW = aw('lg_theatre', 13.0), ST = 2.4;   // the theatre: its steps up to the glass doors in the middle
+    back('lg_theatre', TX, 13.0); L.lgTh = { x: TX, w: TW, h: 13.0 }; L.lgStage = ST;
+    b.slope(TX + 4.7, 0.05, TX + 10.3, ST);
+    ground(TX + 10.3, TX + 15.07, 'lghide', ST);
+    b.coins(TX + 5.2, 1.4, 5, 1.1, 0.42);
+    L.camFloor.push([TX + 4.7, TX + 10.3, 0, ST]);
+    const D1 = TX + 15.07;                               // the glass doors
+    b.kitDoor(D1, { inside: true }); b.kitSwap(D1, 'th_in'); L.lgDoor1 = D1;
+    ground(J1, TX + 10.3, 'lgplaza');
+
+    // ---------- 3. inside the National Theatre: seat rows, the talking drums on the stage (special 2: BOUNCE, each beat higher) ----------
+    lean('lg_djembe', D1 + 1.6, 2.4, 1.35, ST);        // (a djembe just inside the doors)
+    const S1 = D1 + 5.0, SW = aw('lg_seats', 3.0);      // two blocks of seats rising: up the rows
+    for (const x of [S1, S1 + SW + 1.4]) { back('lg_seats', x, 3.0, { y: ST }); solid(x + 0.1, SW - 0.2, 1.0, ST); solid(x + 2.0, SW - 2.1, 2.0, ST); solid(x + 3.9, SW - 4.0, 3.0, ST); b.coins(x + 1.2, ST + 2.6, 3, 1.9, 0.9); }
+    const DR = S1 + 2 * SW + 5.0;
+    const DRUMS = [['lg_drum1', 1.35, 3.2, 1.0], ['lg_drum2', 2.0, 3.8, 1.19], ['lg_drum3', 2.6, 4.8, 1.41]];
+    L.lgDrums = [];
+    let dx = DR;
+    for (const [k, h, bh, note] of DRUMS) {
+      const w = aw(k, h); back(k, dx, h, { y: ST, drum: true });
+      solid(dx + 0.1, w - 0.2, Math.max(1.35, h - 0.1), ST, { noGrab: true }); const o = { kind: 'ledge', x: dx + 0.05, y: ST + Math.max(1.35, h - 0.1) + 0.1, w: w - 0.1, bounce: bh, note }; L.oneways.push(o);
+      L.lgDrums.push({ x: dx, w, h, k, o }); b.arc(dx + w / 2 + 0.6, ST + h + 0.6, 4, 2.6, bh * 0.8);
+      dx += w + 2.6;
+    }
+    const DL = L.lgDrums[2];
+    b.special(DL.x + DL.w / 2 + 2.2, ST + DL.h + 4.6);                                     // 2: at the top of the big drum's bounce
+    lean('lg_djembe', dx + 2.4, 2.4, 1.35, ST); b.coins(dx + 2.6, ST + 3.2, 4, 0.8);
+    const S2 = dx + 7.0;
+    back('lg_seats', S2, 3.0, { y: ST }); solid(S2 + 0.1, SW - 0.2, 1.0, ST); solid(S2 + 2.0, SW - 2.1, 2.0, ST); solid(S2 + 3.9, SW - 4.0, 3.0, ST); b.coins(S2 + 1.2, ST + 2.6, 3, 1.9, 0.9);
+    b.arc(S2 + SW + 0.4, ST + 3.8, 4, 3.0, 1.2);
+    const D2 = S2 + SW + 7.0;                            // out by the far glass doors, down the theatre's other steps
+    L.lgDoor2 = D2; zone(D1, D2, 2);
+    b.kitDoor(D2, { inside: false }); b.kitSwap(D2, 'bridge');
+    ground(TX + 15.07, D2 + 4.73, 'lgstage', ST);
+    L.camFloor.push([D1 - 0.5, D2 + 0.5, ST]);
+    back('lg_theatre', D2 - 15.07, 13.0, { out: true }); L.lgTh2 = { x: D2 - 15.07 };
+    for (const a of L.kitArt) if (a.out && a.zone === undefined) a.zone = 0;
+    b.slope(D2 + 4.73, ST, D2 + 10.6, 0.05); L.camFloor.push([D2 + 4.73, D2 + 10.6, ST, 0]);
+    const TE = D2 - 15.07 + TW;
+    ground(D2 + 4.73, TE + 0.5, 'lgplaza');
+    lean('lg_cooler', D2 + 11.2, 2.5, 1.35);
+    b.coins(D2 + 5.4, ST + 0.8, 5, 1.1, -0.42);
+
+    // ---------- 4. go-slow on Third Mainland Bridge: over the roofs of the stopped traffic (special 3: the long jump over the bus) ----------
+    const BR = TE + 0.5;                                 // (the bridge begins at a pier, where the theatre's plaza ends)
+    L.lgJoins.push(BR); L.lgBridge = [BR];
+    L.lgLife.push(['lg_egret_st', BR + 3.0, 1.1, 'rail']);
+    const veh = (k, x, h, roof, body) => { const w = aw(k, h); b.kitProp(k, x, w, h, { y: 0, solid: [0.15, w - 0.3, body], ledge: [0.15, roof, w - 0.3] }); return x + w; };
+    let vx = BR + 4.0;
+    vx = veh('lg_car', vx, 1.6, 1.45, 1.35) + 2.2;
+    L.lgLife.push(['lg_hawk1', vx - 1.3, 0, 'hawker']);
+    vx = veh('lg_suv', vx, 1.85, 1.75, 1.3) + 1.6;
+    b.coins(BR + 7.0, 2.6, 3, 0.8); b.coins(vx - 3.0, 3.0, 3, 0.8);
+    vx = veh('lg_danfo2', vx, 2.6, 2.55, 2.0) + 2.4;
+    L.lgLife.push(['lg_hawk2', vx - 1.4, 0, 'hawker']);
+    const BUS = vx; vx = veh('lg_brt', vx, 3.1, 3.0, 2.6) + 3.4;
+    b.coins(BUS + 0.6, 4.1, 7, 1.0);
+    const LOR = vx; vx = veh('lg_lorry', vx, 3.0, 2.95, 2.4) + 2.0;
+    b.special(LOR - 1.7, 7.0);                                                             // 3: over the gap, from the bus roof to the melons
+    b.arc(LOR - 3.4, 4.2, 5, 3.4, 2.4);
+    L.lgLife.push(['lg_hawk3', LOR - 1.6, 0, 'hawker']);
+    b.kitArt('lg_gantry', LOR - 4.0, 0, 6.2, { w: aw('lg_gantry', 6.2), back: true, grounded: true });
+    vx = veh('lg_car', vx, 1.6, 1.45, 1.2) + 2.0;
+    L.lgLife.push(['lg_hawk4', vx - 1.2, 0, 'hawker']);
+    vx = veh('lg_suv', vx, 1.85, 1.75, 1.3) + 1.8;
+    b.coins(vx - 5.0, 2.8, 5, 1.0);
+    vx = veh('lg_danfo2', vx, 2.6, 2.55, 2.0) + 2.6;
+    b.coins(vx - 4.4, 3.6, 4, 1.0);
+    L.lgLife.push(['lg_egret_st', vx + 1.0, 1.1, 'rail'], ['lg_egret2', vx - 10, 11.5, 'fly'], ['lg_gull0', vx + 4, 12.5, 'fly']);
+    // the danfo with its door open, its conductor calling: A jumps in, it rides off the bridge onto Victoria Island
+    const DB = vx + 3.0, DE = DB + 40.0;
+    L.lgRide = { x: DB };
+    const bus = { kind: 'lgbus', x0: DB, pts: [[DB, 0], [DE, 0]], v: 12.0, acc: 8.0, vEnd: 6.2, walkOut: 2.6, w0: 0.5, w1: 0, input: false,
+      seat: 0.0, up: 0, down: 0, exitY: 0 };
+    L.rides.push(bus); L.lgBusRide = bus;
+    const AP = DB + 22.0, APH = LG_ASP['lg_apt:h'];    // a tall block of flats at the end of the bridge: the view changes behind it
+    back('lg_apt', AP, APH, { flip: true }); swapAt(AP + aw('lg_apt', APH) / 2, 'vi', 'behind the tall block of flats the danfo drives past');
+    const BE = AP + aw('lg_apt', APH) / 2;
+    ground(BR, BE, 'lgroad'); L.lgJoins.push(BE); L.lgBridge.push(BE);
+    for (let x = BR + 2; x < BE - 2; x += 13) back('lg_blamp', x, 5.5);
+
+    // ---------- 5. Victoria Island: up between two glass towers (special 4: WALL-JUMP), the rooftop run ----------
+    const T1 = DE + 6.0, T1W = aw('lg_tower1', LG_ASP['lg_tower1:h']), T1H = LG_ASP['lg_tower1:h'], GG = 1.8, T2 = T1 + T1W + GG;
+    const T2H = LG_ASP['lg_tower2:h'], T2W = aw('lg_tower2', T2H);
+    back('lg_tower1', T1, T1H); back('lg_tower2', T2, T2H);
+    solid(T1 + 0.2, T1W - 0.2, T1H - 2.2, 2.2); solid(T2, T2W - 0.2, T2H - 2.2, 2.2);
+    b.ledge(T1 + 0.3, T1H - 0.2, T1W - 0.6); b.ledge(T2 + 0.3, T2H - 0.25, T2W - 0.6);
+    (L.kitClimbs = L.kitClimbs || []).push({ x: T1, xr: T2, gap: GG, hL: T1H, hR: T2H });
+    for (let i = 0, y = 2.8; y < T2H - 0.6; i++, y += 1.5) b.coins(T1 + T1W + (i % 2 ? GG - 0.5 : 0.25), y, 1);
+    b.special(T1 + T1W + GG / 2, T2H + 1.2);                                               // 4: over the top of the gap
+    L.lgLife.push(['lg_egret1', T1 + 6, 17.5, 'fly']);
+    const RX = T2 + T2W - 0.05;
+    const R3 = b.kitRow(RX, ['lg_hotel', 'lg_rest'].map(house), { capL: null, capR: house('lg_cafe') });
+    L.kitWarn = (L.kitWarn || []).filter(w => !w.startsWith(`kitRow at ${RX}`));   // (its left end is the tower, not an end piece)
+    const HW = aw('lg_hotel', LG_ASP['lg_hotel:h']), HH = LG_ASP['lg_hotel:h'] * 0.97, RW = aw('lg_rest', LG_ASP['lg_rest:h']);
+    lean('lg_rtank', RX + 1.0, 2.3, 1.35, HH); b.coins(RX + 1.2, HH + 2.5, 3, 0.9); b.coins(RX + 3.8, HH + 1.2, 2, 0.8);
+    b.arc(RX + HW - 0.4, HH + 1.4, 5, 3.6, 1.2);
+    lean('lg_rac', RX + HW + 1.0, 1.4, 1.35, LG_ASP['lg_rest:h'] * 0.86); b.coins(RX + HW + 3.6, LG_ASP['lg_rest:h'] * 0.86 + 1.2, 3, 0.8);
+    b.coins(RX + HW + RW + 0.6, LG_ASP['lg_cafe:h'] + 1.0, 4, 1.0);
+    lean('lg_cooler', T2 + T2W + 2.5, 2.5, 1.35); prop('lg_palmpot', RX + HW + 2.0, 4.5); hop('lg_corn', RX + HW + RW + 1.5, 1.0);
+    L.lgLife.push(['lg_agama1', RX + HW + 4.5, 0, 'lizard']);
+    prop('lg_bougain', R3 + 1.0, 2.2); prop('lg_lamp', R3 + 5.0, 4.2); lean('lg_coco', R3 + 9.0, 1.9, 1.35);
+    b.coins(R3 + 9.3, 2.8, 3, 0.8);
+
+    // ---------- 6. Landmark Beach: a big palm (the view changes behind its trunk), the beach gate, huts, the horse ride (special 5: THE BIG WAVE) ----------
+    const PB = R3 + 14.0, PBH = 9.6, PBW = aw('lg_palm', PBH);
+    back('lg_palm', PB, PBH); const PT = PB + PBW * 0.22;     // (the trunk is at its left)
+    swapAt(PT, 'beach', 'behind the trunk of a tall coconut palm (drawn whole)');
+    prop('lg_bananas', PB - 1.6, 3.2);
+    const GT = PB + PBW * 0.5;                          // the beach gate: the pavement turns to sand under it
+    back('lg_bgate', GT, 4.2); const GTW = aw('lg_bgate', 4.2);
+    b.ledge(GT + 0.4, 4.15, GTW - 0.8); b.coins(GT + 0.8, 5.2, 5, 1.0);
+    ground(BE, GT + 0.9, 'lgpave'); L.lgJoins.push(GT + 0.9); L.lgGate = GT + 0.9;
+    const HT = GT + GTW + 2.0;
+    lean('lg_cooler', GT + GTW - 1.0, 2.5, 1.35);
+    back('lg_hut1', HT, 3.6); b.ledge(HT + 0.4, 3.45, aw('lg_hut1', 3.6) - 0.8);
+    hop('lg_loungers', HT + aw('lg_hut1', 3.6) + 1.2, 1.0);
+    const HT2 = HT + aw('lg_hut1', 3.6) + 5.0;
+    back('lg_hut2', HT2, 3.6); b.ledge(HT2 + 0.4, 3.45, aw('lg_hut2', 3.6) - 0.8);
+    b.coins(HT + 0.8, 4.5, 5, 1.0); b.coins(HT2 + 0.8, 4.5, 5, 1.0);
+    lean('lg_castle', HT2 + aw('lg_hut2', 3.6) + 1.5, 1.4, 1.35); prop('lg_umb', HT2 + aw('lg_hut2', 3.6) + 5.0, 2.6);
+    back('lg_net', HT2 + aw('lg_hut2', 3.6) + 9.0, 2.6);
+    L.lgLife.push(['lg_gull1', HT + 6, 12.0, 'fly'], ['lg_gull2', HT2 + 10, 13.0, 'fly']);
+    // the horse ride along the water's edge: tap to jump the waves; the big wave always lifts him
+    const HR = HT2 + aw('lg_hut2', 3.6) + 18.0, HE = HR + 64.0;
+    L.lgHorse = { x: HR };
+    const WAVES = [HR + 12, HR + 22, HR + 46], BIG = HR + 33;
+    const horse = { kind: 'lghorse', x0: HR, pts: [[HR, 0], [HE, 0]], ramps: [{ x: BIG, v: 12.5, h: 0.6 }], v: 11.5, acc: 8.0, vEnd: 6.2, walkOut: 2.6,
+      w0: 0.4, w1: 0, input: true, jump: 8.5, grav: 28, seat: 0.95, up: 0, down: 0, exitY: 0 };
+    L.rides.push(horse); L.lgHorseRide = horse; L.lgWaves = WAVES; L.lgBig = BIG;
+    for (const x of WAVES) b.arc(x, 2.6, 5, 4.0, 1.4);
+    b.special(BIG + 5.4, 5.6);                                                              // 5: at the top of the big wave's lift
+    b.arc(BIG + 1.0, 3.2, 7, 9.0, 2.6);
+    b.coins(HR + 4, 2.0, 5, 1.4); b.coins(HR + 52, 2.0, 6, 1.4);
+    L.lgLife.push(['lg_gull0', HR + 20, 12.0, 'fly'], ['lg_egret2', HR + 40, 13.0, 'fly']);
+    hop('lg_drift', HE + 3.0, 0.8); lean('lg_castle2', HE + 6.0, 1.4, 1.35);
+    L.lgSea = [GT, 1e9];
+
+    // ---------- 7. the Lekki-Ikoyi Link Bridge at dusk: up the walkway, the cables lit up, egrets flying ----------
+    // a tall block of flats on the Lekki shore: the view changes behind it (the palm trunk was too thin, Ladi 2026-11-10: "a sharp change of backdrop near the flag")
+    const J5 = HE + 10.0, AP2 = J5 + 1.0, APH2 = 13.5, APW2 = aw('lg_apt', APH2);
+    back('lg_apt', AP2, APH2); swapAt(AP2 + APW2 / 2, 'view', 'behind a tall block of flats on the Lekki shore');
+    L.lgGold = [T1 - 20, AP2 + APW2 / 2];
+    const WK = AP2 + APW2 - 1.0, WKW = aw('lg_walkway', 4.6), DK = 1.15;   // the walkway starts behind the flats
+    back('lg_walkway', WK, 4.6);
+    ground(J5, WK + 0.3, 'lgpave'); L.lgJoins.push(J5, WK + 0.3);
+    ground(GT + 0.9, J5, 'lgsand');
+    b.slope(WK + 0.3, 0.05, WK + 7.55, DK);
+    ground(WK + 7.55, WK + WKW + 40, 'lghide', DK); L.lgWalk = WK + 7.55;
+    L.camFloor.push([WK + 0.3, WK + 7.55, 0, DK], [WK + 7.55, 99999, DK]);
+    b.coins(WK + 1.0, 1.4, 5, 1.2, 0.18);
+    const FX = WK + 10.0;
+    b.flag(FX); L.flagY = DK;
+    L.lgFinale = true;
+    L.finale = FX + 4.5; L.finaleT = 7; L.lgView = FX + 4.5;
+    b.wall(WK + WKW - 0.4, 1, 40);
+    b.end(WK + WKW - 0.4);
+  },
+},
 ];
 // Tower Bridge is parked for now (Ladi 2026-10-28): its build and art stay, it just isn't in the game.
 const PARKED = ['towerbridge', 'practice'];
