@@ -3651,10 +3651,12 @@ const ALL_LEVELS = [
 
     // ---------- 9. the Pincio terrace at sunset: the view over the rooftops to St Peter's (only here), the starlings ----------
     const T2 = CRE + 8.0;
-    back('rm_plane', T2, PTH, { y: TOP }); swapAt(T2 + PL * 0.5, 'view', 'behind the second plane tree (the park light has gone golden to match)');
-    L.rmGold = [T1 + PL * 0.5, T2 + PL * 0.5];          // the sky and the park go slowly golden along the avenue, so the view isn't a jump
-    const TR = T2 + PL - 2.0, TRW = aw('rm_terrace', 5.0);
+    // the terrace's balustrade starts behind the tree's trunk (it is drawn first), so it never shows a cut-off end (Ladi 2026-11-10)
+    const TR = T2 + PL * 0.5 - 0.2, TRW = aw('rm_terrace', 5.0);
     back('rm_terrace', TR, 5.0, { y: TOP });
+    back('rm_plane', T2, PTH, { y: TOP });
+    swapAt(TR + 4.0, 'view', 'behind the flag pole, which reaches the top of the screen (the sky left of it is matched to the view)');
+    L.rmGold = [T1 + PL * 0.5, TR + 4.0];               // the sky and the park go slowly golden along the avenue, so the view isn't a jump
     b.coins(TR + 1.0, TOP + 1.2, 4, 1.0);
     b.flag(TR + 4.0); L.flagY = TOP;
     L.rmFinale = true;
