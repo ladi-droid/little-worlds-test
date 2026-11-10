@@ -440,10 +440,10 @@ html.lw-loading .splash{visibility:hidden}
   </div>
 </section>
 
-<script src="kids/kids-meta.js?v=1794274849"></script>
-<script src="kids/kids.js?v=1794274849"></script>
-<script src="sfx.js?v=1794274849"></script>
-<script src="game.js?v=1794274849"></script>
+<script src="kids/kids-meta.js?v=1794288214"></script>
+<script src="kids/kids.js?v=1794288214"></script>
+<script src="sfx.js?v=1794288214"></script>
+<script src="game.js?v=1794288214"></script>
 <script>
 (() => {
 'use strict';
@@ -918,7 +918,7 @@ function sndTick() {
   sndLoop('lift', play && !L.bcBubble && !!(p.ride && p.ride.i === 1 && p.ride.v > 0.3 && p.ride.end <= 0));
   once('ctTaxi', state === 'ready' && (L.ctTaxi !== undefined || L.wmCab !== undefined) && G.intro && introT() > 1.1, () => { snd('car_door'); snd('car_drive', { delay: 0.25 }); });
   sndLoop('buggy_engine', play && !!L.race && !!G.race && !G.race.won);
-  sndLoop('fireworks_show', L.finale !== undefined && !L.weFinale && !L.ctFinale && !L.wmFinale && !L.bcFinale && !!G.flag && G.flag.ride !== undefined);
+  sndLoop('fireworks_show', L.finale !== undefined && !L.weFinale && !L.ctFinale && !L.wmFinale && !L.bcFinale && L.area !== 'sydney' && !!G.flag && G.flag.ride !== undefined);
   sndLoop('snore', state === 'ready' && L.sleepStart !== undefined && sleepT() < 1.2);
   if (L.timed && play && !G.flag) { const left = L.timed + G.bonus - G.time; sndLoop('clock_tick', left > 0 && left < 6); } else sndLoop('clock_tick', !!(L.wmClock && G.wmIn && G.p.x > L.wmClock.x0 && G.p.x < 116));   // Big Ben's clockwork ticks
   if (!play) { if (L.jeepStop !== undefined && !L.pmStation && G.intro) {   // the Dubai drop-off: plane lands, Jeep / taxi in, door, away
@@ -1296,7 +1296,7 @@ $('retryBtn').addEventListener('click', () => startLevel(levelIndex));
 // If the builder opened this tab, close it and show the builder again; otherwise open the builder with this child's world filled in.
 let lwJoinEnd = false;
 function lwBackToBuilder() {
-  const url = 'builder.html?v=1794274849&w=' + lwEncode(LW);
+  const url = 'builder.html?v=1794288214&w=' + lwEncode(LW);
   try { if (window.opener && !window.opener.closed && /builder\.html/.test(window.opener.location.pathname)) { window.opener.focus(); window.close(); setTimeout(() => { location.href = url; }, 400); return; } } catch (e) {}
   location.href = url;
 }
@@ -1373,7 +1373,7 @@ function handleEvents() {
     sndEvent(e);
     switch (e.type) {
       case 'jump': SFX.jump(); dust(G.p.x + 0.4, G.p.y, 6); break;
-      case 'bounce': SFX.big(); dust(G.p.x + 0.4, G.p.y, 10); shake = Math.max(shake, 0.15); break;
+      case 'bounce': if (e.note) { if (!snd('star', { rate: e.note })) BEEP.coin(); } else SFX.big(); dust(G.p.x + 0.4, G.p.y, 10); shake = Math.max(shake, 0.15); break;
       case 'wjump': SFX.wjump(); dust(e.x, e.y, 5); break;
       case 'vault': SFX.vault(); break;
       case 'land': if (G.L.race) { if (e.hard && e.car === 'a') { SFX.land(); shake = Math.max(shake, 0.1); } break; } if (e.hard) { SFX.land(); dust(G.p.x + 0.4, G.p.y, 5); } break;
@@ -1524,8 +1524,9 @@ function updateCamera(dt) {
   const cable = G.L.ctCab && p.ride && G.L.rides[p.ride.i] === G.L.ctCab;   // Cape Town's cable car: keep the cabin and the climb ahead in view
   const bcab = G.L.bcCable && p.ride && G.L.rides[p.ride.i] === G.L.bcCable.ride;   // Barcelona's cable car: keep the whole cabin in the middle as it swoops
   const bbub = G.L.bcBubble && p.ride && G.L.rides[p.ride.i] === G.L.bcBubble.ride;   // the bubble: keep it in the middle as it floats up
-  const bcIn = G.L.bcDoorIn !== undefined && G.kitIn;   // inside the Sagrada: the camera stays put, zoomed out (Ladi 2026-11-09)
-  const ty = bcIn ? 0 : bbub ? Math.max(floor, p.y + 0.8 - vh * 0.5) : bcab ? ARun.rideY(G.L.bcCable.ride, p.ride.s + 1.0) + 1.9 - vh * 0.5 : cable ? ARun.rideY(G.L.ctCab, p.ride.s + 1.2) + 2.2 - vh * 0.5 : Math.max(floor, (riding ? p.y + ARun.moverY(p.ground, G.t + 0.3) - p.ground.y : p.y) + 1.5 - vh * 0.55);
+  const syLv = G.L.syCamLevel && p.x > G.L.syCamLevel[0] && p.x < G.L.syCamLevel[1] ? G.L.syCamLevel[2] : undefined;   // Sydney: level past the station (Ladi 2026-11-10)
+  const bcIn = (G.L.bcDoorIn !== undefined || G.L.syHallY !== undefined) && G.kitIn;   // inside the Sagrada: the camera stays put, zoomed out (Ladi 2026-11-09)
+  const ty = bcIn ? (G.L.syHallY !== undefined ? G.L.syHallY + 0.8 : 0) : syLv !== undefined ? syLv : bbub ? Math.max(floor, p.y + 0.8 - vh * 0.5) : bcab ? ARun.rideY(G.L.bcCable.ride, p.ride.s + 1.0) + 1.9 - vh * 0.5 : cable ? ARun.rideY(G.L.ctCab, p.ride.s + 1.2) + 2.2 - vh * 0.5 : Math.max(floor, (riding ? p.y + ARun.moverY(p.ground, G.t + 0.3) - p.ground.y : p.y) + 1.5 - vh * 0.55);
   if (G.camSnap) { cam.y = ty; G.camSnap = false; }
   else cam.y += (ty - cam.y) * Math.min(1, dt * (riding || cable ? 14 : bcab || bbub ? 6 : 3));
 }
@@ -7485,7 +7486,7 @@ function syClouds() {
   }
 }
 // the two backdrops of each part (rule 1). They change only at the Opera House doors, behind the Bridge's south pylon,
-// and inside the jet boat's wall of spray (the spin); the Taronga top fades over a few steps into the view back over the harbour
+// and inside the jet boat's wall of spray (the spin); across at Taronga the view back over the harbour is the backdrop
 const SY_BANDS = { garden: [['sy_far1', 7.6, 0.6], ['sy_mid1', 5.0, -0.6]], quay: [['sy_far1', 7.6, 0.6], ['sy_mid2', 5.0, -0.6]],
   north: [['sy_far2', 7.6, 0.6], ['sy_mid3', 5.0, -0.6]], taronga: [['sy_far3', 7.8, 0.6], ['sy_mid4', 5.0, -0.6]] };
 function syBands() {
@@ -7499,7 +7500,7 @@ function syBands() {
     ctx.fillStyle = g; ctx.fillRect(-10, mb, W + 20, H - mb + 10);   // harbour under the mid band, so a high camera never shows sky below it
     kitBand(weGrain(B[1][0], 7), 0.3, B[1][1], B[1][2]);
   };
-  if (G.syJetSwap || (L.syJet && G.p.x > L.syJet.spin[1] + 1)) { draw('taronga'); if (L.syHill) syViewFade(sx(L.syHill[1] - 6), sx(L.syHill[1])); return; }
+  if (G.syJetSwap || (L.syJet && G.p.x > L.syJet.spin[1] + 1)) { syView(); return; }   // across at Taronga: the view back over the harbour (no fade: Ladi 2026-11-10)
   let from = 'garden', a = -10;
   for (const s of sw) { const b = sx(s.x); part(a, b, () => draw(from)); from = s.to; a = b; }
   part(a, W + 10, () => draw(from));
@@ -7518,17 +7519,6 @@ function syView(c = ctx) {
   const h = Math.max(H / U * 1.02, 12.5, W / U * 1.4 * im.height / im.width), w = h * im.width / im.height;
   const X = W / 2 - w * U / 2 - (cam.x - (L.syView - viewW() / 2)) * U * 0.05;
   c.drawImage(im, X, 0, w * U, h * U);
-}
-let syFadeC = null;
-function syViewFade(a, b) {
-  if (a > W + 10) return;
-  if (!syFadeC || syFadeC.width !== cv.width || syFadeC.height !== cv.height) { syFadeC = document.createElement('canvas'); syFadeC.width = cv.width; syFadeC.height = cv.height; }
-  const c = syFadeC.getContext('2d'), sc = cv.width / W;
-  c.setTransform(1, 0, 0, 1, 0, 0); c.clearRect(0, 0, syFadeC.width, syFadeC.height); c.setTransform(sc, 0, 0, sc, 0, 0);
-  syView(c);
-  c.globalCompositeOperation = 'destination-in'; const g = c.createLinearGradient(a, 0, b, 0); g.addColorStop(0, 'rgba(0,0,0,0)'); g.addColorStop(1, 'rgba(0,0,0,1)');
-  c.fillStyle = g; c.fillRect(0, 0, W, H); c.globalCompositeOperation = 'source-over';
-  ctx.save(); ctx.beginPath(); ctx.rect(Math.max(-10, a), -10, W + 20, H + 20); ctx.clip(); ctx.drawImage(syFadeC, 0, 0, W, H); ctx.restore();
 }
 // the harbour: the water strip rolling gently at the surface, deep blue below
 function syWater(s) {
@@ -7668,18 +7658,48 @@ function syDoors(front) {
 }
 function syInside() {
   const L = G.L, im = IMG.sy_in_hall;
-  ctx.fillStyle = '#6b3a24'; ctx.fillRect(0, 0, W, H);
-  if (im) {   // the hall: its picture fills the screen's height, sliding slowly as he runs (its ends never show)
-    const h = H * 1.02, w = h * im.width / im.height;
-    let x0 = -(((cam.x - L.syDoorIn) * U * 0.25) % w); if (x0 > 0) x0 -= w;
-    for (let x = x0; x < W; x += w - 1) ctx.drawImage(im, x, 0, w, h);
+  ctx.fillStyle = '#f2e8d8'; ctx.fillRect(0, 0, W, H);
+  if (im) {   // the hall zoomed out like the Sagrada (Ladi 2026-11-10): the picture at 55% of the screen, its white sail ceiling going on up above it
+    const h = H * 0.55, w = h * im.width / im.height, bot = sy(L.syHallY) + 0.04 * H, top = bot - h, f = 0.24, vh = h * f;
+    let x0 = -(((cam.x - L.syDoorIn) * U * 0.3) % w); if (x0 > 0) x0 -= w;
+    for (let x = x0; x < W; x += w - 1) {
+      ctx.drawImage(im, x, top, w, h);
+      for (let y = top, k = 0; y > -1; y -= vh - 1, k++) {
+        ctx.save(); ctx.translate(0, y);
+        if (k % 2 === 0) { ctx.scale(1, -1); ctx.drawImage(im, 0, 0, im.width, im.height * f, x, -1, w, vh); }
+        else ctx.drawImage(im, 0, 0, im.width, im.height * f, x, -vh + 1, w, vh);
+        ctx.restore();
+      }
+    }
   }
-  ctx.fillStyle = 'rgba(30,14,6,.12)'; ctx.fillRect(0, 0, W, H);
+  ctx.fillStyle = 'rgba(30,14,6,.10)'; ctx.fillRect(0, 0, W, H);
   const dw = aw_sy('sy_door_in', SY_DOOR_H), ow = aw_sy('sy_door_out', SY_DOOR_H), PD = 4.03;
   bxImg('sy_door_in', L.syDoorIn - dw / 2, PD, SY_DOOR_H);
   const g = ctx.createLinearGradient(0, sy(PD + 3), 0, sy(PD)); g.addColorStop(0, '#fff8d8'); g.addColorStop(1, '#bfe4ff');   // daylight through the glass doors
   ctx.fillStyle = g; ctx.fillRect(sx(L.syDoorOut - ow * 0.3), sy(PD + 3.2), ow * 0.6 * U, 3.2 * U);
   bxImg('sy_door_out', L.syDoorOut - ow / 2, PD, SY_DOOR_H);
+}
+// the acoustic rings: each hangs on its two cables from the ceiling (above the screen); a ring dips when he bounces on it
+function syRings() {
+  for (const r of G.L.syRings || []) {
+    if (sx(r.x + r.w) < 0 || sx(r.x) > W) continue;
+    const o = G.L.oneways.find(q => q.note && Math.abs(q.x - (r.x + r.w * 0.12)) < 0.01), dip = o && o.bounceT !== undefined ? Math.max(0, 0.25 - (G.t - o.bounceT)) * 0.8 : 0;
+    const y = r.y - dip;
+    ctx.strokeStyle = 'rgba(120,132,150,.9)'; ctx.lineWidth = Math.max(1, 0.035 * U);
+    for (const f of [0.335, 0.665]) { ctx.beginPath(); ctx.moveTo(sx(r.x + r.w * f), sy(y + r.h) + 2); ctx.lineTo(sx(r.x + r.w * f), -2); ctx.stroke(); }
+    const im = IMG[r.key]; if (!im) continue;
+    weClip(r.x + r.w * 0.05, r.x + r.w * 0.95, () => bxImg(r.key, r.x, y, r.h));   // (the cut pieces carry a sliver of their neighbours at the edges)
+  }
+}
+// wooden risers under the raised rows of seats
+function syRisers() {
+  for (const [x, w, y0, y1] of G.L.syRisers || []) {
+    const X = sx(x), Y = sy(y1), h = sy(y0) - Y; if (X > W || X + w * U < 0) continue;
+    const g = ctx.createLinearGradient(0, Y, 0, Y + h); g.addColorStop(0, '#c07a40'); g.addColorStop(1, '#7a4424');
+    ctx.fillStyle = g; ctx.fillRect(X, Y, w * U, h);
+    ctx.fillStyle = '#e8b070'; ctx.fillRect(X, Y, w * U, 0.07 * U);
+    ctx.fillStyle = 'rgba(50,24,10,.35)'; ctx.fillRect(X, Y, 0.06 * U, h); ctx.fillRect(X + w * U - 0.06 * U, Y, 0.06 * U, h);
+  }
 }
 function syHallFloor(s) {   // the stage-wood floor of the hall
   const top = s.y + s.h, X = sx(s.x), w = s.w * U, y0 = sy(top);
@@ -7695,8 +7715,10 @@ function drawSydney(dt) {
   const inside = a => a.x > L.syDoorIn - 0.1 && a.x < L.syDoorOut;
   if (G.kitIn) {
     syInside();
+    syRings();
     drawKit(a => a.back && inside(a));
     for (const s of L.solids) if (s.kind === 'ground' && s.style === 'syhall') syHallFloor(s);
+    syRisers();
     drawKit(a => !a.back && inside(a));
     return;
   }
@@ -7733,11 +7755,13 @@ function drawSyRideA(cx, by, RUN_H, JUMP_H) {
   }
   const rp = L.syPlane, zp = syOn(rp), intro = G.intro && state === 'ready';
   if (rp && (zp || intro)) {
-    if (zp && zp.wx !== undefined) { drawSprite('a_run', Math.floor(zp.wx / 0.42) % 6, cx, by + 0.04 * U, RUN_H, false); return true; }   // out of the door, onto the pontoon
-    const P = syPlaneAt(), pw = aw_sy('sy_plane', SY_PL_H), X0 = sx(P.x + pw * 0.38), X1 = sx(P.x + pw * 0.74), Y0 = sy(P.y + SY_PL_H * 0.78), Y1 = sy(P.y + SY_PL_H * 0.5);
-    ctx.save(); ctx.beginPath(); ctx.rect(X0, Y0, X1 - X0, Y1 - Y0); ctx.clip();   // his head and shoulders in the cabin windows
-    drawSprite('a_run', 0, sx(P.x + pw * SY_PL_DOOR), sy(P.y + 1.5) + 0.04 * U, RUN_H, false);
-    ctx.restore(); return true;
+    if (zp && zp.wx !== undefined) {   // the plane has landed: he jumps out of the door onto the pontoon, then runs (Ladi 2026-11-10)
+      if (zp.wx0 === undefined) zp.wx0 = zp.wx;
+      const d = (zp.wx - zp.wx0) / 1.3;
+      if (d < 1) { drawSprite('a_jump', d < 0.5 ? 2 : 4, cx, by - (0.75 + Math.sin(d * Math.PI) * 0.7) * U, JUMP_H, false, { center: true }); return true; }
+      drawSprite('a_run', Math.floor(zp.wx / 0.42) % 6, cx, by + 0.04 * U, RUN_H, false); return true;
+    }
+    return true;   // (inside the cabin: not seen)
   }
   const J = L.syJet, zj = J && syOn(J.ride);
   if (zj) {

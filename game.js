@@ -3167,7 +3167,7 @@ const ALL_LEVELS = [
   // Seaplane ride -> Botanic Garden -> up the Opera House steps and its big sail, slide down the next -> inside the concert hall (the ONE door)
   // -> Circular Quay + the Cahill Walk over the station -> The Rocks market canopies -> over the Harbour Bridge arch
   // -> Luna Park's face + the giant slide -> jet boat ride -> Taronga Zoo giraffes.
-  id: 'sydney', name: 'Sydney Harbour', plate: 'Sydney Harbour', area: 'sydney', city: 'Sydney',
+  id: 'sydney', name: 'Sydney', plate: 'Sydney', area: 'sydney', city: 'Sydney',
   build(b) {
     const L = b.L, SY_ASP = {"sy_pontoon":4.058,"sy_seawall":5.7,"sy_fence":4.3,"sy_plane":2.0038,"sy_plane_open":1.9048,"sy_jet":3.1235,"sy_jetspin":2.493,"sy_spray":0.8404,"sy_ferry":2.1133,"sy_wharf":2.4802,"sy_fig":1.3454,"sy_palm":0.5532,"sy_bench":1.6889,"sy_fountain":0.5875,"sy_lamp":0.33,"sy_pot":1.3,"sy_opera":2.8068,"sy_door_in":1.1425,"sy_door_out":1.125,"sy_organ":0.6614,"sy_gal_wall":0.5133,"sy_ring0":0.87,"sy_ring1":0.7143,"sy_ring2":0.8643,"sy_gal_front":6.3427,"sy_seats":4.3368,"sy_station":3.9922,"sy_icecream":1.1808,"sy_busker":0.9677,"sy_bin":0.5857,"sy_lookout":1.4071,"sy_bollards":1.425,"sy_gates":2.0,"sy_qbench":1.8333,"sy_rock_endl":0.3972,"sy_rock1":0.8185,"sy_rock2":0.7994,"sy_rock3":0.9213,"sy_rock_endr":0.3952,"sy_glamp":0.2176,"sy_cafe":0.9192,"sy_potree":0.7167,"sy_flowerbox":1.1692,"sy_stonewall":1.6692,"sy_pylon":0.3467,"sy_arch":3.2484,"sy_plinth":0.6848,"sy_flags":1.0795,"sy_gate":2.1286,"sy_train":6.5895,"sy_luna":1.1205,"sy_funslide":3.6138,"sy_floss":0.9,"sy_lpbench":0.9071,"sy_lpot":1.1667,"sy_gum":0.8297,"sy_kooka":1.9143,"sy_zbench":2.0,"sy_zfence":2.2818,"sy_giraffes":1.0478,"sy_cloud0":1.845,"sy_cloud1":1.7824,"sy_cloud2":1.7959,"sy_cloud3":1.7222,"sy_cloud4":1.7733,"sy_gull0":1.52,"sy_gull1":1.4875,"sy_gull2":1.6667,"sy_cock0":1.0727,"sy_cock1":1.0667,"sy_cock2":1.1375,"sy_boat0":0.9187,"sy_boat1":0.9214,"sy_cocksit":0.6333,"sy_kayak0":1.225,"sy_kayak1":1.2417,"sy_stall0":0.9214,"sy_stall1":0.9214,"sy_stall2":0.9214,"sy_stall3":0.9214};
     L.outfit = 'dxb';                                    // the summer outfit
@@ -3205,7 +3205,7 @@ const ALL_LEVELS = [
     b.kitProp('sy_fig', FG, fw, 7.2, { y: 0, solid: [fw * 0.36, fw * 0.24, 1.6] });   // the big fig: lean on its roots,
     b.ledge(FG + fw * 0.36, 1.6, fw * 0.24); b.ledge(FG + fw * 0.12, 4.0, fw * 0.76);  // then up into its low branches
     b.coins(FG + fw * 0.38, 2.7, 3, 0.8); b.coins(FG + fw * 0.2, 5.1, 6, 0.9);
-    L.syLife.push(['sy_cock0', FG + 6, 8.6, 'fly'], ['sy_cocksit', FG + fw * 0.7, 6.55, 'sit']);
+    L.syLife.push(['sy_cock0', FG + 6, 8.6, 'fly'], ['sy_cock2', FG + fw * 0.7, 7.6, 'fly']);   // (Ladi 2026-11-10: no bird sitting on thin air)
     hop('sy_bench', 44.0, 0.9);
     lean('sy_fountain', 49.5, 1.6, 1.4); b.coins(49.6, 2.8, 3, 0.8);
     prop('sy_palm', 53.5, 7.0);
@@ -3229,12 +3229,29 @@ const ALL_LEVELS = [
     lean('sy_pot', OX + 34.5, 1.5, 1.4, PD);
 
     // ---------- 4. inside the concert hall: THE ONE DOOR (in under the small sails, out through the glass foyer) ----------
-    const D1 = OX + 40.0, D2 = D1 + 42;
+    // (Ladi 2026-11-10: zoomed out like the Sagrada, and more to do: the stalls rise in tiers, the acoustic rings bounce him along
+    //  playing a rising tune, then the wall-jump between the organ and the gallery)
+    const D1 = OX + 40.0, D2 = D1 + 66;
     b.kitDoor(D1, { inside: true }); b.kitSwap(D1, 'hall'); L.syDoorIn = D1; L.syDoorOut = D2; L.syOpera = { x: OX, h: OH };
-    ground(D1 - 1.5, D2 + 1.0, 'syhall', PD); L.camFloor.push([D1 - 0.5, D2 + 0.5, PD]);
+    ground(D1 - 1.5, D2 + 1.0, 'syhall', PD); L.camFloor.push([D1 - 0.5, D2 + 0.5, PD]); L.syHallY = PD;
     hop('sy_seats', D1 + 3.5, 0.95, PD); b.coins(D1 + 3.8, PD + 1.9, 3, 1.0);
-    hop('sy_seats', D1 + 9.5, 0.95, PD);
-    const OC = D1 + 15.5, ow = aw('sy_organ', 7.0), GX = OC + ow + 1.8;               // special 2: wall-jump between the organ and the gallery
+    const TW = aw('sy_seats', 0.95), TI = D1 + 9.0; L.syRisers = [];                    // three rows of seats, each a step higher (wooden risers under them)
+    for (let i = 0; i < 3; i++) {
+      const x = TI + i * 2.6, y = PD + 0.45 + 0.9 * i;                                    // (the first row is too high to vault: a tap)
+      solid(x + 0.1, TW - 0.2, y + 0.9 - PD, PD); b.ledge(x + 0.1, y + 0.9, TW - 0.2); L.syRisers.push([x + 0.05, TW - 0.1, PD, y + 0.1]);
+      b.kitProp('sy_seats', x, TW, 0.95, { y, onArt: true });   // (standing on its wooden riser)
+      b.coins(x + 1.4, y + 2.0, 2, 0.8);
+    }
+    const RT = TI + 2 * 2.6 + TW;                                                         // the top row's end
+    const RGH = 3.0, RY = PD + 2.3, RS = 4.25, RNG = ['sy_ring0', 'sy_ring2', 'sy_ring0', 'sy_ring2'], NOTE = [1.0, 1.26, 1.5, 2.0];
+    L.syRings = [];
+    RNG.forEach((k, i) => {                                                                // the acoustic rings: springy, each one a note higher
+      const w = aw(k, RGH), x = RT + 0.2 + i * RS, top = RY;
+      L.syRings.push({ key: k, x, y: top - RGH * 0.33, h: RGH, w });
+      L.oneways.push({ kind: 'ledge', x: x + w * 0.12, y: top, w: w * 0.76, bounce: i === 3 ? 5.4 : 2.6, note: NOTE[i] });
+      b.coins(x + w * 0.5 + RS * 0.5, top + (i === 3 ? 4.2 : 2.6), 1);
+    });
+    const OC = RT + 0.2 + 3 * RS + 4.0, ow = aw('sy_organ', 7.0), GX = OC + ow + 1.8;   // special 2: wall-jump between the organ and the gallery
     solid(OC, ow, 7.0 - 2.6, PD + 2.6); back('sy_organ', OC, 7.0, { y: PD });          // (he runs in under the organ's arch)
     b.ledge(OC + 0.3, PD + 5.4, ow - 0.6);
     const GF = 1.8, GW = aw('sy_gal_front', GF), GT = PD + 5.6;                         // the gallery: wooden panels under a gold-railed front
@@ -3244,9 +3261,10 @@ const ALL_LEVELS = [
     for (let i = 0, y = 1.4; y < 6.6; i++, y += 1.5) b.coins(OC + ow + (i % 2 ? 1.25 : 0.15), PD + y, 1);
     (L.kitClimbs = L.kitClimbs || []).push({ x: OC, xr: GX, gap: 1.8, hL: 7.0, hR: 5.6 });
     b.special(OC + ow + 0.9, PD + 9.0);                                                // 2: up under the sound reflectors
-    back('sy_ring0', OC - 2.0, 2.0, { y: PD + 9.4, hang: true }); back('sy_ring1', OC + 3.5, 2.6, { y: PD + 9.0, hang: true }); back('sy_ring2', GX + 4.0, 2.0, { y: PD + 9.4, hang: true });
     b.coins(GX + 0.6, GT + 1.0, 8, 1.2);
+    lean('sy_seats', GX + 1.6, 1.4, 1.3, GT);                                           // a row of gallery seats to hop
     lean('sy_gal_wall', GX + GW + 4.5, 1.6, 1.5, PD);                                    // a wooden stage box
+    hop('sy_seats', GX + GW + 9.5, 0.95, PD);
     b.kitDoor(D2, { inside: false }); b.kitSwap(D2, 'quay');
 
     // ---------- 5. Circular Quay: down the forecourt steps, then up over the station on the Cahill Walk ----------
@@ -3261,7 +3279,7 @@ const ALL_LEVELS = [
     art('sy_wharf', QA + 10.5, -1.6, 4.6, { back: true });                              // a ferry wharf, its pier deck at the quay
     L.syLife.push(['sy_gull2', QA + 6, 2.2, 'fly'], ['sy_cocksit', QA + 8.25, 1.4, 'sit']);
     hop('sy_bollards', QA + 14.0, 0.8); lean('sy_lookout', QA + 18.5, 1.5, 1.4);
-    const SX = QA + 23.0, SH = 10.0, SW = aw('sy_station', SH);                         // the station, flipped: steps up on the left, its stone pier on the right
+    const SX = QA + 23.0, SH = 8.5, SW = aw('sy_station', SH);                         // the station, flipped: steps up on the left, its stone pier on the right
     back('sy_station', SX, SH, { flip: true });
     const PF = SH * 0.36, TR = SH * 0.67, WK = SH * 0.80, PR = SH * 0.957;
     path([[SX + 0.3, 0.05], [SX + 4.5, PF]], 'systair');
@@ -3269,8 +3287,8 @@ const ALL_LEVELS = [
     solid(SX + SW - 3.8, 3.7, PR);                                                     // the pier at the far end: lean on it from the walk, drop off it
     L.syStation = { x: SX, w: SW, h: SH };
     lean('sy_bin', SX + 19.0, 1.4, 1.3, PF);                                           // a bin on the platform
-    b.coins(SX + 2, 2.6, 3, 1.2, 0.8); b.coins(SX + 6, WK + 1.2, 6, 1.4); b.arc(SX + 16, WK + 1.4, 6, 5, 2.4); b.coins(SX + 24, WK + 1.2, 6, 1.3);
-    L.camFloor.push([SX + 4.5, SX + SW - 0.2, WK, WK]);
+    b.coins(SX + 2, 2.6, 3, 1.2, 0.8); b.coins(SX + 6, WK + 1.0, 6, 1.4); b.arc(SX + 16, WK + 1.0, 6, 5, 1.2); b.coins(SX + 24, WK + 1.0, 6, 1.3);
+    L.syCamLevel = [Q0 + 6.0, SX + SW + 6.0, 0];                                         // (Ladi 2026-11-10: the camera stays level past the station)
     hop('sy_qbench', SX + SW + 2.0, 0.9);
 
     // ---------- 6. The Rocks: sandstone terraces and the weekend market's bouncy canopies ----------
@@ -3333,10 +3351,11 @@ const ALL_LEVELS = [
     back('sy_funslide', FH, FS);
     path([[FH + 0.6, 0.05], [FH + 5.2, 5.85]], 'syfunstair');
     solid(FH + 5.2, 5.8, 5.85); L.camFloor.push([FH + 0.6, FH + 5.2, 0, 5.85]);
-    const SLD = [[11.2, 6.75], [11.5, 6.64], [12.0, 6.47], [12.5, 6.2], [13.0, 5.75], [13.5, 5.14], [14.0, 4.61], [14.5, 4.3], [15.0, 4.17], [15.5, 4.19], [16.0, 4.3], [16.5, 4.43],
+    const SLD = [[10.9, 5.85], [11.6, 6.45], [12.0, 6.47], [12.5, 6.2], [13.0, 5.75], [13.5, 5.14], [14.0, 4.61], [14.5, 4.3], [15.0, 4.17], [15.5, 4.19], [16.0, 4.3], [16.5, 4.43],
       [17.0, 4.47], [17.5, 4.41], [18.0, 4.22], [18.5, 3.86], [19.0, 3.32], [19.5, 2.93], [20.0, 2.71], [20.5, 2.67], [21.0, 2.76], [21.5, 2.87], [22.0, 2.91], [22.5, 2.84],
       [23.0, 2.64], [23.5, 2.29], [24.0, 1.81], [24.5, 1.38], [25.0, 1.05], [25.5, 0.84], [26.0, 0.71], [26.5, 0.62], [27.4, 0.0]];
     path(SLD.map(([x, y]) => [FH + x, y]), 'syslide', 4.5);
+    for (const sl of L.slopes) if (sl.id === 'syslide') sl.noJump = true;            // (Ladi 2026-11-10: he slides all the way down, no hopping off)
     for (let i = 2; i < SLD.length - 1; i += 3) b.coins(FH + SLD[i][0], SLD[i][1] + 1.1, 1);
     lean('sy_floss', FH + 31.0, 2.8, 1.4);
     lean('sy_lpbench', FH + 36.0, 2.8, 1.4);
@@ -3364,10 +3383,10 @@ const ALL_LEVELS = [
     path([[TZ + 6, 0], [TZ + 22, TP]], 'syzoopath'); L.syHill = [TZ + 6, TZ + 22, TP];
     L.camFloor.push([TZ + 6, TZ + 22, 0, TP]);
     b.coins(TZ + 7, 1.4, 8, 2.0, 0.75);
-    lean('sy_kooka', TZ + 13.0, 1.4, 1.3, 7.0 * TP / 16);
     ground(TZ + 22, TZ + 60, 'sypath', TP);
     L.camFloor.push([TZ + 22, TZ + 60, TP]);
-    hop('sy_zbench', TZ + 25.0, 0.95, TP);
+    lean('sy_kooka', TZ + 23.0, 1.4, 1.3, TP);                                         // (off the slope: Ladi 2026-11-10 saw it judder there)
+    hop('sy_zbench', TZ + 27.0, 0.95, TP);
     b.flag(TZ + 31.0); L.flagY = TP;
     back('sy_zfence', TZ + 33.0, 1.1, { y: TP }); back('sy_zfence', TZ + 33.0 + aw('sy_zfence', 1.1) - 0.05, 1.1, { y: TP });
     back('sy_giraffes', TZ + 38.5, 9.0, { y: TP });
@@ -3619,6 +3638,7 @@ function tick(g, dt) {
   // jumping
   if (p.buffer > 0 && p.zip) { p.zip.tgt = 1; p.zip.tt = 0.55; p.buffer = 0; }   // on the zip line: lift up
   if (p.buffer > 0 && p.onGround && p.ground && p.ground.swim) { startDive(g); p.buffer = 0; }
+  if (p.buffer > 0 && (p.onGround || p.coyote > 0) && p.ground && p.ground.noJump) p.buffer = 0;   // (Sydney's giant slide: he slides all the way down)
   if (p.buffer > 0) {
     if (p.onGround || p.coyote > 0) {
       p.vy = P.jumpV; p.onGround = false; p.coyote = 0; p.buffer = 0; p.rising = true; p.airT = 0; p.cut = true;
@@ -3731,7 +3751,7 @@ function tick(g, dt) {
   // fly-tipped mattress: landing on it bounces A up high
   if (p.onGround && !wasGround && p.ground && (p.ground.kind === 'mattress' || p.ground.bounce) && (!p.ground.jet || mistOn(p.ground.jet, g.t))) {
     p.vy = Math.sqrt(2 * P.gUp * (p.ground.bounce || 5.2)); p.ground.bounceT = g.t; p.onGround = false; p.rising = false; p.cut = false; p.coyote = 0;
-    g.events.push({ type: 'bounce', x: p.x, y: p.y });
+    g.events.push({ type: 'bounce', x: p.x, y: p.y, note: p.ground.note });
   }
   else { p.coyote = Math.max(0, p.coyote - dt); p.airT += dt; }
 

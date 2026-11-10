@@ -120,3 +120,16 @@ Each entry: **level, date** — what Ladi saw → what fixed it → where to loo
 - **Paris, 11-07** — "too many things wrong… we're going to delete it" → plan, OK'd blocks, and a full rules check before Ladi sees it.
 - **Barcelona, 11-08** — built ~1.5h after the last pictures, Ladi never saw the finished level before merge → Ladi sees `tools/shot-sheet.js` sheet (new level next to Marina and Greenwich) before any merge. One trip at a time.
 - **Barcelona rebuild, 11-08** — "how come this wasn't built with those fixes in hand?" The first full render with the art showed: no backdrop on one part (draw-code bug), two Sagradas on screen (the far skyline had the landmark A was about to visit), a straight line in the sky where a backdrop changed under open sky, the ending picture narrower than a phone, a ground-colour seam under an arch, a 6s+ ride. → checklist "Before the first render" below; backdrop prompts leave out every landmark A visits up close; every backdrop change hides behind something that reaches above the sky band (or fades); wide pictures sized to the widest screen; one ground fill colour per trip.
+
+## 9. Sydney round 2 (Ladi, 11-10)
+
+- Trip names are the city only ("Sydney", not "Sydney Harbour").
+- A arriving in a vehicle stays out of sight inside it; he jumps out when it has landed (no head in the windows).
+- A bird must sit on something or fly; never a sitting bird in mid-air.
+- Inside a building, zoom out like the Sagrada (picture at about 55% of the screen, its ceiling repeated above); hanging lights hang on cables that reach the ceiling.
+- The one inside part must have plenty to do (Sydney: rising rows of seats, bouncy acoustic rings that play a rising tune, a jump off the organ).
+- Camera stays level while A runs past a station/train; no rising with the platform.
+- A slide is ridden all the way: no hopping off it, and the slide starts level with the deck A runs off.
+- No fade between backdrops, even at the ending view: the ending view becomes the backdrop at a cutaway.
+- No fireworks sound at an ending unless there are fireworks (Downtown only).
+- A lean or hop on a slope judders: keep props on flat ground.
