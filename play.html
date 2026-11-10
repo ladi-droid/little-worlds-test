@@ -440,10 +440,10 @@ html.lw-loading .splash{visibility:hidden}
   </div>
 </section>
 
-<script src="kids/kids-meta.js?v=1794333423"></script>
-<script src="kids/kids.js?v=1794333423"></script>
-<script src="sfx.js?v=1794333423"></script>
-<script src="game.js?v=1794333423"></script>
+<script src="kids/kids-meta.js?v=1794333770"></script>
+<script src="kids/kids.js?v=1794333770"></script>
+<script src="sfx.js?v=1794333770"></script>
+<script src="game.js?v=1794333770"></script>
 <script>
 (() => {
 'use strict';
@@ -1300,7 +1300,7 @@ $('retryBtn').addEventListener('click', () => startLevel(levelIndex));
 // If the builder opened this tab, close it and show the builder again; otherwise open the builder with this child's world filled in.
 let lwJoinEnd = false;
 function lwBackToBuilder() {
-  const url = 'builder.html?v=1794333423&w=' + lwEncode(LW);
+  const url = 'builder.html?v=1794333770&w=' + lwEncode(LW);
   try { if (window.opener && !window.opener.closed && /builder\.html/.test(window.opener.location.pathname)) { window.opener.focus(); window.close(); setTimeout(() => { location.href = url; }, 400); return; } } catch (e) {}
   location.href = url;
 }
@@ -7819,9 +7819,34 @@ function rmCam() {
 // to the sunset of the ending view, by where the camera is (no fading in time), so the view behind the second plane tree isn't a jump
 const RM_SKY_DAY = [[92, 150, 214], [164, 196, 226], [240, 206, 160], [246, 190, 130]], RM_SKY_SET = [[236, 128, 120], [246, 156, 120], [250, 186, 120], [252, 200, 130]];
 function rmGoldK() { const g = G.L.rmGold; if (!g) return 0; const m = cam.x + viewW() / 2; return Math.max(0, Math.min(1, (m - g[0]) / (g[1] - g[0]))); }
+// the sunset end of that: the ending picture's own sky, read from its left edge at the heights where it shows on this screen
+let rmSetSky = null;
+// the sunset sky left of the flag pole copies the view picture's own sky in the column just right of the pole,
+// so the change to the view behind the pole shows no seam in the sky (Ladi 2026-11-10)
+function rmViewGeo() {
+  const im = IMG.rm_view, L = G.L, h = Math.max(H / U * 1.02, 12.5, W / U * 1.4 * im.height / im.width), w = h * im.width / im.height;
+  return { h: h * U, w: w * U, X: W / 2 - w * U / 2 - (cam.x - (L.rmView - viewW() / 2)) * U * 0.05 };
+}
+const RM_SKY_F = [0.0, 0.08, 0.16, 0.24, 0.31];   // rows of the view picture that are still sky
+function rmSkySet() {
+  const im = IMG.rm_view; if (!im) return null;
+  if (!rmSetSky) {
+    const cv = document.createElement('canvas'); cv.width = 64; cv.height = 64; const x = cv.getContext('2d');
+    x.drawImage(im, 0, 0, 64, 64); rmSetSky = x.getImageData(0, 0, 64, 64).data;
+  }
+  const g = rmViewGeo(), px = sx(G.L.flagX) + 0.4 * U, fx = Math.max(0.3, Math.min(0.88, (px - g.X) / g.w)), c = Math.floor(fx * 63);
+  return RM_SKY_F.map(f => { const r = Math.min(63, Math.round(f * 63)), o = (r * 64 + c) * 4; return [rmSetSky[o], rmSetSky[o + 1], rmSetSky[o + 2]]; });
+}
 function rmSky() {
-  const k = rmGoldK(), c = i => 'rgb(' + RM_SKY_DAY[i].map((v, j) => Math.round(v + (RM_SKY_SET[i][j] - v) * k)).join(',') + ')';
-  const g = ctx.createLinearGradient(0, 0, 0, H); g.addColorStop(0, c(0)); g.addColorStop(0.5, c(1)); g.addColorStop(0.8, c(2)); g.addColorStop(1, c(3));
+  const k = rmGoldK(), V = k > 0 ? rmSkySet() : null, g = ctx.createLinearGradient(0, 0, 0, H);
+  if (V) {
+    const vg = rmViewGeo(), day = (y) => { const i = Math.min(2.999, y * 3), j = Math.floor(i), t = i - j; return RM_SKY_DAY[j].map((v, n) => v + (RM_SKY_DAY[j + 1][n] - v) * t); };
+    RM_SKY_F.forEach((f, i) => { const y = Math.min(1, f * vg.h / H), d = day(y); const a = 0.22 * k, T = [255, 140, 70];   // (the park's golden tint is laid over this sky too: undo it here so the sky matches the view)
+      g.addColorStop(y, 'rgb(' + d.map((v, n) => Math.max(0, Math.min(255, Math.round((v + (V[i][n] - v) * k - T[n] * a) / (1 - a))))).join(',') + ')'); });
+  } else {
+    const SET = RM_SKY_SET, c = i => 'rgb(' + RM_SKY_DAY[i].map((v, j) => Math.round(v + (SET[i][j] - v) * k)).join(',') + ')';
+    g.addColorStop(0, c(0)); g.addColorStop(0.5, c(1)); g.addColorStop(0.8, c(2)); g.addColorStop(1, c(3));
+  }
   ctx.fillStyle = g; ctx.fillRect(0, 0, W, H);
 }
 // clouds drifting forwards across the top of the sky
@@ -7872,10 +7897,8 @@ function rmBands() {
 // the ending view: the rooftops of Rome from the Pincio at sunset, Piazza del Popolo below, St Peter's dome far off.
 // One picture, always wider than the screen; it is the backdrop from behind the second plane tree's trunk on
 function rmView(c = ctx) {
-  const L = G.L, im = IMG.rm_view; if (!im) return;
-  const h = Math.max(H / U * 1.02, 12.5, W / U * 1.4 * im.height / im.width), w = h * im.width / im.height;
-  const X = W / 2 - w * U / 2 - (cam.x - (L.rmView - viewW() / 2)) * U * 0.05;
-  c.drawImage(im, X, 0, w * U, h * U);
+  const im = IMG.rm_view; if (!im) return;
+  const g = rmViewGeo(); c.drawImage(im, g.X, 0, g.w, g.h);
 }
 function rmGround(s) {
   const st = RM_GROUND[s.style]; if (!st) return;
