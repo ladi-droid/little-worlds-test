@@ -3458,9 +3458,9 @@ const ALL_LEVELS = [
     lean('rm_mwall2', M2, 3.4, 3.3); b.coins(M2 + 0.5, 4.4, 4, 0.9);
     const LX = M2 + aw('rm_mwall2', 3.4) + 3.5, LW = aw('rm_lift', 3.4);   // the wooden lift: step on its platform and it flings him up through the trapdoor
     back('rm_lift', LX, 3.4);
-    L.rmLift = { x: LX, s: solid(LX + 0.4, LW - 0.8, 0.45, 0, { bounce: 7.2, noGrab: true }) };
+    L.rmLift = { x: LX, s: solid(LX + 0.4, LW - 0.8, 0.45, 0, { bounce: 6.6, noGrab: true }) };
     for (let i = 0; i < 5; i++) b.coins(LX + LW / 2 + 0.3 * i, 4.4 + i * 1.1, 1);
-    b.special(LX + LW / 2 + 1.6, 7.9);                                                    // 2: at the top of the fling
+    b.special(LX + LW / 2 + 1.6, 7.3);                                                    // 2: at the top of the fling
     const IA = LX + LW + 1.2, IW = aw('rm_iarch', 4.2);   // the arcade of the arena's inner wall: run along its top or under its arches
     for (let i = 0; i < 4; i++) back('rm_iarch', IA + i * (IW - 0.05), 4.2);
     const IE = IA + 4 * (IW - 0.05) + 0.05;
@@ -3543,10 +3543,10 @@ const ALL_LEVELS = [
     back('rm_niche2', N2, 5.0); solid(N2 + 0.1, NW - 0.2, 1.0); b.ledge(N2 + 0.1, 1.0, NW - 0.2); b.ledge(N2 + 0.05, 4.2, NW - 0.1);
     b.coins(N1 + 0.6, 2.0, 3, 1.0); b.coins(N1 + 0.5, 5.2, 3, 1.0); b.arc(N1 + NW - 0.4, 5.2, 3, 2.2, 0.9); b.coins(N2 + 0.5, 5.2, 3, 1.0);
     const BX = N2 + NW + 2.6, BW = 3.6;                    // the beam of sunlight from the oculus: step into it and it floats him up
-    L.updrafts = [[BX, BX + BW, 7.2, 6.5, 0.3]];          // [from, to, up to y, rising speed, how much of his running speed is left]
+    L.updrafts = [[BX, BX + BW, 6.4, 6.5, 0.3]];          // [from, to, up to y, rising speed, how much of his running speed is left]
     L.rmBeam = { x: BX, w: BW };
     for (let i = 0; i < 6; i++) b.coins(BX + 0.6 + i * 0.45, 1.6 + i * 1.3, 1);
-    b.special(BX + BW - 0.8, 7.6);                                                       // 4: where the beam lets go of him
+    b.special(BX + BW - 0.8, 6.8);                                                       // 4: where the beam lets go of him
     hop('rm_mbench', BX + BW + 3.0, 0.8); b.coins(BX + BW + 3.3, 1.8, 3, 0.8);
     lean('rm_mstep', BX + BW + 6.5, 1.4, 1.35);
     const D4 = BX + BW + 11.0;                            // out by the side door
