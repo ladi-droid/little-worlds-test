@@ -3725,6 +3725,7 @@ const ALL_LEVELS = [
     const R2 = row(['lg_endl', 'lg_market', 'lg_tech', 'lg_narrow', 'lg_buka', 'lg_phone', 'lg_endr'])(MK - aw('lg_endl', LG_ASP['lg_endl:h']) + 0.05);
     const MKH = LG_ASP['lg_market:h'] * 0.97, MKW = aw('lg_market', LG_ASP['lg_market:h']);
     b.coins(MK + 0.8, MKH + 1.0, 6, 1.1);
+    L.lgMarket = [FS - 4, MK + MKW + 4];                // (the fabric stalls to the market: market chatter plays here)
     b.special(MK + MKW - 1.2, MKH + 2.0);                                                 // 1: at the far end of the market roof
     L.lgLife.push(['lg_agama2', MK + 2.0, MKH, 'lizard']);
     lean('lg_banana_pot', MK + 2.5, 2.0, 1.35); hop('lg_okada0', MK + 9.0, 1.5, 0, 1.1); lean('lg_keke2', MK + 16.0, 1.9, 1.35);
@@ -3893,6 +3894,7 @@ const ALL_LEVELS = [
     // ---------- 7. the Lekki-Ikoyi Link Bridge at dusk: up the walkway, the cables lit up, egrets flying ----------
     // a tall block of flats on the Lekki shore: the view changes behind it (the palm trunk was too thin, Ladi 2026-11-10: "a sharp change of backdrop near the flag")
     const J5 = HE + 10.0, AP2 = J5 + 1.0, APH2 = 13.5, APW2 = aw('lg_apt', APH2);
+    L.lgBeach = [GT, J5];                                // (the beach: waves on the sand play here)
     back('lg_apt', AP2, APH2); swapAt(AP2 + APW2 / 2, 'view', 'behind a tall block of flats on the Lekki shore');
     L.lgGold = [T1 - 20, AP2 + APW2 / 2];
     const WK = AP2 + APW2 - 1.0, WKW = aw('lg_walkway', 4.6), DK = 1.15;   // the walkway starts behind the flats
