@@ -11,7 +11,7 @@ def fix(name, subs):
     open(p, 'w', encoding='utf8').write(s)
 links = [(r'href="(builder|login|index|feedback)\.html\?', rf'href="\1.html?v={S}&'),
          (r'href="(builder|login|index|feedback)\.html(?=["#])', rf'href="\1.html?v={S}')]
-kids = [(r'src="kids/(kids-meta|kids)\.js"', rf'src="kids/\1.js?v={S}"')]
+kids = [(r'src="kids/(kids-meta|kids)\.js"', rf'src="kids/\1.js?v={S}"'), (r'src="lw-ping\.js"', f'src="lw-ping.js?v={S}"')]
 fix('index.html', links + kids)
 fix('builder.html', links + kids + [(r"const GAME='play\.html';", f"const GAME='play.html?v={S}';"), (r"GAME\+'\?w='", "GAME+'&w='")])
 fix('feedback.html', links)

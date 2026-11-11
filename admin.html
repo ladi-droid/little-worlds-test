@@ -1,0 +1,452 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Little Worlds Admin</title>
+<link rel="icon" href="favicon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bowlby+One&family=Figtree:wght@500;600;700;800&display=swap">
+<!-- Private admin page: feedback answers, anonymous usage and the trip list.
+     The data comes from the Google Sheet script (sheet-script.txt) and only with the admin key.
+     admin.html?demo=1 shows made-up numbers, to check the layout without the sheet. -->
+<style>
+:root{
+  --paper:#f6efe3; --card:#fbf7ee; --ink:#0b0b0e; --sun:#ffd23a; --navy:#1c2a5e; --muted:#5d5a66; --green:#2f6b47; --bad:#b8321f; --line:#e3d9c6;
+  --display:'Bowlby One',system-ui,sans-serif; --body:'Figtree',system-ui,sans-serif;
+}
+*{box-sizing:border-box}
+html{background:var(--paper)}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--body);font-size:16px;line-height:1.45;overflow-x:hidden}
+h1,h2,h3{font-family:var(--display);font-weight:400;letter-spacing:.02em;line-height:1.05;margin:0}
+a{color:inherit}
+button{font:inherit;color:inherit;cursor:pointer}
+.wrap{max-width:1180px;margin:0 auto;padding:0 16px}
+header{position:sticky;top:0;z-index:5;background:var(--paper);border-bottom:3px solid var(--ink)}
+header .wrap{display:flex;align-items:center;gap:14px;height:64px}
+.mark{display:flex;align-items:center;gap:6px;font-family:var(--display);font-size:19px;text-decoration:none;white-space:nowrap}
+.mark .logo{display:inline-grid;place-items:center;width:32px;height:32px;background:var(--sun);border:3px solid var(--ink);border-radius:9px;transform:rotate(-6deg);font-size:16px}
+.badge{font-size:12px;font-weight:800;text-transform:uppercase;letter-spacing:.08em;background:var(--ink);color:var(--sun);border-radius:6px;padding:3px 7px}
+header .sp{flex:1}
+.textbtn{background:none;border:0;font-weight:700;text-decoration:underline;padding:6px}
+nav.tabs{display:flex;gap:6px;overflow-x:auto;padding:14px 0 4px;scrollbar-width:none}
+nav.tabs button{flex:none;border:3px solid var(--ink);border-radius:999px;background:var(--card);padding:7px 16px;font-weight:800}
+nav.tabs button[aria-selected=true]{background:var(--sun);box-shadow:0 3px 0 var(--ink)}
+.filters{display:flex;flex-wrap:wrap;align-items:center;gap:8px 14px;padding:10px 0 4px;font-size:14px;color:var(--muted)}
+.seg{display:inline-flex;border:2px solid var(--ink);border-radius:999px;overflow:hidden}
+.seg button{border:0;background:var(--card);padding:5px 12px;font-weight:700;font-size:14px}
+.seg button[aria-pressed=true]{background:var(--ink);color:var(--sun)}
+.filters label{display:inline-flex;align-items:center;gap:6px;font-weight:600;color:var(--ink)}
+.filters input{width:18px;height:18px;accent-color:var(--ink)}
+.demo{background:var(--sun);border:3px solid var(--ink);border-radius:14px;padding:10px 14px;margin:12px 0 0;font-weight:700}
+main{padding:10px 0 60px}
+section.view{display:none}
+section.view.on{display:block}
+.grid{display:grid;gap:14px}
+.tiles{grid-template-columns:repeat(auto-fit,minmax(170px,1fr));margin:14px 0}
+.tile{background:var(--card);border:3px solid var(--ink);border-radius:16px;padding:14px 16px}
+.tile b{display:block;font-family:var(--display);font-size:34px;line-height:1.1}
+.tile span{color:var(--muted);font-weight:600;font-size:14px}
+.tile small{display:block;color:var(--muted);font-size:13px;margin-top:2px}
+.card{background:var(--card);border:3px solid var(--ink);border-radius:18px;padding:16px 18px;margin:14px 0;min-width:0}
+.card h2{font-size:21px;margin-bottom:4px}
+.card .sub{color:var(--muted);font-size:14px;margin:0 0 12px}
+.two{grid-template-columns:1fr}
+@media(min-width:900px){.two{grid-template-columns:1.4fr 1fr}}
+.days{display:flex;align-items:flex-end;gap:3px;height:150px;padding-top:8px}
+.days .d{flex:1;min-width:0;display:flex;flex-direction:column;justify-content:flex-end;align-items:center;height:100%}
+.days .bar{width:100%;background:var(--navy);border-radius:4px 4px 0 0;min-height:2px;position:relative}
+.days .bar i{position:absolute;left:0;right:0;bottom:0;background:var(--sun);border-radius:0}
+.days .d small{font-size:10px;color:var(--muted);margin-top:4px;white-space:nowrap}
+.legend{display:flex;gap:14px;font-size:13px;color:var(--muted);margin-top:8px}
+.legend i{display:inline-block;width:11px;height:11px;border-radius:3px;margin-right:5px;vertical-align:-1px}
+.feed{list-style:none;margin:0;padding:0;font-size:14px}
+.feed li{display:flex;gap:10px;padding:7px 0;border-top:1px solid var(--line)}
+.feed li:first-child{border-top:0}
+.feed .t{color:var(--muted);flex:none;width:92px}
+.tablewrap{overflow-x:auto;margin:0 -4px}
+table{border-collapse:collapse;width:100%;font-size:14px;min-width:640px}
+th,td{text-align:left;padding:8px 6px;border-top:1px solid var(--line);white-space:nowrap}
+th{font-size:12px;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);border-top:0}
+td.n,th.n{text-align:right;font-variant-numeric:tabular-nums}
+.strip{display:flex;gap:2px;width:160px;height:16px}
+.strip i{flex:1;border-radius:2px;background:#e9e0cf}
+.pct{display:inline-block;min-width:42px}
+.meter{display:inline-block;vertical-align:middle;width:60px;height:8px;border-radius:4px;background:#e9e0cf;margin-left:6px;overflow:hidden}
+.meter i{display:block;height:100%;background:var(--green)}
+.q{border-top:2px dashed var(--line);padding:14px 0}
+.q:first-of-type{border-top:0;padding-top:4px}
+.q h3{font-family:var(--body);font-weight:800;font-size:16px;letter-spacing:0;line-height:1.3}
+.q .k{color:var(--muted);font-size:12px;font-weight:700}
+.q .n{color:var(--muted);font-size:13px;margin:2px 0 8px}
+.opt{display:grid;grid-template-columns:minmax(120px,240px) 1fr 70px;gap:10px;align-items:center;font-size:14px;margin:5px 0}
+.opt .bar{height:16px;border-radius:5px;background:#e9e0cf;overflow:hidden}
+.opt .bar i{display:block;height:100%;background:var(--navy)}
+.opt.top .bar i{background:var(--sun);box-shadow:inset 0 0 0 2px var(--ink)}
+.opt .c{text-align:right;color:var(--muted);font-variant-numeric:tabular-nums}
+@media(max-width:560px){.opt{grid-template-columns:1fr auto}.opt .c{white-space:nowrap}.opt .bar{grid-column:1/3;grid-row:2}}
+.quotes{list-style:none;margin:0;padding:0;display:grid;gap:8px}
+.quotes li{background:#fff;border:2px solid var(--line);border-radius:12px;padding:8px 12px;font-size:15px}
+.quotes li small{display:block;color:var(--muted);font-size:12px}
+.more{margin-top:8px}
+.chips{display:flex;flex-wrap:wrap;gap:6px}
+.chips span{background:#fff;border:2px solid var(--line);border-radius:999px;padding:2px 10px;font-size:14px;font-variant-numeric:tabular-nums}
+.money{display:flex;flex-wrap:wrap;gap:8px 22px;margin-bottom:8px}
+.money b{font-family:var(--display);font-size:24px;font-weight:400}
+.money span{display:block;color:var(--muted);font-size:13px}
+.trips{grid-template-columns:repeat(auto-fill,minmax(230px,1fr))}
+.trip{background:var(--card);border:3px solid var(--ink);border-radius:18px;overflow:hidden;display:flex;flex-direction:column}
+.trip .pic{aspect-ratio:16/10;background:#e9e0cf center/cover no-repeat;border-bottom:3px solid var(--ink)}
+.trip .body{padding:12px 14px;display:flex;flex-direction:column;gap:6px;flex:1}
+.trip h3{font-size:19px}
+.trip .tags{display:flex;flex-wrap:wrap;gap:5px}
+.tag{font-size:12px;font-weight:800;border:2px solid var(--ink);border-radius:999px;padding:1px 8px;background:#fff}
+.tag.aw{background:var(--sun)}
+.tag.park{background:#e9e0cf;border-color:var(--muted);color:var(--muted)}
+.trip .stat{font-size:14px;color:var(--muted)}
+.trip .links{display:flex;gap:12px;margin-top:auto;padding-top:6px;font-weight:700;font-size:14px}
+.gate{max-width:460px;margin:60px auto;text-align:left}
+.gate h1{font-size:34px;margin-bottom:10px}
+.gate p{color:var(--muted)}
+.gate form{display:flex;gap:8px;margin-top:16px}
+.gate input{flex:1;min-width:0;font:inherit;font-size:17px;padding:12px 14px;border:3px solid var(--ink);border-radius:14px;background:#fff}
+.pill{display:inline-flex;align-items:center;justify-content:center;padding:12px 20px;border-radius:999px;background:var(--sun);border:3px solid var(--ink);
+  font-family:var(--display);font-size:16px;letter-spacing:.03em;text-decoration:none;box-shadow:0 4px 0 var(--ink)}
+.pill:active{transform:translateY(3px);box-shadow:0 1px 0 var(--ink)}
+.err{color:var(--bad);font-weight:700}
+@media(max-width:600px){#when{display:none}.mark{font-size:0;gap:0}header .wrap{gap:8px}}
+.empty{color:var(--muted);font-style:italic}
+.note{color:var(--muted);font-size:13px}
+</style>
+</head>
+<body>
+<header><div class="wrap">
+  <a class="mark" href="index.html"><span class="logo">L</span> Little Worlds</a><span class="badge">Admin</span>
+  <span class="sp"></span>
+  <span id="when" class="note"></span>
+  <button class="textbtn" id="reload" hidden>Refresh</button>
+  <button class="textbtn" id="logout" hidden>Log out</button>
+</div></header>
+
+<div class="wrap">
+  <div id="gate" class="gate" hidden>
+    <h1>Admin</h1>
+    <p>Type the admin key you saved in the sheet script (Script properties, <b>ADMIN_KEY</b>). This browser remembers it, and your own test runs on this browser are marked so you can hide them.</p>
+    <form id="keyForm"><input id="key" type="password" autocomplete="current-password" placeholder="Admin key" aria-label="Admin key"><button class="pill">Open</button></form>
+    <p id="gateMsg" class="err" role="alert"></p>
+    <p class="note">Just looking? <a href="admin.html?demo=1">See it with example numbers</a>.</p>
+  </div>
+
+  <div id="app" hidden>
+    <div id="demo" class="demo" hidden>Example numbers only. Nothing here is real yet.</div>
+    <nav class="tabs" role="tablist">
+      <button role="tab" data-v="overview" aria-selected="true">Overview</button>
+      <button role="tab" data-v="usage" aria-selected="false">Trips played</button>
+      <button role="tab" data-v="links" aria-selected="false">Links</button>
+      <button role="tab" data-v="feedback" aria-selected="false">Feedback</button>
+      <button role="tab" data-v="trips" aria-selected="false">All trips</button>
+    </nav>
+    <div class="filters">
+      <span class="seg" id="range"><button data-r="7" aria-pressed="false">7 days</button><button data-r="30" aria-pressed="true">30 days</button><button data-r="0" aria-pressed="false">All time</button></span>
+      <label><input type="checkbox" id="mine"> Show my own test runs</label>
+    </div>
+    <main>
+      <section class="view on" id="v-overview"></section>
+      <section class="view" id="v-usage"></section>
+      <section class="view" id="v-links"></section>
+      <section class="view" id="v-feedback"></section>
+      <section class="view" id="v-trips"></section>
+    </main>
+  </div>
+</div>
+
+<script>
+(function(){
+const ENDPOINT='https://script.google.com/macros/s/AKfycbwbbqG4tg3LQxXu0mWkWmoInMumnrYscPdz3NKcc3wwZyCV2W4cjdMg4eBUlJ2EKEWw/exec';
+const AW_URL='https://claude.ai/artifact/YU5fMxcV9Y5qeW9obR8Tov';
+const $=s=>document.querySelector(s);
+const esc=s=>String(s==null?'':s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const store={get:k=>{try{return localStorage.getItem(k)}catch(e){return null}},set:(k,v)=>{try{v==null?localStorage.removeItem(k):localStorage.setItem(k,v)}catch(e){}}};
+const DEMO=new URLSearchParams(location.search).has('demo');
+const DAY=864e5;
+let RAW=null, TRIPS=[], AW={trips:[]}, QUESTIONS=[], view=store.get('lw_admin_view')||'overview', range=30, mine=false;
+
+/* ---------- loading ---------- */
+async function loadStatic(){
+  // the trips straight from game.js, so new trips show up without touching this page
+  const [g,aw,fb]=await Promise.all([
+    fetch('game.js',{cache:'no-cache'}).then(r=>r.text()).catch(()=>''),
+    fetch('tools/as-world-trips.json',{cache:'no-cache'}).then(r=>r.json()).catch(()=>({trips:[]})),
+    fetch('feedback.html',{cache:'no-cache'}).then(r=>r.text()).catch(()=>'')]);
+  AW=aw;
+  const parked=((g.match(/const PARKED = \[(.*?)\]/)||[])[1]||'').match(/\w+/g)||[];
+  const body=g.slice(g.indexOf('const ALL_LEVELS = ['),g.indexOf('const PARKED'));
+  TRIPS=[...body.matchAll(/\n  id: '(\w+)', name: '([^']+)'([^\n]*)/g)].map(m=>({id:m[1],name:m[2],
+    city:(m[3].match(/city: '([^']+)'/)||[])[1]||'London',bonus:/bonus: true/.test(m[3]),practice:/practice: true/.test(m[3]),parked:parked.includes(m[1])}));
+  // the feedback questions straight from feedback.html, so the wording and options always match the form
+  try{
+    const a=fb.indexOf('const ADULT='),b=fb.indexOf('const QS=');
+    const q=new Function(fb.slice(a,b)+';return {FIRST,LATER}')();
+    const seen=new Set();
+    QUESTIONS=[...q.FIRST.map(x=>Object.assign({part:1},x)),...q.LATER.map(x=>Object.assign({part:2},x))].filter(x=>x.key&&!seen.has(x.key)&&seen.add(x.key));
+  }catch(e){QUESTIONS=[]}
+}
+async function loadData(key){
+  if(DEMO)return demoData();
+  const r=await fetch(ENDPOINT+'?key='+encodeURIComponent(key)+'&t='+Date.now());
+  const d=await r.json();
+  if(d.error)throw new Error(d.error);
+  return d;
+}
+function rowsToObjs(tab){const h=(tab&&tab.head)||[];return ((tab&&tab.rows)||[]).map(r=>Object.fromEntries(h.map((k,i)=>[k,r[i]])))}
+
+/* ---------- filtering ---------- */
+function prep(){
+  const since=range?Date.now()-range*DAY:0;
+  const ev=rowsToObjs(RAW.events).map(e=>({t:+new Date(e['Time']),dev:String(e['Browser']||''),game:String(e['Link']||e['Game']||''),device:String(e['Device']||''),home:!!e['Home screen'],page:String(e['Page']||''),ev:String(e['Event']||''),trip:String(e['Trip']||''),
+      prog:e['Progress %']===''?null:+e['Progress %'],secs:e['Seconds']===''?null:+e['Seconds'],spec:e['Specials']===''?null:+e['Specials'],extra:String(e['Extra']||''),me:!!e['Ladi test']}))
+    .filter(e=>e.t>=since&&(mine||!e.me));
+  const ans=rowsToObjs(RAW.answers).map(a=>Object.assign(a,{_t:+new Date(a['Last answer']||a['Started'])})).filter(a=>a._t>=since);
+  return {ev,ans,since};
+}
+const tripName=id=>(TRIPS.find(t=>t.id===id)||{name:id||'?'}).name;
+const median=a=>{if(!a.length)return null;const s=[...a].sort((x,y)=>x-y),m=s.length>>1;return s.length%2?s[m]:(s[m-1]+s[m])/2};
+const pct=(a,b)=>b?Math.round(a/b*100)+'%':'–';
+const fmtH=s=>s<3600?Math.round(s/60)+' min':(s/3600).toFixed(1)+' h';
+const fmtS=s=>s==null?'–':s<60?Math.round(s)+'s':Math.floor(s/60)+'m '+String(Math.round(s%60)).padStart(2,'0')+'s';
+const ago=t=>{const m=(Date.now()-t)/6e4;return m<1?'just now':m<60?Math.round(m)+' min ago':m<1440?Math.round(m/60)+' h ago':new Date(t).toLocaleDateString('en-GB',{day:'numeric',month:'short'})};
+
+/* ---------- views ---------- */
+function overview({ev,ans}){
+  const built=ev.filter(e=>e.ev==='built'), starts=ev.filter(e=>e.ev==='start'), fins=ev.filter(e=>e.ev==='finish');
+  const games=new Set(starts.map(e=>e.game||e.dev)).size;
+  const people=ans.length, done=ans.filter(a=>a['Finished']==='Yes').length;
+  const played=ev.filter(e=>['finish','fail','quit','leave'].includes(e.ev)).reduce((a,e)=>a+(e.secs||0),0);
+  const dayset={};starts.forEach(e=>{const k=e.game||e.dev;(dayset[k]=dayset[k]||new Set()).add(new Date(e.t).toDateString())});
+  const back=Object.values(dayset).map(d=>d.size), back2=back.filter(n=>n>=2).length;
+  const visitsBy=(ev2,extra)=>new Set(ev.filter(e=>e.ev===ev2&&(extra==null||e.extra===extra)).map(e=>e.dev)).size;
+  const funnel=[['Visited the front page',visitsBy('visit')],['Opened the builder',visitsBy('step','Name')],['Picked a look',visitsBy('step','Look')],['Picked trips',visitsBy('step','Trips')],
+    ['Picked a link',visitsBy('step','Link')],['Reached Play',visitsBy('step','Play')],['Built a game',new Set(built.map(e=>e.dev)).size],['Played a trip',new Set(starts.map(e=>e.dev)).size]];
+  const fmax=Math.max(1,...funnel.map(f=>f[1]));
+  const days=range||30, today=new Date();today.setHours(0,0,0,0);
+  const cols=[];for(let i=days-1;i>=0;i--){const d0=+today-i*DAY;cols.push({d0,s:0,f:0})}
+  starts.forEach(e=>{const c=cols.find(c=>e.t>=c.d0&&e.t<c.d0+DAY);if(c)c.s++});
+  fins.forEach(e=>{const c=cols.find(c=>e.t>=c.d0&&e.t<c.d0+DAY);if(c)c.f++});
+  const mx=Math.max(1,...cols.map(c=>c.s));
+  const every=days>14?Math.ceil(days/8):1;
+  const recent=ev.filter(e=>['built','start','finish','fail','quit'].includes(e.ev)).slice(-12).reverse();
+  const evText=e=>e.ev==='built'?`A game was built (${esc(e.extra.split(' / ')[0])}, ${e.extra.split(' / ')[2]?e.extra.split(' / ')[2].split(' ').length:0} trips)`
+    :e.ev==='start'?`Started <b>${esc(tripName(e.trip))}</b>`:e.ev==='finish'?`Finished <b>${esc(tripName(e.trip))}</b> in ${fmtS(e.secs)}, ${e.spec}/5 specials`
+    :e.ev==='fail'?`Didn’t make it in <b>${esc(tripName(e.trip))}</b> (${e.prog}% of the way)`:e.ev==='quit'?`Left <b>${esc(tripName(e.trip))}</b> for the menu at ${e.prog}%`:esc(e.ev);
+  return `<div class="grid tiles">
+    <div class="tile"><b>${built.length}</b><span>Games built</span><small>in the builder</small></div>
+    <div class="tile"><b>${games}</b><span>Games played</span><small>different games that started a trip</small></div>
+    <div class="tile"><b>${starts.length}</b><span>Trip runs</span><small>${fins.length} reached the flag (${pct(fins.length,starts.length)})</small></div>
+    <div class="tile"><b>${people}</b><span>Feedback forms</span><small>${done} answered both parts</small></div>
+    <div class="tile"><b>${fmtH(played)}</b><span>Time played</span><small>all trip runs added up</small></div>
+    <div class="tile"><b>${back2}</b><span>Came back</span><small>games played on 2 or more days (${pct(back2,games)})</small></div>
+  </div>
+  <div class="grid two">
+    <div class="card"><h2>From visit to playing</h2><p class="sub">How far people get, counted once per visit. Each bar is out of the first one.</p>
+      ${funnel.map(([k,n],i)=>`<div class="opt${i===0?' top':''}"><span>${esc(k)}</span><span class="bar"><i style="width:${n/fmax*100}%"></i></span><span class="c">${n} · ${pct(n,fmax)}</span></div>`).join('')}
+      <p class="note">Visits are counted on the front page. People who open the builder straight from a link skip that first bar.</p></div>
+    <div class="card"><h2>Coming back</h2><p class="sub">Out of ${games} games that played a trip, how many came back on another day.</p>
+      ${[['Played on 1 day',games-back2],['2 days',back.filter(n=>n===2).length],['3 to 6 days',back.filter(n=>n>=3&&n<=6).length],['7 days or more',back.filter(n=>n>=7).length]].map(([k,n])=>`<div class="opt"><span>${k}</span><span class="bar"><i style="width:${games?n/games*100:0}%"></i></span><span class="c">${n}</span></div>`).join('')}</div>
+  </div>
+  <div class="grid two">
+    <div class="card"><h2>Runs per day</h2><p class="sub">Trip runs started, and how many reached the flag.</p>
+      <div class="days">${cols.map((c,i)=>`<div class="d" title="${new Date(c.d0).toLocaleDateString('en-GB',{weekday:'short',day:'numeric',month:'short'})}: ${c.s} runs, ${c.f} finished"><div class="bar" style="height:${c.s/mx*100}%"><i style="height:${c.s?c.f/c.s*100:0}%"></i></div><small>${(cols.length-1-i)%every===0?new Date(c.d0).toLocaleDateString('en-GB',{day:'numeric',month:'short'}):'&nbsp;'}</small></div>`).join('')}</div>
+      <div class="legend"><span><i style="background:var(--navy)"></i>Started</span><span><i style="background:var(--sun)"></i>Reached the flag</span></div></div>
+    <div class="card"><h2>Latest</h2><p class="sub">The newest things that happened.</p>
+      ${recent.length?`<ul class="feed">${recent.map(e=>`<li><span class="t">${ago(e.t)}</span><span>${evText(e)}</span></li>`).join('')}</ul>`:'<p class="empty">Nothing yet in this period.</p>'}</div>
+  </div>`;
+}
+
+function usage({ev}){
+  const order=TRIPS.filter(t=>!t.parked||t.practice).map(t=>t.id);
+  const ids=[...new Set([...order,...ev.filter(e=>e.trip).map(e=>e.trip)])];
+  const rows=ids.map(id=>{const e=ev.filter(x=>x.trip===id);
+    const s=e.filter(x=>x.ev==='start').length, f=e.filter(x=>x.ev==='finish'), fl=e.filter(x=>x.ev==='fail'), q=e.filter(x=>x.ev==='quit'||x.ev==='leave');
+    const stops=[...fl,...q].filter(x=>x.prog!=null), b=Array(10).fill(0);stops.forEach(x=>b[Math.min(9,Math.floor(x.prog/10))]++);
+    return {id,s,f:f.length,fl:fl.length,q:q.length,t:median(f.map(x=>x.secs).filter(v=>v!=null)),sp:f.length?f.reduce((a,x)=>a+(x.spec||0),0)/f.length:null,
+      all5:f.filter(x=>x.spec===5).length,b,games:new Set(e.filter(x=>x.ev==='start').map(x=>x.game||x.dev)).size}}).filter(r=>r.s||r.f||r.fl||r.q);
+  const bm=Math.max(1,...rows.flatMap(r=>r.b));
+  const shade=v=>v?`rgba(184,50,31,${.18+.82*v/bm})`:'#e9e0cf';
+  const built=ev.filter(e=>e.ev==='built'), picks={};
+  built.forEach(e=>(e.extra.split(' / ')[2]||'').split(' ').filter(Boolean).forEach(id=>picks[id]=(picks[id]||0)+1));
+  const pk=Object.entries(picks).sort((a,b)=>b[1]-a[1]), pmx=Math.max(1,...pk.map(p=>p[1]));
+  const looks={};built.forEach(e=>{const k=e.extra.split(' / ')[0]||'?';looks[k]=(looks[k]||0)+1});
+  const plans={};built.forEach(e=>{const k=e.extra.split(' / ')[1]||'?';plans[k]=(plans[k]||0)+1});
+  const pname={one:'One game',family:'Family',added:'Added to Family'};
+  const byDev={};ev.filter(e=>e.ev==='start'||e.ev==='open').forEach(e=>{const d=byDev[e.dev]=byDev[e.dev]||{k:e.device||'Not known',home:false,run:false};if(e.home)d.home=true;if(e.ev==='start')d.run=true;if(e.device)d.k=e.device});
+  const devs=Object.values(byDev).filter(d=>d.run), dk={};devs.forEach(d=>dk[d.k]=(dk[d.k]||0)+1);const homeN=devs.filter(d=>d.home).length;
+  return `<div class="card"><h2>Each trip</h2><p class="sub">“Stopped at” shows where runs ended without the flag (left = start of the trip, right = the flag). Darker red = more runs stopped there.</p>
+    ${rows.length?`<div class="tablewrap"><table><thead><tr><th>Trip</th><th class="n">Games</th><th class="n">Runs</th><th class="n">Reached flag</th><th class="n">Middle time</th><th class="n">Specials</th><th class="n">All 5</th><th class="n">Didn’t make it</th><th class="n">Left early</th><th>Stopped at</th></tr></thead><tbody>
+    ${rows.map(r=>`<tr><td><b>${esc(tripName(r.id))}</b></td><td class="n">${r.games}</td><td class="n">${r.s}</td><td class="n"><span class="pct">${pct(r.f,r.s)}</span><span class="meter"><i style="width:${r.s?Math.min(100,r.f/r.s*100):0}%"></i></span></td>
+      <td class="n">${fmtS(r.t)}</td><td class="n">${r.sp==null?'–':r.sp.toFixed(1)+'/5'}</td><td class="n">${r.all5}</td><td class="n">${r.fl}</td><td class="n">${r.q}</td>
+      <td><span class="strip" title="${r.b.map((v,i)=>i*10+'–'+(i*10+10)+'%: '+v).join(', ')}">${r.b.map(v=>`<i style="background:${shade(v)}"></i>`).join('')}</span></td></tr>`).join('')}
+    </tbody></table></div>`:'<p class="empty">No trip runs in this period yet.</p>'}
+    <p class="note">Reached flag = runs that got to the end. Didn’t make it = out of bubbles, gate closed or race lost. Left early = back to the menu, or the game was closed or put away mid-run.</p></div>
+  <div>
+    <div class="card"><h2>Trips picked in the builder</h2><p class="sub">How often each trip was chosen, out of ${built.length} games built.</p>
+      ${pk.length?pk.map(([id,n],i)=>`<div class="opt${i===0?' top':''}"><span>${esc(tripName(id))}</span><span class="bar"><i style="width:${n/pmx*100}%"></i></span><span class="c">${n}</span></div>`).join(''):'<p class="empty">No games built in this period yet.</p>'}</div>
+  </div>
+  <div class="grid two">
+    <div class="card"><h2>Played on</h2><p class="sub">Out of ${devs.length} phones, tablets and computers that played a trip.</p>
+      ${devs.length?Object.entries(dk).sort((a,b)=>b[1]-a[1]).map(([k,n])=>`<div class="opt"><span>${esc(k)}</span><span class="bar"><i style="width:${n/devs.length*100}%"></i></span><span class="c">${n}</span></div>`).join('')
+        +`<p class="note" style="margin-top:10px"><b>${pct(homeN,devs.length)}</b> of them have opened it from the home screen.</p>`:'<p class="empty">No trip runs in this period yet.</p>'}</div>
+    <div class="card"><h2>Who they built</h2><p class="sub">Character and plan picked.</p>
+      ${built.length?Object.entries(looks).map(([k,n])=>`<div class="opt"><span>${k==='girl'?'Girl':k==='boy'?'Boy':esc(k)}</span><span class="bar"><i style="width:${n/built.length*100}%"></i></span><span class="c">${n}</span></div>`).join('')
+        +'<div style="height:10px"></div>'+Object.entries(plans).map(([k,n])=>`<div class="opt"><span>${esc(pname[k]||k)}</span><span class="bar"><i style="width:${n/built.length*100}%"></i></span><span class="c">${n}</span></div>`).join(''):'<p class="empty">No games built in this period yet.</p>'}</div>
+  </div>`;
+}
+
+function links({ev}){
+  const L={};
+  ev.forEach(e=>{if(!e.game)return;const l=L[e.game]=L[e.game]||{link:e.game,made:null,kid:'',plan:'',trips:[],opens:0,runs:0,fins:0,done:new Set(),per:{},last:0,devs:new Set(),home:false,spec:{}};
+    if(e.ev==='built'){const x=e.extra.split(' / ');l.made=e.t;l.kid=x[0];l.plan=x[1];l.trips=(x[2]||'').split(' ').filter(Boolean)}
+    if(e.ev==='open')l.opens++;
+    if(e.ev==='start'){l.runs++;l.per[e.trip]=(l.per[e.trip]||0)+1;l.last=Math.max(l.last,e.t);l.devs.add(e.dev)}
+    if(e.ev==='finish'){l.fins++;l.done.add(e.trip);l.spec[e.trip]=Math.max(l.spec[e.trip]||0,e.spec||0)}
+    if(e.home)l.home=true});
+  const list=Object.values(L).sort((a,b)=>(b.last||b.made||0)-(a.last||a.made||0));
+  const pname={one:'One game',family:'Family',added:'Family'};
+  const specials=l=>Object.values(l.spec).reduce((a,v)=>a+v,0);
+  return `<div class="grid tiles"><div class="tile"><b>${list.length}</b><span>Links in use</span><small>built or played in this period</small></div>
+    <div class="tile"><b>${list.filter(l=>l.runs).length}</b><span>Links that played</span><small>at least one trip run</small></div>
+    <div class="tile"><b>${list.filter(l=>l.made&&!l.runs).length}</b><span>Built, never played</span><small>worth a nudge</small></div></div>
+  <div class="card"><h2>Every link</h2><p class="sub">One row per child’s game (its link name). Newest played first. “Runs per trip” counts every go at each trip.</p>
+  ${list.length?`<div class="tablewrap"><table><thead><tr><th>Link</th><th>Built</th><th>Look</th><th>Plan</th><th class="n">Opened</th><th class="n">Runs</th><th class="n">Trips done</th><th class="n">Specials</th><th>Last played</th><th class="n">Devices</th><th>Runs per trip</th></tr></thead><tbody>
+  ${list.map(l=>`<tr><td><b>${esc(l.link)}</b>${l.home?' <span class="tag" title="Opened from the home screen">Home screen</span>':''}</td><td>${l.made?ago(l.made):'–'}</td><td>${l.kid==='girl'?'Girl':l.kid==='boy'?'Boy':'–'}</td><td>${esc(pname[l.plan]||'–')}</td>
+    <td class="n">${l.opens}</td><td class="n">${l.runs}</td><td class="n">${l.done.size}${l.trips.length?' of '+l.trips.length:''}</td><td class="n">${specials(l)}</td><td>${l.last?ago(l.last):'never'}</td><td class="n">${l.devs.size}</td>
+    <td style="white-space:normal;min-width:220px">${Object.entries(l.per).sort((a,b)=>b[1]-a[1]).map(([t,n])=>`${esc(tripName(t))}${l.done.has(t)?' ✓':''} <b>${n}</b>`).join(' · ')||'<span class="empty">no runs</span>'}</td></tr>`).join('')}
+  </tbody></table></div>`:'<p class="empty">No links in this period yet.</p>'}
+  <p class="note">✓ = reached the flag at least once. Specials = best specials found, added up over the trips.</p></div>`;
+}
+
+function feedback({ans}){
+  if(!QUESTIONS.length)return '<div class="card"><p class="err">Couldn’t read the questions from feedback.html.</p></div>';
+  let last='';
+  const block=x=>{
+    const vals=ans.map(a=>({v:a[x.key],t:a._t})).filter(o=>o.v!==''&&o.v!=null);
+    const n=vals.length;
+    let inner='';
+    if(!n)inner='<p class="empty">No answers yet.</p>';
+    else if(x.type==='choice'){
+      const c={};vals.forEach(o=>c[o.v]=(c[o.v]||0)+1);
+      const opts=[...(x.opts||[]),...Object.keys(c).filter(k=>!(x.opts||[]).includes(k))];
+      const top=Math.max(...Object.values(c));
+      inner=opts.map(o=>`<div class="opt${c[o]===top?' top':''}"><span>${esc(o)}</span><span class="bar"><i style="width:${(c[o]||0)/n*100}%"></i></span><span class="c">${c[o]||0} · ${pct(c[o]||0,n)}</span></div>`).join('');
+    }else if(x.type==='money'){
+      const nums=vals.map(o=>parseFloat(String(o.v).replace(/[£,\s]/g,''))).filter(v=>!isNaN(v)).sort((a,b)=>a-b);
+      const q=p=>nums[Math.min(nums.length-1,Math.floor(p*(nums.length-1)+.5))];
+      const f=v=>'£'+(Math.round(v*100)/100).toFixed(v%1?2:0);
+      inner=`<div class="money"><div><b>${f(median(nums))}</b><span>middle answer</span></div><div><b>${f(q(.25))} – ${f(q(.75))}</b><span>middle half of answers</span></div><div><b>${f(nums[0])} – ${f(nums[nums.length-1])}</b><span>lowest to highest</span></div></div>
+        <div class="chips">${nums.map(v=>`<span>${f(v)}</span>`).join('')}</div>`;
+    }else{
+      const list=[...vals].sort((a,b)=>b.t-a.t);
+      const li=o=>`<li>${esc(o.v)}<small>${ago(o.t)}</small></li>`;
+      inner=`<ul class="quotes">${list.slice(0,6).map(li).join('')}</ul>${list.length>6?`<details class="more"><summary class="textbtn">Show all ${list.length}</summary><ul class="quotes" style="margin-top:8px">${list.slice(6).map(li).join('')}</ul></details>`:''}`;
+    }
+    const head=x.sec!==last?((last?'</div>':'')+`<div class="card"><h2>${esc(x.sec)}</h2><p class="sub">${x.part===1?'Right after setting up':'After playing a few times'}</p>`):'';
+    last=x.sec;
+    return head+`<div class="q"><span class="k">${esc(x.key.split(' ')[0])}</span><h3>${esc(x.q)}</h3><p class="n">${n} ${n===1?'answer':'answers'}</p>${inner}</div>`;
+  };
+  const p1=ans.filter(a=>a['First go form finished']).length, p2=ans.filter(a=>a['After a few days form finished']).length;
+  return `<div class="grid tiles"><div class="tile"><b>${ans.length}</b><span>People who answered</span><small>at least one question</small></div>
+    <div class="tile"><b>${p1}</b><span>Finished part 1</span><small>right after setting up</small></div>
+    <div class="tile"><b>${p2}</b><span>Finished part 2</span><small>after a few days</small></div></div>`
+    +QUESTIONS.map(block).join('')+(last?'</div>':'')+`<p class="note">Answers are anonymous. The full table is in the Google Sheet, “Answers” tab.</p>`;
+}
+
+function trips({ev}){
+  const inAW=new Set(AW.trips||[]);
+  const list=TRIPS.filter(t=>!t.practice);
+  return `<p class="note" style="margin:12px 0 0">A’s World has ${inAW.size} trips${AW.version?' ('+esc(AW.version)+')':''}${AW.published?', last published '+esc(new Date(AW.published).toLocaleDateString('en-GB',{day:'numeric',month:'long'})):''}. The test site has every trip that isn’t parked.</p>
+  <div class="grid trips" style="margin-top:14px">${list.map((t,i)=>{const e=ev.filter(x=>x.trip===t.id),s=e.filter(x=>x.ev==='start').length,f=e.filter(x=>x.ev==='finish').length;
+    return `<div class="trip"><div class="pic" style="background-image:url('ui_card_${t.id}.webp')"></div><div class="body">
+      <h3>${i+1}. ${esc(t.name)}</h3>
+      <div class="tags"><span class="tag">${esc(t.city)}</span>${t.bonus?'<span class="tag">Bonus</span>':''}${inAW.has(t.id)?'<span class="tag aw">In A’s World</span>':''}${t.parked?'<span class="tag park">Parked</span>':''}</div>
+      <div class="stat">${s?`${s} runs, ${pct(f,s)} reached the flag`:'No runs in this period'}</div>
+      <div class="links"><a href="play.html?w=off" target="_blank" rel="noopener">Test site</a>${inAW.has(t.id)?`<a href="${AW_URL}" target="_blank" rel="noopener">A’s World</a>`:''}</div>
+    </div></div>`}).join('')}</div>`;
+}
+
+/* ---------- page ---------- */
+function render(){
+  if(!RAW)return;
+  const d=prep();
+  $('#v-overview').innerHTML=overview(d);
+  $('#v-usage').innerHTML=usage(d);
+  $('#v-links').innerHTML=links(d);
+  $('#v-feedback').innerHTML=feedback(d);
+  $('#v-trips').innerHTML=trips(d);
+  document.querySelectorAll('nav.tabs button').forEach(b=>b.setAttribute('aria-selected',b.dataset.v===view));
+  document.querySelectorAll('section.view').forEach(s=>s.classList.toggle('on',s.id==='v-'+view));
+  document.querySelectorAll('#range button').forEach(b=>b.setAttribute('aria-pressed',+b.dataset.r===range));
+  $('#when').textContent=RAW.at?'Updated '+ago(+new Date(RAW.at)):'';
+}
+async function open(key){
+  $('#gateMsg').textContent='';
+  try{
+    await loadStatic();
+    RAW=await loadData(key);
+    if(!DEMO)store.set('lw_admin_key',key);
+    $('#gate').hidden=true;$('#app').hidden=false;$('#reload').hidden=false;$('#logout').hidden=DEMO;$('#demo').hidden=!DEMO;
+    render();
+  }catch(e){
+    $('#gate').hidden=false;$('#app').hidden=true;
+    $('#gateMsg').textContent=/wrong key/.test(e.message)?'That key isn’t right.':/ADMIN_KEY/.test(e.message)?'The sheet script has no ADMIN_KEY yet (Script properties).':'Couldn’t reach the Google Sheet. Has the new sheet script been deployed?';
+  }
+}
+document.querySelector('nav.tabs').addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;view=b.dataset.v;store.set('lw_admin_view',view);render();scrollTo({top:0})});
+$('#range').addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;range=+b.dataset.r;render()});
+$('#mine').addEventListener('change',e=>{mine=e.target.checked;render()});
+$('#keyForm').addEventListener('submit',e=>{e.preventDefault();const k=$('#key').value.trim();if(k)open(k)});
+$('#reload').addEventListener('click',()=>open(store.get('lw_admin_key')||''));
+$('#logout').addEventListener('click',()=>{store.set('lw_admin_key',null);location.href='admin.html'});
+
+/* made-up numbers for admin.html?demo=1 */
+function demoData(){
+  let seed=7;const rnd=()=>(seed=(seed*16807)%2147483647)/2147483647, pick=a=>a[Math.floor(rnd()*a.length)];
+  const ids=TRIPS.filter(t=>!t.parked).map(t=>t.id), now=Date.now(), events=[];
+  const names=['amare','zara','kofi','mia','arjun','isla','tobi','sofia','leo','ada','noah','ivy','sami','lola','eli','nia','omar','ruby','kai','maya','jude','esme','theo'];
+  const devices=['Phone / Apple','Phone / Apple','Tablet / Apple','Phone / Android','Tablet / Android','Computer / Other'];
+  for(let v=0;v<60;v++){const t=new Date(now-rnd()*28*DAY).toISOString(),dv='v'+v,dvc=pick(devices);events.push([t,dv,'','visit','','','','','','',dvc,'','index.html']);
+    ['Name','Look','Trips','Link','Play'].every((st,i)=>{if(rnd()<(i?0.82:0.6)){events.push([t,dv,'','step','','','','',st,'',dvc,'','builder.html']);return true}return false})}
+  for(let g=0;g<23;g++){
+    const game=names[g], dev='d'+g, dvc=pick(devices), hm=rnd()<.45?'yes':'', t0=now-rnd()*28*DAY, kid=rnd()<.5?'girl':'boy', mine=ids.filter(()=>rnd()<.35).slice(0,5);
+    events.push([new Date(t0).toISOString(),dev,game,'built','','','','',[kid,rnd()<.7?'one':'family',mine.join(' ')].join(' / '),'',dvc,'','builder.html']);
+    ['Name','Look','Trips','Link','Play'].forEach(st=>events.push([new Date(t0-6e5).toISOString(),dev,'','step','','','','',st,'',dvc,'','builder.html']));
+    if(g===5||g===11)continue;   // built, never played
+    const runs=3+Math.floor(rnd()*14);
+    for(let r=0;r<runs;r++){
+      const t=t0+r*rnd()*DAY*.8, trip=pick(mine.length?mine:ids), hard=ids.indexOf(trip)/ids.length;
+      events.push([new Date(t-5e3).toISOString(),dev,game,'open','','','','','','',dvc,hm,'play.html']);
+      events.push([new Date(t).toISOString(),dev,game,'start',trip,'','','','','',dvc,hm,'play.html']);
+      const x=rnd();
+      if(x<.55-hard*.2)events.push([new Date(t+70e3).toISOString(),dev,game,'finish',trip,100,55+rnd()*60,Math.floor(rnd()*6),'','',dvc,hm,'play.html']);
+      else if(x<.8)events.push([new Date(t+40e3).toISOString(),dev,game,'fail',trip,Math.round(30+rnd()*60),30+rnd()*40,Math.floor(rnd()*4),'','',dvc,hm,'play.html']);
+      else events.push([new Date(t+20e3).toISOString(),dev,game,pick(['quit','leave']),trip,Math.round(rnd()*80),10+rnd()*40,Math.floor(rnd()*3),'','',dvc,hm,'play.html']);
+    }
+  }
+  events.forEach(e=>{if(e[0]>new Date(now).toISOString())e[0]=new Date(now-rnd()*DAY).toISOString()});events.sort((a,b)=>a[0]<b[0]?-1:1);
+  const head=['Response id','Started','Last answer','Finished',...QUESTIONS.map(q=>q.key),'First go form finished','After a few days form finished'];
+  const says=['They laughed when he jumped on the bus','Wanted to play again straight away','Asked where the dog was','Nowhere','The colour picker was slow on my phone','She shouted “that’s me!”','Couldn’t find long braids','Loved the fountain bit','Got stuck on the boat jumps'];
+  const answers=[];
+  for(let i=0;i<14;i++){
+    const t=new Date(now-rnd()*25*DAY).toISOString(), two=rnd()<.55;
+    answers.push(['r'+i,t,t,two?'Yes':'Not yet',...QUESTIONS.map(q=>q.part===2&&!two?'':q.type==='choice'?pick(q.opts):q.type==='money'?pick([1,2,2.5,3,3,4,5,6,8,10]):rnd()<.6?pick(says):''),'Yes',two?'Yes':'']);
+  }
+  return {events:{head:['Time','Browser','Link','Event','Trip','Progress %','Seconds','Specials','Extra','Ladi test','Device','Home screen','Page'],rows:events},answers:{head,rows:answers},at:new Date().toISOString()};
+}
+
+if(DEMO)open('');
+else if(store.get('lw_admin_key'))open(store.get('lw_admin_key'));
+else{$('#gate').hidden=false;loadStatic()}
+})();
+</script>
+</body>
+</html>

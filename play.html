@@ -18,6 +18,7 @@ html,body{height:100%;min-height:100lvh}
 }
 </style>
 <script>window.LW_SITE_MODE=1;(function(){var n='';try{var w=new URLSearchParams(location.search).get('w');if(w)n=JSON.parse(decodeURIComponent(escape(atob(w.replace(/-/g,'+').replace(/_/g,'/'))))).name||'';if(!n)n=(JSON.parse(localStorage.getItem('lw.config')||'null')||{}).name||''}catch(e){}window.LW_NAME=n.trim();if(window.LW_NAME)document.documentElement.classList.add('lw-loading');var c=(n.trim().charAt(0)||'').toUpperCase();if(/^[A-Z]$/.test(c)){document.querySelectorAll('link[rel=apple-touch-icon],link[rel=icon]').forEach(function(l){l.href='icons/'+(l.hasAttribute('data-dark')?'dark/':'')+c+'.png'})}})()</script>
+<script src="lw-ping.js?v=1794406048"></script>
 <!-- site-only:end -->
 </head><body>
 <meta charset="utf-8">
@@ -461,10 +462,10 @@ html.lw-loading .splash{visibility:hidden}
   </div>
 </section>
 
-<script src="kids/kids-meta.js?v=1794405071"></script>
-<script src="kids/kids.js?v=1794405071"></script>
-<script src="sfx.js?v=1794405071"></script>
-<script src="game.js?v=1794405071"></script>
+<script src="kids/kids-meta.js?v=1794406048"></script>
+<script src="kids/kids.js?v=1794406048"></script>
+<script src="sfx.js?v=1794406048"></script>
+<script src="game.js?v=1794406048"></script>
 <script>
 (() => {
 'use strict';
@@ -1027,6 +1028,17 @@ let input = { held: false, pressed: false }, pointers = new Set();
 
 let waitingFor = null;
 let lwUnlockIdx = -1; const lwWasOpen = {};
+// anonymous usage pings for the admin page (lw-ping.js is test-site only, so A's World sends nothing)
+function usagePing(ev, o) {
+  if (!window.lwPing || !G) return;
+  const L = G.L, span = L.flagX - L.startX;
+  lwPing(ev, Object.assign({ trip: L.id, link: LW ? LW.slug : '', secs: G.time,
+    progress: span > 0 ? (G.p.x - L.startX) / span : null, specials: G.got.filter(Boolean).length }, o));
+}
+// a run that stops before the flag: back to the menu, or the game is closed or put away
+function usageStop(ev) { if (G && !G.stopPinged && (state === 'play' || state === 'paused' || state === 'tip')) { G.stopPinged = true; usagePing(ev); } }
+document.addEventListener('visibilitychange', () => { if (document.visibilityState === 'hidden') usageStop('leave'); });
+if (window.lwPing) lwPing('open', { link: LW ? LW.slug : '' });   // the game was opened (from a link or the home screen)
 function startLevel(i) {
   if (LW && i + 1 < ARun.LEVELS.length) lwWasOpen[i + 1] = lvOpen(i + 1);   // so the picker knows if this run opens the next trip
   audio();
@@ -1052,6 +1064,7 @@ function startLevel(i) {
   input.held = false; input.pressed = false; input.down = false; pointers.clear();
   updateHud(true);
   wakeLock();
+  usagePing('start', { secs: null, progress: null, specials: null });
 }
 function viewW() { return W / U; }
 function viewH() { return H / U; }
@@ -1343,7 +1356,7 @@ $('retryBtn').addEventListener('click', () => startLevel(levelIndex));
 // If the builder opened this tab, close it and show the builder again; otherwise open the builder with this child's world filled in.
 let lwJoinEnd = false;
 function lwBackToBuilder() {
-  const url = 'builder.html?v=1794405071&w=' + lwEncode(LW);
+  const url = 'builder.html?v=1794406048&w=' + lwEncode(LW);
   try { if (window.opener && !window.opener.closed && /builder\.html/.test(window.opener.location.pathname)) { window.opener.focus(); window.close(); setTimeout(() => { location.href = url; }, 400); return; } } catch (e) {}
   location.href = url;
 }
@@ -1351,7 +1364,7 @@ $('nextBtn').addEventListener('click', () => { if (lwJoinEnd) return lwBackToBui
   if (LW && levelIndex + 1 < ARun.LEVELS.length) { const nx = levelIndex + 1; lwUnlockIdx = lwWasOpen[nx] === false && lvOpen(nx) ? nx : -1; pickIndex = nx; return toMenu(); }
   if (levelIndex + 1 < ARun.LEVELS.length) startLevel(levelIndex + 1); else toMenu(); });
 $('endLevels').addEventListener('click', toMenu);
-function toMenu() { state = 'menu'; G = null; $('hud').hidden = true; renderMenu(); showOnly('menu'); }
+function toMenu() { usageStop('quit'); state = 'menu'; G = null; $('hud').hidden = true; renderMenu(); showOnly('menu'); }
 
 /* feel panel */
 const FEEL = [
@@ -1447,6 +1460,7 @@ function sparkle(x, y, c, n) { for (let i = 0; i < n; i++) { const a = Math.rand
 
 function finish() {
   state = 'end';
+  usagePing('finish', { progress: 1 });
   const id = G.L.id, s = lvSave(id);
   const prevBest = s.best;
   s.best = s.best ? Math.min(s.best, G.time) : G.time;
@@ -1494,6 +1508,7 @@ function finish() {
 }
 function failed() {
   if (!G || state !== 'play') return;
+  usagePing('fail');
   state = 'end';
   $('endTitle').textContent = G.beaten ? 'Unlucky!' : G.late ? 'Gate\nclosed!' : 'Out of\nbubbles';
   $('endScreen').classList.toggle('timed', !!(G.L.timed || G.L.race));
