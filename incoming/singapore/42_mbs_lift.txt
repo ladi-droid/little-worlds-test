@@ -1,0 +1,10 @@
+Make exactly ONE image for this picture, nothing else. Don't write any words inside the image.
+- One picture number = one image. Never put two picture numbers in one image, never a grid or collage. An asset sheet (several pieces in one picture) is fine when the prompt asks for one.
+- Same art style in every picture: 2D side-scrolling mobile game art, flat cartoon style with thick dark outlines, clean shapes and gentle cel shading, bright and friendly, matching A's World.
+- Light for this picture: a warm clear night in Singapore: deep blue-violet sky with a few soft clouds lit from below, glowing lights everywhere, colours rich and magical, never too dark.
+- Modern, real, cheerful Singapore as it is today: spotless, green, colourful and lively.
+- No people unless the picture asks for them (then only friendly faceless chibi people drawn like the game's child in the attached a_sheet.png, never silhouettes). No text, no letters, no numbers, no logos, no real brand, hotel, bank, shop or company names, no number plates.
+
+Picture 42: Outside glass lift (three pieces)  (asset sheet, 3 pieces)
+Straight side-on view, flat orthographic, no perspective. Asset sheet of 3 separate pieces, not touching, each seen exactly from the side: 1) a made-up modern glass lift cabin for the outside of a tall hotel tower: a rounded box of clear glass with a slim steel frame, a soft lit floor and ceiling light, empty inside, a back wall of tinted glass, big enough for a child to stand in; 2) the same cabin's front only: just its steel frame edges, a thin floor edge and a glass front with a soft reflection, see-through in the middle so a child can be drawn standing behind it; 3) a straight tall section of the lift's steel guide rails with small fixing brackets, that repeats seamlessly from top to bottom. No writing, no logos. On a solid flat magenta (#FF00FF) background, no magenta anywhere in the art, no cast shadow on the background.
+Reminder: one picture number = one image. Never put two picture numbers in one image, never a grid or collage.

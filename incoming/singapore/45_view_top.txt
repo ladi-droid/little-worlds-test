@@ -1,0 +1,10 @@
+Make exactly ONE image for this picture, nothing else. Don't write any words inside the image.
+- One picture number = one image. Never put two picture numbers in one image, never a grid or collage. An asset sheet (several pieces in one picture) is fine when the prompt asks for one.
+- Same art style in every picture: 2D side-scrolling mobile game art, flat cartoon style with thick dark outlines, clean shapes and gentle cel shading, bright and friendly, matching A's World.
+- Light for this picture: a warm clear night in Singapore: deep blue-violet sky with a few soft clouds lit from below, glowing lights everywhere, colours rich and magical, never too dark.
+- Modern, real, cheerful Singapore as it is today: spotless, green, colourful and lively.
+- No people unless the picture asks for them (then only friendly faceless chibi people drawn like the game's child in the attached a_sheet.png, never silhouettes). No text, no letters, no numbers, no logos, no real brand, hotel, bank, shop or company names, no number plates.
+
+Picture 45: The view from the top: full backdrop  (very wide 3:1, FULL PICTURE (no magenta))
+Straight side-on view, flat orthographic, no perspective. Full picture, no magenta. The view at night from very high up on a Singapore rooftop: far below on the left the Supertree Grove of Gardens by the Bay glowing purple, pink, blue and green during its light show, with the two glass domes of the gardens beside it; in the middle the dark calm sea dotted with the lights of many ships at anchor; on the right the business district skyline across the bay, lit up in warm gold and white, reflected in the water; a deep blue-violet sky with soft clouds lit pink from below and a few stars. NO three-tower hotel in it (we are standing on top of it). Big, calm and magical. The left and right ends match so it can repeat. Keep the bottom fifth calm and dark so a rooftop deck can be drawn in front of it.
+Reminder: one picture number = one image. Never put two picture numbers in one image, never a grid or collage.

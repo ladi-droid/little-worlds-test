@@ -1,0 +1,10 @@
+Make exactly ONE image for this picture, nothing else. Don't write any words inside the image.
+- One picture number = one image. Never put two picture numbers in one image, never a grid or collage. An asset sheet (several pieces in one picture) is fine when the prompt asks for one.
+- Same art style in every picture: 2D side-scrolling mobile game art, flat cartoon style with thick dark outlines, clean shapes and gentle cel shading, bright and friendly, matching A's World.
+- Light for this picture: a warm clear night in Singapore: deep blue-violet sky with a few soft clouds lit from below, glowing lights everywhere, colours rich and magical, never too dark.
+- Modern, real, cheerful Singapore as it is today: spotless, green, colourful and lively.
+- No people unless the picture asks for them (then only friendly faceless chibi people drawn like the game's child in the attached a_sheet.png, never silhouettes). No text, no letters, no numbers, no logos, no real brand, hotel, bank, shop or company names, no number plates.
+
+Picture 40: The long ship-shaped roof garden  (very wide 10:1)
+Straight side-on view, flat orthographic, no perspective. The long roof garden on top of the famous Singapore hotel of three tall towers joined on top by one long ship-shaped roof garden, drawn as a made-up look-alike with NO name, NO logo and NO letters anywhere, seen exactly from the side: a long slim white boat-shaped deck with a smooth gently curved white underside, its right end sticking far out into the air like the bow of a ship, a glass railing along the top, little palm trees and plants in tubs along the deck, deck lights glowing. The top of the deck is flat and level from end to end so a character can run along it. Whole roof, both ends shown, nothing cut off. On a solid flat magenta (#FF00FF) background, no magenta anywhere in the art, no cast shadow on the background.
+Reminder: one picture number = one image. Never put two picture numbers in one image, never a grid or collage.
