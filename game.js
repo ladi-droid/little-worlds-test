@@ -3624,7 +3624,7 @@ const ALL_LEVELS = [
 
     // ---------- 8. Villa Borghese: an e-scooter along the avenue, the ramp over the water clock's pond (special 5: RAMP JUMP) ----------
     const PTH = 9.4, PL = aw('rm_plane', PTH), T1 = SP + SPW + 1.0;   // a big plane tree, whole on screen: the park's view changes behind it
-    back('rm_plane', T1, PTH, { y: TOP }); swapAt(T1 + PL * 0.5, 'borghese', 'behind the trunk of a giant plane tree');
+    back('rm_plane', T1, PTH, { y: TOP }); swapAt(T1 + PL * 0.5, 'view', 'behind the trunk of a giant plane tree: from here to the flag the backdrop is the ending view, so its sky never changes colour (Ladi 2026-11-11)');
     ground(SP + SPW - 0.2, T1 + PL * 0.5, 'rmstreet', TOP); ground(T1 + PL * 0.5, 9999, 'rmgravel', TOP); L.rmJoins.push(T1 + PL * 0.5);
     L.rmFace = [SP + SPW - 0.2, TOP];
     back('rm_bust1', T1 + PL + 0.5, 2.6, { y: TOP });
@@ -3655,8 +3655,6 @@ const ALL_LEVELS = [
     const TR = T2 + PL * 0.5 - 0.2, TRW = aw('rm_terrace', 5.0);
     back('rm_terrace', TR, 5.0, { y: TOP });
     back('rm_plane', T2, PTH, { y: TOP });
-    swapAt(TR + 4.0, 'view', 'behind the flag pole, which reaches the top of the screen (the sky left of it is matched to the view)');
-    L.rmGold = [T1 + PL * 0.5, TR + 4.0];               // the sky and the park go slowly golden along the avenue, so the view isn't a jump
     b.coins(TR + 1.0, TOP + 1.2, 4, 1.0);
     b.flag(TR + 4.0); L.flagY = TOP;
     L.rmFinale = true;
