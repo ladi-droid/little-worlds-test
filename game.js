@@ -3733,6 +3733,7 @@ const ALL_LEVELS = [
     L.lgLife.push(['lg_okada2', MK + 14, 0, 'okada'], ['lg_egret0', MK + 6, 13.0, 'fly']);
     const J1 = R2 + 2.0;                                 // Yaba's paving meets the theatre plaza at a pier
     ground(-14, J1, 'lgstreet'); L.lgJoins.push(J1);
+    L.lgYaba = [-14, J1];                               // (Yaba's street: the conductors' and sellers' calls play here)
 
     // ---------- 2. the National Theatre: Creative Park's pillars (wall-jump for coins), the fountain, up the steps, THE DOOR ----------
     lean('lg_tank', R2 + 0.2, 2.3, 1.35);              // (a water tank where the market street ends: lean on it, then up)
