@@ -1,6 +1,7 @@
 // Ride sheet (level kit): a row of frames from one ride or moving moment, so Ladi can see how it moves without a video.
 // Puts A at (x, y), lets him run hands-off (or tapping, with --tap), and grabs a frame at each time given (seconds).
-// usage: node tools/ride-sheet.js <level id> <name> <x> <y> <t1,t2,...> [--tap] [--ride=N] [out folder]
+// usage: node tools/ride-sheet.js <level id> <name> <x> <y> <t1,t2,...> [--tap] [--ride=N] [--kid=JSON] [out folder]
+//   --kid=JSON: play as a child (a Little Worlds config, e.g. '{"name":"Zoe","kid":"girl","style":"braids","skin":"#8d5524"}').
 //   --ride=N: the ride A should board next (L.rides index), when you place him just before a later ride.
 // Writes <out>/<name>_<i>_844x390.png per frame and <out>/<name>_sheet.png (frames in a row, phone sideways size).
 // Barcelona round 3-5 (2026-11-09): every ride change went to Ladi as one of these.
@@ -25,6 +26,8 @@ const server = http.createServer((q, r) => {
   const br = await chromium.launch(), VW = 844, VH = 390, errs = [];
   const pg = await br.newPage({ viewport: { width: VW, height: VH } });
   pg.on('pageerror', e => errs.push(e.message));
+  const kf = flags.find(f => f.startsWith('--kid='));
+  await pg.addInitScript(c => { try { if (c) localStorage.setItem('lw.config', c); else localStorage.removeItem('lw.config'); } catch (e) {} }, kf ? kf.slice(6) : null);
   await pg.goto(base + 'play.html'); await pg.waitForTimeout(2500);
   const li = await pg.evaluate(id => ARun.LEVELS.findIndex(l => l.id === id), id);
   if (li < 0) { console.log('no level', id); process.exit(2); }
