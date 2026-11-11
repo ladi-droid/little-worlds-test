@@ -18,7 +18,7 @@ html,body{height:100%;min-height:100lvh}
 }
 </style>
 <script>window.LW_SITE_MODE=1;(function(){var n='';try{var w=new URLSearchParams(location.search).get('w');if(w)n=JSON.parse(decodeURIComponent(escape(atob(w.replace(/-/g,'+').replace(/_/g,'/'))))).name||'';if(!n)n=(JSON.parse(localStorage.getItem('lw.config')||'null')||{}).name||''}catch(e){}window.LW_NAME=n.trim();if(window.LW_NAME)document.documentElement.classList.add('lw-loading');var c=(n.trim().charAt(0)||'').toUpperCase();if(/^[A-Z]$/.test(c)){document.querySelectorAll('link[rel=apple-touch-icon],link[rel=icon]').forEach(function(l){l.href='icons/'+(l.hasAttribute('data-dark')?'dark/':'')+c+'.png'})}})()</script>
-<script src="lw-ping.js?v=1794417084"></script>
+<script src="lw-ping.js?v=1794418313"></script>
 <!-- site-only:end -->
 </head><body>
 <meta charset="utf-8">
@@ -205,10 +205,10 @@ html.lw-loading .splash{visibility:hidden}
 .csign.sy b{left:22%;right:8%;top:52%;bottom:10%;transform:none;-webkit-text-stroke:calc(var(--sw)*.016) #1d3270;paint-order:stroke fill}
 .csign.rm{aspect-ratio:640/424;--sw:calc(var(--cw)*.62);left:calc(var(--cw)*-.05);top:calc(12px + (var(--ch) - 100px)*.15 - var(--sw)*.42)}
 .csign.rm b{left:10%;right:10%;top:36%;bottom:36%;transform:none;font-size:calc(var(--sw)*.13);-webkit-text-stroke:calc(var(--sw)*.022) #7a3e12;paint-order:stroke fill}
-.csign.lg{aspect-ratio:640/293;--sw:calc(var(--cw)*.78);top:calc(12px + (var(--ch) - 100px)*.15 - var(--sw)*.3)}
+.csign.lg{aspect-ratio:640/259;--sw:calc(var(--cw)*.78);top:calc(12px + (var(--ch) - 100px)*.15 - var(--sw)*.3)}
 .csign.sg{aspect-ratio:640/525;--sw:calc(var(--cw)*.5);top:calc(12px + (var(--ch) - 100px)*.15 - var(--sw)*.42)}
 .csign.sg b{left:4%;right:4%;top:72%;bottom:4%;transform:none;font-size:calc(var(--sw)*.15);-webkit-text-stroke:calc(var(--sw)*.022) #0e3a5a;paint-order:stroke fill}
-.csign.lg b{left:8%;right:22%;top:50%;bottom:24%;transform:none;font-size:calc(var(--sw)*.11);-webkit-text-stroke:calc(var(--sw)*.018) #1b1b1b;paint-order:stroke fill}
+.csign.lg b{left:14%;right:14%;top:22%;bottom:30%;transform:none;font-size:calc(var(--sw)*.11);-webkit-text-stroke:calc(var(--sw)*.018) #1b1b1b;paint-order:stroke fill}
 /* London worlds: Ladi's landmark stickers (clock tower, ship, glass tower, windmill); the name is written on the empty panel */
 .lsign{position:absolute;--sw:calc(var(--cw)*.86);width:var(--sw);aspect-ratio:640/200;left:calc(var(--cw)*-.08);top:calc(12px + (var(--ch) - 100px)*.15 - var(--sw)*.17);
   background:center/100% 100% no-repeat;z-index:2;filter:drop-shadow(0 3px 0 rgba(11,11,14,.25))}
@@ -450,10 +450,10 @@ html.lw-loading .splash{visibility:hidden}
   </div>
 </section>
 
-<script src="kids/kids-meta.js?v=1794417084"></script>
-<script src="kids/kids.js?v=1794417084"></script>
-<script src="sfx.js?v=1794417084"></script>
-<script src="game.js?v=1794417084"></script>
+<script src="kids/kids-meta.js?v=1794418313"></script>
+<script src="kids/kids.js?v=1794418313"></script>
+<script src="sfx.js?v=1794418313"></script>
+<script src="game.js?v=1794418313"></script>
 <script>
 (() => {
 'use strict';
@@ -1350,7 +1350,7 @@ $('retryBtn').addEventListener('click', () => startLevel(levelIndex));
 // If the builder opened this tab, close it and show the builder again; otherwise open the builder with this child's world filled in.
 let lwJoinEnd = false;
 function lwBackToBuilder() {
-  const url = 'builder.html?v=1794417084&w=' + lwEncode(LW);
+  const url = 'builder.html?v=1794418313&w=' + lwEncode(LW);
   try { if (window.opener && !window.opener.closed && /builder\.html/.test(window.opener.location.pathname)) { window.opener.focus(); window.close(); setTimeout(() => { location.href = url; }, 400); return; } } catch (e) {}
   location.href = url;
 }
