@@ -18,7 +18,7 @@ html,body{height:100%;min-height:100lvh}
 }
 </style>
 <script>window.LW_SITE_MODE=1;(function(){var n='';try{var w=new URLSearchParams(location.search).get('w');if(w)n=JSON.parse(decodeURIComponent(escape(atob(w.replace(/-/g,'+').replace(/_/g,'/'))))).name||'';if(!n)n=(JSON.parse(localStorage.getItem('lw.config')||'null')||{}).name||''}catch(e){}window.LW_NAME=n.trim();if(window.LW_NAME)document.documentElement.classList.add('lw-loading');var c=(n.trim().charAt(0)||'').toUpperCase();if(/^[A-Z]$/.test(c)){document.querySelectorAll('link[rel=apple-touch-icon],link[rel=icon]').forEach(function(l){l.href='icons/'+(l.hasAttribute('data-dark')?'dark/':'')+c+'.png'})}})()</script>
-<script src="lw-ping.js?v=1794413689"></script>
+<script src="lw-ping.js?v=1794415280"></script>
 <!-- site-only:end -->
 </head><body>
 <meta charset="utf-8">
@@ -450,10 +450,10 @@ html.lw-loading .splash{visibility:hidden}
   </div>
 </section>
 
-<script src="kids/kids-meta.js?v=1794413689"></script>
-<script src="kids/kids.js?v=1794413689"></script>
-<script src="sfx.js?v=1794413689"></script>
-<script src="game.js?v=1794413689"></script>
+<script src="kids/kids-meta.js?v=1794415280"></script>
+<script src="kids/kids.js?v=1794415280"></script>
+<script src="sfx.js?v=1794415280"></script>
+<script src="game.js?v=1794415280"></script>
 <script>
 (() => {
 'use strict';
@@ -1350,7 +1350,7 @@ $('retryBtn').addEventListener('click', () => startLevel(levelIndex));
 // If the builder opened this tab, close it and show the builder again; otherwise open the builder with this child's world filled in.
 let lwJoinEnd = false;
 function lwBackToBuilder() {
-  const url = 'builder.html?v=1794413689&w=' + lwEncode(LW);
+  const url = 'builder.html?v=1794415280&w=' + lwEncode(LW);
   try { if (window.opener && !window.opener.closed && /builder\.html/.test(window.opener.location.pathname)) { window.opener.focus(); window.close(); setTimeout(() => { location.href = url; }, 400); return; } } catch (e) {}
   location.href = url;
 }
@@ -8371,14 +8371,16 @@ function lgBands() {
   for (const s of sw) {
     const b = sx(s.x); if (LG_PART[s.to] === LG_PART[from]) { from = s.to; continue; }
     const z = SOFT[s.to] ? SOFT[s.to] * U : 0, x0 = b - z / 2, x1 = b + z / 2;
-    part(a, x1, () => draw(LG_PART[from]));
+    part(a, z ? x0 : x1, () => draw(LG_PART[from]));
     if (z && x1 > 0 && x0 < W) {
-      const o = lgOff(), d = o.getContext('2d');
-      d.setTransform(1, 0, 0, 1, 0, 0); d.globalCompositeOperation = 'copy'; d.drawImage(cv, 0, 0);
-      const g = d.createLinearGradient(x0 * DPR, 0, x1 * DPR, 0); g.addColorStop(0, 'rgba(0,0,0,1)'); g.addColorStop(1, 'rgba(0,0,0,0)');
-      d.globalCompositeOperation = 'destination-in'; d.fillStyle = g; d.fillRect(0, 0, o.width, o.height); d.globalCompositeOperation = 'source-over';
+      // the new backdrop under the whole stretch, then the old one laid over it in thin strips, each a little fainter (round 6: on the
+      // phone the copied-canvas fade showed as a hard edge; plain strips with their own see-through work the same on every screen)
       part(x0, x1, () => draw(LG_PART[s.to]));
-      ctx.save(); ctx.setTransform(1, 0, 0, 1, 0, 0); ctx.beginPath(); ctx.rect(Math.max(0, x0 * DPR), 0, (Math.min(W, x1) - Math.max(0, x0)) * DPR, cv.height); ctx.clip(); ctx.drawImage(o, 0, 0); ctx.restore();
+      const N = 40, sw2 = (x1 - x0) / N;
+      for (let i = 0; i < N; i++) {
+        const sa = Math.round(x0 + i * sw2), sb2 = Math.round(x0 + (i + 1) * sw2); if (sb2 < 0 || sa > W) continue;   // (whole pixels: no doubled lines)
+        ctx.save(); ctx.globalAlpha = 1 - (i + 0.5) / N; part(sa, sb2, () => draw(LG_PART[from])); ctx.restore();
+      }
     }
     a = x1; from = s.to;
   }
@@ -8527,8 +8529,8 @@ function lgQuadAt() {
 }
 function lgDuneY(x) {   // (how high the sand bumps lift the quad bike as it rolls over them)
   const L = G.L; let y = 0;
-  for (const w of L.lgWaves || []) { const d = Math.abs(x - (w - 0.1)) / 1.2; if (d < 1) y = Math.max(y, 0.38 * (1 - d * d)); }
-  if (L.lgBig !== undefined) { const d = x < L.lgBig - 0.3 ? (L.lgBig - 0.3 - x) / 3.3 : (x - L.lgBig + 0.3) / 1.9; if (d < 1) y = Math.max(y, 0.8 * (1 - d * d)); }
+  for (const w of L.lgWaves || []) { const d = Math.abs(x - (w - 0.1)) / 1.2; if (d < 1) y = Math.max(y, 0.38 * (1 - d * d) ** 2); }   // (squared: the buggy eases on and off a bump, no jolt)
+  if (L.lgBig !== undefined) { const d = x < L.lgBig - 0.3 ? (L.lgBig - 0.3 - x) / 3.3 : (x - L.lgBig + 0.3) / 1.9; if (d < 1) y = Math.max(y, 0.8 * (1 - d * d) ** 2); }
   return y;
 }
 // the lime green buggy from the desert (Ladi round 4: "use the buggy from A's World, the lime green one"): it waits empty at the top of
@@ -8539,9 +8541,9 @@ function lgQuad(front) {
   const z = S.z, riding = z && z.wx === undefined, t = z ? z.t || 0 : 0;
   let key = 'ds_b_empty';
   // (in the Lagos outfit: agbada or iro and buba; he stands beside it, climbs in, puts the helmet on and drives)
-  if (riding) key = t < 0.75 ? ['lg_c1', 'lg_c2', 'lg_b_drive'][Math.min(2, Math.floor(t / 0.25))] : S.jy > 0.45 && z.jy > 0 ? 'lg_b_air' : z.v > 1 && Math.floor(animT * 7) % 2 ? 'lg_b_drive2' : 'lg_b_drive';
+  if (riding) key = t < 0.75 ? ['lg_c1', 'lg_c2', 'lg_b_drive'][Math.min(2, Math.floor(t / 0.25))] : S.jy > 0.45 && z.jy > 0 ? 'lg_b_air' : 'lg_b_drive';   // (round 6: no flicking between two driving pictures, "the way the buggy moves is unnatural": one picture, a gentle bob)
   const sl = lgDuneY(S.s + 0.6) - lgDuneY(S.s - 0.6), ang = key === 'lg_b_air' ? 0.12 : Math.atan2(sl, 1.2);
-  const bob = riding && t > 0.75 && S.jy < 0.05 ? Math.sin(animT * 24) * 0.015 : 0;
+  const bob = riding && t > 0.75 && S.jy < 0.05 ? Math.sin(animT * 9) * 0.02 : 0;
   shadow(S.s, 0.03, (DS_BUGGY_WB + 1.0) * Math.max(0.5, 1 - S.jy * 0.2), 0.28);
   dsCar(key, 'ds_b_wheel', DS_BUGGY_WB, DS_BUGGY_R, S.s, S.jy + bob, ang, S.s / DS_BUGGY_R);
 }
