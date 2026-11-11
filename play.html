@@ -447,10 +447,10 @@ html.lw-loading .splash{visibility:hidden}
   </div>
 </section>
 
-<script src="kids/kids-meta.js?v=1794375129"></script>
-<script src="kids/kids.js?v=1794375129"></script>
-<script src="sfx.js?v=1794375129"></script>
-<script src="game.js?v=1794375129"></script>
+<script src="kids/kids-meta.js?v=1794375499"></script>
+<script src="kids/kids.js?v=1794375499"></script>
+<script src="sfx.js?v=1794375499"></script>
+<script src="game.js?v=1794375499"></script>
 <script>
 (() => {
 'use strict';
@@ -829,7 +829,7 @@ const SFX = {
 
 /* ---------- recorded sounds (ElevenLabs takes in sfx.js; sounds/game/*.mp3) ---------- */
 const SND = {}, SND_LOOP = {};
-const SND_VOL = { airport_chime: 0.3, all_five: 0.36, boarding_pass: 0.81, boat: 0.4, bonk: 0.44, bubble_pop: 0.26, buggy_boost: 0.16, buggy_engine: 0.25, bus: 0.31, button: 0.21, car_door: 1.0, car_drive: 0.23, clock_tick: 0.39, coin: 0.38, crab: 0.2, dive: 0.4, escalator: 0.21, fireworks_show: 1.0, flag: 0.33, fountain: 0.33, fox: 0.14, gull: 0.25, hurt: 0.22, jeep_rumble: 0.14, jump: 0.42, jump_big: 0.38, land: 0.35, lg_calls: 0.14, lg_drum_big: 0.59, lg_drum_mid: 0.34, lg_drum_small: 0.72, lg_horn_car1: 0.075, lg_horn_car2: 0.075, lg_horn_danfo1: 0.086, lg_horn_danfo2: 0.11, lg_horn_okada: 0.055, lg_quad: 0.2, lg_traffic: 0.106, land_hard: 0.5, lift: 0.14, pigeon: 0.16, plane: 0.24, raven: 0.26, scanner: 0.16, scooter: 0.1, sneeze: 0.26, snore: 0.27, special: 0.89, splash: 0.54, star: 0.31, start_lights: 0.23, stomp: 0.45, swim: 0.31, train_doors: 0.99, unlock: 1.0, wall_jump: 0.22, water_slide: 0.38, zipline: 0.26 };
+const SND_VOL = { airport_chime: 0.3, all_five: 0.36, boarding_pass: 0.81, boat: 0.4, bonk: 0.44, bubble_pop: 0.26, buggy_boost: 0.16, buggy_engine: 0.25, bus: 0.31, button: 0.21, car_door: 1.0, car_drive: 0.23, clock_tick: 0.39, coin: 0.38, crab: 0.2, dive: 0.4, escalator: 0.21, fireworks_show: 1.0, flag: 0.33, fountain: 0.33, fox: 0.14, gull: 0.25, hurt: 0.22, jeep_rumble: 0.14, jump: 0.42, jump_big: 0.38, land: 0.35, lg_beach: 0.16, lg_calls: 0.14, lg_danfo: 0.21, lg_drum_big: 0.59, lg_drum_mid: 0.34, lg_drum_small: 0.72, lg_horn_car1: 0.075, lg_horn_car2: 0.075, lg_horn_danfo1: 0.086, lg_horn_danfo2: 0.11, lg_horn_okada: 0.055, lg_keke_by: 0.29, lg_market: 0.18, lg_okada_by: 0.15, lg_quad: 0.2, lg_shekere: 0.25, lg_traffic: 0.106, land_hard: 0.5, lift: 0.14, pigeon: 0.16, plane: 0.24, raven: 0.26, scanner: 0.16, scooter: 0.1, sneeze: 0.26, snore: 0.27, special: 0.89, splash: 0.54, star: 0.31, start_lights: 0.23, stomp: 0.45, swim: 0.31, train_doors: 0.99, unlock: 1.0, wall_jump: 0.22, water_slide: 0.38, zipline: 0.26 };
 let sndBus = null;
 function sndLoad() {
   if (sndBus || !AC || !window.LW_SFX) return;
@@ -925,12 +925,19 @@ function sndTick() {
   sndLoop('boat', !!(gr && gr.kind === 'boat'));
   sndLoop('zipline', play && L.area !== 'rome' && L.area !== 'lagos' && (!!p.zip || !!(p.ride && p.ride.i === 0 && p.ride.v > 2)));
   sndLoop('lift', play && !L.bcBubble && L.area !== 'rome' && L.area !== 'lagos' && !!(p.ride && p.ride.i === 1 && p.ride.v > 0.3 && p.ride.end <= 0));
-  once('ctTaxi', state === 'ready' && (L.ctTaxi !== undefined || L.wmCab !== undefined || L.rmCar !== undefined || L.lgBus !== undefined) && G.intro && introT() > 1.1, () => { snd('car_door'); snd('car_drive', { delay: 0.25 }); });
+  once('ctTaxi', state === 'ready' && (L.ctTaxi !== undefined || L.wmCab !== undefined || L.rmCar !== undefined || L.lgBus !== undefined) && G.intro && introT() > 1.1, () => { if (L.lgBus !== undefined && snd('lg_danfo')) return; snd('car_door'); snd('car_drive', { delay: 0.25 }); });   // (Lagos: the danfo pulls away with a toot-toot)
   if (L.area === 'lagos') {   // Lagos: Yaba's street calls, the go-slow's engines on the bridge, the quad bike's engine on the beach
     const x = p.x, Y = L.lgYaba, B = L.lgBridge;
     sndLoop('lg_calls', play && !!Y && x > Y[0] && x < Y[1] + 4);
     sndLoop('lg_traffic', play && !!B && B.length > 1 && x > B[0] - 4 && x < B[1]);
     sndLoop('lg_quad', play && !!L.lgQuadRide && !!lgOn(L.lgQuadRide));
+    const M = L.lgMarket, S = L.lgBeach;
+    sndLoop('lg_market', play && !!M && x > M[0] && x < M[1]);
+    sndLoop('lg_beach', play && !!S && x > S[0] && x < S[1]);
+    if (play && Y && x > Y[0] && x < Y[1]) {   // an okada or a keke going past now and then in Yaba
+      const t = AC.currentTime; if (G._lgBy === undefined) G._lgBy = t + 3;
+      if (t > G._lgBy) { G._lgBy = t + 5 + Math.random() * 4; snd(Math.random() < 0.55 ? 'lg_okada_by' : 'lg_keke_by', { rate: 0.95 + Math.random() * 0.1 }); }
+    }
   }
   sndLoop('buggy_engine', play && !!L.race && !!G.race && !G.race.won);
   sndLoop('fireworks_show', L.finale !== undefined && !L.weFinale && !L.ctFinale && !L.wmFinale && !L.bcFinale && !L.rmFinale && L.area !== 'sydney' && L.area !== 'lagos' && !!G.flag && G.flag.ride !== undefined);
@@ -1313,7 +1320,7 @@ $('retryBtn').addEventListener('click', () => startLevel(levelIndex));
 // If the builder opened this tab, close it and show the builder again; otherwise open the builder with this child's world filled in.
 let lwJoinEnd = false;
 function lwBackToBuilder() {
-  const url = 'builder.html?v=1794375129&w=' + lwEncode(LW);
+  const url = 'builder.html?v=1794375499&w=' + lwEncode(LW);
   try { if (window.opener && !window.opener.closed && /builder\.html/.test(window.opener.location.pathname)) { window.opener.focus(); window.close(); setTimeout(() => { location.href = url; }, 400); return; } } catch (e) {}
   location.href = url;
 }
@@ -1390,7 +1397,7 @@ function handleEvents() {
     sndEvent(e);
     switch (e.type) {
       case 'jump': SFX.jump(); dust(G.p.x + 0.4, G.p.y, 6); break;
-      case 'bounce': if (e.talk && typeof lgTalkDrum === 'function') lgTalkDrum(e.note || 1); else if (e.note) { if (!snd('star', { rate: e.note })) BEEP.coin(); } else SFX.big(); dust(G.p.x + 0.4, G.p.y, 10); shake = Math.max(shake, 0.15); break;
+      case 'bounce': if (e.talk && typeof lgTalkDrum === 'function') lgTalkDrum(e.note || 1); else if (e.note) { if (!(G.L.area === 'lagos' && snd('lg_shekere', { rate: e.note })) && !snd('star', { rate: e.note })) BEEP.coin(); }   // (Lagos's market umbrellas shake a shekere) else SFX.big(); dust(G.p.x + 0.4, G.p.y, 10); shake = Math.max(shake, 0.15); break;
       case 'wjump': SFX.wjump(); dust(e.x, e.y, 5); break;
       case 'vault': SFX.vault(); break;
       case 'land': if (G.L.race) { if (e.hard && e.car === 'a') { SFX.land(); shake = Math.max(shake, 0.1); } break; } if (e.hard) { SFX.land(); dust(G.p.x + 0.4, G.p.y, 5); } break;
