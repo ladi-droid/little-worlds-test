@@ -440,10 +440,10 @@ html.lw-loading .splash{visibility:hidden}
   </div>
 </section>
 
-<script src="kids/kids-meta.js?v=1794336068"></script>
-<script src="kids/kids.js?v=1794336068"></script>
-<script src="sfx.js?v=1794336068"></script>
-<script src="game.js?v=1794336068"></script>
+<script src="kids/kids-meta.js?v=1794374142"></script>
+<script src="kids/kids.js?v=1794374142"></script>
+<script src="sfx.js?v=1794374142"></script>
+<script src="game.js?v=1794374142"></script>
 <script>
 (() => {
 'use strict';
@@ -822,7 +822,7 @@ const SFX = {
 
 /* ---------- recorded sounds (ElevenLabs takes in sfx.js; sounds/game/*.mp3) ---------- */
 const SND = {}, SND_LOOP = {};
-const SND_VOL = { airport_chime: 0.3, all_five: 0.36, boarding_pass: 0.81, boat: 0.4, bonk: 0.44, bubble_pop: 0.26, buggy_boost: 0.16, buggy_engine: 0.25, bus: 0.31, button: 0.21, car_door: 1.0, car_drive: 0.23, clock_tick: 0.39, coin: 0.38, crab: 0.2, dive: 0.4, escalator: 0.21, fireworks_show: 1.0, flag: 0.33, fountain: 0.33, fox: 0.14, gull: 0.25, hurt: 0.22, jeep_rumble: 0.14, jump: 0.42, jump_big: 0.38, land: 0.35, land_hard: 0.5, lift: 0.14, pigeon: 0.16, plane: 0.24, raven: 0.26, scanner: 0.16, scooter: 0.1, sneeze: 0.26, snore: 0.27, special: 0.89, splash: 0.54, star: 0.31, start_lights: 0.23, stomp: 0.45, swim: 0.31, train_doors: 0.99, unlock: 1.0, wall_jump: 0.22, water_slide: 0.38, zipline: 0.26 };
+const SND_VOL = { airport_chime: 0.3, all_five: 0.36, boarding_pass: 0.81, boat: 0.4, bonk: 0.44, bubble_pop: 0.26, buggy_boost: 0.16, buggy_engine: 0.25, bus: 0.31, button: 0.21, car_door: 1.0, car_drive: 0.23, clock_tick: 0.39, coin: 0.38, crab: 0.2, dive: 0.4, escalator: 0.21, fireworks_show: 1.0, flag: 0.33, fountain: 0.33, fox: 0.14, gull: 0.25, hurt: 0.22, jeep_rumble: 0.14, jump: 0.42, jump_big: 0.38, land: 0.35, lg_calls: 0.14, lg_drum_big: 0.59, lg_drum_mid: 0.34, lg_drum_small: 0.72, lg_horn_car1: 0.075, lg_horn_car2: 0.075, lg_horn_danfo1: 0.086, lg_horn_danfo2: 0.11, lg_horn_okada: 0.055, lg_quad: 0.2, lg_traffic: 0.106, land_hard: 0.5, lift: 0.14, pigeon: 0.16, plane: 0.24, raven: 0.26, scanner: 0.16, scooter: 0.1, sneeze: 0.26, snore: 0.27, special: 0.89, splash: 0.54, star: 0.31, start_lights: 0.23, stomp: 0.45, swim: 0.31, train_doors: 0.99, unlock: 1.0, wall_jump: 0.22, water_slide: 0.38, zipline: 0.26 };
 let sndBus = null;
 function sndLoad() {
   if (sndBus || !AC || !window.LW_SFX) return;
@@ -858,7 +858,7 @@ function sndLoop(k, on) {
     try { cur.src.stop(t + 0.25); } catch (e) {} delete SND_LOOP[k];
   }
 }
-window.__snd = { get SND() { return SND; }, get save() { return save; }, audio: () => audio(), snd, sndEvent, sndStars, SFX };   // test hook
+window.__snd = { get SND() { return SND; }, get save() { return save; }, loops: () => Object.keys(SND_LOOP), audio: () => audio(), snd, sndEvent, sndStars, SFX };   // test hook
 function sndStopAll() { for (const k in SND_LOOP) sndLoop(k, false); }
 const BEEP = Object.assign({}, SFX);
 const SFX_REC = { jump: 'jump', wjump: 'wall_jump', coin: 'coin', special: 'special', stomp: 'stomp', hurt: 'hurt', pop: 'bubble_pop', flag: 'flag',
@@ -890,7 +890,7 @@ function sndEvent(e) {
     case 'bonk': snd('bonk'); break;
     case 'ctbonk': if (e.hit) snd('bonk'); break;
     case 'ctsoak': snd('splash', { vol: e.hit ? 1 : 0.6 }); break;
-    case 'ride': if (e.kind === 'lgbus') snd('car_drive', { delay: 0.3 }); else if (e.kind === 'rmside' || e.kind === 'rmscoot' || e.kind === 'lgquad') snd('scooter'); else if (e.kind === 'cable') snd('train_doors', { delay: 0.2 }); else if (e.kind === 'syferry') snd('boat', { rate: 0.8 }); else if (e.kind === 'syplane') snd('plane'); break;
+    case 'ride': if (e.kind === 'lgbus') snd('car_drive', { delay: 0.3 }); else if (e.kind === 'rmside' || e.kind === 'rmscoot' || (e.kind === 'lgquad' && !SND.lg_quad)) snd('scooter'); else if (e.kind === 'cable') snd('train_doors', { delay: 0.2 }); else if (e.kind === 'syferry') snd('boat', { rate: 0.8 }); else if (e.kind === 'syplane') snd('plane'); break;
     case 'rideEnd': if (e.kind === 'cable') snd('train_doors'); break;
     case 'splash': snd('splash'); break;
     case 'board': snd('plane', { delay: 1.4 }); break;
@@ -919,6 +919,12 @@ function sndTick() {
   sndLoop('zipline', play && L.area !== 'rome' && L.area !== 'lagos' && (!!p.zip || !!(p.ride && p.ride.i === 0 && p.ride.v > 2)));
   sndLoop('lift', play && !L.bcBubble && L.area !== 'rome' && L.area !== 'lagos' && !!(p.ride && p.ride.i === 1 && p.ride.v > 0.3 && p.ride.end <= 0));
   once('ctTaxi', state === 'ready' && (L.ctTaxi !== undefined || L.wmCab !== undefined || L.rmCar !== undefined || L.lgBus !== undefined) && G.intro && introT() > 1.1, () => { snd('car_door'); snd('car_drive', { delay: 0.25 }); });
+  if (L.area === 'lagos') {   // Lagos: Yaba's street calls, the go-slow's engines on the bridge, the quad bike's engine on the beach
+    const x = p.x, Y = L.lgYaba, B = L.lgBridge;
+    sndLoop('lg_calls', play && !!Y && x > Y[0] && x < Y[1] + 4);
+    sndLoop('lg_traffic', play && !!B && B.length > 1 && x > B[0] - 4 && x < B[1]);
+    sndLoop('lg_quad', play && !!L.lgQuadRide && !!lgOn(L.lgQuadRide));
+  }
   sndLoop('buggy_engine', play && !!L.race && !!G.race && !G.race.won);
   sndLoop('fireworks_show', L.finale !== undefined && !L.weFinale && !L.ctFinale && !L.wmFinale && !L.bcFinale && !L.rmFinale && L.area !== 'sydney' && L.area !== 'lagos' && !!G.flag && G.flag.ride !== undefined);
   sndLoop('snore', state === 'ready' && L.sleepStart !== undefined && sleepT() < 1.2);
@@ -1300,7 +1306,7 @@ $('retryBtn').addEventListener('click', () => startLevel(levelIndex));
 // If the builder opened this tab, close it and show the builder again; otherwise open the builder with this child's world filled in.
 let lwJoinEnd = false;
 function lwBackToBuilder() {
-  const url = 'builder.html?v=1794336068&w=' + lwEncode(LW);
+  const url = 'builder.html?v=1794374142&w=' + lwEncode(LW);
   try { if (window.opener && !window.opener.closed && /builder\.html/.test(window.opener.location.pathname)) { window.opener.focus(); window.close(); setTimeout(() => { location.href = url; }, 400); return; } } catch (e) {}
   location.href = url;
 }
@@ -8601,6 +8607,8 @@ function drawLgRideA(cx, by, RUN_H, JUMP_H) {
 // and falls back, like the drummer squeezing the strings, with a slap on top. Made in the browser until a recorded one is picked.
 function lgTalkDrum(note) {
   if (!AC || save.mute) return true;
+  const rec = note < 1.1 ? 'lg_drum_small' : note < 1.3 ? 'lg_drum_mid' : 'lg_drum_big';   // Ladi's picked recordings (small, mid, big drum)
+  if (snd(rec)) return true;
   const t = AC.currentTime, f = 118 * note, out = sndBus || AC.destination;
   const o = AC.createOscillator(), g = AC.createGain();
   o.type = 'sine'; o.frequency.setValueAtTime(f * 0.9, t); o.frequency.exponentialRampToValueAtTime(f * 1.55, t + 0.07); o.frequency.exponentialRampToValueAtTime(f * 1.05, t + 0.32);
@@ -8617,7 +8625,8 @@ function lgTalkDrum(note) {
   return true;
 }
 // the go-slow's horns (Ladi round 2: "traffic sounds: horns, shouting"): a toot now and then while A is on Third Mainland Bridge,
-// cars low, danfos higher and doubled, an okada's thin beep. Made in the browser until recorded ones are picked.
+// cars low, danfos higher and doubled, an okada's thin beep. Ladi's picked recordings (two of each for cars and danfos, mixed up),
+// with the browser-made toots only if they haven't loaded.
 let lgHornT = 1.2;
 function lgHorn(f, dur, vol, at) {
   const t = AC.currentTime + at, out = sndBus || AC.destination, lp = AC.createBiquadFilter(), g = AC.createGain();
@@ -8631,6 +8640,7 @@ function lgTraffic(dt) {
   lgHornT -= dt || 0; if (lgHornT > 0) return;
   lgHornT = 1.6 + Math.random() * 2.6;
   const r = Math.random(), v = 0.035 + Math.random() * 0.03;
+  if (SND.lg_horn_car1) { const k = r < 0.45 ? 'lg_horn_car' + (1 + (Math.random() < 0.5)) : r < 0.8 ? 'lg_horn_danfo' + (1 + (Math.random() < 0.5)) : 'lg_horn_okada'; snd(k, { vol: 0.8 + Math.random() * 0.4, rate: 0.96 + Math.random() * 0.08 }); return; }
   if (r < 0.45) lgHorn(330 + Math.random() * 60, 0.22 + Math.random() * 0.2, v, 0);                       // a car
   else if (r < 0.8) { const f = 440 + Math.random() * 50; lgHorn(f, 0.12, v, 0); lgHorn(f, 0.18, v, 0.18); }   // a danfo: toot-toot
   else lgHorn(700 + Math.random() * 80, 0.1, v * 0.7, 0);                                                    // an okada
