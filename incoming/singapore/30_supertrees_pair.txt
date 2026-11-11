@@ -1,0 +1,10 @@
+Make exactly ONE image for this picture, nothing else. Don't write any words inside the image.
+- One picture number = one image. Never put two picture numbers in one image, never a grid or collage. An asset sheet (several pieces in one picture) is fine when the prompt asks for one.
+- Same art style in every picture: 2D side-scrolling mobile game art, flat cartoon style with thick dark outlines, clean shapes and gentle cel shading, bright and friendly, matching A's World.
+- Light for this picture: a warm clear night in Singapore: deep blue-violet sky with a few soft clouds lit from below, glowing lights everywhere, colours rich and magical, never too dark.
+- Modern, real, cheerful Singapore as it is today: spotless, green, colourful and lively.
+- No people unless the picture asks for them (then only friendly faceless chibi people drawn like the game's child in the attached a_sheet.png, never silhouettes). No text, no letters, no numbers, no logos, no real brand, hotel, bank, shop or company names, no number plates.
+
+Picture 30: Two Supertrees (climb pair)  (tall 2:3)
+Straight side-on view, flat orthographic, no perspective. Two giant Supertrees side by side with a clear gap between them, both standing on the ground: tall steel tree-shaped towers whose trunks are covered in climbing plants and ferns, wide flared steel canopies on top, glowing purple and pink with twinkling lights; on the left the taller one, on the right a slightly shorter one, their inner sides with flat ledges of planting and steel bands so a character can wall-jump between them, and a straight section of high walkway joining their canopies. Full height from the ground to the top, nothing cut off. It must be CLIMBABLE: flat ledges, balconies, sills, canopies and a flat roof edge a small child character can land on, drawn clearly. On a solid flat magenta (#FF00FF) background, no magenta anywhere in the art, no cast shadow on the background.
+Reminder: one picture number = one image. Never put two picture numbers in one image, never a grid or collage.

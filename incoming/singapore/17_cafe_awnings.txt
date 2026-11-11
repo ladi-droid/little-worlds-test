@@ -1,0 +1,10 @@
+Make exactly ONE image for this picture, nothing else. Don't write any words inside the image.
+- One picture number = one image. Never put two picture numbers in one image, never a grid or collage. An asset sheet (several pieces in one picture) is fine when the prompt asks for one.
+- Same art style in every picture: 2D side-scrolling mobile game art, flat cartoon style with thick dark outlines, clean shapes and gentle cel shading, bright and friendly, matching A's World.
+- Light for this picture: a hot sunny afternoon in Singapore: bright sun high and a little to the left, short crisp shadows falling to the right, a deep blue tropical sky with big white puffy clouds, colours bright, lush and warm.
+- Modern, real, cheerful Singapore as it is today: spotless, green, colourful and lively.
+- No people unless the picture asks for them (then only friendly faceless chibi people drawn like the game's child in the attached a_sheet.png, never silhouettes). No text, no letters, no numbers, no logos, no real brand, hotel, bank, shop or company names, no number plates.
+
+Picture 17: Riverside cafe awnings (bounce)  (wide 3:1)
+Straight side-on view, flat orthographic, no perspective. Four riverside cafe stalls side by side in one row in front of shophouses, each under a big firm canvas awning at a different height (low, middle, high, highest), the awnings red-and-white, teal-and-white, yellow-and-white and green-and-white, taut like trampolines: 1) a juice bar with fresh fruit, 2) an ice cream stall with tubs of colourful ice cream, 3) a cafe with kaya toast and drinks on the counter, 4) a satay stall with skewers on a grill and a curl of smoke. Wooden tables, a friendly faceless chibi seller at each drawn like the attached a_sheet.png. Standing on a thin strip of ground. On a solid flat magenta (#FF00FF) background, no magenta anywhere in the art, no cast shadow on the background.
+Reminder: one picture number = one image. Never put two picture numbers in one image, never a grid or collage.

@@ -1,0 +1,10 @@
+Make exactly ONE image for this picture, nothing else. Don't write any words inside the image.
+- One picture number = one image. Never put two picture numbers in one image, never a grid or collage. An asset sheet (several pieces in one picture) is fine when the prompt asks for one.
+- Same art style in every picture: 2D side-scrolling mobile game art, flat cartoon style with thick dark outlines, clean shapes and gentle cel shading, bright and friendly, matching A's World.
+- Light for this picture: a hot sunny afternoon in Singapore: bright sun high and a little to the left, short crisp shadows falling to the right, a deep blue tropical sky with big white puffy clouds, colours bright, lush and warm.
+- Modern, real, cheerful Singapore as it is today: spotless, green, colourful and lively.
+- No people unless the picture asks for them (then only friendly faceless chibi people drawn like the game's child in the attached a_sheet.png, never silhouettes). No text, no letters, no numbers, no logos, no real brand, hotel, bank, shop or company names, no number plates.
+
+Picture 19: River steps, quays and water  (asset sheet, 6 pieces)
+Straight side-on view, flat orthographic, no perspective. Asset sheet of 6 separate pieces, not touching: 1) granite river steps going down into the water, side-on, with a landing at the bottom, 2) a long granite quay wall face with the river water at its foot, seamless left to right, 3) a long strip of green-blue river water with gentle ripples, seamless, 4) a white wake of churned water behind a boat, 5) a splash of water, 6) a small floating wooden jetty landing with a rail. On a solid flat magenta (#FF00FF) background, no magenta anywhere in the art, no cast shadow on the background.
+Reminder: one picture number = one image. Never put two picture numbers in one image, never a grid or collage.

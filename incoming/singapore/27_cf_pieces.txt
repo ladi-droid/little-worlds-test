@@ -1,0 +1,10 @@
+Make exactly ONE image for this picture, nothing else. Don't write any words inside the image.
+- One picture number = one image. Never put two picture numbers in one image, never a grid or collage. An asset sheet (several pieces in one picture) is fine when the prompt asks for one.
+- Same art style in every picture: 2D side-scrolling mobile game art, flat cartoon style with thick dark outlines, clean shapes and gentle cel shading, bright and friendly, matching A's World.
+- Light for this picture: inside a cool misty glass dome: soft bright daylight through the glass roof, gentle mist, fresh greens, cool and calm.
+- Modern, real, cheerful Singapore as it is today: spotless, green, colourful and lively.
+- No people unless the picture asks for them (then only friendly faceless chibi people drawn like the game's child in the attached a_sheet.png, never silhouettes). No text, no letters, no numbers, no logos, no real brand, hotel, bank, shop or company names, no number plates.
+
+Picture 27: Inside the Cloud Forest: pieces  (asset sheet, 6 pieces)
+Straight side-on view, flat orthographic, no perspective. Asset sheet of 6 separate pieces, not touching, each on a flat base: 1) a giant green-and-red pitcher plant with a firm round lid on top, small, 2) a bigger pitcher plant, 3) the biggest pitcher plant, taller than a child, 4) a round stone mist vent in the ground with a puff of white mist rising, 5) a section of steel cloud walk: a walkway with a glass rail on thin steel legs, side-on, seamless, 6) a mossy rock ledge with water falling in front of it like a curtain (a ledge behind a waterfall). On a solid flat magenta (#FF00FF) background, no magenta anywhere in the art, no cast shadow on the background.
+Reminder: one picture number = one image. Never put two picture numbers in one image, never a grid or collage.

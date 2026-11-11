@@ -1,0 +1,10 @@
+Make exactly ONE image for this picture, nothing else. Don't write any words inside the image.
+- One picture number = one image. Never put two picture numbers in one image, never a grid or collage. An asset sheet (several pieces in one picture) is fine when the prompt asks for one.
+- Same art style in every picture: 2D side-scrolling mobile game art, flat cartoon style with thick dark outlines, clean shapes and gentle cel shading, bright and friendly, matching A's World.
+- Light for this picture: a hot sunny afternoon in Singapore: bright sun high and a little to the left, short crisp shadows falling to the right, a deep blue tropical sky with big white puffy clouds, colours bright, lush and warm.
+- Modern, real, cheerful Singapore as it is today: spotless, green, colourful and lively.
+- No people unless the picture asks for them (then only friendly faceless chibi people drawn like the game's child in the attached a_sheet.png, never silhouettes). No text, no letters, no numbers, no logos, no real brand, hotel, bank, shop or company names, no number plates.
+
+Picture 18: Riverside props sheet  (asset sheet of 8)
+Straight side-on view, flat orthographic, no perspective. Asset sheet of 8 separate props, not touching, each on a flat base, same scale as a 1.5 m child: 1) a string of red Chinese lanterns hanging between two black lamp posts, 2) a cafe table with two chairs and a parasol, 3) a bronze statue of five boys jumping into a river, on its stone base, 4) a black iron mooring bollard, 5) a modern riverside lamp post, 6) a big blue-and-white glazed pot with a palm, 7) a low granite planter with flowers (knee height), 8) a wooden bench. No writing. On a solid flat magenta (#FF00FF) background, no magenta anywhere in the art, no cast shadow on the background.
+Reminder: one picture number = one image. Never put two picture numbers in one image, never a grid or collage.

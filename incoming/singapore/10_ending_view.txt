@@ -1,0 +1,10 @@
+Make exactly ONE image for this picture, nothing else. Don't write any words inside the image.
+- One picture number = one image. Never put two picture numbers in one image, never a grid or collage. An asset sheet (several pieces in one picture) is fine when the prompt asks for one.
+- Same art style in every picture: 2D side-scrolling mobile game art, flat cartoon style with thick dark outlines, clean shapes and gentle cel shading, bright and friendly, matching A's World.
+- Light for this picture: a warm clear night in Singapore: deep blue-violet sky with a few soft clouds lit from below, glowing lights everywhere, colours rich and magical, never too dark.
+- Modern, real, cheerful Singapore as it is today: spotless, green, colourful and lively.
+- No people unless the picture asks for them (then only friendly faceless chibi people drawn like the game's child in the attached a_sheet.png, never silhouettes). No text, no letters, no numbers, no logos, no real brand, hotel, bank, shop or company names, no number plates.
+
+Picture 10: Ending view: Supertree light show and Marina Bay Sands  (very wide 2.6:1, FULL PICTURE (no magenta))
+Straight side-on view, flat orthographic, no perspective. Full picture, no magenta. The Supertree Grove at Gardens by the Bay, Singapore, at night during the light show: a group of giant Supertrees (tall steel tree-shaped towers covered in plants, wide flared canopies on top) glowing purple, pink, blue and green with twinkling lights, a curved walkway linking them high up, and behind them the three tall towers of Marina Bay Sands joined by the long ship-shaped roof on top, all lit up warm gold, the deep blue-violet night sky above. Big and magical. Keep the bottom-left quarter calm so a child and a walkway rail can be drawn there later. No letters on any building.
+Reminder: one picture number = one image. Never put two picture numbers in one image, never a grid or collage.

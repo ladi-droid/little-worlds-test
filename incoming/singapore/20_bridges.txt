@@ -1,0 +1,10 @@
+Make exactly ONE image for this picture, nothing else. Don't write any words inside the image.
+- One picture number = one image. Never put two picture numbers in one image, never a grid or collage. An asset sheet (several pieces in one picture) is fine when the prompt asks for one.
+- Same art style in every picture: 2D side-scrolling mobile game art, flat cartoon style with thick dark outlines, clean shapes and gentle cel shading, bright and friendly, matching A's World.
+- Light for this picture: a hot sunny afternoon in Singapore: bright sun high and a little to the left, short crisp shadows falling to the right, a deep blue tropical sky with big white puffy clouds, colours bright, lush and warm.
+- Modern, real, cheerful Singapore as it is today: spotless, green, colourful and lively.
+- No people unless the picture asks for them (then only friendly faceless chibi people drawn like the game's child in the attached a_sheet.png, never silhouettes). No text, no letters, no numbers, no logos, no real brand, hotel, bank, shop or company names, no number plates.
+
+Picture 20: The old river bridges  (asset sheet, 2 pieces)
+Straight side-on view, flat orthographic, no perspective. Asset sheet of 2 separate pieces, not touching, each seen exactly from the side, spanning the river: 1) Cavenagh Bridge: a low white iron suspension footbridge with chains hanging from white pillars at each end, its deck low over the water, 2) Anderson Bridge: a cream steel bridge with three big curved arches over the road. Each bridge's ends sit on stone bases. On a solid flat magenta (#FF00FF) background, no magenta anywhere in the art, no cast shadow on the background.
+Reminder: one picture number = one image. Never put two picture numbers in one image, never a grid or collage.
