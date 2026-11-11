@@ -3671,7 +3671,7 @@ const ALL_LEVELS = [
   // on art made with the image maker (cut by london-runner/lagos/src/cut.py into atlas_lg*.webp). A hot sunny day going golden, then dusk;
   // A in his summer outfit. A danfo drops A in Yaba -> the market (umbrella bounces, special 1) -> the National Theatre (the one inside:
   // talking drums, special 2) -> go-slow on Third Mainland Bridge (over the danfo and bus roofs, special 3) -> a danfo off the bridge ->
-  // Victoria Island's glass towers (wall-jump, special 4) and roofs -> Landmark Beach (quad bike ride, the big wave, special 5)
+  // Victoria Island's glass towers (wall-jump, special 4) and roofs -> Landmark Beach (the lime green buggy, over the sand bumps, special 5)
   // -> the Lekki-Ikoyi Link Bridge at dusk.
   id: 'lagos', name: 'Lagos', plate: 'Lagos', area: 'lagos', city: 'Lagos',
   build(b) {
@@ -3768,7 +3768,8 @@ const ALL_LEVELS = [
     let dx = DR;
     for (const [k, h, bh, note] of DRUMS) {
       const w = aw(k, h); back(k, dx, h, { y: ST, drum: true });
-      solid(dx + 0.1, w - 0.2, Math.max(1.35, h - 0.1), ST, { noGrab: true }); const o = { kind: 'ledge', x: dx + 0.05, y: ST + Math.max(1.35, h - 0.1) + 0.1, w: w - 0.1, bounce: bh, note, talk: true };   // (talk: it sounds like a talking drum) L.oneways.push(o);
+      solid(dx + 0.1, w - 0.2, Math.max(1.35, h - 0.1), ST, { noGrab: true }); const o = { kind: 'ledge', x: dx + 0.05, y: ST + Math.max(1.35, h - 0.1) + 0.1, w: w - 0.1, bounce: bh, note, talk: true };   // (talk: it sounds like a talking drum)
+      L.oneways.push(o);   // (Ladi round 4: "can't hear the drums, are they bouncy?": this line had slipped into the comment, so they were plain blocks)
       L.lgDrums.push({ x: dx, w, h, k, o }); b.arc(dx + w / 2 + 0.6, ST + h + 0.6, 4, 2.6, bh * 0.8);
       dx += w + 2.6;
     }
@@ -3810,20 +3811,16 @@ const ALL_LEVELS = [
     b.arc(LOR - 3.4, 4.2, 5, 3.4, 2.4);
     L.lgLife.push(['lg_hawk3', LOR - 1.6, 0, 'hawker']);
     b.kitArt('lg_gantry', LOR - 4.0, 0, 6.2, { w: aw('lg_gantry', 6.2), back: true, grounded: true });
-    vx = veh('lg_car', vx, 1.6, 1.45, 1.2) + 2.0;
-    L.lgLife.push(['lg_hawk4', vx - 1.2, 0, 'hawker']);
-    vx = veh('lg_suv', vx, 1.85, 1.75, 1.3) + 1.8;
-    b.coins(vx - 5.0, 2.8, 5, 1.0);
-    vx = veh('lg_danfo2', vx, 2.6, 2.55, 2.0) + 2.6;
-    b.coins(vx - 4.4, 3.6, 4, 1.0);
+    // (Ladi round 4: the danfo picks him up straight after the lorry, so it skips a lot more of the go-slow)
+    b.coins(vx + 0.4, 1.4, 3, 0.8);
     L.lgLife.push( ['lg_egret2', vx - 10, 11.5, 'fly'], ['lg_gull0', vx + 4, 12.5, 'fly']);
     // the danfo with its door open, its conductor calling: A jumps in, it rides off the bridge onto Victoria Island
-    const DB = vx + 3.0, DE = DB + 40.0;
+    const DB = vx + 3.0, DE = DB + 64.0;
     L.lgRide = { x: DB };
     const bus = { kind: 'lgbus', x0: DB, pts: [[DB, 0], [DE, 0]], v: 12.0, acc: 8.0, vEnd: 6.2, walkOut: 2.6, w0: 0.5, w1: 0, input: false,
       seat: 0.0, up: 0, down: 0, exitY: 0 };
     L.rides.push(bus); L.lgBusRide = bus;
-    const AP = DB + 22.0, APH = LG_ASP['lg_apt:h'];    // a tall block of flats at the end of the bridge: the view changes behind it
+    const AP = DB + 42.0, APH = LG_ASP['lg_apt:h'];    // a tall block of flats at the end of the bridge: the view changes behind it
     back('lg_apt', AP, APH, { flip: true }); swapAt(AP + aw('lg_apt', APH) / 2, 'vi', 'behind the tall block of flats the danfo drives past');
     const BE = AP + aw('lg_apt', APH) / 2;
     ground(BR, BE, 'lgroad'); L.lgJoins.push(BE); L.lgBridge.push(BE);
@@ -3878,7 +3875,7 @@ const ALL_LEVELS = [
     lean('lg_castle', HT2 + aw('lg_hut2', 3.6) + 1.5, 1.4, 1.35); prop('lg_umb', HT2 + aw('lg_hut2', 3.6) + 5.0, 2.6);
     back('lg_net', HT2 + aw('lg_hut2', 3.6) + 9.0, 2.6);
     L.lgLife.push(['lg_gull1', HT + 6, 12.0, 'fly'], ['lg_gull2', HT2 + 10, 13.0, 'fly']);
-    // the quad bike ride along the water's edge (Ladi round 2: a quad bike, not a horse): tap to jump the waves; the big wave always lifts him
+    // the buggy ride along the sand (Ladi round 2: not a horse; round 4: the lime green buggy from the desert): tap to jump the bumps; the big dune always lifts him
     const HR = HT2 + aw('lg_hut2', 3.6) + 18.0, HE = HR + 64.0;
     L.lgQuad = { x: HR };
     const WAVES = [HR + 12, HR + 22, HR + 46], BIG = HR + 33;
