@@ -21,11 +21,12 @@ Publishing (done by Claude with the Artifact tool, url = A's World):
   file_path = dist/as-world/index.html, files = contents of changed.json
   then run with --mark and commit tools/as-world-published.json.
 """
-import hashlib, json, os, re, sys
+import hashlib, json, os, re, sys, time
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 OUT = os.path.join(ROOT, 'dist', 'as-world')
 MANIFEST = os.path.join(ROOT, 'tools', 'as-world-published.json')
+TRIPS_OUT = os.path.join(ROOT, 'tools', 'as-world-trips.json')
 LIMIT = 511            # claude.ai artifact file limit (page included)
 
 # site-only pictures: the landing page and the child's own cards; A's World never shows them
@@ -133,6 +134,8 @@ def main():
     old = json.load(open(MANIFEST)) if os.path.exists(MANIFEST) else {}
     if '--mark' in sys.argv:
         json.dump(dict(sorted(hashes.items())), open(MANIFEST, 'w'), indent=0)
+        # which trips A's World has now, for the admin page (admin.html)
+        json.dump({'trips': [i for i, _ in keep], 'published': time.strftime('%Y-%m-%d')}, open(TRIPS_OUT, 'w'), indent=1)
         print(f'marked {len(hashes)} files as published')
         return
     changed = {f: f for f in files if old.get(f) != hashes[f]}
