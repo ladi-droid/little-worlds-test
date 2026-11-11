@@ -1,0 +1,10 @@
+Make exactly ONE image for this picture, nothing else. Don't write any words inside the image.
+- One picture number = one image. Never put two picture numbers in one image, never a grid or collage. An asset sheet (several pieces in one picture) is fine when the prompt asks for one.
+- Same art style in every picture: 2D side-scrolling mobile game art, flat cartoon style with thick dark outlines, clean shapes and gentle cel shading, bright and friendly, matching A's World.
+- Light for this picture: inside a grand old railway hall in the afternoon: warm golden light, tall beams of soft sunlight slanting down from high arched windows, cream stone and brass glowing.
+- Modern, real, cheerful Midtown Manhattan as it is today: clean, busy, festive in early December.
+- No people unless the picture asks for them (then only friendly faceless chibi people drawn like the game's child in the attached a_sheet.png, in warm winter coats, hats and scarves, never silhouettes). No text, no letters, no numbers, no logos, no real brand, shop, theatre, hotel, bank or company names, no subway line letters or numbers, no number plates.
+
+Picture 20: Grand Central extras  (asset sheet, 6 pieces)
+Straight side-on view, flat orthographic, no perspective. Asset sheet of 6 separate pieces, not touching: 1) a row of three brass ticket windows set in a marble wall, 2) a big evergreen wreath with a red bow, 3) a tall brass lamp post with a round glass globe, 4) a marble bench, 5) a little departures board on a stand showing only coloured squares and dots (no letters, no numbers), 6) a potted poinsettia. Each on a flat base. On a solid flat magenta (#FF00FF) background, no magenta anywhere in the art, no cast shadow on the background.
+Reminder: one picture number = one image. Never put two picture numbers in one image, never a grid or collage.

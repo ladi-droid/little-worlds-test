@@ -1,0 +1,40 @@
+01_far_42nd	
+02_mid_42nd	
+03_far_sunset	
+04_mid_sunset	
+05_far_dusk	
+06_mid_dusk	
+07_inside_concourse	
+08_inside_subway	
+09_ending_view	
+10_tree	
+11_floors	
+12_taxi	a_sheet.png
+13_gc_front	
+14_midtown_a	
+15_row_ends	
+16_carts	a_sheet.png
+17_street_props	
+18_gc_pieces	
+19_gc_arches	
+20_gc_extras	
+21_subway_pieces	
+22_shuttle_train	
+23_ts_towers	
+24_ts_screens	
+25_ts_steps	
+26_ts_buildings	
+27_ts_props	
+28_rooftops	
+29_roof_buildings	
+30_fire_escape	
+31_rock_buildings	
+32_channel_gardens	
+33_rink_pieces	
+34_skaters	a_sheet.png
+35_trees	
+36_life	
+37_door_edges	
+38_card	
+39_sticker	
+40_stamp	stamps.png

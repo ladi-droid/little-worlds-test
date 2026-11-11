@@ -1,0 +1,10 @@
+Make exactly ONE image for this picture, nothing else. Don't write any words inside the image.
+- One picture number = one image. Never put two picture numbers in one image, never a grid or collage. An asset sheet (several pieces in one picture) is fine when the prompt asks for one.
+- Same art style in every picture: 2D side-scrolling mobile game art, flat cartoon style with thick dark outlines, clean shapes and gentle cel shading, bright and friendly, matching A's World.
+- Light for this picture: a crisp, bright early-December afternoon in New York: low winter sun on the left, clear shadows falling to the right, a clean pale-blue sky with a few soft white clouds, colours fresh and cheerful, little piles of clean white snow only at the kerbs and on ledges (no snow falling).
+- Modern, real, cheerful Midtown Manhattan as it is today: clean, busy, festive in early December.
+- No people unless the picture asks for them (then only friendly faceless chibi people drawn like the game's child in the attached a_sheet.png, in warm winter coats, hats and scarves, never silhouettes). No text, no letters, no numbers, no logos, no real brand, shop, theatre, hotel, bank or company names, no subway line letters or numbers, no number plates.
+
+Picture 36: Clouds and life sheet  (asset sheet)
+Straight side-on view, flat orthographic, no perspective. Asset sheet of separate pieces, not touching: 5 soft white cartoon clouds of different sizes, 3 grey pigeons flying, 2 pigeons standing on the ground, 2 gulls flying, 3 puffs of white steam of different sizes, 1 small jet plane high up (no writing), 1 red-tailed hawk flying. All birds drawn small and side-on, each sitting on the ground or flying. On a solid flat magenta (#FF00FF) background, no magenta anywhere in the art, no cast shadow on the background.
+Reminder: one picture number = one image. Never put two picture numbers in one image, never a grid or collage.

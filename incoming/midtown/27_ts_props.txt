@@ -1,0 +1,10 @@
+Make exactly ONE image for this picture, nothing else. Don't write any words inside the image.
+- One picture number = one image. Never put two picture numbers in one image, never a grid or collage. An asset sheet (several pieces in one picture) is fine when the prompt asks for one.
+- Same art style in every picture: 2D side-scrolling mobile game art, flat cartoon style with thick dark outlines, clean shapes and gentle cel shading, bright and friendly, matching A's World.
+- Light for this picture: sunset in New York in early December: warm golden-orange sun low on the left, long soft shadows falling to the right, a sky of gold, peach and soft pink, the first lights coming on in windows.
+- Modern, real, cheerful Midtown Manhattan as it is today: clean, busy, festive in early December.
+- No people unless the picture asks for them (then only friendly faceless chibi people drawn like the game's child in the attached a_sheet.png, in warm winter coats, hats and scarves, never silhouettes). No text, no letters, no numbers, no logos, no real brand, shop, theatre, hotel, bank or company names, no subway line letters or numbers, no number plates.
+
+Picture 27: Times Square props  (asset sheet of 6)
+Straight side-on view, flat orthographic, no perspective. Asset sheet of 6 separate props, not touching, each on a flat base: 1) a round steel bollard (knee height), 2) a red café table with two metal chairs, 3) a big round planter with a small evergreen tree and lights, 4) a modern street lamp, 5) a plain steel coffee kiosk with a striped awning, 6) a pigeon standing. No writing. On a solid flat magenta (#FF00FF) background, no magenta anywhere in the art, no cast shadow on the background.
+Reminder: one picture number = one image. Never put two picture numbers in one image, never a grid or collage.

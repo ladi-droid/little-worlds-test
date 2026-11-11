@@ -1,0 +1,10 @@
+Make exactly ONE image for this picture, nothing else. Don't write any words inside the image.
+- One picture number = one image. Never put two picture numbers in one image, never a grid or collage. An asset sheet (several pieces in one picture) is fine when the prompt asks for one.
+- Same art style in every picture: 2D side-scrolling mobile game art, flat cartoon style with thick dark outlines, clean shapes and gentle cel shading, bright and friendly, matching A's World.
+- Light for this picture: dusk in New York in early December: the sun just set, a sky of pink, violet and deep blue, warm lights glowing in many windows, a little clean snow on ledges, cosy and magical, never too dark.
+- Modern, real, cheerful Midtown Manhattan as it is today: clean, busy, festive in early December.
+- No people unless the picture asks for them (then only friendly faceless chibi people drawn like the game's child in the attached a_sheet.png, in warm winter coats, hats and scarves, never silhouettes). No text, no letters, no numbers, no logos, no real brand, shop, theatre, hotel, bank or company names, no subway line letters or numbers, no number plates.
+
+Picture 10: The giant Christmas tree, unlit and lit  (asset sheet, 2 pieces)
+Straight side-on view, flat orthographic, no perspective. Asset sheet of 2 separate pieces, not touching, exactly the same tree in the same pose and size: a giant Norway spruce Christmas tree standing on a low base, very tall and full, with a big shining crystal star on top; 1) the lights OFF: dark green branches with strings of unlit bulbs and a pale star, 2) the lights ON: thousands of warm multicoloured lights glowing all over the tree and the star blazing gold-white. Full height from base to star, nothing cut off. On a solid flat magenta (#FF00FF) background, no magenta anywhere in the art, no cast shadow on the background.
+Reminder: one picture number = one image. Never put two picture numbers in one image, never a grid or collage.

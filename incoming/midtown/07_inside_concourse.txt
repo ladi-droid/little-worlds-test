@@ -1,0 +1,10 @@
+Make exactly ONE image for this picture, nothing else. Don't write any words inside the image.
+- One picture number = one image. Never put two picture numbers in one image, never a grid or collage. An asset sheet (several pieces in one picture) is fine when the prompt asks for one.
+- Same art style in every picture: 2D side-scrolling mobile game art, flat cartoon style with thick dark outlines, clean shapes and gentle cel shading, bright and friendly, matching A's World.
+- Light for this picture: inside a grand old railway hall in the afternoon: warm golden light, tall beams of soft sunlight slanting down from high arched windows, cream stone and brass glowing.
+- Modern, real, cheerful Midtown Manhattan as it is today: clean, busy, festive in early December.
+- No people unless the picture asks for them (then only friendly faceless chibi people drawn like the game's child in the attached a_sheet.png, in warm winter coats, hats and scarves, never silhouettes). No text, no letters, no numbers, no logos, no real brand, shop, theatre, hotel, bank or company names, no subway line letters or numbers, no number plates.
+
+Picture 7: Inside Grand Central: the great hall, full backdrop  (very wide 3:1, FULL PICTURE (no magenta))
+Straight side-on view, flat orthographic, no perspective. Full picture, no magenta. The Main Concourse of Grand Central Terminal, New York, seen straight from the side: the huge hall of cream stone, the vast curved green-blue ceiling painted with gold stars and gold constellation lines, three giant arched windows letting in tall beams of soft light, big brass chandeliers, a row of arched openings at floor level, a giant American flag hanging high on one wall. Two floors visible: the grand floor and the balconies above. The left and right ends match so it can repeat. Nothing cut off at the top: the starry ceiling fills the top.
+Reminder: one picture number = one image. Never put two picture numbers in one image, never a grid or collage.

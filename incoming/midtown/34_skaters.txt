@@ -1,0 +1,10 @@
+Make exactly ONE image for this picture, nothing else. Don't write any words inside the image.
+- One picture number = one image. Never put two picture numbers in one image, never a grid or collage. An asset sheet (several pieces in one picture) is fine when the prompt asks for one.
+- Same art style in every picture: 2D side-scrolling mobile game art, flat cartoon style with thick dark outlines, clean shapes and gentle cel shading, bright and friendly, matching A's World.
+- Light for this picture: dusk in New York in early December: the sun just set, a sky of pink, violet and deep blue, warm lights glowing in many windows, a little clean snow on ledges, cosy and magical, never too dark.
+- Modern, real, cheerful Midtown Manhattan as it is today: clean, busy, festive in early December.
+- No people unless the picture asks for them (then only friendly faceless chibi people drawn like the game's child in the attached a_sheet.png, in warm winter coats, hats and scarves, never silhouettes). No text, no letters, no numbers, no logos, no real brand, shop, theatre, hotel, bank or company names, no subway line letters or numbers, no number plates.
+
+Picture 34: Skaters and people  (asset sheet, 6 people)
+Straight side-on view, flat orthographic, no perspective. Asset sheet of 6 separate friendly faceless chibi people drawn like the attached a_sheet.png, in warm winter coats, bobble hats and scarves, side-on: 1) a skater gliding with arms out, 2) a parent and small child skating holding hands, 3) a skater spinning, 4) a person carrying shopping bags (plain, no writing), 5) a commuter with a coffee cup, 6) a child pointing up in wonder. Each skater on the ice on a flat base. On a solid flat magenta (#FF00FF) background, no magenta anywhere in the art, no cast shadow on the background.
+Reminder: one picture number = one image. Never put two picture numbers in one image, never a grid or collage.

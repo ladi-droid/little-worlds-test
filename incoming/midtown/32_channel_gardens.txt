@@ -1,0 +1,10 @@
+Make exactly ONE image for this picture, nothing else. Don't write any words inside the image.
+- One picture number = one image. Never put two picture numbers in one image, never a grid or collage. An asset sheet (several pieces in one picture) is fine when the prompt asks for one.
+- Same art style in every picture: 2D side-scrolling mobile game art, flat cartoon style with thick dark outlines, clean shapes and gentle cel shading, bright and friendly, matching A's World.
+- Light for this picture: dusk in New York in early December: the sun just set, a sky of pink, violet and deep blue, warm lights glowing in many windows, a little clean snow on ledges, cosy and magical, never too dark.
+- Modern, real, cheerful Midtown Manhattan as it is today: clean, busy, festive in early December.
+- No people unless the picture asks for them (then only friendly faceless chibi people drawn like the game's child in the attached a_sheet.png, in warm winter coats, hats and scarves, never silhouettes). No text, no letters, no numbers, no logos, no real brand, shop, theatre, hotel, bank or company names, no subway line letters or numbers, no number plates.
+
+Picture 32: Channel Gardens with the angels  (wide 3:1)
+Straight side-on view, flat orthographic, no perspective. The Channel Gardens of Rockefeller Center at dusk seen exactly from the side: a row of four long low stone planters filled with evergreens, white flowers and little lights, and standing on them tall angels made of glowing white wire lights blowing long trumpets, each angel firmly standing on its planter. The planters are knee to waist height with flat stone tops a child can hop. Standing on a thin strip of ground. On a solid flat magenta (#FF00FF) background, no magenta anywhere in the art, no cast shadow on the background.
+Reminder: one picture number = one image. Never put two picture numbers in one image, never a grid or collage.
