@@ -1,7 +1,7 @@
 # Publishes the test site to GitHub Pages.
 # Needs Settings > Pages > Source set to "GitHub Actions".
-# Waits up to 30 minutes for GitHub to copy the files (the built-in deploy gives up after 10),
-# and can be started again by hand from the Actions tab ("Run workflow").
+# If GitHub hiccups (slow file copy, or it can't find the upload yet), it waits a minute and
+# tries once more. It can also be started again by hand from the Actions tab ("Run workflow").
 name: Deploy test site
 
 on:
@@ -31,7 +31,18 @@ jobs:
       - uses: actions/upload-pages-artifact@v3
         with:
           path: .
-      - id: deployment
+      # 10 minutes is the most GitHub allows for one try.
+      - id: first
+        uses: actions/deploy-pages@v4
+        continue-on-error: true
+        with:
+          timeout: 600000
+      - if: steps.first.outcome == 'failure'
+        run: sleep 60
+      - id: second
+        if: steps.first.outcome == 'failure'
         uses: actions/deploy-pages@v4
         with:
-          timeout: 1800000
+          timeout: 600000
+      - id: deployment
+        run: echo "page_url=${{ steps.first.outputs.page_url || steps.second.outputs.page_url }}" >> "$GITHUB_OUTPUT"
