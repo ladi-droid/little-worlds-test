@@ -18,7 +18,7 @@ html,body{height:100%;min-height:100lvh}
 }
 </style>
 <script>window.LW_SITE_MODE=1;(function(){var n='';try{var w=new URLSearchParams(location.search).get('w');if(w)n=JSON.parse(decodeURIComponent(escape(atob(w.replace(/-/g,'+').replace(/_/g,'/'))))).name||'';if(!n)n=(JSON.parse(localStorage.getItem('lw.config')||'null')||{}).name||''}catch(e){}window.LW_NAME=n.trim();if(window.LW_NAME)document.documentElement.classList.add('lw-loading');var c=(n.trim().charAt(0)||'').toUpperCase();if(/^[A-Z]$/.test(c)){document.querySelectorAll('link[rel=apple-touch-icon],link[rel=icon]').forEach(function(l){l.href='icons/'+(l.hasAttribute('data-dark')?'dark/':'')+c+'.png'})}})()</script>
-<script src="lw-ping.js?v=1794415280"></script>
+<script src="lw-ping.js?v=1794416194"></script>
 <!-- site-only:end -->
 </head><body>
 <meta charset="utf-8">
@@ -450,10 +450,10 @@ html.lw-loading .splash{visibility:hidden}
   </div>
 </section>
 
-<script src="kids/kids-meta.js?v=1794415280"></script>
-<script src="kids/kids.js?v=1794415280"></script>
-<script src="sfx.js?v=1794415280"></script>
-<script src="game.js?v=1794415280"></script>
+<script src="kids/kids-meta.js?v=1794416194"></script>
+<script src="kids/kids.js?v=1794416194"></script>
+<script src="sfx.js?v=1794416194"></script>
+<script src="game.js?v=1794416194"></script>
 <script>
 (() => {
 'use strict';
@@ -1350,7 +1350,7 @@ $('retryBtn').addEventListener('click', () => startLevel(levelIndex));
 // If the builder opened this tab, close it and show the builder again; otherwise open the builder with this child's world filled in.
 let lwJoinEnd = false;
 function lwBackToBuilder() {
-  const url = 'builder.html?v=1794415280&w=' + lwEncode(LW);
+  const url = 'builder.html?v=1794416194&w=' + lwEncode(LW);
   try { if (window.opener && !window.opener.closed && /builder\.html/.test(window.opener.location.pathname)) { window.opener.focus(); window.close(); setTimeout(() => { location.href = url; }, 400); return; } } catch (e) {}
   location.href = url;
 }
@@ -8281,7 +8281,7 @@ function drawRmRideA(cx, by, RUN_H, JUMP_H) {
 // Lekki-Ikoyi Link Bridge. A wears his agbada and fila cap (the girls an iro, buba and gele).
 const LG_BUGGY_KEYS = ['ds_b_empty', 'ds_b_wheel', 'lg_b_drive', 'lg_b_drive2', 'lg_b_air', 'lg_c1', 'lg_c2',   // (the lime green buggy from the desert, Ladi round 4,
   'a_run_lag', 'a_jump_lag', 'a_lean_lag', 'a_back_lag'];                                                    //  and the Lagos outfit, Ladi 2026-11-11)
-const LG_IMAGES = [...["lg_tower1", "lg_tower2", "lg_y5", "lg_apt", "lg_y4", "lg_theatre", "lg_hotel", "lg_y3", "lg_market", "lg_tech", "lg_pillar1", "lg_pillar2", "lg_blamp", "lg_rest", "lg_palm", "lg_umbs", "lg_umb1", "lg_umb2", "lg_umb3", "lg_umb4", "lg_oilpalm", "lg_almond", "lg_gantry", "lg_y2", "lg_endr", "lg_endl", "lg_narrow", "lg_walkway", "lg_palmpot", "lg_glass", "lg_dframe", "lg_dpier", "lg_tpier", "lg_tarch", "lg_bgate", "lg_pier", "lg_lamp", "lg_hut1", "lg_hut2", "lg_stalls", "lg_stall1", "lg_stall2", "lg_stall3", "lg_cafe", "lg_gatewall", "lg_bananas", "lg_brt", "lg_seats", "lg_lorry", "lg_buka", "lg_phone", "lg_drum3", "lg_danfo2", "lg_pergola", "lg_net", "lg_umb", "lg_cooler", "lg_danfo_open", "lg_suya", "lg_djembe", "lg_danfo", "lg_danfo_door", "lg_tank", "lg_rtank", "lg_horse_hand", "lg_horse", "lg_bigwave", "lg_bougain", "lg_hawk1", "lg_hawk2", "lg_hawk3", "lg_horse_g2", "lg_okada1", "lg_okada2", "lg_banana_pot", "lg_drum2", "lg_cloud0", "lg_horse_g1", "lg_keke1", "lg_keke2", "lg_hawk4", "lg_helipad", "lg_coco", "lg_suv", "lg_fountain", "lg_car", "lg_cloud1", "lg_okada0", "lg_rac", "lg_castle", "lg_splash", "lg_cloud2", "lg_drum1", "lg_agama_wall", "lg_table", "lg_rail", "lg_corn", "lg_bench", "lg_loungers", "lg_cloud3", "lg_egret_st", "lg_barrier", "lg_wave", "lg_drift", "lg_cloud4", "lg_castle2", "lg_egret0", "lg_egret1", "lg_egret2", "lg_ball", "lg_gull0", "lg_gull1", "lg_gull2", "lg_agama2", "lg_adire", "lg_agama1", "lg_far1", "lg_far2", "lg_far3", "lg_far4", "lg_g_pave", "lg_g_plaza", "lg_g_road", "lg_g_sand", "lg_g_stage", "lg_g_street", "lg_in_theatre", "lg_lorry2", "lg_mid1", "lg_mid2", "lg_mid3", "lg_railstrip", "lg_seaedge", "lg_surf", "lg_view"], ...LG_BUGGY_KEYS];
+const LG_IMAGES = [...["lg_tower1", "lg_tower2", "lg_y5", "lg_apt", "lg_y4", "lg_theatre", "lg_hotel", "lg_y3", "lg_market", "lg_tech", "lg_pillar1", "lg_pillar2", "lg_blamp", "lg_rest", "lg_palm", "lg_umbs", "lg_umb1", "lg_umb2", "lg_umb3", "lg_umb4", "lg_oilpalm", "lg_almond", "lg_gantry", "lg_y2", "lg_endr", "lg_endl", "lg_narrow", "lg_walkway", "lg_palmpot", "lg_glass", "lg_dframe", "lg_dpier", "lg_tpier", "lg_tarch", "lg_bgate", "lg_pier", "lg_lamp", "lg_hut1", "lg_hut2", "lg_stalls", "lg_stall1", "lg_stall2", "lg_stall3", "lg_cafe", "lg_gatewall", "lg_bananas", "lg_brt", "lg_seats", "lg_lorry", "lg_buka", "lg_phone", "lg_drum3", "lg_danfo2", "lg_pergola", "lg_net", "lg_umb", "lg_cooler", "lg_danfo_open", "lg_suya", "lg_djembe", "lg_danfo", "lg_danfo_door", "lg_tank", "lg_rtank", "lg_horse_hand", "lg_horse", "lg_bigwave", "lg_bougain", "lg_hawk1", "lg_hawk2", "lg_hawk3", "lg_horse_g2", "lg_okada1", "lg_okada2", "lg_banana_pot", "lg_drum2", "lg_cloud0", "lg_horse_g1", "lg_keke1", "lg_keke2", "lg_hawk4", "lg_helipad", "lg_coco", "lg_suv", "lg_fountain", "lg_car", "lg_cloud1", "lg_okada0", "lg_rac", "lg_castle", "lg_splash", "lg_cloud2", "lg_drum1", "lg_agama_wall", "lg_table", "lg_rail", "lg_corn", "lg_bench", "lg_loungers", "lg_cloud3", "lg_egret_st", "lg_barrier", "lg_wave", "lg_drift", "lg_cloud4", "lg_castle2", "lg_egret0", "lg_egret1", "lg_egret2", "lg_ball", "lg_gull0", "lg_gull1", "lg_gull2", "lg_agama2", "lg_adire", "lg_agama1", "lg_far1", "lg_far2", "lg_far3", "lg_far3_end", "lg_far4", "lg_far4b", "lg_g_pave", "lg_g_plaza", "lg_g_road", "lg_g_sand", "lg_g_stage", "lg_g_street", "lg_in_theatre", "lg_lorry2", "lg_mid1", "lg_mid2", "lg_mid3", "lg_mid3_end", "lg_railstrip", "lg_seaedge", "lg_surf", "lg_view"], ...LG_BUGGY_KEYS];
 // ground strips: [tile, strip height, how much shows above the floor line, fill top, fill bottom] (one fill colour outdoors)
 const LG_GROUND = { lgstreet: ['lg_g_street', 1.2, 0.3, '#7a5642', '#3e2a20'], lgplaza: ['lg_g_plaza', 1.2, 0.3, '#7a5642', '#3e2a20'],
   lgpave: ['lg_g_pave', 1.2, 0.3, '#7a5642', '#3e2a20'], lgsand: ['lg_g_sand', 1.0, 0.3, '#d6ae72', '#9a7444'],
@@ -8348,8 +8348,23 @@ function lgClouds() {
 // the two backdrops of each part (rule 1). They change only at the theatre's doors, behind the tall block of flats at the end of the
 // bridge (the danfo drives past it), and behind the trunks of the two tall coconut palms (the second one: the ending view)
 const LG_BANDS = { yaba: [['lg_far1', 7.4, 0.6], ['lg_mid1', 5.4, -0.6], '#7a5642', '#3e2a20'], bridge: [['lg_far2', 7.0, 0.2], ['lg_mid2', 4.6, -0.9], '#2f9fc4', '#14607e'],
-  vi: [['lg_far3', 8.0, 0.6], ['lg_mid3', 6.2, -0.6], '#7a5642', '#3e2a20'], beach: [['lg_far4', 4.4, 1.0], ['lg_seaedge', 1.9, -0.3], '#2a8cb4', '#145a7a'] };
+  vi: [['lg_far3', 8.0, 0.6], ['lg_mid3', 6.2, -0.6], '#7a5642', '#3e2a20'], beach: [['lg_far4b', 4.4, 1.0], ['lg_seaedge', 1.9, -0.3], '#2a8cb4', '#145a7a'] };
 const LG_PART = { yaba: 'yaba', bridge: 'bridge', vi: 'vi', beach: 'beach', view: 'view' };
+// the Victoria Island skyline ends on whole buildings before the beach (round 6b): its last tile is a picture that stops after the
+// curved tower (far) and the mansion with its palm (mid), placed so both ends meet in the middle of the screen as A reaches the beach
+const LG_END = { lg_far3: ['lg_far3_end', 0.5906, -0.3], lg_mid3: ['lg_mid3_end', 0.7525, 0] };   // end picture, its last column (share of width), nudge (units)
+function lgEndBu(key, par) {   // where (in the band's own units) the band ends
+  const L = G.L, sw = L.kitSwaps.find(s => s.to === 'beach'), vw = viewW();
+  return vw / 2 + (sw.x - vw / 2) * par + LG_END[key][2];
+}
+function lgEndX(key, par) { return (lgEndBu(key, par) - cam.x * par) * U; }   // the band's end on screen
+function lgBandEnd(key, gr, par, hU, botY) {   // a band that stops: tiles up to the end tile, then nothing
+  const im = IMG[weGrain(key, gr)], ie = IMG[weGrain(LG_END[key][0], gr)]; if (!im || !ie) return;
+  const h = hU * U, w = h * im.width / im.height, bot = sy(botY, par);
+  const left0 = lgEndX(key, par) - LG_END[key][1] * w;   // the end tile's left edge on screen
+  if (left0 < W) ctx.drawImage(ie, left0, bot - h, w, h);
+  for (let x = left0 - (w - 1); x > -w; x -= w - 1) if (x < W) ctx.drawImage(im, x, bot - h, w, h);
+}
 let LG_OFF = null;
 function lgOff() { const o = LG_OFF || (LG_OFF = document.createElement('canvas')); if (o.width !== cv.width || o.height !== cv.height) { o.width = cv.width; o.height = cv.height; } return o; }
 function lgBands() {
@@ -8358,18 +8373,25 @@ function lgBands() {
   const draw = name => {
     if (name === 'view') return lgView();
     const B = LG_BANDS[name];
-    kitBand(weGrain(B[0][0], 14), 0.1, B[0][1], B[0][2]);
+    const band = (i, gr, par) => LG_END[B[i][0]] ? lgBandEnd(B[i][0], gr, par, B[i][1], B[i][2]) : kitBand(weGrain(B[i][0], gr), par, B[i][1], B[i][2]);
+    band(0, 14, 0.1);
     const mb = sy(name === 'beach' ? B[0][2] : B[1][2], name === 'beach' ? 0.1 : 0.3) - 2, g = ctx.createLinearGradient(0, mb, 0, H); g.addColorStop(0, B[2]); g.addColorStop(1, B[3]);
-    ctx.fillStyle = g; ctx.fillRect(-10, mb, W + 20, H - mb + 10);   // (under the mid band, so a high camera never shows sky below it)
-    kitBand(weGrain(B[1][0], 7), 0.3, B[1][1], B[1][2]);
+    ctx.fillStyle = g; ctx.fillRect(-10, mb, (name === 'vi' ? Math.min(W + 20, lgEndX('lg_mid3', 0.3) + 10) : W + 20), H - mb + 10);   // (under the mid band, so a high camera never shows sky below it)
+    band(1, 7, 0.3);
   };
   // the beach and the ending view come in softly (Ladi 2026-11-11: "a sharp cut into the beach background", "a sharp change before the
   // flag"; round 4: "still a sharp change to the beach, let it happen gracefully"): over a long stretch fixed in the world the old backdrop
   // melts away into the new one with a smooth gradient (the old one is copied, faded out along the stretch and laid back over the new one)
-  const SOFT = { beach: 44, view: 20 };
+  const SOFT = { view: 20 };
   let from = 'yaba', a = -10;
   for (const s of sw) {
     const b = sx(s.x); if (LG_PART[s.to] === LG_PART[from]) { from = s.to; continue; }
+    if (s.to === 'beach') {   // (round 6b, Ladi: "just have the full building, make that the last building... it's just clear skies after that")
+      const e = Math.max(-10, Math.min(W + 10, lgEndX('lg_mid3', 0.3)));
+      part(a, e, () => draw('vi'));
+      part(e, W + 10, () => { lgBandEnd('lg_far3', 14, 0.1, LG_BANDS.vi[0][1], LG_BANDS.vi[0][2]); draw('beach'); });   // (the towers' last ones stand behind the sea)
+      a = W + 10; from = s.to; continue;
+    }
     const z = SOFT[s.to] ? SOFT[s.to] * U : 0, x0 = b - z / 2, x1 = b + z / 2;
     part(a, z ? x0 : x1, () => draw(LG_PART[from]));
     if (z && x1 > 0 && x0 < W) {
