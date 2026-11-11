@@ -3836,8 +3836,10 @@ const ALL_LEVELS = [
 
     // ---------- 5. Victoria Island: up between two glass towers (special 4: WALL-JUMP), the rooftop run ----------
     const T1 = DE + 6.0, T1W = aw('lg_tower1', LG_ASP['lg_tower1:h']), T1H = LG_ASP['lg_tower1:h'], GG = 1.8, T2 = T1 + T1W + GG;
-    const T2H = LG_ASP['lg_tower2:h'], T2W = aw('lg_tower2', T2H);
-    back('lg_tower1', T1, T1H); back('lg_tower2', T2, T2H);
+    // (the green tower's picture is empty sky for its left third: it is drawn that much further left, so its wall is where he wall-jumps
+    // off it; Ladi 2026-11-11: "the second building on the right is missing, he's jumping through thin air")
+    const T2H = LG_ASP['lg_tower2:h'], T2P = aw('lg_tower2', T2H), T2W = T2P * 0.6;
+    back('lg_tower1', T1, T1H); back('lg_tower2', T2 - T2P * 0.36, T2H);
     solid(T1 + 0.2, T1W - 0.2, T1H - 2.2, 2.2); solid(T2, T2W - 0.2, T2H - 2.2, 2.2);
     b.ledge(T1 + 0.3, T1H - 0.2, T1W - 0.6); b.ledge(T2 + 0.3, T2H - 0.25, T2W - 0.6);
     (L.kitClimbs = L.kitClimbs || []).push({ x: T1, xr: T2, gap: GG, hL: T1H, hR: T2H });
