@@ -18,7 +18,7 @@ html,body{height:100%;min-height:100lvh}
 }
 </style>
 <script>window.LW_SITE_MODE=1;(function(){var n='';try{var w=new URLSearchParams(location.search).get('w');if(w)n=JSON.parse(decodeURIComponent(escape(atob(w.replace(/-/g,'+').replace(/_/g,'/'))))).name||'';if(!n)n=(JSON.parse(localStorage.getItem('lw.config')||'null')||{}).name||''}catch(e){}window.LW_NAME=n.trim();if(window.LW_NAME)document.documentElement.classList.add('lw-loading');var c=(n.trim().charAt(0)||'').toUpperCase();if(/^[A-Z]$/.test(c)){document.querySelectorAll('link[rel=apple-touch-icon],link[rel=icon]').forEach(function(l){l.href='icons/'+(l.hasAttribute('data-dark')?'dark/':'')+c+'.png'})}})()</script>
-<script src="lw-ping.js?v=1794416194"></script>
+<script src="lw-ping.js?v=1794417084"></script>
 <!-- site-only:end -->
 </head><body>
 <meta charset="utf-8">
@@ -450,10 +450,10 @@ html.lw-loading .splash{visibility:hidden}
   </div>
 </section>
 
-<script src="kids/kids-meta.js?v=1794416194"></script>
-<script src="kids/kids.js?v=1794416194"></script>
-<script src="sfx.js?v=1794416194"></script>
-<script src="game.js?v=1794416194"></script>
+<script src="kids/kids-meta.js?v=1794417084"></script>
+<script src="kids/kids.js?v=1794417084"></script>
+<script src="sfx.js?v=1794417084"></script>
+<script src="game.js?v=1794417084"></script>
 <script>
 (() => {
 'use strict';
@@ -1350,7 +1350,7 @@ $('retryBtn').addEventListener('click', () => startLevel(levelIndex));
 // If the builder opened this tab, close it and show the builder again; otherwise open the builder with this child's world filled in.
 let lwJoinEnd = false;
 function lwBackToBuilder() {
-  const url = 'builder.html?v=1794416194&w=' + lwEncode(LW);
+  const url = 'builder.html?v=1794417084&w=' + lwEncode(LW);
   try { if (window.opener && !window.opener.closed && /builder\.html/.test(window.opener.location.pathname)) { window.opener.focus(); window.close(); setTimeout(() => { location.href = url; }, 400); return; } } catch (e) {}
   location.href = url;
 }
@@ -8352,6 +8352,7 @@ const LG_BANDS = { yaba: [['lg_far1', 7.4, 0.6], ['lg_mid1', 5.4, -0.6], '#7a564
 const LG_PART = { yaba: 'yaba', bridge: 'bridge', vi: 'vi', beach: 'beach', view: 'view' };
 // the Victoria Island skyline ends on whole buildings before the beach (round 6b): its last tile is a picture that stops after the
 // curved tower (far) and the mansion with its palm (mid), placed so both ends meet in the middle of the screen as A reaches the beach
+const LG_HORIZON = 0.69;   // (where the sea meets the sky in lg_far4b, as a share of its height from the top)
 const LG_END = { lg_far3: ['lg_far3_end', 0.5906, -0.3], lg_mid3: ['lg_mid3_end', 0.7525, 0] };   // end picture, its last column (share of width), nudge (units)
 function lgEndBu(key, par) {   // where (in the band's own units) the band ends
   const L = G.L, sw = L.kitSwaps.find(s => s.to === 'beach'), vw = viewW();
@@ -8370,11 +8371,11 @@ function lgOff() { const o = LG_OFF || (LG_OFF = document.createElement('canvas'
 function lgBands() {
   const L = G.L, sw = L.kitSwaps.filter(s => s.to !== 'th_in');
   const part = (a, b, fn) => { a = Math.max(-10, a); b = Math.min(W + 10, b); if (b <= a) return; ctx.save(); ctx.beginPath(); ctx.rect(a, -10, b - a, H + 20); ctx.clip(); fn(); ctx.restore(); };
-  const draw = name => {
+  const draw = (name, afterFar, farFn) => {
     if (name === 'view') return lgView();
     const B = LG_BANDS[name];
     const band = (i, gr, par) => LG_END[B[i][0]] ? lgBandEnd(B[i][0], gr, par, B[i][1], B[i][2]) : kitBand(weGrain(B[i][0], gr), par, B[i][1], B[i][2]);
-    band(0, 14, 0.1);
+    if (farFn) farFn(() => band(0, 14, 0.1)); else band(0, 14, 0.1); if (afterFar) afterFar();
     const mb = sy(name === 'beach' ? B[0][2] : B[1][2], name === 'beach' ? 0.1 : 0.3) - 2, g = ctx.createLinearGradient(0, mb, 0, H); g.addColorStop(0, B[2]); g.addColorStop(1, B[3]);
     ctx.fillStyle = g; ctx.fillRect(-10, mb, (name === 'vi' ? Math.min(W + 20, lgEndX('lg_mid3', 0.3) + 10) : W + 20), H - mb + 10);   // (under the mid band, so a high camera never shows sky below it)
     band(1, 7, 0.3);
@@ -8389,7 +8390,23 @@ function lgBands() {
     if (s.to === 'beach') {   // (round 6b, Ladi: "just have the full building, make that the last building... it's just clear skies after that")
       const e = Math.max(-10, Math.min(W + 10, lgEndX('lg_mid3', 0.3)));
       part(a, e, () => draw('vi'));
-      part(e, W + 10, () => { lgBandEnd('lg_far3', 14, 0.1, LG_BANDS.vi[0][1], LG_BANDS.vi[0][2]); draw('beach'); });   // (the towers' last ones stand behind the sea)
+      // the towers' last ones stand across the water: over the beach's sky and sun, but only down to its horizon, so the sea is in front
+      const Bb = LG_BANDS.beach[0], hz = sy(Bb[2], 0.1) - Bb[1] * U * (1 - LG_HORIZON);
+      // the beach's own sky (clouds, sun) comes in slowly over a long stretch after the mansion, in thin strips, so the sky never shows a
+      // straight line where the skyline ends (round 6c, Ladi: "on 2s there's a straight line cut"); the sea below the horizon is solid
+      const Z = 14 * U, N = 40, skyIn = far => {
+        const clip = (x0, x1, y0, y1) => { ctx.save(); ctx.beginPath(); ctx.rect(x0, y0, x1 - x0, y1 - y0); ctx.clip(); far(); ctx.restore(); };
+        clip(-10, W + 10, hz, H + 10);
+        for (let i = 0; i < N; i++) {
+          const sa = Math.round(e2 + i * Z / N), sb2 = Math.round(e2 + (i + 1) * Z / N); if (sb2 < 0 || sa > W) continue;
+          ctx.save(); ctx.globalAlpha = (i + 0.5) / N; clip(sa, sb2, -10, hz); ctx.restore();
+        }
+        if (e2 + Z < W) clip(Math.round(e2 + Z), W + 10, -10, hz);
+      };
+      // (the beach starts a little before the mansion's end, under it, so the sea's edge is hidden behind the mansion: redrawn on top)
+      const e2 = e - 1.6 * U;
+      part(e2, W + 10, () => draw('beach', () => { ctx.save(); ctx.beginPath(); ctx.rect(-10, -10, W + 20, hz + 10); ctx.clip(); lgBandEnd('lg_far3', 14, 0.1, LG_BANDS.vi[0][1], LG_BANDS.vi[0][2]); ctx.restore(); }, skyIn));
+      part(e2, e, () => draw('vi', null, () => {}));
       a = W + 10; from = s.to; continue;
     }
     const z = SOFT[s.to] ? SOFT[s.to] * U : 0, x0 = b - z / 2, x1 = b + z / 2;
