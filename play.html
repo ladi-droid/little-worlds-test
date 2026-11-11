@@ -18,7 +18,7 @@ html,body{height:100%;min-height:100lvh}
 }
 </style>
 <script>window.LW_SITE_MODE=1;(function(){var n='';try{var w=new URLSearchParams(location.search).get('w');if(w)n=JSON.parse(decodeURIComponent(escape(atob(w.replace(/-/g,'+').replace(/_/g,'/'))))).name||'';if(!n)n=(JSON.parse(localStorage.getItem('lw.config')||'null')||{}).name||''}catch(e){}window.LW_NAME=n.trim();if(window.LW_NAME)document.documentElement.classList.add('lw-loading');var c=(n.trim().charAt(0)||'').toUpperCase();if(/^[A-Z]$/.test(c)){document.querySelectorAll('link[rel=apple-touch-icon],link[rel=icon]').forEach(function(l){l.href='icons/'+(l.hasAttribute('data-dark')?'dark/':'')+c+'.png'})}})()</script>
-<script src="lw-ping.js?v=1794406113"></script>
+<script src="lw-ping.js?v=1794409784"></script>
 <!-- site-only:end -->
 </head><body>
 <meta charset="utf-8">
@@ -450,10 +450,10 @@ html.lw-loading .splash{visibility:hidden}
   </div>
 </section>
 
-<script src="kids/kids-meta.js?v=1794406113"></script>
-<script src="kids/kids.js?v=1794406113"></script>
-<script src="sfx.js?v=1794406113"></script>
-<script src="game.js?v=1794406113"></script>
+<script src="kids/kids-meta.js?v=1794409784"></script>
+<script src="kids/kids.js?v=1794409784"></script>
+<script src="sfx.js?v=1794409784"></script>
+<script src="game.js?v=1794409784"></script>
 <script>
 (() => {
 'use strict';
@@ -555,6 +555,7 @@ const LW_PARTS = {};
 ['hw_wake0', 'hw_wake1', 'hw_wake2', 'hw_wake3'].forEach(k => LW_PARTS[k] = { parts: LW_ALL, lying: true });
 ['a_run_dxb', 'a_jump_dxb', 'a_lean_dxb', 'a_side_dxb'].forEach(k => LW_PARTS[k] = { parts: ['skin', 'hair'], hairMax: .38 });   // (the brown tee sits just under the hair)
 ['a_zip_dxb', 'ds_b_air', 'ds_b_drive', 'ds_b_drive2', 'ds_b_land', 'ds_b_boost'].forEach(k => LW_PARTS[k] = { parts: ['skin', 'hair'] });
+['a_run_lag', 'a_jump_lag', 'a_lean_lag', 'a_back_lag', 'lg_b_drive', 'lg_b_drive2', 'lg_b_air', 'lg_c1', 'lg_c2'].forEach(k => LW_PARTS[k] = { parts: ['skin'] });   // (the Lagos outfit keeps its colours)
 ['a_run_wet', 'a_jump_wet', 'a_lean_wet', 'a_pose_wet', 'a_swim_wet', 'a_dive_wet'].forEach(k => LW_PARTS[k] = { parts: ['skin'] });
 // the start picture: the child sits on the steps among plants, so each part is also limited to where it sits in the picture
 function lwSplashClassify(r, g, b, xf, yf) {
@@ -660,6 +661,10 @@ const SPRITES = {
   a_run_dxb:  { src: 'a_run_dxb.webp',  fw: 213, fh: 300, n: 6 },
   a_jump_dxb: { src: 'a_jump_dxb.webp', fw: 199, fh: 300, n: 5 },
   a_lean_dxb: { src: 'a_lean_dxb.webp', fw: 230, fh: 300, n: 4 },
+  // Lagos outfit (agbada and fila cap): used when the level sets outfit: 'lag' (Ladi 2026-11-11)
+  a_run_lag:  { src: 'a_run_lag.webp',  fw: 218, fh: 300, n: 6 },
+  a_jump_lag: { src: 'a_jump_lag.webp', fw: 197, fh: 300, n: 5 },
+  a_lean_lag: { src: 'a_lean_lag.webp', fw: 209, fh: 300, n: 4 },
   // wetsuit, swim cap and goggles: the Palm level swaps to these once A leaves the beach hut (L.wetAt)
   a_run_wet:  { src: 'a_run_wet.webp',  fw: 211, fh: 300, n: 6 },
   a_jump_wet: { src: 'a_jump_wet.webp', fw: 203, fh: 300, n: 5 },
@@ -728,7 +733,7 @@ function lwKidBack(key = 'hero_back') {
     lwBacks[key] = false;
     KidArt.build(kc, key).then(c => {
       if (!c) return;
-      const b = KidArt.info(kc, key).back, m = KidArt.info(kc, key).head[0];
+      const b = KidArt.info(kc, key).back, m = (KidArt.info(kc, key).head || [[1, 0, 0]])[0];   // (the Lagos back view has no hairstyle on top)
       c.lwEar = b.earY - KIDS_META.pad;                                                  // ear line, in the picture
       c.lwFeet = b.feet !== undefined ? b.feet : (kc.kid === 'girl' ? 139 : 146) + m[2];  // middle of the feet, in the picture
       lwBacks[key] = c;
@@ -1106,7 +1111,7 @@ const CARD_KID = {
   barcelona: { key: 'hero_back', f: 0, x: .5, y: .95, h: .36, empty: 'ui_card_barcelona_empty.webp' },
   sydney: { key: 'hero_back', f: 0, x: .5, y: .915, h: .36, empty: 'ui_card_sydney_empty.webp' },
   rome: { key: 'hero_back', f: 0, x: .5, y: .93, h: .36, empty: 'ui_card_rome_empty.webp' },
-  lagos: { key: 'hero_back', f: 0, x: .5, y: .93, h: .36, empty: 'ui_card_lagos_empty.webp' },
+  lagos: { key: 'hero_back_lag', f: 0, x: .5, y: .93, h: .36, empty: 'ui_card_lagos_empty.webp' },
   singapore: { key: 'hero_back', f: 0, x: .62, y: .95, h: .36, empty: 'ui_card_singapore_empty.webp' },
   desert: { key: 'ds_b_drive', f: 0, x: .4, y: .88, h: .46, empty: 'ui_card_desert_empty.webp' },
 };
@@ -1123,6 +1128,7 @@ function lwCardKid(id, pic) {
     const x = c.getContext('2d'); x.drawImage(bg, 0, 0);
     const s = ck.h * c.height / (fh - pt), w = fw * s, h = fh * s, cx = ck.x * c.width, by = ck.y * c.height;
     const ax = (ck.ax ?? .5) * w, ay = (pt + (ck.ay ?? 1) * (fh - pt)) * s;   // the point of the frame placed at x, y
+    x.imageSmoothingQuality = 'high';   // (a big picture drawn small: no speckles)
     x.save(); x.translate(cx, by); if (ck.rot) x.rotate(ck.rot * Math.PI / 180); if (ck.flip) x.scale(-1, 1);
     x.drawImage(kid, ck.f * fw, 0, fw, fh, -ax, -ay, w, h); x.restore();
     lwCardPic[id] = c.toDataURL('image/webp', 0.9);
@@ -1344,7 +1350,7 @@ $('retryBtn').addEventListener('click', () => startLevel(levelIndex));
 // If the builder opened this tab, close it and show the builder again; otherwise open the builder with this child's world filled in.
 let lwJoinEnd = false;
 function lwBackToBuilder() {
-  const url = 'builder.html?v=1794406113&w=' + lwEncode(LW);
+  const url = 'builder.html?v=1794409784&w=' + lwEncode(LW);
   try { if (window.opener && !window.opener.closed && /builder\.html/.test(window.opener.location.pathname)) { window.opener.focus(); window.close(); setTimeout(() => { location.href = url; }, 400); return; } } catch (e) {}
   location.href = url;
 }
@@ -8272,8 +8278,9 @@ function drawRmRideA(cx, by, RUN_H, JUMP_H) {
 /* ===== LAGOS START ===== */
 // Lagos (2026-11-10, from the level kit), drawn from art made with the image maker: pieces cut by lagos/src/cut.py into atlas_lg*.webp,
 // backdrops, the theatre's inside, the ending view and ground strips as their own files. A hot sunny day going golden, then dusk at the
-// Lekki-Ikoyi Link Bridge. A wears his summer outfit.
-const LG_BUGGY_KEYS = ['ds_b_empty', 'ds_b_drive', 'ds_b_drive2', 'ds_b_air', 'ds_b_land', 'ds_b_wheel', 'ds_c1', 'ds_c2', 'ds_c3'];   // (the lime green buggy from the desert, Ladi round 4)
+// Lekki-Ikoyi Link Bridge. A wears his agbada and fila cap (the girls an iro, buba and gele).
+const LG_BUGGY_KEYS = ['ds_b_empty', 'ds_b_wheel', 'lg_b_drive', 'lg_b_drive2', 'lg_b_air', 'lg_c1', 'lg_c2',   // (the lime green buggy from the desert, Ladi round 4,
+  'a_run_lag', 'a_jump_lag', 'a_lean_lag', 'a_back_lag'];                                                    //  and the Lagos outfit, Ladi 2026-11-11)
 const LG_IMAGES = [...["lg_tower1", "lg_tower2", "lg_y5", "lg_apt", "lg_y4", "lg_theatre", "lg_hotel", "lg_y3", "lg_market", "lg_tech", "lg_pillar1", "lg_pillar2", "lg_blamp", "lg_rest", "lg_palm", "lg_umbs", "lg_umb1", "lg_umb2", "lg_umb3", "lg_umb4", "lg_oilpalm", "lg_almond", "lg_gantry", "lg_y2", "lg_endr", "lg_endl", "lg_narrow", "lg_walkway", "lg_palmpot", "lg_glass", "lg_dframe", "lg_dpier", "lg_tpier", "lg_tarch", "lg_bgate", "lg_pier", "lg_lamp", "lg_hut1", "lg_hut2", "lg_stalls", "lg_stall1", "lg_stall2", "lg_stall3", "lg_cafe", "lg_gatewall", "lg_bananas", "lg_brt", "lg_seats", "lg_lorry", "lg_buka", "lg_phone", "lg_drum3", "lg_danfo2", "lg_pergola", "lg_net", "lg_umb", "lg_cooler", "lg_danfo_open", "lg_suya", "lg_djembe", "lg_danfo", "lg_danfo_door", "lg_tank", "lg_rtank", "lg_horse_hand", "lg_horse", "lg_bigwave", "lg_bougain", "lg_hawk1", "lg_hawk2", "lg_hawk3", "lg_horse_g2", "lg_okada1", "lg_okada2", "lg_banana_pot", "lg_drum2", "lg_cloud0", "lg_horse_g1", "lg_keke1", "lg_keke2", "lg_hawk4", "lg_helipad", "lg_coco", "lg_suv", "lg_fountain", "lg_car", "lg_cloud1", "lg_okada0", "lg_rac", "lg_castle", "lg_splash", "lg_cloud2", "lg_drum1", "lg_agama_wall", "lg_table", "lg_rail", "lg_corn", "lg_bench", "lg_loungers", "lg_cloud3", "lg_egret_st", "lg_barrier", "lg_wave", "lg_drift", "lg_cloud4", "lg_castle2", "lg_egret0", "lg_egret1", "lg_egret2", "lg_ball", "lg_gull0", "lg_gull1", "lg_gull2", "lg_agama2", "lg_adire", "lg_agama1", "lg_far1", "lg_far2", "lg_far3", "lg_far4", "lg_g_pave", "lg_g_plaza", "lg_g_road", "lg_g_sand", "lg_g_stage", "lg_g_street", "lg_in_theatre", "lg_lorry2", "lg_mid1", "lg_mid2", "lg_mid3", "lg_railstrip", "lg_seaedge", "lg_surf", "lg_view"], ...LG_BUGGY_KEYS];
 // ground strips: [tile, strip height, how much shows above the floor line, fill top, fill bottom] (one fill colour outdoors)
 const LG_GROUND = { lgstreet: ['lg_g_street', 1.2, 0.3, '#7a5642', '#3e2a20'], lgplaza: ['lg_g_plaza', 1.2, 0.3, '#7a5642', '#3e2a20'],
@@ -8531,8 +8538,9 @@ function lgQuad(front) {
   const S = lgQuadAt(); if (sx(S.s + 3) < 0 || sx(S.s - 3) > W) return;
   const z = S.z, riding = z && z.wx === undefined, t = z ? z.t || 0 : 0;
   let key = 'ds_b_empty';
-  if (riding) key = t < 0.75 ? ['ds_c1', 'ds_c2', 'ds_c3'][Math.min(2, Math.floor(t / 0.25))] : S.jy > 0.45 && z.jy > 0 ? 'ds_b_air' : z.v > 1 && Math.floor(animT * 7) % 2 ? 'ds_b_drive2' : 'ds_b_drive';
-  const sl = lgDuneY(S.s + 0.6) - lgDuneY(S.s - 0.6), ang = key === 'ds_b_air' ? 0.12 : Math.atan2(sl, 1.2);
+  // (in the Lagos outfit: agbada or iro and buba; he stands beside it, climbs in, puts the helmet on and drives)
+  if (riding) key = t < 0.75 ? ['lg_c1', 'lg_c2', 'lg_b_drive'][Math.min(2, Math.floor(t / 0.25))] : S.jy > 0.45 && z.jy > 0 ? 'lg_b_air' : z.v > 1 && Math.floor(animT * 7) % 2 ? 'lg_b_drive2' : 'lg_b_drive';
+  const sl = lgDuneY(S.s + 0.6) - lgDuneY(S.s - 0.6), ang = key === 'lg_b_air' ? 0.12 : Math.atan2(sl, 1.2);
   const bob = riding && t > 0.75 && S.jy < 0.05 ? Math.sin(animT * 24) * 0.015 : 0;
   shadow(S.s, 0.03, (DS_BUGGY_WB + 1.0) * Math.max(0.5, 1 - S.jy * 0.2), 0.28);
   dsCar(key, 'ds_b_wheel', DS_BUGGY_WB, DS_BUGGY_R, S.s, S.jy + bob, ang, S.s / DS_BUGGY_R);
@@ -8649,8 +8657,10 @@ function drawLgRideA(cx, by, RUN_H, JUMP_H) {
   if (L.finale !== undefined && F && F.slid && (G.mode === 'flag' || G.done)) {
     if (F.t2 < 0.3) return false;
     if (F.ride === undefined) { drawSprite('a_run', Math.floor(F.t2 * 9) % 6, cx, by + 0.04 * U, RUN_H, false); return true; }
-    const kb = ctKidBack();
-    if (kb !== null) { if (!kb) return true; const s = 1.16 * U / (kb.lwH - kb.lwEar); ctx.drawImage(kb, cx - (kb.lwPX + kb.lwFeet) * s, by + 0.04 * U - kb.height * s, kb.width * s, kb.height * s); return true; }
+    const kb = typeof lwKidBack === 'function' ? lwKidBack('hero_back_lag') ?? ctKidBack() : null;   // the child from behind, in the Lagos outfit
+    if (kb !== null) { if (!kb) return true; const s = 1.16 * U / (kb.lwH - kb.lwEar); ctx.save(); ctx.imageSmoothingQuality = 'high'; ctx.drawImage(kb, cx - (kb.lwPX + kb.lwFeet) * s, by + 0.04 * U - kb.height * s, kb.width * s, kb.height * s); ctx.restore(); return true; }   // ('high': a big picture drawn small, without speckles)
+    const ab = IMG.a_back_lag;   // A from behind in his agbada, waving (ear line 235 and feet 193 in the picture, as the children's)
+    if (ab) { const s = 1.16 * U / (ab.height - 235 * ab.height / 700), k = ab.height / 700; ctx.drawImage(ab, cx - 193 * k * s, by + 0.04 * U - ab.height * s, ab.width * s, ab.height * s); return true; }
     const im = IMG.dt_aback; if (!im) return false;
     const fw = im.width / 2, h = 1.62 * U, w = h * fw / im.height, fi = F.ride > 2.8 ? 1 : 0; ctx.drawImage(im, fi * fw, 0, fw, im.height, cx - w / 2, by + 0.04 * U - h, w, h);
     return true;
@@ -9674,6 +9684,12 @@ const DS_CAR = {
   ds_c1: { w: 2.15, h: 1.625, a: [0.155, 0.788], cr: 0.7631, aw: 0.29 },
   ds_c2: { w: 2.085, h: 1.645, a: [0.156, 0.781], cr: 0.7872, aw: 0.29 },
   ds_c3: { w: 2.19, h: 1.55, a: [0.1724, 0.7888], cr: 0.7903, aw: 0.28 },
+  // the Lagos outfit in the same buggy (lined up on the pictures above; lagos_outfit.py)
+  lg_b_drive: { w: 2.3255, h: 1.9567, a: [0.1707, 0.7594], cr: 0.8003, aw: 0.2607 },
+  lg_b_drive2: { w: 2.5568, h: 2.0005, a: [0.2042, 0.7347], cr: 0.7563, aw: 0.2348 },
+  lg_b_air: { w: 2.5938, h: 2.1188, a: [0.1951, 0.747], cr: 0.767, aw: 0.2481 },
+  lg_c1: { w: 3.5305, h: 2.5182, a: [0.1142, 0.561], cr: 0.7456, aw: 0.2099 },
+  lg_c2: { w: 2.125, h: 1.775, a: [0.1625, 0.7757], cr: 0.7887, aw: 0.2845 },
   ds_jeep: { w: 6.8, h: 1.994, a: [0.2121, 0.8139], cr: 0.6568, aw: 0.16 },   // the made-up grey off-roader
 };
 const DS_BUGGY_WB = (0.7957 - 0.1686) * 2.188, DS_BUGGY_R = 0.36, DS_JEEP_WB = (0.8139 - 0.2121) * 6.8, DS_JEEP_R = 0.57;
