@@ -199,6 +199,13 @@ html.lw-loading .splash{visibility:hidden}
 .csign.bc{aspect-ratio:640/277;top:calc(12px + (var(--ch) - 100px)*.15 - var(--sw)*.24)}
 .world .bonus + .csign.bc{top:calc(12px + (var(--ch) - 100px)*.15 - var(--sw)*.24 + 22px)}
 .csign.bc b{left:24%;right:22%;top:30%;bottom:36%;transform:rotate(3deg);-webkit-text-stroke:calc(var(--sw)*.016) #1d3270;paint-order:stroke fill}
+/* Sydney, Rome, Lagos: each sticker at its own shape (they were squashed to the default strip, Ladi 2026-11-11: "the bus is stretched") */
+.csign.sy{aspect-ratio:640/244;--sw:calc(var(--cw)*.84);top:calc(12px + (var(--ch) - 100px)*.15 - var(--sw)*.24)}
+.csign.sy b{left:22%;right:8%;top:52%;bottom:10%;transform:none;-webkit-text-stroke:calc(var(--sw)*.016) #1d3270;paint-order:stroke fill}
+.csign.rm{aspect-ratio:640/424;--sw:calc(var(--cw)*.62);left:calc(var(--cw)*-.05);top:calc(12px + (var(--ch) - 100px)*.15 - var(--sw)*.42)}
+.csign.rm b{left:10%;right:10%;top:36%;bottom:36%;transform:none;font-size:calc(var(--sw)*.13);-webkit-text-stroke:calc(var(--sw)*.022) #7a3e12;paint-order:stroke fill}
+.csign.lg{aspect-ratio:640/293;--sw:calc(var(--cw)*.78);top:calc(12px + (var(--ch) - 100px)*.15 - var(--sw)*.3)}
+.csign.lg b{left:8%;right:22%;top:50%;bottom:24%;transform:none;font-size:calc(var(--sw)*.11);-webkit-text-stroke:calc(var(--sw)*.018) #1b1b1b;paint-order:stroke fill}
 /* London worlds: Ladi's landmark stickers (clock tower, ship, glass tower, windmill); the name is written on the empty panel */
 .lsign{position:absolute;--sw:calc(var(--cw)*.86);width:var(--sw);aspect-ratio:640/200;left:calc(var(--cw)*-.08);top:calc(12px + (var(--ch) - 100px)*.15 - var(--sw)*.17);
   background:center/100% 100% no-repeat;z-index:2;filter:drop-shadow(0 3px 0 rgba(11,11,14,.25))}
@@ -440,10 +447,10 @@ html.lw-loading .splash{visibility:hidden}
   </div>
 </section>
 
-<script src="kids/kids-meta.js?v=1794374142"></script>
-<script src="kids/kids.js?v=1794374142"></script>
-<script src="sfx.js?v=1794374142"></script>
-<script src="game.js?v=1794374142"></script>
+<script src="kids/kids-meta.js?v=1794375129"></script>
+<script src="kids/kids.js?v=1794375129"></script>
+<script src="sfx.js?v=1794375129"></script>
+<script src="game.js?v=1794375129"></script>
 <script>
 (() => {
 'use strict';
@@ -1306,7 +1313,7 @@ $('retryBtn').addEventListener('click', () => startLevel(levelIndex));
 // If the builder opened this tab, close it and show the builder again; otherwise open the builder with this child's world filled in.
 let lwJoinEnd = false;
 function lwBackToBuilder() {
-  const url = 'builder.html?v=1794374142&w=' + lwEncode(LW);
+  const url = 'builder.html?v=1794375129&w=' + lwEncode(LW);
   try { if (window.opener && !window.opener.closed && /builder\.html/.test(window.opener.location.pathname)) { window.opener.focus(); window.close(); setTimeout(() => { location.href = url; }, 400); return; } } catch (e) {}
   location.href = url;
 }
@@ -8268,8 +8275,9 @@ function lgSkySet() {
     const cv = document.createElement('canvas'); cv.width = 64; cv.height = 64; const x = cv.getContext('2d');
     x.drawImage(im, 0, 0, 64, 64); lgSetSky = x.getImageData(0, 0, 64, 64).data;
   }
-  const L = G.L, g = lgViewGeo(), px = sx(L.lgGold[1]), fx = Math.max(0.02, Math.min(0.9, (px - g.X) / g.w)), c = Math.floor(fx * 63);
-  return LG_SKY_F.map(f => { const r = Math.min(63, Math.round(f * 63)), o = (r * 64 + c) * 4; return [lgSetSky[o], lgSetSky[o + 1], lgSetSky[o + 2]]; });
+  // (each row's colour averaged across the whole picture, so it never changes as the camera moves; it used to read one column under
+  // the screen, which jumped from pink to purple: Ladi 2026-11-11, "the sky switches colours randomly")
+  return LG_SKY_F.map(f => { const r = Math.min(63, Math.round(f * 63)), c = [0, 0, 0]; for (let x = 4; x < 60; x++) { const o = (r * 64 + x) * 4; c[0] += lgSetSky[o]; c[1] += lgSetSky[o + 1]; c[2] += lgSetSky[o + 2]; } return c.map(v => v / 56); });
 }
 function lgSky() {
   const k = lgGoldK(), g = ctx.createLinearGradient(0, 0, 0, H);
@@ -8310,19 +8318,32 @@ function lgBands() {
     const mb = sy(name === 'beach' ? B[0][2] : B[1][2], name === 'beach' ? 0.1 : 0.3) - 2, g = ctx.createLinearGradient(0, mb, 0, H); g.addColorStop(0, B[2]); g.addColorStop(1, B[3]);
     ctx.fillStyle = g; ctx.fillRect(-10, mb, W + 20, H - mb + 10);   // (under the mid band, so a high camera never shows sky below it)
     kitBand(weGrain(B[1][0], 7), 0.3, B[1][1], B[1][2]);
-    const k = lgGoldK(); if (k > 0) { ctx.fillStyle = `rgba(255,150,80,${0.2 * k})`; ctx.fillRect(-10, -10, W + 20, H + 20); }   // (the afternoon going golden)
-    // (Ladi round 2: "the background changes a lot towards the end, it feels like a glitch": each part now leans towards the colours of the
-    // next one before it changes: the towers warm up towards the beach's sunset, the beach slowly goes to the dusk of the ending view)
-    const m = cam.x + viewW() / 2, sb = sw.find(s => s.to === 'beach'), sv = sw.find(s => s.to === 'view');
-    if (name === 'vi' && sb) { const a = 0.22 * Math.max(0, Math.min(1, (m - (sb.x - 40)) / 40)); if (a > 0) { ctx.fillStyle = `rgba(255,140,70,${a})`; ctx.fillRect(-10, -10, W + 20, H + 20); } }
-    if (name === 'beach' && sb && sv) {
-      const d = Math.max(0, Math.min(1, (m - sb.x - 20) / (sv.x - sb.x - 20)));
-      if (d > 0) { ctx.save(); ctx.globalCompositeOperation = 'multiply'; ctx.fillStyle = `rgb(${255 - 75 * d},${255 - 125 * d},${255 - 30 * d})`; ctx.fillRect(-10, -10, W + 20, H + 20); ctx.restore(); }
-    }
   };
+  // the beach and the ending view come in softly (Ladi 2026-11-11: "a sharp cut into the beach background", "a sharp change before the
+  // flag"): over a stretch fixed in the world, behind the palm / the flats, the next backdrop shows through more and more, strip by strip
+  const SOFT = { beach: 12, view: 14 }, N = 14;
   let from = 'yaba', a = -10;
-  for (const s of sw) { const b = sx(s.x); if (LG_PART[s.to] !== LG_PART[from]) { part(a, b, () => draw(LG_PART[from])); a = b; } from = s.to; }
+  for (const s of sw) {
+    const b = sx(s.x); if (LG_PART[s.to] === LG_PART[from]) { from = s.to; continue; }
+    const z = SOFT[s.to] ? SOFT[s.to] * U : 0;
+    part(a, b + z / 2, () => draw(LG_PART[from]));
+    if (z && b + z / 2 > 0 && b - z / 2 < W) for (let i = 0; i < N; i++) {
+      const x0 = b - z / 2 + z * i / N; ctx.save(); ctx.globalAlpha = (i + 0.5) / N; part(x0, x0 + z / N + 0.5, () => draw(LG_PART[s.to])); ctx.restore();
+    }
+    a = b + z / 2; from = s.to;
+  }
   part(a, W + 10, () => draw(LG_PART[from]));
+  lgTint(sw);
+}
+// the light of the afternoon, laid over the whole screen at once (never per backdrop, so it never shows an edge): going golden from the
+// towers on, warmer still nearing the beach, the beach slowly going to dusk; all of it easing off as the ending view comes in (it has its own light)
+function lgTint(sw) {
+  const m = cam.x + viewW() / 2, sb = sw.find(s => s.to === 'beach'), sv = sw.find(s => s.to === 'view'), cl = v => Math.max(0, Math.min(1, v));
+  const vw = sv ? cl((m - (sv.x - 7)) / 14) : 0, off = 1 - vw;
+  const gold = 0.2 * lgGoldK() * off, warm = sb ? 0.22 * cl((m - (sb.x - 40)) / 40) * cl(1 - (m - sb.x - 10) / 30) * off : 0;
+  if (gold + warm > 0.005) { ctx.fillStyle = `rgba(255,146,76,${Math.min(0.45, gold + warm)})`; ctx.fillRect(-10, -10, W + 20, H + 20); }
+  const d = sb && sv ? cl((m - sb.x - 20) / (sv.x - sb.x - 20)) * off : 0;
+  if (d > 0.005) { ctx.save(); ctx.globalCompositeOperation = 'multiply'; ctx.fillStyle = `rgb(${255 - 75 * d},${255 - 125 * d},${255 - 30 * d})`; ctx.fillRect(-10, -10, W + 20, H + 20); ctx.restore(); }
 }
 // the ending view: the Lekki-Ikoyi Link Bridge lit up at dusk, egrets flying home. One picture, always wider than the screen
 function lgView(c = ctx) {
@@ -8330,12 +8351,12 @@ function lgView(c = ctx) {
   const g = lgViewGeo();
   for (let k = -2; k <= 2; k++) {   // the picture, and mirror images of it either side
     const x = g.X + k * g.w; if (x > W || x + g.w < 0) continue;
-    if (k % 2 === 0) c.drawImage(im, x, g.Y, g.w, g.h);
-    else { c.save(); c.translate(x + g.w, g.Y); c.scale(-1, 1); c.drawImage(im, 0, 0, g.w, g.h); c.restore(); }
+    c.save(); if (k % 2) { c.translate(2 * x + g.w, 0); c.scale(-1, 1); }
+    const F = 0.14, n = 8, a0 = c.globalAlpha;   // (its top edge melts into the sky above it)
+    c.drawImage(im, 0, im.height * F, im.width, im.height * (1 - F), x, g.Y + g.h * F, g.w, g.h * (1 - F));
+    for (let i = 0; i < n; i++) { c.globalAlpha = a0 * (i + 0.5) / n; c.drawImage(im, 0, im.height * F * i / n, im.width, im.height * F / n, x, g.Y + g.h * F * i / n, g.w, g.h * F / n + 0.5); }
+    c.globalAlpha = a0; c.restore();
   }
-  const S = lgSkySet(); if (!S) return;   // its top edge melts into the sky above it
-  const fg = c.createLinearGradient(0, g.Y - 1, 0, g.Y + g.h * 0.12), s0 = S[0].join(',');
-  fg.addColorStop(0, `rgba(${s0},1)`); fg.addColorStop(1, `rgba(${s0},0)`); c.fillStyle = fg; c.fillRect(0, g.Y - 1, W, g.h * 0.12 + 1);
 }
 function lgGround(s) {
   if (s.style === 'lghide' && G.L.lgWalk && s.x > G.L.lgWalk - 1) return;   // (the Link Bridge's walkway: its picture is the deck, the view's lagoon under it)
@@ -8451,7 +8472,14 @@ function lgBus() {
 const LG_A_SEAT = 0.38, LG_QUAD_H = 1.3, LG_SEAT = 0.44, LG_WHEELS = [0.19, 0.818], LG_WY = 0.746, LG_WD = 0.507;   // (where the wheels are on the picture)
 function lgQuadAt() {
   const L = G.L, r = L.lgQuadRide, z = lgOn(r), end = r.pts[r.pts.length - 1][0];
-  return { z, s: z ? (z.wx !== undefined ? Math.min(z.s, end) : z.s) : lgDone(r) ? end : r.x0, jy: z && z.jy > 0 ? z.jy : 0 };
+  const s = z ? (z.wx !== undefined ? Math.min(z.s, end) : z.s) : lgDone(r) ? end : r.x0;
+  return { z, s, jy: Math.max(z && z.jy > 0 ? z.jy : 0, lgDuneY(s)) };
+}
+function lgDuneY(x) {   // (how high the sand bumps lift the quad bike as it rolls over them)
+  const L = G.L; let y = 0;
+  for (const w of L.lgWaves || []) { const d = Math.abs(x - (w - 0.1)) / 1.2; if (d < 1) y = Math.max(y, 0.38 * (1 - d * d)); }
+  if (L.lgBig !== undefined) { const d = x < L.lgBig - 0.3 ? (L.lgBig - 0.3 - x) / 3.3 : (x - L.lgBig + 0.3) / 1.9; if (d < 1) y = Math.max(y, 0.8 * (1 - d * d)); }
+  return y;
 }
 function lgQuadPic(k, x, y, h, turn) {   // a quad bike with its wheels turning
   const im = IMG[k], wh = IMG.lg_quadwheel; if (!im) return; const w = lgW(k, h);
@@ -8471,16 +8499,24 @@ function lgQuad(front) {
   const bob = riding && S.jy < 0.05 ? Math.abs(Math.sin(animT * 13)) * 0.03 : 0;
   lgQuadPic('lg_quadfull', x, S.jy + bob, LG_QUAD_H, S.s / (LG_WD * LG_QUAD_H / 2));
 }
-// the waves washing up the sand: little ones to jump, then the big wave that lifts him (and a splash when he rides through one)
+// sand bumps on the beach for the quad bike to jump: little ones, then the big dune that lifts him (Ladi 2026-11-11: no waves on the sand,
+// the waves stay in the sea), with a puff of sand when he rides over one
+function lgDune(x0, x1, top, peak) {
+  const X0 = sx(x0), X1 = sx(x1), Xp = sx(peak), Y = sy(0) + 0.06 * U, T = sy(top);
+  ctx.beginPath(); ctx.moveTo(X0, Y); ctx.bezierCurveTo(X0 + (Xp - X0) * 0.55, Y, Xp - (Xp - X0) * 0.35, T, Xp, T); ctx.bezierCurveTo(Xp + (X1 - Xp) * 0.35, T, X1 - (X1 - Xp) * 0.5, Y, X1, Y); ctx.closePath();
+  const g = ctx.createLinearGradient(0, T, 0, Y); g.addColorStop(0, '#f6dc9c'); g.addColorStop(1, '#e2b56a'); ctx.fillStyle = g; ctx.fill();
+  ctx.lineWidth = Math.max(1.5, 0.06 * U); ctx.strokeStyle = '#8a5a2a'; ctx.stroke();
+  ctx.fillStyle = 'rgba(255,248,220,.6)'; ctx.beginPath(); ctx.ellipse(Xp - 0.15 * (X1 - X0), T + 0.12 * U, 0.18 * (X1 - X0), 0.05 * U, -0.1, 0, 7); ctx.fill();
+}
 function lgWaves() {
   const L = G.L; if (!L.lgWaves) return;
   const S = L.lgQuadRide ? lgQuadAt() : null;
   for (const x of L.lgWaves) {
     if (sx(x + 3) < 0 || sx(x - 3) > W) continue;
-    const h = 0.9 + Math.sin(animT * 2 + x) * 0.08, w = lgW('lg_wave', h); bxImg('lg_wave', x - w / 2, -0.05, h);
-    if (S && S.z && Math.abs(S.s - x) < 1.4 && S.jy < 0.4) { const k = 1 - Math.abs(S.s - x) / 1.4; ctx.globalAlpha = k; bxImg('lg_splash', x - 1.0, 0, 1.6 * k + 0.4); ctx.globalAlpha = 1; }
+    lgDune(x - 1.3, x + 1.1, 0.38, x - 0.1);
+    if (S && S.z && Math.abs(S.s - x) < 0.3 && !S.puffed) { dust(x, 0.3, 8); }
   }
-  const B = L.lgBig; if (B !== undefined && sx(B + 4) > 0 && sx(B - 5) < W) { const h = 2.2 + Math.sin(animT * 1.6) * 0.1, w = lgW('lg_bigwave', h); bxImg('lg_bigwave', B - w * 0.62, -0.05, h); }
+  const B = L.lgBig; if (B !== undefined && sx(B + 3) > 0 && sx(B - 5) < W) lgDune(B - 3.6, B + 1.6, 0.8, B - 0.3);
 }
 // ---------- the National Theatre: its glass doors; inside, the hall and the arches he came in by and goes out of ----------
 const LG_ARCH_H = 4.4;
