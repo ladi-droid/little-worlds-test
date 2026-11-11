@@ -461,10 +461,10 @@ html.lw-loading .splash{visibility:hidden}
   </div>
 </section>
 
-<script src="kids/kids-meta.js?v=1794404999"></script>
-<script src="kids/kids.js?v=1794404999"></script>
-<script src="sfx.js?v=1794404999"></script>
-<script src="game.js?v=1794404999"></script>
+<script src="kids/kids-meta.js?v=1794405071"></script>
+<script src="kids/kids.js?v=1794405071"></script>
+<script src="sfx.js?v=1794405071"></script>
+<script src="game.js?v=1794405071"></script>
 <script>
 (() => {
 'use strict';
@@ -1343,7 +1343,7 @@ $('retryBtn').addEventListener('click', () => startLevel(levelIndex));
 // If the builder opened this tab, close it and show the builder again; otherwise open the builder with this child's world filled in.
 let lwJoinEnd = false;
 function lwBackToBuilder() {
-  const url = 'builder.html?v=1794404999&w=' + lwEncode(LW);
+  const url = 'builder.html?v=1794405071&w=' + lwEncode(LW);
   try { if (window.opener && !window.opener.closed && /builder\.html/.test(window.opener.location.pathname)) { window.opener.focus(); window.close(); setTimeout(() => { location.href = url; }, 400); return; } } catch (e) {}
   location.href = url;
 }
@@ -8266,11 +8266,11 @@ function drawRmRideA(cx, by, RUN_H, JUMP_H) {
   return false;
 }
 /* ===== ROME END ===== */
-const LG_BUGGY_KEYS = ['ds_b_empty', 'ds_b_drive', 'ds_b_drive2', 'ds_b_air', 'ds_b_land', 'ds_b_wheel', 'ds_c1', 'ds_c2', 'ds_c3'];   // (the lime green buggy from the desert, Ladi round 4)
 /* ===== LAGOS START ===== */
 // Lagos (2026-11-10, from the level kit), drawn from art made with the image maker: pieces cut by lagos/src/cut.py into atlas_lg*.webp,
 // backdrops, the theatre's inside, the ending view and ground strips as their own files. A hot sunny day going golden, then dusk at the
 // Lekki-Ikoyi Link Bridge. A wears his summer outfit.
+const LG_BUGGY_KEYS = ['ds_b_empty', 'ds_b_drive', 'ds_b_drive2', 'ds_b_air', 'ds_b_land', 'ds_b_wheel', 'ds_c1', 'ds_c2', 'ds_c3'];   // (the lime green buggy from the desert, Ladi round 4)
 const LG_IMAGES = [...["lg_tower1", "lg_tower2", "lg_y5", "lg_apt", "lg_y4", "lg_theatre", "lg_hotel", "lg_y3", "lg_market", "lg_tech", "lg_pillar1", "lg_pillar2", "lg_blamp", "lg_rest", "lg_palm", "lg_umbs", "lg_umb1", "lg_umb2", "lg_umb3", "lg_umb4", "lg_oilpalm", "lg_almond", "lg_gantry", "lg_y2", "lg_endr", "lg_endl", "lg_narrow", "lg_walkway", "lg_palmpot", "lg_glass", "lg_dframe", "lg_dpier", "lg_tpier", "lg_tarch", "lg_bgate", "lg_pier", "lg_lamp", "lg_hut1", "lg_hut2", "lg_stalls", "lg_stall1", "lg_stall2", "lg_stall3", "lg_cafe", "lg_gatewall", "lg_bananas", "lg_brt", "lg_seats", "lg_lorry", "lg_buka", "lg_phone", "lg_drum3", "lg_danfo2", "lg_pergola", "lg_net", "lg_umb", "lg_cooler", "lg_danfo_open", "lg_suya", "lg_djembe", "lg_danfo", "lg_danfo_door", "lg_tank", "lg_rtank", "lg_horse_hand", "lg_horse", "lg_bigwave", "lg_bougain", "lg_hawk1", "lg_hawk2", "lg_hawk3", "lg_horse_g2", "lg_okada1", "lg_okada2", "lg_banana_pot", "lg_drum2", "lg_cloud0", "lg_horse_g1", "lg_keke1", "lg_keke2", "lg_hawk4", "lg_helipad", "lg_coco", "lg_suv", "lg_fountain", "lg_car", "lg_cloud1", "lg_okada0", "lg_rac", "lg_castle", "lg_splash", "lg_cloud2", "lg_drum1", "lg_agama_wall", "lg_table", "lg_rail", "lg_corn", "lg_bench", "lg_loungers", "lg_cloud3", "lg_egret_st", "lg_barrier", "lg_wave", "lg_drift", "lg_cloud4", "lg_castle2", "lg_egret0", "lg_egret1", "lg_egret2", "lg_ball", "lg_gull0", "lg_gull1", "lg_gull2", "lg_agama2", "lg_adire", "lg_agama1", "lg_far1", "lg_far2", "lg_far3", "lg_far4", "lg_g_pave", "lg_g_plaza", "lg_g_road", "lg_g_sand", "lg_g_stage", "lg_g_street", "lg_in_theatre", "lg_lorry2", "lg_mid1", "lg_mid2", "lg_mid3", "lg_railstrip", "lg_seaedge", "lg_surf", "lg_view"], ...LG_BUGGY_KEYS];
 // ground strips: [tile, strip height, how much shows above the floor line, fill top, fill bottom] (one fill colour outdoors)
 const LG_GROUND = { lgstreet: ['lg_g_street', 1.2, 0.3, '#7a5642', '#3e2a20'], lgplaza: ['lg_g_plaza', 1.2, 0.3, '#7a5642', '#3e2a20'],
@@ -8715,7 +8715,6 @@ function lgTraffic(dt) {
   else lgHorn(700 + Math.random() * 80, 0.1, v * 0.7, 0);                                                    // an okada
 }
 /* ===== LAGOS END ===== */
-const LG_BUGGY_KEYS = ['ds_b_empty', 'ds_b_drive', 'ds_b_drive2', 'ds_b_air', 'ds_b_land', 'ds_b_wheel', 'ds_c1', 'ds_c2', 'ds_c3'];   // (the lime green buggy from the desert, Ladi round 4)
 /* ===== SINGAPORE START ===== */
 // Singapore (2026-11-11, from the level kit), drawn from art made with the image maker: pieces cut by singapore/src/cut.py into
 // atlas_sg*.webp, backdrops, the Cloud Forest's inside, the ending view and ground strips as their own files. A hot afternoon on the
