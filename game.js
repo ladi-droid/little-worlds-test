@@ -3923,7 +3923,7 @@ const ALL_LEVELS = [
   // bounces onto the roofs, special 1) -> a bumboat down the river (duck the old bridges, jump the wake, special 2) -> the Merlion (its
   // spout launches him, special 3) -> Jubilee Bridge and the Esplanade -> the Helix Bridge at dusk -> the Gardens -> inside the Cloud
   // Forest (the one inside: pitcher plants and mist, special 4 behind the waterfall) -> the Supertrees at night (wall-jump between two,
-  // special 5, the skywalk) -> the light show with Marina Bay Sands behind.
+  // special 5, the skywalk) -> the light show with Marina Bay Sands behind (Ladi 2026-11-11: back to this ending).
   id: 'singapore', name: 'Singapore', plate: 'Singapore', area: 'singapore', city: 'Singapore',
   build(b) {
     const L = b.L, SG_ASP = {"sg_taxi":1.83,"sg_taxi:h":2.0,"sg_taxi_open":1.87,"sg_taxi_open:h":2.0,"sg_taxi_door":0.5974,"sg_taxi_door:h":1.536,"sg_boat":2.25,"sg_boat:h":3.16,"sg_boat_man":2.1059,"sg_boat_man:h":3.395,"sg_boat_front":2.4148,"sg_boat_front:h":1.757,"sg_sh_green":0.7413,"sg_sh_green:h":6.588,"sg_sh_pink":0.5397,"sg_sh_pink:h":9.075,"sg_sh_yellow":0.5382,"sg_sh_yellow:h":9.088,"sg_sh_blue":0.4581,"sg_sh_blue:h":10.688,"sg_sh_red":0.448,"sg_sh_red:h":10.325,"sg_sh_lilac":0.7964,"sg_sh_lilac:h":6.988,"sg_sh_peach":0.7724,"sg_sh_peach:h":7.075,"sg_sh_white":0.6845,"sg_sh_white:h":6.875,"sg_endl":1.166,"sg_endl:h":6.725,"sg_narrow":0.454,"sg_narrow:h":6.625,"sg_endr":1.1679,"sg_endr:h":6.738,"sg_terrace":3.2811,"sg_terrace:h":3.213,"sg_tiles":4.2644,"sg_tiles:h":2.275,"sg_lanterns":1.3231,"sg_lanterns:h":4.2,"sg_parasol":1.0615,"sg_parasol:h":2.6,"sg_lamp":0.3405,"sg_lamp:h":4.2,"sg_pot":0.85,"sg_pot:h":2.0,"sg_bollard":0.9333,"sg_bollard:h":0.9,"sg_planter":1.87,"sg_planter:h":1.0,"sg_bench":1.83,"sg_bench:h":1.0,"sg_steps":1.56,"sg_steps:h":3.0,"sg_wake":5.4125,"sg_wake:h":0.8,"sg_splash":1.8244,"sg_splash:h":1.4,"sg_jetty":3.0214,"sg_jetty:h":1.4,"sg_cavenagh":4.9407,"sg_cavenagh:h":3.6,"sg_anderson":7.8462,"sg_anderson:h":3.0,"sg_merlion":0.9113,"sg_merlion:h":8.0,"sg_fullerton":2.3577,"sg_fullerton:h":9.0,"sg_shelter":1.731,"sg_shelter:h":3.6,"sg_deck":2.3682,"sg_deck:h":2.2,"sg_jubilee":7.2333,"sg_jubilee:h":2.0,"sg_esplanade":2.0276,"sg_esplanade:h":9.5,"sg_stage":1.9283,"sg_stage:h":5.0,"sg_helix":6.9625,"sg_helix:h":4.0,"sg_helixpod":1.879,"sg_helixpod:h":4.075949367088608,"sg_helixend":3.6656,"sg_helixend:h":4.113924050632911,"sg_dome":2.0873,"sg_dome:h":12.0,"sg_dragonfly":0.9187,"sg_dragonfly:h":3.2,"sg_heliconia":2.1,"sg_heliconia:h":1.8,"sg_lily":2.73,"sg_lily:h":1.0,"sg_gbridge":2.6571,"sg_gbridge:h":1.4,"sg_glamp":0.7812,"sg_glamp:h":1.6,"sg_orchidwall":2.5917,"sg_orchidwall:h":1.2,"sg_pitch1":0.98,"sg_pitch1:h":1.5,"sg_pitch2":1.13,"sg_pitch2:h":2.0,"sg_pitch3":1.2,"sg_pitch3:h":2.7,"sg_vent":1.1167,"sg_vent:h":1.8,"sg_cloudwalk":2.6063,"sg_cloudwalk:h":2.6,"sg_falls":1.8179,"sg_falls:h":3.6,"sg_treefern":1.2254,"sg_treefern:h":4.0,"sg_orchids":1.225,"sg_orchids:h":1.6,"sg_brom":1.45,"sg_brom:h":1.2,"sg_boulder":1.6615,"sg_boulder:h":1.3,"sg_sundew":1.1643,"sg_sundew:h":1.4,"sg_fern":1.4579,"sg_fern:h":1.9,"sg_arch":1.3995,"sg_arch:h":4.4,"sg_apier":0.4249,"sg_apier:h":4.357,"sg_leaves":10.225,"sg_leaves:h":0.4,"sg_dframe":0.8545,"sg_dframe:h":4.4,"sg_glass":0.2225,"sg_glass:h":4.364,"sg_dpier":0.1176,"sg_dpier:h":4.251,"sg_stpair":0.75,"sg_stpair:h":11.0,"sg_st1":0.8,"sg_st1:h":11.0,"sg_st2":0.8915,"sg_st2:h":8.9,"sg_st3":1.0076,"sg_st3:h":6.917,"sg_skywalk":8.76,"sg_skywalk:h":1.0,"sg_stairs":0.5815,"sg_stairs:h":9.0,"sg_stdeck":1.0693,"sg_stdeck:h":7.345,"sg_raintree":1.4623,"sg_raintree:h":6.5,"sg_royalpalm":0.5775,"sg_royalpalm:h":7.5,"sg_travellers":1.0659,"sg_travellers:h":5.0,"sg_frangipani":0.985,"sg_frangipani:h":4.0,"sg_bamboo":0.6689,"sg_bamboo:h":4.5,"sg_cloud0":1.8462,"sg_cloud0:h":2.0,"sg_cloud1":2.0,"sg_cloud1:h":1.6,"sg_cloud2":2.9091,"sg_cloud2:h":1.4,"sg_cloud3":1.6512,"sg_cloud3:h":1.0,"sg_cloud4":2.475,"sg_cloud4:h":0.8,"sg_mynah0":1.1167,"sg_mynah0:h":0.6,"sg_mynah1":1.5,"sg_mynah1:h":0.6,"sg_mynah2":1.4167,"sg_mynah2:h":0.6,"sg_mynah_st":1.0667,"sg_mynah_st:h":0.6,"sg_kingfisher":1.3,"sg_kingfisher:h":0.6,"sg_egret0":1.275,"sg_egret0:h":0.8,"sg_egret1":1.9,"sg_egret1:h":0.8,"sg_fly0":1.125,"sg_fly0:h":0.4,"sg_fly1":1.125,"sg_fly1:h":0.4,"sg_fly2":1.125,"sg_fly2:h":0.4,"sg_bfly0":1.1143,"sg_bfly0:h":0.35,"sg_bfly1":1.1714,"sg_bfly1:h":0.35,"sg_bfly2":1.1714,"sg_bfly2:h":0.35,"sg_otters":4.2182,"sg_otters:h":1.1,"sg_otter_swim":3.2286,"sg_otter_swim:h":0.7,"sg_jogger":0.5474,"sg_jogger:h":1.9,"sg_family":0.75,"sg_family:h":1.964,"sg_diner":0.7594,"sg_diner:h":1.868,"sg_umbrella":0.5721,"sg_umbrella:h":2.082,"sg_gardener":0.6579,"sg_gardener:h":1.904,"sg_kid":0.4912,"sg_kid:h":1.707,"sg_mbs_tower":0.2761,"sg_mbs_tower:h":22.0,"sg_mbs_roof":7.9688,"sg_mbs_roof:h":3.4,"sg_mbs_lift":0.7037,"sg_mbs_lift:h":2.7,"sg_mbs_base":4.1458,"sg_mbs_base:h":2.4,"sg_mbs_steps":1.8857,"sg_mbs_steps:h":1.75,"sg_mbs_sky":4.13,"sg_mbs_sky:h":1.0,"sg_mbs_palm":0.8406,"sg_mbs_palm:h":3.2,"sg_mbs_parasol":0.2846,"sg_mbs_parasol:h":2.6,"sg_mbs_lounger":1.9,"sg_mbs_lounger:h":0.9,"sg_mbs_glass":1.975,"sg_mbs_glass:h":1.2,"sg_mbs_jet":0.6409,"sg_mbs_jet:h":2.2,"sg_mbs_lamp":0.8,"sg_mbs_lamp:h":0.7,"sg_statue":1.9,"sg_statue:h":2.6,"sg_cafes":3.4812,"sg_cafes:h":6.092,"stpair":{"inL":0.3382,"inR":0.6921,"walk":0.9718,"walkB":0.7855},"mbs_tower":{"sL":0.1224,"sR":0.8759,"flare":0.1009},"mbs_roof_top":0.4883,"mbs_base_top":0.475};
@@ -4058,8 +4058,8 @@ const ALL_LEVELS = [
     back('sg_helixend', HX, H_('sg_helixend'), { y: HB, flip: true });
     b.slope(HX + 2.68, 0.0, HX + 9.58, DY); L.camFloor.push([HX + 2.68, HX + 9.58, 0, DY]);
     const HS = HX + HEW - 0.3;
-    back('sg_helix', HS, 4.0, { y: DY - 1.63 });
     const H2 = HS + HSW - 0.3;
+    L.sgHelix = { x0: HX + HEW, x1: H2, hb: HB, eh: H_('sg_helixend'), dy: DY };   // (the span between the two end arches is drawn whole, so its spiral never breaks)
     back('sg_helixend', H2, H_('sg_helixend'), { y: HB });
     ground(HX + 9.58, H2 + 5.5, 'sghelix', DY); L.sgWater.push([HX + 8.0, H2 + 7.5, WY]);
     lean('sg_pot', HS + 6.0, 2.0, 1.35, DY); lean('sg_pot', HS + 19.0, 2.0, 1.35, DY);   // (planters on the deck: lean, then over)
@@ -4133,8 +4133,8 @@ const ALL_LEVELS = [
     (L.kitClimbs = L.kitClimbs || []).push({ x: SP + SPW * 0.1, xr: WR, gap: GAP, hL: WALK - 0.4, hR: WALK - 0.4 });
     for (let i = 0, y = 3.0; y < WALK - 1.0; i++, y += 1.45) b.coins(WL + (i % 2 ? GAP - 0.5 : 0.25), y, 1);
     b.ledge(SP + SPW * 0.05, WALK, SPW * 0.93);                                                // the walkway between their canopies
-    b.coins(MID - 1.0, WALK + 1.4, 3, 1.0);                                                   // (over the walkway, above the gap)
-    const SK = SP + SPW * 0.97, SKW = 13.0;                 // the skywalk goes on to a third Supertree and the stair tower
+    b.special(MID, WALK + 1.5);                                                               // 5: over the walkway, above the gap
+    const SK = SP + SPW * 0.97, SKW = 14.0;                 // the skywalk goes on to a third Supertree and the stair tower
     L.sgSky = { x0: SK - 0.2, x1: SK + SKW, y: WALK };
     b.ledge(SK - 0.2, WALK, SKW + 0.2);
     back('sg_st2', SK + 6.0, 8.9);
@@ -4145,55 +4145,15 @@ const ALL_LEVELS = [
     for (const f of [0.73, 0.5, 0.27]) b.ledge(ST + TWW * 0.25, 9.0 * f, TWW * 0.6);         // (its landings, on the way down)
     prop('sg_st3', SP - 8.0, 6.917); L.sgLife.push(['sg_bfly1', SP - 3, 2.2, 'bfly']);
     b.coins(SP + 0.5, 2.0, 3, 0.9); b.coins(ST + TWW + 1.0, 2.2, 4, 1.0);
-    // ---------- 9. the hotel (Ladi 2026-11-11): up between two of its towers (special 5), the glass lift up the gap, the roof garden ----------
-    swapAt(ST + TWW * 0.5, 'top', 'behind the Supertree stair tower: from here on, the view from the top');
-    const MB = ST + TWW + 3.0, TI = SG_ASP.mbs_tower, TH = 22.0, TW = aw('sg_mbs_tower', TH), TS = (TI.sR - TI.sL) * TW, MG = 2.4;
-    const BSH = 2.9, BSW = aw('sg_mbs_base', BSH), BT = SG_ASP.mbs_base_top * BSH;   // the garden terrace at the foot: lean on it, hop up
-    const T1 = MB + 3.0, TX = i => T1 + i * (TS + MG);                                     // the three towers, their straight sides MG apart
-    const G0 = TX(0) + TI.sR * TW, G1 = G0 + MG, GM = (G0 + G1) / 2;                      // the gap A climbs and the lift rises in
-    const SBY = 9.4, RH = 3.4, RWW = aw('sg_mbs_roof', RH), RX = T1 - 0.6, RB = TH - 0.6, RD = RB + SG_ASP.mbs_roof_top * RH;   // the roof: its deck top RD
-    ground(DE + 2.0, RX + RWW + 30.0, 'sgnight');   // (far below the roof's tip too)
-    for (let i = 0; i < 3; i++) back('sg_mbs_tower', TX(i), TH);
-    back('sg_mbs_roof', RX, RH, { y: RB });
-    back('sg_mbs_sky', GM - aw('sg_mbs_sky', 1.0) / 2, 1.0, { y: SBY - 0.55 });            // the sky-garden bridge: the lift waits on it
-    lean('sg_mbs_base', MB, BSH, BT);
-    L.sgLife.push(['sg_bfly0', MB - 2, 2.6, 'bfly']);
-    b.coins(MB + 1.0, BT + 1.2, 4, 1.0);
-    const TOP = TH - 0.6;
-    solid(TX(0) + TI.sL * TW, G0 - TX(0) - TI.sL * TW, RD - 3.0, 3.0);                    // tower 1 above his head (he runs under it on the terrace)
-    solid(G1, 0.6, 3.0 - BT, BT, { noGrab: true });                                         // tower 2's foot: the way on is up
-    solid(G1, TX(2) + TI.sR * TW - G1, RD - 3.0, 3.0);                                      // towers 2 and 3 up to the roof
-    (L.kitClimbs = L.kitClimbs || []).push({ x: TX(0) + TI.sL * TW, xr: G1, gap: MG, hL: SBY - 0.3, hR: SBY - 0.3 });
-    for (let i = 0, y = BT + 2.4; y < SBY - 0.8; i++, y += 1.4) b.coins(G0 + (i % 2 ? MG - 0.5 : 0.25), y, 1);
-    b.special(GM, 6.4);                                                                      // 5: half way up the gap between the towers
-    // the made-up outside glass lift: it waits on the sky bridge, takes him up the gap when he steps in, and he walks out onto the roof
-    const lift = { kind: 'lift', mover: true, trig: 'sgLift', x: G0 + 0.02, w: MG - 0.04, y: SBY, y0: SBY, y1: RD, up: 5.0, d0: 0.45 };
-    (L.movers = L.movers || []).push(lift); L.oneways.push(lift); L.sgLift = lift;
-    solid(G0 - 0.4, 0.4, 40, RD + 0.05, { noGrab: true });                                  // (the roof's left part: not that way)
-    L.sgMbs = { towers: [0, 1, 2].map(TX), tw: TW, th: TH, g0: G0, g1: G1, sby: SBY, rd: RD, rx: RX, rw: RWW };
-    // the roof garden: the pool along the deck, palms to lean on, loungers to hop, fountain jets that throw him up to coins
-    const R0 = G1, RE = RX + RWW * 0.94;
-    solid(R0, RE - R0, 0.6, RD - 0.6, { noGrab: true });                                    // (the deck itself)
-    L.camFloor.push([G1 + 0.3, 1e5, RD]);
-    back('sg_mbs_glass', R0 - 0.2, 1.2, { y: RD - 0.05 }) ;
-    L.sgPool = [R0 + 2.0, RX + RWW * 0.7, RD];
-    const jet = (x, h) => { const s = solid(x + 0.35, 0.7, 0.25, RD, { bounce: h, noGrab: true }); (L.sgJets = L.sgJets || []).push({ x, s }); b.arc(x + 1.2, RD + 1.6, 5, 4.2, h * 0.55); };
-    const rprop = (k, x, h) => b.kitProp(k, x, aw(k, h), h, { y: RD });
-    const rlean = (k, x, h, sh) => { const w = aw(k, h); return b.kitProp(k, x, w, h, { y: RD, solid: [0.15, w - 0.3, sh], ledge: [0.15, sh, w - 0.3] }); };
-    const rhop = (k, x, h) => { const w = aw(k, h); return b.kitProp(k, x, w, h, { y: RD, solid: [0.1, w - 0.2, Math.min(h, 0.9)] }); };
-    rprop('sg_mbs_lamp', R0 + 1.0, 0.7);
-    rlean('sg_mbs_palm', R0 + 3.0, 3.2, 1.35); b.coins(R0 + 3.6, RD + 2.6, 3, 0.8);
-    jet(R0 + 7.5, 8.4);
-    rhop('sg_mbs_lounger', R0 + 11.0, 0.9); rprop('sg_mbs_parasol', R0 + 13.0, 2.6);
-    rlean('sg_mbs_palm', R0 + 15.0, 3.2, 1.35);
-    jet(R0 + 19.0, 8.4);
-    // ---------- 10. the ending: at the tip of the roof, the Supertree light show below and the city across the bay; A waves ----------
-    const FX = Math.min(R0 + 22.5, RE - 3.0);
-    b.flag(FX); L.flagY = RD;
+    // ---------- 9. the ending: the light show, Marina Bay Sands lit up behind; A waves ----------
+    const FX = ST + TWW + 8.0;
+    ground(DE + 2.0, FX + 40, 'sgnight');
+    b.flag(FX); L.flagY = 0;
+    L.sgLife.push(['sg_bfly0', FX - 4, 2.6, 'bfly'], ['sg_bfly2', FX + 5, 3.0, 'bfly']);
     L.sgFinale = true;
-    L.finale = FX + 1.6; L.finaleT = 7; L.sgView = FX + 1.6;
-    b.wall(RE, 1, 60);
-    b.end(RE);
+    L.finale = FX + 4.5; L.finaleT = 7; L.sgView = FX + 4.5;
+    b.wall(FX + 30, 1, 40);
+    b.end(FX + 30);
   },
 },
 ];

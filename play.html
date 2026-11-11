@@ -219,6 +219,20 @@ html.lw-loading .splash{visibility:hidden}
 .csign.sg b{left:4%;right:4%;top:72%;bottom:4%;transform:none;font-size:calc(var(--sw)*.15);-webkit-text-stroke:calc(var(--sw)*.022) #0e3a5a;paint-order:stroke fill}
 .csign.sg{aspect-ratio:640/525;--sw:calc(var(--cw)*.5);top:calc(12px + (var(--ch) - 100px)*.15 - var(--sw)*.42)}
 .csign.sg b{left:4%;right:4%;top:72%;bottom:4%;transform:none;font-size:calc(var(--sw)*.15);-webkit-text-stroke:calc(var(--sw)*.022) #0e3a5a;paint-order:stroke fill}
+.csign.sg{aspect-ratio:640/525;--sw:calc(var(--cw)*.5);top:calc(12px + (var(--ch) - 100px)*.15 - var(--sw)*.42)}
+.csign.sg b{left:4%;right:4%;top:72%;bottom:4%;transform:none;font-size:calc(var(--sw)*.15);-webkit-text-stroke:calc(var(--sw)*.022) #0e3a5a;paint-order:stroke fill}
+.csign.sg{aspect-ratio:640/525;--sw:calc(var(--cw)*.5);top:calc(12px + (var(--ch) - 100px)*.15 - var(--sw)*.42)}
+.csign.sg b{left:4%;right:4%;top:72%;bottom:4%;transform:none;font-size:calc(var(--sw)*.15);-webkit-text-stroke:calc(var(--sw)*.022) #0e3a5a;paint-order:stroke fill}
+.csign.sg{aspect-ratio:640/525;--sw:calc(var(--cw)*.5);top:calc(12px + (var(--ch) - 100px)*.15 - var(--sw)*.42)}
+.csign.sg b{left:4%;right:4%;top:72%;bottom:4%;transform:none;font-size:calc(var(--sw)*.15);-webkit-text-stroke:calc(var(--sw)*.022) #0e3a5a;paint-order:stroke fill}
+.csign.sg{aspect-ratio:640/525;--sw:calc(var(--cw)*.5);top:calc(12px + (var(--ch) - 100px)*.15 - var(--sw)*.42)}
+.csign.sg b{left:4%;right:4%;top:72%;bottom:4%;transform:none;font-size:calc(var(--sw)*.15);-webkit-text-stroke:calc(var(--sw)*.022) #0e3a5a;paint-order:stroke fill}
+.csign.sg{aspect-ratio:640/525;--sw:calc(var(--cw)*.5);top:calc(12px + (var(--ch) - 100px)*.15 - var(--sw)*.42)}
+.csign.sg b{left:4%;right:4%;top:72%;bottom:4%;transform:none;font-size:calc(var(--sw)*.15);-webkit-text-stroke:calc(var(--sw)*.022) #0e3a5a;paint-order:stroke fill}
+.csign.sg{aspect-ratio:640/525;--sw:calc(var(--cw)*.5);top:calc(12px + (var(--ch) - 100px)*.15 - var(--sw)*.42)}
+.csign.sg b{left:4%;right:4%;top:72%;bottom:4%;transform:none;font-size:calc(var(--sw)*.15);-webkit-text-stroke:calc(var(--sw)*.022) #0e3a5a;paint-order:stroke fill}
+.csign.sg{aspect-ratio:640/525;--sw:calc(var(--cw)*.5);top:calc(12px + (var(--ch) - 100px)*.15 - var(--sw)*.42)}
+.csign.sg b{left:4%;right:4%;top:72%;bottom:4%;transform:none;font-size:calc(var(--sw)*.15);-webkit-text-stroke:calc(var(--sw)*.022) #0e3a5a;paint-order:stroke fill}
 .csign.lg b{left:8%;right:22%;top:50%;bottom:24%;transform:none;font-size:calc(var(--sw)*.11);-webkit-text-stroke:calc(var(--sw)*.018) #1b1b1b;paint-order:stroke fill}
 /* London worlds: Ladi's landmark stickers (clock tower, ship, glass tower, windmill); the name is written on the empty panel */
 .lsign{position:absolute;--sw:calc(var(--cw)*.86);width:var(--sw);aspect-ratio:640/200;left:calc(var(--cw)*-.08);top:calc(12px + (var(--ch) - 100px)*.15 - var(--sw)*.17);
@@ -461,10 +475,10 @@ html.lw-loading .splash{visibility:hidden}
   </div>
 </section>
 
-<script src="kids/kids-meta.js?v=1794384310"></script>
-<script src="kids/kids.js?v=1794384310"></script>
-<script src="sfx.js?v=1794384310"></script>
-<script src="game.js?v=1794384310"></script>
+<script src="kids/kids-meta.js?v=1794405518"></script>
+<script src="kids/kids.js?v=1794405518"></script>
+<script src="sfx.js?v=1794405518"></script>
+<script src="game.js?v=1794405518"></script>
 <script>
 (() => {
 'use strict';
@@ -1337,7 +1351,7 @@ $('retryBtn').addEventListener('click', () => startLevel(levelIndex));
 // If the builder opened this tab, close it and show the builder again; otherwise open the builder with this child's world filled in.
 let lwJoinEnd = false;
 function lwBackToBuilder() {
-  const url = 'builder.html?v=1794384310&w=' + lwEncode(LW);
+  const url = 'builder.html?v=1794405518&w=' + lwEncode(LW);
   try { if (window.opener && !window.opener.closed && /builder\.html/.test(window.opener.location.pathname)) { window.opener.focus(); window.close(); setTimeout(() => { location.href = url; }, 400); return; } } catch (e) {}
   location.href = url;
 }
@@ -8712,7 +8726,7 @@ function lgTraffic(dt) {
 // Singapore (2026-11-11, from the level kit), drawn from art made with the image maker: pieces cut by singapore/src/cut.py into
 // atlas_sg*.webp, backdrops, the Cloud Forest's inside, the ending view and ground strips as their own files. A hot afternoon on the
 // river, golden at the bay, dusk on the Helix Bridge, night at the Supertrees. A wears his summer outfit.
-const SG_IMAGES = ["sg_mbs_tower", "sg_stpair", "sg_sh_blue", "sg_st1", "sg_dome", "sg_stairs", "sg_sh_red", "sg_merlion", "sg_sh_yellow", "sg_sh_pink", "sg_st2", "sg_stdeck", "sg_royalpalm", "sg_cafes", "sg_esplanade", "sg_sh_peach", "sg_sh_lilac", "sg_sh_white", "sg_endl", "sg_endr", "sg_st3", "sg_narrow", "sg_sh_green", "sg_raintree", "sg_fullerton", "sg_travellers", "sg_bamboo", "sg_stage", "sg_dframe", "sg_glass", "sg_dpier", "sg_lamp", "sg_frangipani", "sg_arch", "sg_apier", "sg_lanterns", "sg_treefern", "sg_falls", "sg_shelter", "sg_boat_man", "sg_cavenagh", "sg_dragonfly", "sg_mbs_palm", "sg_helixend", "sg_boat", "sg_helixpod", "sg_steps", "sg_helix", "sg_pitch3", "sg_mbs_lift", "sg_parasol", "sg_anderson", "sg_mbs_parasol", "sg_statue", "sg_mbs_roof", "sg_cloudwalk", "sg_terrace", "sg_mbs_base", "sg_deck", "sg_mbs_jet", "sg_umbrella", "sg_taxi", "sg_taxi_open", "sg_pot", "sg_pitch2", "sg_family", "sg_fern", "sg_jogger", "sg_gardener", "sg_diner", "sg_heliconia", "sg_vent", "sg_boat_front", "sg_mbs_steps", "sg_tiles", "sg_kid", "sg_cloud0", "sg_glamp", "sg_orchids", "sg_taxi_door", "sg_jubilee", "sg_pitch1", "sg_jetty", "sg_gbridge", "sg_sundew", "sg_splash", "sg_boulder", "sg_cloud1", "sg_orchidwall", "sg_brom", "sg_mbs_glass", "sg_otters", "sg_planter", "sg_bench", "sg_lily", "sg_skywalk", "sg_mbs_sky", "sg_cloud2", "sg_bollard", "sg_mbs_lounger", "sg_cloud3", "sg_wake", "sg_cloud4", "sg_egret0", "sg_egret1", "sg_otter_swim", "sg_mbs_lamp", "sg_mynah0", "sg_mynah1", "sg_mynah2", "sg_mynah_st", "sg_kingfisher", "sg_leaves", "sg_fly0", "sg_fly1", "sg_fly2", "sg_bfly0", "sg_bfly1", "sg_bfly2", "sg_far1", "sg_far2", "sg_far3", "sg_g_cf", "sg_g_garden", "sg_g_helix", "sg_g_night", "sg_g_prom", "sg_g_quay", "sg_in_forest", "sg_mid1", "sg_mid2", "sg_mid3", "sg_pool", "sg_quaywall", "sg_skystrip", "sg_view", "sg_view_top", "sg_water"];
+const SG_IMAGES = ["sg_mbs_tower", "sg_stpair", "sg_sh_blue", "sg_st1", "sg_dome", "sg_stairs", "sg_sh_red", "sg_merlion", "sg_sh_yellow", "sg_sh_pink", "sg_st2", "sg_stdeck", "sg_royalpalm", "sg_cafes", "sg_esplanade", "sg_sh_peach", "sg_sh_lilac", "sg_sh_white", "sg_endl", "sg_endr", "sg_st3", "sg_narrow", "sg_sh_green", "sg_raintree", "sg_fullerton", "sg_travellers", "sg_bamboo", "sg_stage", "sg_dframe", "sg_glass", "sg_dpier", "sg_lamp", "sg_frangipani", "sg_arch", "sg_apier", "sg_lanterns", "sg_treefern", "sg_falls", "sg_shelter", "sg_boat_man", "sg_cavenagh", "sg_dragonfly", "sg_mbs_palm", "sg_helixend", "sg_boat", "sg_helixpod", "sg_steps", "sg_helix", "sg_pitch3", "sg_mbs_lift", "sg_parasol", "sg_anderson", "sg_mbs_parasol", "sg_statue", "sg_mbs_roof", "sg_cloudwalk", "sg_terrace", "sg_mbs_base", "sg_deck", "sg_mbs_jet", "sg_umbrella", "sg_taxi", "sg_taxi_open", "sg_pot", "sg_pitch2", "sg_family", "sg_fern", "sg_jogger", "sg_gardener", "sg_diner", "sg_heliconia", "sg_vent", "sg_boat_front", "sg_mbs_steps", "sg_tiles", "sg_kid", "sg_cloud0", "sg_glamp", "sg_orchids", "sg_taxi_door", "sg_jubilee", "sg_pitch1", "sg_jetty", "sg_gbridge", "sg_sundew", "sg_splash", "sg_boulder", "sg_cloud1", "sg_orchidwall", "sg_brom", "sg_mbs_glass", "sg_otters", "sg_planter", "sg_bench", "sg_lily", "sg_skywalk", "sg_mbs_sky", "sg_cloud2", "sg_bollard", "sg_mbs_lounger", "sg_cloud3", "sg_wake", "sg_cloud4", "sg_egret0", "sg_egret1", "sg_otter_swim", "sg_mbs_lamp", "sg_mynah0", "sg_mynah1", "sg_mynah2", "sg_mynah_st", "sg_kingfisher", "sg_leaves", "sg_fly0", "sg_fly1", "sg_fly2", "sg_bfly0", "sg_bfly1", "sg_bfly2", "sg_far1", "sg_far2", "sg_far3", "sg_g_cf", "sg_g_garden", "sg_g_helix", "sg_g_night", "sg_g_prom", "sg_g_quay", "sg_in_forest", "sg_mid1", "sg_mid2", "sg_mid3", "sg_quaywall", "sg_skystrip", "sg_view", "sg_water"];
 // ground strips: [tile, strip height, how much shows above the floor line, fill top, fill bottom]
 const SG_GROUND = { sgquay: ['sg_g_quay', 1.2, 0.3, '#5a5650', '#2e2c2a'], sgprom: ['sg_g_prom', 1.2, 0.3, '#5a5650', '#2e2c2a'],
   sglanding: ['sg_g_prom', 1.2, 0.3, '#5a5650', '#2e2c2a'], sggarden: ['sg_g_garden', 1.2, 0.3, '#5a3e28', '#2e2016'],
@@ -8734,19 +8748,10 @@ function sgCam() {
 // Esplanade on, and after the Cloud Forest the ending picture's own night sky
 const SG_SKY = { day: [[58, 140, 226], [120, 186, 240], [196, 224, 242], [236, 230, 214]], gold: [[90, 120, 200], [214, 160, 150], [250, 186, 120], [252, 196, 120]],
   dusk: [[40, 44, 112], [112, 72, 152], [222, 118, 146], [248, 168, 130]] };
-let sgViewSky = null;
-function sgNightSky() {
-  const im = IMG.sg_view; if (!im) return null;
-  if (!sgViewSky) {
-    const cv = document.createElement('canvas'); cv.width = 64; cv.height = 64; const x = cv.getContext('2d');
-    x.drawImage(im, 0, 0, 64, 64); const d = x.getImageData(0, 0, 64, 64).data;
-    sgViewSky = [0, 0.1, 0.2, 0.3].map(f => { const r = Math.round(f * 63), c = [0, 0, 0]; for (let i = 4; i < 60; i++) { const o = (r * 64 + i) * 4; c[0] += d[o]; c[1] += d[o + 1]; c[2] += d[o + 2]; } return c.map(v => v / 56); });
-  }
-  return sgViewSky;
-}
+const SG_NIGHT = [[21, 44, 139], [23, 45, 142], [26, 48, 150], [26, 48, 150]];   // (the ending picture's own sky, so above it the sky is the same one)
 function sgSkyCols() {
   const L = G.L, m = cam.x + viewW() / 2, cl = v => Math.max(0, Math.min(1, v)), mix = (a, b, t) => a.map((r, i) => r.map((v, n) => v + (b[i][n] - v) * t));
-  if (m > L.sgDoor2) return sgNightSky() || SG_SKY.dusk;
+  if (m > L.sgDoor2) return SG_NIGHT;
   const g = L.sgGold, sw = (L.kitSwaps || []).find(s => s.to === 'gardens');
   const k1 = cl((m - g[0]) / (g[1] - g[0])), k2 = sw ? cl((m - sw.x + 6) / 24) : 0;
   return k2 > 0 ? mix(SG_SKY.gold, SG_SKY.dusk, k2) : mix(SG_SKY.day, SG_SKY.gold, k1);
@@ -8755,10 +8760,6 @@ function sgSky() {
   const C = sgSkyCols(), g = ctx.createLinearGradient(0, 0, 0, H);
   C.forEach((c, i) => g.addColorStop(i / (C.length - 1), 'rgb(' + c.map(v => Math.round(Math.max(0, Math.min(255, v)))).join(',') + ')'));
   ctx.fillStyle = g; ctx.fillRect(0, 0, W, H);
-  if (cam.x + viewW() / 2 > G.L.sgDoor2) {   // (stars at night)
-    ctx.fillStyle = 'rgba(255,255,240,.8)';
-    for (let i = 0; i < 26; i++) { const x = ((i * 137.5 - cam.x * U * 0.02) % W + W) % W, y = (i * 53 % 100) / 100 * H * 0.35, r = (0.5 + (i % 3) * 0.4) * (0.75 + 0.25 * Math.sin(animT * 2 + i)); ctx.beginPath(); ctx.arc(x, y, r, 0, 7); ctx.fill(); }
-  }
 }
 // clouds drifting forwards across the top of the sky (not at night)
 function sgClouds() {
@@ -8781,14 +8782,13 @@ function sgBands() {
   const part = (a, b, fn) => { a = Math.max(-10, a); b = Math.min(W + 10, b); if (b <= a) return; ctx.save(); ctx.beginPath(); ctx.rect(a, -10, b - a, H + 20); ctx.clip(); fn(); ctx.restore(); };
   const draw = name => {
     if (name === 'view') return sgView();
-    if (name === 'top') return sgView(ctx, 'sg_view_top');
     const B = SG_BANDS[name];
     kitBand(weGrain(B[0][0], 14), 0.1, B[0][1], B[0][2]);
     const mb = sy(B[1][2], 0.3) - 2, g = ctx.createLinearGradient(0, mb, 0, H); g.addColorStop(0, name === 'gardens' ? '#2e4a2a' : '#4a6a5a'); g.addColorStop(1, '#1e2e26');
     ctx.fillStyle = g; ctx.fillRect(-10, mb, W + 20, H - mb + 10);   // (under the mid band, so a high camera never shows sky below it)
     kitBand(weGrain(B[1][0], 7), 0.3, B[1][1], B[1][2]);
   };
-  const SOFT = { bay: 10, gardens: 10, top: 8 }, N = 12;
+  const SOFT = { bay: 10, gardens: 10 }, N = 12;
   let from = 'river', a = -10;
   for (const s of sw) {
     const b = sx(s.x), z = SOFT[s.to] ? SOFT[s.to] * U : 0;
@@ -8814,6 +8814,18 @@ function sgViewGeo(key = 'sg_view') {
   const im = IMG[key], L = G.L, h = Math.max(H * 0.66, 8.0 * U), w = h * im.width / im.height;
   return { h, w, Y: H - h, X: W / 2 - w / 2 - (cam.x - (L.sgView - viewW() / 2)) * U * 0.05 };
 }
+let sgGlowMask = null, sgGlowTint = null;
+function sgGlow(im, hue) {   // the picture's bright parts (canopies, lights, windows), at half size, tinted this moment's colour
+  if (!sgGlowMask) {
+    const w = Math.round(im.width / 2), h = Math.round(im.height / 2), m = document.createElement('canvas'); m.width = w; m.height = h;
+    const x = m.getContext('2d'); x.drawImage(im, 0, 0, w, h); const d = x.getImageData(0, 0, w, h), a = d.data;
+    for (let i = 0; i < a.length; i += 4) { const l = 0.3 * a[i] + 0.59 * a[i + 1] + 0.11 * a[i + 2]; a[i + 3] = Math.max(0, Math.min(255, (l - 110) * 4)); a[i] = a[i + 1] = a[i + 2] = 255; }
+    x.putImageData(d, 0, 0); sgGlowMask = m; sgGlowTint = document.createElement('canvas'); sgGlowTint.width = w; sgGlowTint.height = h;
+  }
+  const x = sgGlowTint.getContext('2d'); x.globalCompositeOperation = 'source-over'; x.clearRect(0, 0, sgGlowTint.width, sgGlowTint.height);
+  x.drawImage(sgGlowMask, 0, 0); x.globalCompositeOperation = 'source-in'; x.fillStyle = `hsl(${hue},90%,55%)`; x.fillRect(0, 0, sgGlowTint.width, sgGlowTint.height);
+  return sgGlowTint;
+}
 function sgView(c = ctx, key = 'sg_view') {
   const im = IMG[key]; if (!im) return;
   const g = sgViewGeo(key);
@@ -8824,9 +8836,9 @@ function sgView(c = ctx, key = 'sg_view') {
     c.drawImage(im, 0, im.height * F, im.width, im.height * (1 - F), x, g.Y + g.h * F, g.w, g.h * (1 - F));
     for (let i = 0; i < n; i++) { c.globalAlpha = a0 * (i + 0.5) / n; c.drawImage(im, 0, im.height * F * i / n, im.width, im.height * F / n, x, g.Y + g.h * F * i / n, g.w, g.h * F / n + 0.5); }
     c.globalAlpha = a0;
-    if (G.L.sgFinale) {   // (the light show: the Supertrees' canopies pulse in colours)
-      const t = animT, hue = (t * 60) % 360; c.globalCompositeOperation = 'lighter'; c.globalAlpha = 0.12 + 0.08 * Math.sin(t * 3);
-      c.fillStyle = `hsl(${hue},90%,55%)`; c.fillRect(x, g.Y, g.w, g.h * 0.55); c.globalCompositeOperation = 'source-over'; c.globalAlpha = a0;
+    if (G.L.sgFinale && cam.x + viewW() > G.L.finale - 6) {   // (the light show: only the lit parts of the picture pulse in colours, never its sky)
+      const tc = sgGlow(im, (animT * 60) % 360);
+      if (tc) { c.globalCompositeOperation = 'lighter'; c.globalAlpha = 0.22 + 0.12 * Math.sin(animT * 3); c.drawImage(tc, x, g.Y, g.w, g.h); c.globalCompositeOperation = 'source-over'; c.globalAlpha = a0; }
     }
     c.restore();
   }
@@ -8892,14 +8904,16 @@ function sgLife() {
   }
 }
 const SG_LIFE_H = { sg_mynah_st: 0.55, sg_otters: 1.0, sg_family: 1.96, sg_diner: 1.87, sg_umbrella: 2.08, sg_gardener: 1.9, sg_kid: 1.5, sg_jogger: 1.9 };
-// ---------- the taxi: it drops A at Boat Quay (he jumps out of its back door) and drives off ----------
+// ---------- the taxi: it drops A at Boat Quay (he jumps out of its back door) and drives straight off to the left ----------
 const SG_TAXI_H = 2.0, SG_TDOOR = 0.55;
+let sgTaxiClock = null;
 function sgTaxiIntro() {
   const L = G.L, T = L.sgTaxi; if (!T) return;
-  const it = G.intro && state === 'ready' ? introT() : 9;
-  if (it > 4.5) return;
-  const go = Math.max(0, it - 1.45), x = T.x + 2.4 * go * go + 1.0 * go;
-  if (sx(x) > W) return;
+  // (its own clock carries on after the Go! sign, so it never vanishes on screen: it drives right out of the picture)
+  if (G.intro && state === 'ready') sgTaxiClock = { it: introT(), at: animT, L };
+  const it = sgTaxiClock && sgTaxiClock.L === L ? sgTaxiClock.it + (G.intro && state === 'ready' ? 0 : animT - sgTaxiClock.at) : 99;
+  const go = Math.max(0, it - 1.45), x = T.x - 2.4 * go * go - 1.0 * go;   // (it faces left: it pulls away forwards, out of the scene to the left)
+  if (sx(x + sgW('sg_taxi', SG_TAXI_H)) < 0) return;
   shadow(x + sgW('sg_taxi', SG_TAXI_H) / 2, 0.03, 3.6, 0.3);
   bxImg(it < 1.45 ? 'sg_taxi_open' : 'sg_taxi', x, -0.02, SG_TAXI_H);
 }
@@ -8943,6 +8957,70 @@ function sgBridges() {
     bxImg(B.key, B.x, B.y, B.h);
   }
 }
+// the Helix Bridge's span, drawn whole between its two end arches (Ladi 2026-11-11: the joins showed): the deck and glass rail are the
+// end pictures' own column of pixels carried across, the two steel tubes wind round it in one unbroken spiral (back halves behind the
+// deck, front halves in front), their lights twinkle, and stone-grey piers stand in the water under it
+const SG_HX_LIGHTS = ['#ffd08a', '#ffa6c8', '#9ee8ff', '#fff4d6'];
+function sgHelix() {
+  const L = G.L, X = L.sgHelix, im = IMG.sg_helixend; if (!X || !im || sx(X.x1 + 1) < 0 || sx(X.x0 - 1) > W) return;
+  const k = X.eh / im.height, ry = r => X.hb + (im.height - r) * k;   // (world height of a row of the end picture)
+  // (each end arch's tube peaks 137 picture pixels in from its cut and comes down to the cut: one tube carries on from each arch, so
+  // from one peak to the other is two and a half turns, and the tubes leave both cuts at the arch's own height and slope)
+  const cr = 137 * k, per = (X.x1 - X.x0 + 2 * cr) / 2.5, cy = ry(96), amp = 80 * k, rad = 0.2, xc = X.x0 - cr;
+  const yAt = (x, ph) => cy + amp * Math.cos((x - xc) / per * Math.PI * 2 + ph);
+  const a0 = Math.max(X.x0, cam.x - 1), a1 = Math.min(X.x1, cam.x + viewW() + 1), st = 0.08;
+  // the piers: a column down into the water with a Y bracket under the deck
+  for (let x = X.x0 + per * 0.75; x < X.x1 - 1; x += per) {
+    if (sx(x + 1) < 0 || sx(x - 1) > W) continue;
+    const top = ry(236), wy = SG_WY - 0.2;
+    ctx.fillStyle = '#26262c'; ctx.fillRect(sx(x - 0.24), sy(top), 0.48 * U, (top - wy) * U);
+    ctx.fillStyle = '#b8b8c4'; ctx.fillRect(sx(x - 0.18), sy(top), 0.36 * U, (top - wy) * U);
+    ctx.fillStyle = '#8e8e9c'; ctx.fillRect(sx(x + 0.06), sy(top), 0.12 * U, (top - wy) * U);
+    ctx.strokeStyle = '#26262c'; ctx.lineWidth = 0.2 * U; ctx.lineCap = 'round';
+    for (const d of [-1, 1]) { ctx.beginPath(); ctx.moveTo(sx(x), sy(top - 0.7)); ctx.lineTo(sx(x + d * 0.9), sy(top)); ctx.stroke(); }
+    ctx.strokeStyle = '#b8b8c4'; ctx.lineWidth = 0.12 * U;
+    for (const d of [-1, 1]) { ctx.beginPath(); ctx.moveTo(sx(x), sy(top - 0.7)); ctx.lineTo(sx(x + d * 0.9), sy(top)); ctx.stroke(); }
+    ctx.fillStyle = '#26262c'; ctx.fillRect(sx(x - 0.42), sy(wy + 0.35), 0.84 * U, 0.4 * U); ctx.fillStyle = '#c4c4ce'; ctx.fillRect(sx(x - 0.36), sy(wy + 0.3), 0.72 * U, 0.3 * U);
+  }
+  const tube = (ph, front) => {   // one tube: only the half that is in front (going down to the right) or behind
+    const segs = []; let cur = null;
+    for (let x = a0; x <= a1 + st; x += st) {
+      const xx = Math.min(x, a1), th = (xx - xc) / per * Math.PI * 2 + ph, f = Math.sin(th) > 0;
+      if (f === front) { if (!cur) segs.push(cur = []); cur.push([sx(xx), sy(yAt(xx, ph))]); } else cur = null;
+    }
+    for (const [w, c, dy] of [[rad * 2, '#1e1d22', 0], [rad * 2 - 0.09, '#a9a8ba', 0], [rad * 0.45, '#7e7c90', -rad * 0.45], [rad * 0.6, '#d6d8e0', rad * 0.35]]) {
+      ctx.strokeStyle = c; ctx.lineWidth = w * U; ctx.lineCap = 'butt'; ctx.lineJoin = 'round';
+      for (const sg of segs) { if (sg.length < 2) continue; ctx.beginPath(); sg.forEach(([px, py], i) => i ? ctx.lineTo(px, py - dy * U) : ctx.moveTo(px, py - dy * U)); ctx.stroke(); }
+    }
+    for (let i = 0, x = X.x0 + 0.35; x < X.x1 - 0.2; x += 0.62, i++) {   // (its lights)
+      if (x < a0 - 0.5 || x > a1 + 0.5) continue;
+      const th = (x - xc) / per * Math.PI * 2 + ph; if ((Math.sin(th) > 0) !== front) continue;
+      const c = SG_HX_LIGHTS[(i + (ph ? 2 : 0)) % 4], X1 = sx(x), Y1 = sy(yAt(x, ph)), tw = 0.75 + 0.25 * Math.sin(animT * 3 + i * 1.7);
+      const g = ctx.createRadialGradient(X1, Y1, 0, X1, Y1, 0.3 * U); g.addColorStop(0, c); g.addColorStop(1, 'rgba(255,255,255,0)');
+      ctx.globalAlpha = 0.85 * tw; ctx.fillStyle = g; ctx.beginPath(); ctx.arc(X1, Y1, 0.3 * U, 0, 7); ctx.fill();
+      ctx.globalAlpha = 1; ctx.fillStyle = c; ctx.beginPath(); ctx.arc(X1, Y1, 0.09 * U, 0, 7); ctx.fill();
+      ctx.fillStyle = '#fffdf6'; ctx.beginPath(); ctx.arc(X1, Y1, 0.05 * U, 0, 7); ctx.fill();
+    }
+  };
+  // the deck and its glass rail: the end picture's own column, carried across
+  const c0 = 20, r0 = 118, r1 = 244;
+  ctx.drawImage(im, c0, r0, 1, r1 - r0, sx(a0) - 1, sy(ry(r0)), (a1 - a0) * U + 2, (r1 - r0) * k * U);
+  const rt = ry(126), rb = ry(168);   // (the rail's posts)
+  for (let x = X.x0 + 0.7; x < X.x1 - 0.3; x += 1.4) {
+    if (x < a0 - 0.2 || x > a1 + 0.2) continue;
+    ctx.fillStyle = '#232326'; ctx.fillRect(sx(x - 0.07), sy(rt), 0.14 * U, (rt - rb) * U); ctx.fillStyle = '#c8cad4'; ctx.fillRect(sx(x - 0.04), sy(rt), 0.08 * U, (rt - rb) * U);
+  }
+  // struts from the upper tube down to the rail, leaning in turn
+  ctx.lineCap = 'round';
+  for (let i = 0, x = X.x0 + per * 0.18; x < X.x1 - 0.3; x += per / 4, i++) {
+    if (x < a0 - 1 || x > a1 + 1) continue;
+    const ty = Math.max(yAt(x, 0), yAt(x, Math.PI)); if (ty < ry(110)) continue;
+    const bx = x + (i % 2 ? 0.55 : -0.55);
+    for (const [w, c] of [[0.17, '#232326'], [0.09, '#b6b8c6']]) { ctx.strokeStyle = c; ctx.lineWidth = w * U; ctx.beginPath(); ctx.moveTo(sx(x), sy(ty - 0.05)); ctx.lineTo(sx(bx), sy(rb)); ctx.stroke(); }
+  }
+  ctx.globalAlpha = 0.8; tube(0, false); tube(Math.PI, false); ctx.globalAlpha = 1;   // (the back halves, seen through the glass)
+  tube(0, true); tube(Math.PI, true);
+}
 // the Merlion's fountain at his foot: a jet of water, a burst of spray when it throws A up
 function sgJet() {
   const J = G.L.sgJet; if (!J || sx(J.x + 3) < 0 || sx(J.x - 3) > W) return;
@@ -8971,16 +9049,9 @@ function sgArch(D, out) {
 function sgInside() {
   const L = G.L, im = IMG.sg_in_forest;
   ctx.fillStyle = '#9ad2ee'; ctx.fillRect(0, 0, W, H);
-  if (im) {   // the dome zoomed out (like the Sagrada): the picture at 55% of the screen; above it the glass roof goes on up, drawn as sky and white ribs
-    const h = H * 0.55, w = h * im.width / im.height, bot = sy(0) + 0.04 * H, top = bot - h;
+  if (im) {   // the dome's picture fills the screen from the floor up, so its own glass roof and clouds reach the top (Ladi 2026-11-11)
+    const bot = sy(0) + 0.04 * H, h = Math.max(H * 0.55, bot + 2), w = h * im.width / im.height, top = bot - h;
     let x0 = -(((cam.x - L.sgDoor1) * U * 0.3) % w); if (x0 > 0) x0 -= w;
-    const g = ctx.createLinearGradient(0, 0, 0, top + 4); g.addColorStop(0, '#5fb4ea'); g.addColorStop(1, '#a6daf4');
-    ctx.fillStyle = g; ctx.fillRect(0, 0, W, top + 4);
-    ctx.strokeStyle = 'rgba(235,242,248,.95)'; ctx.lineWidth = Math.max(2, h * 0.012);
-    for (let x = x0; x < W + w; x += w - 1) {
-      for (let i = 0; i <= 10; i++) { const bx = x + i * w / 10, tx = x + w / 2 + (i - 5) * w / 10 * 0.55; ctx.beginPath(); ctx.moveTo(bx, top + 6); ctx.lineTo(tx, -4); ctx.stroke(); }   // (ribs leaning in towards the top)
-    }
-    for (let y = top - h * 0.16; y > -h * 0.2; y -= h * 0.16) { ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(W, y); ctx.stroke(); }   // (the rings between them)
     for (let x = x0; x < W; x += w - 1) ctx.drawImage(im, x, top, w, h);
   }
   ctx.fillStyle = 'rgba(230,245,255,.10)'; ctx.fillRect(0, 0, W, H);   // (mist)
@@ -9017,28 +9088,6 @@ function sgSkywalk() {
   const S = G.L.sgSky; if (!S || sx(S.x1) < 0 || sx(S.x0) > W) return;
   bxStrip('sg_skystrip', 1.0, S.x0, S.x1, S.y + 0.25, 0);
 }
-// the hotel: its glass lift's rails up the gap and the car (its glass front goes over A, in drawSgFront), the pool along the roof
-// deck, and the deck's fountain jets (taller for a moment when one throws him up)
-function sgMbs() {
-  const L = G.L, M = L.sgMbs; if (!M || sx(M.rx + M.rw + 2) < 0 || sx(M.towers[0] - 2) > W) return;
-  const P = L.sgPool; if (P) bxStrip('sg_pool', 0.9, P[0], P[1], P[2], 0.9);
-  ctx.strokeStyle = '#6a7480'; ctx.lineWidth = Math.max(2, 0.1 * U);
-  for (const x of [M.g0 + 0.18, M.g1 - 0.18]) { ctx.beginPath(); ctx.moveTo(sx(x), sy(M.sby - 0.5)); ctx.lineTo(sx(x), sy(M.rd + 2.75)); ctx.stroke(); }
-  ctx.fillStyle = '#9aa6b2'; for (let y = M.sby; y < M.rd + 2.6; y += 1.6) for (const x of [M.g0 + 0.18, M.g1 - 0.18]) ctx.fillRect(sx(x) - 0.12 * U, sy(y), 0.24 * U, 0.12 * U);   // (its brackets)
-  const m = L.sgLift; if (m) { const w = sgW('sg_mbs_lift', 2.7); bxImg('sg_mbs_lift', (M.g0 + M.g1) / 2 - w / 2, m.y - 0.2, 2.7); }
-  for (const j of L.sgJets || []) {
-    if (sx(j.x + 2) < 0 || sx(j.x - 1) > W) continue;
-    const e = j.s.bounceT !== undefined ? G.t - j.s.bounceT : 9, h = 2.2 * (1 + (e < 0.7 ? 1.2 * (1 - e / 0.7) : 0) + Math.sin(animT * 7 + j.x) * 0.05), im = IMG.sg_mbs_jet;
-    if (im) ctx.drawImage(im, sx(j.x), sy(M.rd + h), sgW('sg_mbs_jet', 2.2) * U, h * U);
-  }
-}
-function sgMbsFront() {
-  const m = G.L.sgLift, M = G.L.sgMbs; if (!m || sx(M.g1 + 1) < 0 || sx(M.g0 - 1) > W) return;
-  const w = sgW('sg_mbs_lift', 2.7), X = sx((M.g0 + M.g1) / 2 - w / 2 + 0.12), Y = sy(m.y + 2.35), ww = (w - 0.24) * U, hh = 2.25 * U;
-  ctx.fillStyle = 'rgba(190,225,255,.16)'; ctx.fillRect(X, Y, ww, hh);   // (its glass front, over him)
-  ctx.strokeStyle = 'rgba(255,255,255,.5)'; ctx.lineWidth = Math.max(1, 0.06 * U); ctx.beginPath(); ctx.moveTo(X + ww * 0.2, Y + hh * 0.1); ctx.lineTo(X + ww * 0.45, Y + hh * 0.35); ctx.stroke();
-  ctx.fillStyle = 'rgba(70,80,96,.9)'; ctx.fillRect(X, Y + hh * 0.55, ww, 0.07 * U);   // (the hand rail)
-}
 function drawSingapore(dt) {
   const L = G.L;
   kitDoorTick();
@@ -9056,8 +9105,8 @@ function drawSingapore(dt) {
   sgBands();
   sgWater();
   drawKit(a => a.back && !a.zone);
+  sgHelix();
   sgSkywalk();
-  sgMbs();
   sgWaterFront();
   for (const s of L.solids) if (s.kind === 'ground') sgGround(s);
   sgJoins();
@@ -9067,7 +9116,7 @@ function drawSingapore(dt) {
   drawKit(a => !a.back && !a.zone);
 }
 function drawSgFront() {
-  if (G.kitIn) sgInsideFront(); else { sgDoorsOut(true); sgBoat(true); sgBridges(); sgMbsFront(); }
+  if (G.kitIn) sgInsideFront(); else { sgDoorsOut(true); sgBoat(true); sgBridges(); }
   drawKitDoor(SG_EDGE);
   const F = G.flag; if (G.L.finale !== undefined && F && F.ride !== undefined && F.ride > 0.3 && !$('hud').hidden) $('hud').hidden = true;
 }
