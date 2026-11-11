@@ -3916,6 +3916,246 @@ const ALL_LEVELS = [
     b.end(WK + WKW - 0.4);
   },
 },
+{
+  // Singapore (plan: claude.ai/artifact/KW8WaPiJEUMjTsGJDNnbnM, Ladi's picks 2026-11-11: all recommended), built from the level kit on art
+  // made with the image maker (cut by london-runner/singapore/src/cut.py into atlas_sg*.webp). A hot afternoon going golden at the bay,
+  // dusk at the Helix Bridge, night at the Supertrees; A in his summer outfit. A taxi drops A at Boat Quay -> the shophouses (cafe awning
+  // bounces onto the roofs, special 1) -> a bumboat down the river (duck the old bridges, jump the wake, special 2) -> the Merlion (its
+  // spout launches him, special 3) -> Jubilee Bridge and the Esplanade -> the Helix Bridge at dusk -> the Gardens -> inside the Cloud
+  // Forest (the one inside: pitcher plants and mist, special 4 behind the waterfall) -> the Supertrees at night (wall-jump between two,
+  // special 5, the skywalk) -> the light show with Marina Bay Sands behind.
+  id: 'singapore', name: 'Singapore', plate: 'Singapore', area: 'singapore', city: 'Singapore',
+  build(b) {
+    const L = b.L, SG_ASP = {"sg_taxi":1.83,"sg_taxi:h":2.0,"sg_taxi_open":1.87,"sg_taxi_open:h":2.0,"sg_taxi_door":0.5974,"sg_taxi_door:h":1.536,"sg_boat":2.25,"sg_boat:h":3.16,"sg_boat_man":2.1059,"sg_boat_man:h":3.395,"sg_boat_front":2.4148,"sg_boat_front:h":1.757,"sg_sh_green":0.7413,"sg_sh_green:h":6.588,"sg_sh_pink":0.5397,"sg_sh_pink:h":9.075,"sg_sh_yellow":0.5382,"sg_sh_yellow:h":9.088,"sg_sh_blue":0.4581,"sg_sh_blue:h":10.688,"sg_sh_red":0.448,"sg_sh_red:h":10.325,"sg_sh_lilac":0.7964,"sg_sh_lilac:h":6.988,"sg_sh_peach":0.7724,"sg_sh_peach:h":7.075,"sg_sh_white":0.6845,"sg_sh_white:h":6.875,"sg_endl":1.166,"sg_endl:h":6.725,"sg_narrow":0.454,"sg_narrow:h":6.625,"sg_endr":1.1679,"sg_endr:h":6.738,"sg_terrace":3.2811,"sg_terrace:h":3.213,"sg_tiles":4.2644,"sg_tiles:h":2.275,"sg_lanterns":1.3231,"sg_lanterns:h":4.2,"sg_parasol":1.0615,"sg_parasol:h":2.6,"sg_lamp":0.3405,"sg_lamp:h":4.2,"sg_pot":0.85,"sg_pot:h":2.0,"sg_bollard":0.9333,"sg_bollard:h":0.9,"sg_planter":1.87,"sg_planter:h":1.0,"sg_bench":1.83,"sg_bench:h":1.0,"sg_steps":1.56,"sg_steps:h":3.0,"sg_wake":5.4125,"sg_wake:h":0.8,"sg_splash":1.8244,"sg_splash:h":1.4,"sg_jetty":3.0214,"sg_jetty:h":1.4,"sg_cavenagh":4.9407,"sg_cavenagh:h":3.6,"sg_anderson":7.8462,"sg_anderson:h":3.0,"sg_merlion":0.9113,"sg_merlion:h":8.0,"sg_fullerton":2.3577,"sg_fullerton:h":9.0,"sg_shelter":1.731,"sg_shelter:h":3.6,"sg_deck":2.3682,"sg_deck:h":2.2,"sg_jubilee":7.2333,"sg_jubilee:h":2.0,"sg_esplanade":2.0276,"sg_esplanade:h":9.5,"sg_stage":1.9283,"sg_stage:h":5.0,"sg_helix":6.9625,"sg_helix:h":4.0,"sg_helixpod":1.879,"sg_helixpod:h":4.075949367088608,"sg_helixend":3.6656,"sg_helixend:h":4.113924050632911,"sg_dome":2.0873,"sg_dome:h":12.0,"sg_dragonfly":0.9187,"sg_dragonfly:h":3.2,"sg_heliconia":2.1,"sg_heliconia:h":1.8,"sg_lily":2.73,"sg_lily:h":1.0,"sg_gbridge":2.6571,"sg_gbridge:h":1.4,"sg_glamp":0.7812,"sg_glamp:h":1.6,"sg_orchidwall":2.5917,"sg_orchidwall:h":1.2,"sg_pitch1":0.98,"sg_pitch1:h":1.5,"sg_pitch2":1.13,"sg_pitch2:h":2.0,"sg_pitch3":1.2,"sg_pitch3:h":2.7,"sg_vent":1.1167,"sg_vent:h":1.8,"sg_cloudwalk":2.6063,"sg_cloudwalk:h":2.6,"sg_falls":1.8179,"sg_falls:h":3.6,"sg_treefern":1.2254,"sg_treefern:h":4.0,"sg_orchids":1.225,"sg_orchids:h":1.6,"sg_brom":1.45,"sg_brom:h":1.2,"sg_boulder":1.6615,"sg_boulder:h":1.3,"sg_sundew":1.1643,"sg_sundew:h":1.4,"sg_fern":1.4579,"sg_fern:h":1.9,"sg_arch":1.3995,"sg_arch:h":4.4,"sg_apier":0.4249,"sg_apier:h":4.357,"sg_leaves":10.225,"sg_leaves:h":0.4,"sg_dframe":0.8545,"sg_dframe:h":4.4,"sg_glass":0.2225,"sg_glass:h":4.364,"sg_dpier":0.1176,"sg_dpier:h":4.251,"sg_stpair":0.75,"sg_stpair:h":11.0,"sg_st1":0.8,"sg_st1:h":11.0,"sg_st2":0.8915,"sg_st2:h":8.9,"sg_st3":1.0076,"sg_st3:h":6.917,"sg_skywalk":8.76,"sg_skywalk:h":1.0,"sg_stairs":0.5815,"sg_stairs:h":9.0,"sg_stdeck":1.0693,"sg_stdeck:h":7.345,"sg_raintree":1.4623,"sg_raintree:h":6.5,"sg_royalpalm":0.5775,"sg_royalpalm:h":7.5,"sg_travellers":1.0659,"sg_travellers:h":5.0,"sg_frangipani":0.985,"sg_frangipani:h":4.0,"sg_bamboo":0.6689,"sg_bamboo:h":4.5,"sg_cloud0":1.8462,"sg_cloud0:h":2.0,"sg_cloud1":2.0,"sg_cloud1:h":1.6,"sg_cloud2":2.9091,"sg_cloud2:h":1.4,"sg_cloud3":1.6512,"sg_cloud3:h":1.0,"sg_cloud4":2.475,"sg_cloud4:h":0.8,"sg_mynah0":1.1167,"sg_mynah0:h":0.6,"sg_mynah1":1.5,"sg_mynah1:h":0.6,"sg_mynah2":1.4167,"sg_mynah2:h":0.6,"sg_mynah_st":1.0667,"sg_mynah_st:h":0.6,"sg_kingfisher":1.3,"sg_kingfisher:h":0.6,"sg_egret0":1.275,"sg_egret0:h":0.8,"sg_egret1":1.9,"sg_egret1:h":0.8,"sg_fly0":1.125,"sg_fly0:h":0.4,"sg_fly1":1.125,"sg_fly1:h":0.4,"sg_fly2":1.125,"sg_fly2:h":0.4,"sg_bfly0":1.1143,"sg_bfly0:h":0.35,"sg_bfly1":1.1714,"sg_bfly1:h":0.35,"sg_bfly2":1.1714,"sg_bfly2:h":0.35,"sg_otters":4.2182,"sg_otters:h":1.1,"sg_otter_swim":3.2286,"sg_otter_swim:h":0.7,"sg_jogger":0.5474,"sg_jogger:h":1.9,"sg_family":0.75,"sg_family:h":1.964,"sg_diner":0.7594,"sg_diner:h":1.868,"sg_umbrella":0.5721,"sg_umbrella:h":2.082,"sg_gardener":0.6579,"sg_gardener:h":1.904,"sg_kid":0.4912,"sg_kid:h":1.707,"sg_statue":1.9,"sg_statue:h":2.6,"sg_cafes":3.4812,"sg_cafes:h":6.092,"stpair":{"inL":0.3382,"inR":0.6921,"walk":0.9718,"walkB":0.7855}};
+    L.killY = -9; L.startX = 2.0; L.camMin = -12; L.introCam = 'centre'; L.outfit = 'dxb';   // the summer outfit
+    const aw = (k, h) => SG_ASP[k] * h;
+    const H_ = k => SG_ASP[k + ':h'];
+    const ground = (x0, x1, style, y = 0) => b.groundTop(x0, x1, y, style);
+    const art = (key, x, y, h, o = {}) => b.kitArt(key, x, y, h, Object.assign({ w: aw(key, h) }, o));
+    const back = (key, x, h, o = {}) => art(key, x, o.y || 0, h, Object.assign({ back: true }, o));
+    const solid = (x, w, h, y = 0, o = {}) => { const s = Object.assign({ kind: 'block', x, y, w, h, style: 'hidden' }, o); L.solids.push(s); return s; };
+    const Y = y => ({ y: y || 0 });
+    const lean = (key, x, h, sh, y) => { const w = aw(key, h); return b.kitProp(key, x, w, h, Object.assign(Y(y), { solid: [0.1, w - 0.2, sh], ledge: [0.1, sh, w - 0.2] })); };
+    const hop = (key, x, h, y, sh = Math.min(h, 1.0)) => { const w = aw(key, h); return b.kitProp(key, x, w, h, Object.assign(Y(y), { solid: [0.1, w - 0.2, sh] })); };
+    const prop = (key, x, h, y) => b.kitProp(key, x, aw(key, h), h, Y(y));
+    const bounce = (x, w, y, h, note, o = {}) => { const s = Object.assign({ kind: 'ledge', x, y, w, bounce: h, note }, o); L.oneways.push(s); return s; };
+    const swapAt = (x, to, why) => (L.kitSwaps = L.kitSwaps || []).push({ x, to, why });   // behind something reaching above the sky band: not a door
+    const zone = (x0, x1, z) => { for (const a of L.kitArt) if (a.zone === undefined && !a.out && a.x > x0 - 0.1 && a.x < x1) a.zone = z; };
+    const house = (k, top = 0.97, sc = 1) => { const h = H_(k) * sc, w = aw(k, h); return { key: k, w, h, ledges: [[0.4, top * h, w - 0.8]] }; };
+    L.sgLife = [];                                       // birds, otters, people, dragonflies: [key, x, y, kind]
+    L.sgJoins = [];                                      // where two kinds of ground meet (a granite kerb post stands there)
+    L.sgWater = [];                                      // stretches of river or bay under the deck / the boat: [x0, x1, surface]
+    L.rides = []; L.camFloor = [];
+    const WY = -2.4;                                     // the river's and the bay's surface
+
+    // ---------- 1. Boat Quay: the taxi drops A; the shophouses; the cafe awnings bounce him onto the roofs (special 1) ----------
+    b.wall(-12.5, 1, 22);
+    L.sgTaxi = { x: -3.6 };                              // a blue taxi: A jumps out of its open back door, it drives away
+    hop('sg_bollard', 8.0, 0.9); prop('sg_lamp', 10.6, 4.2);
+    L.sgLife.push(['sg_mynah_st', 9.6, 0, 'stand'], ['sg_kingfisher', 18, 11.5, 'fly'], ['sg_mynah0', 34, 12.5, 'fly']);
+    const S1 = 0.76;                                     // (the tall front row, scaled so its tops and the skyline above them fit a phone held sideways)
+    const R1 = b.kitRow(13.0, ['sg_sh_pink', 'sg_sh_blue', 'sg_sh_yellow', 'sg_sh_red'].map(k => house(k, 0.97, S1)), { capL: house('sg_endl', 0.97, S1), capR: house('sg_endr', 0.97, S1) });
+    const E1 = 13.0 + aw('sg_endl', H_('sg_endl') * S1);
+    lean('sg_parasol', E1 + 1.0, 2.6, 1.35); L.sgLife.push(['sg_diner', E1 + 4.2, 0, 'stand']);
+    hop('sg_planter', E1 + 7.0, 1.0); b.coins(E1 + 7.2, 2.2, 3, 0.7);
+    prop('sg_lanterns', E1 + 10.0, 4.2); lean('sg_pot', E1 + 16.4, 2.0, 1.35);
+    L.sgLife.push(['sg_family', E1 + 18.5, 0, 'stand'], ['sg_jogger', E1 + 4, 0, 'jog']);
+    b.coins(E1 + 11.0, 2.0, 5, 1.0); b.coins(E1 + 21.0, 3.2, 3, 0.9);
+    // the riverside cafes (four stalls in a row, their awnings rising): bounce up them onto the shophouse roofs
+    const CF = R1 + 0.6, CW = aw('sg_cafes', H_('sg_cafes')), CS = CW / 21.208;   // (CS: the picture's units, if it was sized differently)
+    back('sg_cafes', CF, H_('sg_cafes'));
+    const AWN = [[1.62, 5.81, 2.97, 2.7, 1.0], [5.91, 10.07, 3.43, 2.9, 1.12], [10.1, 14.6, 3.79, 3.1, 1.26], [14.8, 19.7, 4.26, 3.3, 1.5]];
+    for (const [a0, a1, top, bh, note] of AWN) { bounce(CF + (a0 + 0.3) * CS, (a1 - a0 - 0.6) * CS, top, bh, note); b.arc(CF + (a0 + a1) / 2 * CS + 0.6, top + 0.7, 4, 3.0, bh * 0.7); }
+    const CR = 5.7;                                      // the cafes' roof line
+    b.ledge(CF + 14.8 * CS, CR, (21.0 - 14.8) * CS);
+    lean('sg_parasol', CF + 10.08 * CS - 0.5, 2.6, 1.35);   // (a parasol out front between two cafes)
+    // the second row of shophouses: lower, a roof run from the cafes' roof (special 1 at its end)
+    const R2X = CF + CW - 0.05;
+    const R2 = b.kitRow(R2X, ['sg_sh_green', 'sg_sh_white', 'sg_sh_lilac', 'sg_sh_peach'].map(k => house(k)), { capL: null, capR: house('sg_endr') });
+    L.kitWarn = (L.kitWarn || []).filter(w => !w.startsWith(`kitRow at ${R2X}`));   // (its left end is the cafes' row, not an end piece)
+    let rx = R2X; const tops = [];
+    for (const k of ['sg_sh_green', 'sg_sh_white', 'sg_sh_lilac', 'sg_sh_peach']) { tops.push([rx, H_(k) * 0.97, aw(k, H_(k))]); rx += aw(k, H_(k)) - 0.05; }
+    for (const [x, y, w] of tops) b.coins(x + 1.0, y + 1.0, 3, 1.0);
+    const PK = tops[3];
+    b.special(PK[0] + PK[2] - 1.0, PK[1] + 2.0);                                              // 1: at the far end of the shophouse roofs
+    L.sgLife.push(['sg_mynah_st', tops[1][0] + 2.0, tops[1][1], 'stand']);
+    hop('sg_bollard', R2X + 3.0, 0.9); L.sgLife.push(['sg_umbrella', R2X + 6.5, 0, 'stand']); lean('sg_pot', R2X + 9.0, 2.0, 1.35);
+    lean('sg_parasol', R2X + 13.0, 2.6, 1.35); hop('sg_planter', R2X + 18.0, 1.0);
+    b.coins(R2X + 4.0, 2.4, 3, 0.9); b.coins(R2X + 14.0, 3.4, 4, 1.0);
+
+    // ---------- 2. the bumboat: down the river steps, along the river under the old bridges (special 2), to the Merlion's landing ----------
+    const RS = R2 + 1.0, SW = aw('sg_steps', 3.0), BD = -1.5;   // the river steps go down to the boat's deck
+    ground(-14, RS, 'sgquay');
+    back('sg_steps', RS - 0.4, 3.0, { y: BD - 1.0 });
+    b.slope(RS, 0.0, RS + SW * 0.62, BD); L.camFloor.push([RS, RS + SW * 0.62, 0, BD]);
+    ground(RS + SW * 0.62, RS + SW + 1.2, 'sglanding', BD);
+    L.sgLife.push(['sg_otters', RS - 6.5, 0, 'stand']);   // (an otter family on the quay by the steps)
+    const BX = RS + SW + 1.0, BE = BX + 52.0;
+    // the old bridges, side on, their stone piers standing in the river: A ducks as he goes under the deck and stays down till he's out
+    const UY = BD + 1.25;                                 // the underside of both decks: above a ducking boy, below a standing one
+    const BRG = [['cav', 'sg_cavenagh', BX + 12.0, 2.6, 0.122, 0.14, 0.857], ['and', 'sg_anderson', BX + 38.0, 2.2, 0.162, 0.093, 0.90]].map(([k, key, c, h, ub, a0, a1]) => {
+      const w = aw(key, h); return { k, key, x: c - w / 2, w, h, y: UY - ub * h, d0: c - w / 2 + a0 * w, d1: c - w / 2 + a1 * w };
+    });
+    const boat = { kind: 'sgboat', x0: BX, pts: [[BX, BD], [BE, BD]], v: 9.5, acc: 7.0, vEnd: 6.2, walkOut: 2.6, w0: 0.4, w1: 0, input: true, jump: 7.6, grav: 26,
+      seat: 0.0, up: 0, down: 0.75, exitY: BD, hits: BRG.map(B => ({ x: B.d0 - 0.35, w: B.d1 - B.d0 + 0.7, kind: 'sgbonk' })) };
+    L.rides.push(boat); L.sgBoat = boat; L.sgBridges = BRG; L.sgWY = WY;
+    L.camFloor.push([RS + SW * 0.62, BE + 6, BD]);
+    b.arc(BX + 24.5, BD + 1.4, 5, 4.0, 1.3);
+    b.special(BX + 24.5 + 2.0, BD + 2.7);                                                     // 2: at the top of the big wake jump between the bridges
+    for (const B of BRG) b.coins(B.d0 + 0.6, BD + 0.55, Math.floor((B.d1 - B.d0 - 1.2) / 1.3) + 1, 1.3);   // (low coins under each bridge: duck!)
+    L.sgWater.push([RS + SW * 0.55, BE + 3.0, WY]);
+    // the far bank: a granite quay wall, and the grand old post office building (the view changes to the bay behind it)
+    L.sgBank = [RS + SW, BE + 2.0];
+    const FU = BX + 34.0, FUW = aw('sg_fullerton', 9.0);
+    back('sg_fullerton', FU, 9.0, { grounded: true, bank: true });
+    swapAt(FU + FUW / 2, 'bay', 'behind the grand old post office on the far bank, as the boat passes it');
+    L.sgLife.push(['sg_otter_swim', BX + 10, WY + 0.05, 'swim'], ['sg_egret0', BX + 20, 10.5, 'fly'], ['sg_kingfisher', BX + 38, 9.5, 'fly']);
+    // the Merlion's landing: the boat ties up at the jetty and stays; up the steps to the park
+    const ML = BE - 1.0;
+    back('sg_jetty', BE - 2.6, 1.4, { y: WY - 0.15 });
+    ground(BE - 2.2, ML + 4.6, 'sglanding', BD);   // (long enough that he steps off the boat onto it before the steps start)
+    b.slope(ML + 4.6, BD, ML + 7.4, 0.0); L.camFloor.push([ML + 4.6, ML + 7.4, BD, 0]);
+    back('sg_shelter', ML + 7.8, 3.6); b.ledge(ML + 8.2, 3.45, aw('sg_shelter', 3.6) - 0.8);
+
+    // ---------- 3. Merlion Park: the Merlion's spout launches him over the bay (special 3), onto Jubilee Bridge ----------
+    const MP = ML + 7.4;
+    L.sgJoins.push(MP);
+    b.coins(ML + 8.8, 4.6, 4, 1.0);
+    prop('sg_royalpalm', ML + 12.6, 7.5); lean('sg_pot', ML + 16.6, 2.0, 1.35);
+    const MX = ML + 21.0, MW = aw('sg_merlion', 8.0);
+    back('sg_merlion', MX, 8.0, { flip: true });           // (facing right: his spout arcs out over the bay)
+    solid(MX + 0.3, MW * 0.55, 0.75);                       // the stone base: a knee-high step
+    const JET = MX + MW * 0.56;                             // the spout's foot: a jet that always throws him up and over
+    L.sgJet = { x: JET, w: 1.7, s: solid(JET, 1.7, 1.1, 0, { bounce: 9.0, noGrab: true }) };
+    b.arc(JET + 1.4, 3.4, 8, 9.0, 6.4);
+    b.special(JET + 5.3, 10.4);                                                               // 3: at the top of the Merlion's launch
+    const QE = MX + MW + 0.6;                               // the edge of the park: Jubilee Bridge goes on over the water
+    ground(MP, QE, 'sgprom'); L.sgJoins.push(QE);
+    const JB = QE - 0.2, JBW = aw('sg_jubilee', 2.0);
+    for (let i = 0; i < 2; i++) back('sg_jubilee', JB + i * (JBW - 0.4), 2.0, { y: -1.15, flip: i === 1 });
+    const JE = JB + 2 * JBW - 0.4;
+    ground(QE, JE, 'sgdeck'); L.sgWater.push([QE, JE, WY]);
+    L.sgLife.push(['sg_egret1', QE + 6, 11.5, 'fly'], ['sg_mynah1', JE - 4, 12.0, 'fly']);
+    b.coins(QE + 10.0, 2.2, 4, 1.0); lean('sg_pot', QE + 16.0, 2.0, 1.35); b.coins(JE - 7.0, 2.6, 3, 0.9);
+
+    // ---------- 4. the Esplanade: its stage to hop up, the spiky dome (the view changes to the gardens at dusk behind it) ----------
+    L.sgJoins.push(JE);
+    lean('sg_pot', JE + 2.0, 2.0, 1.35); L.sgLife.push(['sg_jogger', JE + 8, 0, 'jog']);
+    const STG = JE + 5.0, STW = aw('sg_stage', 5.0);
+    back('sg_stage', STG, 5.0);
+    solid(STG + STW * 0.2, STW * 0.6, 0.85); b.ledge(STG + STW * 0.12, 4.85, STW * 0.76);   // (its steps, and the top of its roof)
+    b.coins(STG + 1.2, 6.0, 6, 1.1);
+    const EX = STG + STW + 1.5, EW = aw('sg_esplanade', 9.5);
+    back('sg_esplanade', EX, 9.5);
+    swapAt(EX + EW / 2, 'gardens', 'behind the Esplanade dome (wide and tall)');
+    prop('sg_frangipani', EX - 1.4, 4.0); hop('sg_bench', EX + 3.0, 1.0); lean('sg_pot', EX + EW - 4.0, 2.0, 1.35);
+    b.coins(EX + 6.0, 2.2, 4, 1.0); b.coins(EX + 12.0, 3.0, 4, 1.0);
+    L.sgGold = [MX - 10, EX + EW / 2];
+
+    // ---------- 5. the Helix Bridge at dusk: up its ramp, the coins follow its spiral, down the other end into the gardens ----------
+    const HX = EX + EW + 2.0, HEW = aw('sg_helixend', H_('sg_helixend')), HSW = aw('sg_helix', 4.0), DY = 1.57, HB = DY - 1.85;
+    ground(JE, HX + 2.68, 'sgprom');
+    back('sg_helixend', HX, H_('sg_helixend'), { y: HB, flip: true });
+    b.slope(HX + 2.68, 0.0, HX + 9.58, DY); L.camFloor.push([HX + 2.68, HX + 9.58, 0, DY]);
+    const HS = HX + HEW - 0.3;
+    back('sg_helix', HS, 4.0, { y: DY - 1.63 });
+    const H2 = HS + HSW - 0.3;
+    back('sg_helixend', H2, H_('sg_helixend'), { y: HB });
+    ground(HX + 9.58, H2 + 5.5, 'sghelix', DY); L.sgWater.push([HX + 8.0, H2 + 7.5, WY]);
+    lean('sg_pot', HS + 6.0, 2.0, 1.35, DY); lean('sg_pot', HS + 19.0, 2.0, 1.35, DY);   // (planters on the deck: lean, then over)
+    for (let i = 0; i < 14; i++) { const x = HS + 1.0 + i * 1.9; L.coins.push({ x, y: DY + 1.6 + 1.1 * Math.sin(i * 0.9) }); }   // (along the spiral: jump in time)
+    b.slope(H2 + 5.5, DY, H2 + 12.4, 0.0); L.camFloor.push([HX + 9.58, H2 + 5.5, DY], [H2 + 5.5, H2 + 12.4, DY, 0]);
+    L.sgLife.push(['sg_egret0', HS + 8, 10.8, 'fly'], ['sg_egret1', HS + 20, 11.6, 'fly']);
+    const GA = H2 + 12.4;
+    L.sgJoins.push(GA);
+
+    // ---------- 6. Gardens by the Bay: the path to the Cloud Forest dome, THE DOOR ----------
+    prop('sg_travellers', GA + 1.0, 5.0); prop('sg_dragonfly', GA + 6.6, 3.2);
+    hop('sg_orchidwall', GA + 10.5, 1.2); b.coins(GA + 10.8, 2.4, 3, 0.8);
+    lean('sg_heliconia', GA + 16.5, 1.8, 1.35); b.coins(GA + 16.9, 2.8, 4, 0.8);
+    prop('sg_glamp', GA + 20.5, 1.6); L.sgLife.push(['sg_gardener', GA + 22.0, 0, 'stand'], ['sg_kid', GA + 24.0, 0, 'stand']); back('sg_lily', GA + 25.5, 1.0);
+    prop('sg_bamboo', GA + 29.5, 4.5);
+    L.sgLife.push(['sg_fly0', GA + 6, 2.6, 'dfly'], ['sg_bfly1', GA + 14, 2.2, 'bfly'], ['sg_fly2', GA + 22, 3.0, 'dfly'], ['sg_bfly0', GA + 27, 2.0, 'bfly']);
+    const DH = 9.6, DX = GA + 32.0, DW = aw('sg_dome', DH);   // (sized so its top stays on a phone held sideways)
+    back('sg_dome', DX, DH); L.sgDome = { x: DX, w: DW, h: DH };
+    const D1 = DX + DW * 0.5;                            // the glass doors in the middle of the dome
+    b.kitDoor(D1, { inside: true }); b.kitSwap(D1, 'cf_in'); L.sgDoor1 = D1;
+    ground(GA, D1 + 0.5, 'sggarden');
+
+    // ---------- 7. inside the Cloud Forest: pitcher plants bounce him, a mist burst lifts him to the cloud walk, special 4 behind the waterfall ----------
+    prop('sg_fern', D1 + 1.6, 1.9); lean('sg_boulder', D1 + 4.6, 1.6, 1.35);
+    const PT = D1 + 8.5, PITCH = [['sg_pitch1', 1.5, 3.2, 1.0], ['sg_pitch2', 2.0, 3.8, 1.19], ['sg_pitch3', 2.7, 4.6, 1.41]];
+    L.sgPitch = []; let px = PT;
+    for (const [k, h, bh, note] of PITCH) {
+      const w = aw(k, h); back(k, px, h, { pitch: true });
+      solid(px + w * 0.3, w * 0.4, h * 0.82, 0, { noGrab: true });
+      const o = bounce(px + w * 0.25, w * 0.5, h * 0.82 + 0.05, bh, note);
+      L.sgPitch.push({ x: px, w, h, k, o }); b.arc(px + w / 2 + 0.6, h + 0.6, 4, 2.6, bh * 0.8);
+      px += w + 2.4;
+    }
+    prop('sg_orchids', px + 0.5, 1.6); prop('sg_treefern', px + 3.0, 4.0);
+    // the mist vent: its burst always lifts him onto the cloud walk
+    const MV = px + 8.5, VW = aw('sg_vent', 1.8);
+    back('sg_vent', MV, 1.8, { vent: true });
+    L.sgVent = { x: MV, w: VW, s: solid(MV + VW * 0.2, VW * 0.6, 0.55, 0, { bounce: 6.4, noGrab: true }) };
+    const CK = MV + VW + 0.6, CKW = aw('sg_cloudwalk', 2.6), CKY = 2.6;   // the cloud walk on its steel legs
+    for (let i = 0; i < 3; i++) back('sg_cloudwalk', CK + i * (CKW - 0.3), 2.6, { y: CKY - 2.45 });
+    const CKE = CK + 3 * (CKW - 0.3);
+    b.ledge(CK + 0.1, CKY + 0.0, CKE - CK - 0.2);
+    b.coins(CK + 1.0, CKY + 1.2, 9, 1.4);
+    // the waterfall's rock ledge: special 4 waits on it, behind the falling water
+    const FL = CKE + 2.0, FLW = aw('sg_falls', 3.6);
+    back('sg_falls', FL, 3.6, { falls: true }); L.sgFalls = { x: FL, w: FLW };
+    solid(FL + FLW * 0.08, FLW * 0.84, 3.1, 0, { noGrab: true }); b.ledge(FL + FLW * 0.08, 3.1, FLW * 0.84);
+    b.special(FL + FLW * 0.72, 4.4);                                                          // 4: behind the waterfall, on the rock ledge
+    lean('sg_boulder', FL - 2.0, 1.6, 1.35);
+    prop('sg_brom', FL + FLW + 1.4, 1.2); lean('sg_sundew', FL + FLW + 4.0, 1.6, 1.35);
+    L.sgLife.push(['sg_bfly2', D1 + 12, 3.4, 'bfly'], ['sg_bfly0', FL - 4, 5.0, 'bfly'], ['sg_bfly1', FL + FLW + 3, 3.0, 'bfly']);
+    b.coins(FL + FLW + 2.0, 2.0, 4, 0.9);
+    const D2 = FL + FLW + 9.0;                            // out by the far glass doors into the night
+    L.sgDoor2 = D2; zone(D1, D2, 2);
+    b.kitDoor(D2, { inside: false }); b.kitSwap(D2, 'view');
+    ground(D1 + 0.5, D2 + 0.5, 'sgcf');
+    L.camFloor.push([D1 - 0.5, D2 + 0.5, 0]);
+    back('sg_dome', D2 - DW * 0.5, DH, { out: true }); L.sgDome2 = { x: D2 - DW * 0.5 };
+    for (const a of L.kitArt) if (a.out && a.zone === undefined) a.zone = 0;
+    const DE = D2 + DW * 0.5;
+
+    // ---------- 8. the Supertrees at night: wall-jump up between two (special 5), the skywalk, down the stair tower ----------
+    ground(D2 + 0.5, DE + 2.0, 'sgnight');
+    L.sgLife.push(['sg_bfly2', DE - 4, 2.4, 'bfly']);
+    lean('sg_heliconia', DE - 6.5, 1.8, 1.35); hop('sg_orchidwall', DE - 2.0, 1.2); prop('sg_glamp', DE + 1.0, 1.6);
+    const SP = DE + 4.0, SPW = aw('sg_stpair', 11.0), info = SG_ASP.stpair;
+    back('sg_stpair', SP, 11.0);
+    const IL = SP + info.inL * SPW, IR = SP + info.inR * SPW, GAP = 2.0, MID = (IL + IR) / 2;
+    const WL = MID - GAP / 2, WR = MID + GAP / 2, WALK = 11.0 * 0.829;
+    solid(SP + SPW * 0.1, WL - SP - SPW * 0.1, WALK - 0.4 - 2.4, 2.4); solid(WR, SP + SPW * 0.9 - WR, WALK - 0.4 - 2.4, 2.4);   // (from just above his head: he runs under, or climbs)
+    (L.kitClimbs = L.kitClimbs || []).push({ x: SP + SPW * 0.1, xr: WR, gap: GAP, hL: WALK - 0.4, hR: WALK - 0.4 });
+    for (let i = 0, y = 3.0; y < WALK - 1.0; i++, y += 1.45) b.coins(WL + (i % 2 ? GAP - 0.5 : 0.25), y, 1);
+    b.ledge(SP + SPW * 0.05, WALK, SPW * 0.93);                                                // the walkway between their canopies
+    b.special(MID, WALK + 1.5);                                                               // 5: over the walkway, above the gap
+    const SK = SP + SPW * 0.97, SKW = 14.0;                 // the skywalk goes on to a third Supertree and the stair tower
+    L.sgSky = { x0: SK - 0.2, x1: SK + SKW, y: WALK };
+    b.ledge(SK - 0.2, WALK, SKW + 0.2);
+    back('sg_st2', SK + 6.0, 8.9);
+    b.coins(SK + 1.0, WALK + 1.0, 8, 1.6);
+    lean('sg_heliconia', SK + 7.0, 1.8, 1.35);                                                 // (down below, under the skywalk)
+    const ST = SK + SKW - 1.0, TWW = aw('sg_stairs', 9.0);
+    back('sg_stairs', ST, 9.0); b.ledge(ST + 0.2, 9.0 * 0.95, TWW - 0.4);
+    for (const f of [0.73, 0.5, 0.27]) b.ledge(ST + TWW * 0.25, 9.0 * f, TWW * 0.6);         // (its landings, on the way down)
+    prop('sg_st3', SP - 8.0, 6.917); L.sgLife.push(['sg_bfly1', SP - 3, 2.2, 'bfly']);
+    b.coins(SP + 0.5, 2.0, 3, 0.9); b.coins(ST + TWW + 1.0, 2.2, 4, 1.0);
+    // ---------- 9. the ending: the light show, Marina Bay Sands lit up behind; A waves ----------
+    const FX = ST + TWW + 8.0;
+    ground(DE + 2.0, FX + 40, 'sgnight');
+    b.flag(FX); L.flagY = 0;
+    L.sgLife.push(['sg_bfly0', FX - 4, 2.6, 'bfly'], ['sg_bfly2', FX + 5, 3.0, 'bfly']);
+    L.sgFinale = true;
+    L.finale = FX + 4.5; L.finaleT = 7; L.sgView = FX + 4.5;
+    b.wall(FX + 30, 1, 40);
+    b.end(FX + 30);
+  },
+},
 ];
 // Tower Bridge is parked for now (Ladi 2026-10-28): its build and art stay, it just isn't in the game.
 const PARKED = ['towerbridge', 'practice'];
@@ -4091,6 +4331,8 @@ function rideTick(g, dt) {
       z[h.kind] = { t: z.t, hit };
       g.events.push({ type: h.kind, hit, x: z.s });
     }
+    // h.w (Singapore's bridges): a long low deck; once he's under it he stays ducked (and can't jump) until he's out the other side
+    for (const h of r.hits || []) if (h.w && z.s >= h.x && z.s < h.x + h.w) { z.tgt = -1; z.tt = Math.max(z.tt, 0.15); z.jy = 0; z.jvy = 0; p.buffer = 0; }
   }
   // r.walkOut (Barcelona cable car, Ladi 2026-11-09): this far from the station he starts walking out at running pace while the cabin
   // glides on and stops; the ride ends once it has stopped, with him already out on the deck and running
