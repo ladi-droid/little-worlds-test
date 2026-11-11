@@ -212,15 +212,15 @@ details p{font-weight:600;color:var(--muted)}
 </head><body>
 
 <nav class="top"><div class="in">
-  <a class="mark" href="index.html?v=1794404951">Little Worlds</a>
-  <a class="pill sm" href="builder.html?v=1794404951&fresh=1">Build their world</a>
+  <a class="mark" href="index.html?v=1794405044">Little Worlds</a>
+  <a class="pill sm" href="builder.html?v=1794405044&fresh=1">Build their world</a>
 </div></nav>
 
 <header class="strip"><div class="torn" id="torn"></div><h1 class="outline" id="headline">Welcome <span class="s">back</span></h1></header>
 
 <aside class="side" id="side" aria-label="Account">
-  <a class="logo" href="index.html?v=1794404951">Little Worlds</a>
-  <a class="nav" href="#account"><i>⌂</i>Overview</a><a class="nav" href="#worlds"><i>★</i>Worlds</a><a class="nav" href="#plan"><i>£</i>Plan &amp; billing</a><a class="nav" href="#you"><i>⚙</i>Settings</a><a class="nav" href="#help"><i>?</i>Help</a><a class="nav" href="feedback.html?v=1794404951"><i>✎</i>Feedback</a>
+  <a class="logo" href="index.html?v=1794405044">Little Worlds</a>
+  <a class="nav" href="#account"><i>⌂</i>Overview</a><a class="nav" href="#worlds"><i>★</i>Worlds</a><a class="nav" href="#plan"><i>£</i>Plan &amp; billing</a><a class="nav" href="#you"><i>⚙</i>Settings</a><a class="nav" href="#help"><i>?</i>Help</a><a class="nav" href="feedback.html?v=1794405044"><i>✎</i>Feedback</a>
   <div class="me" id="sideMe"></div>
 </aside>
 <main class="wrap">
@@ -262,7 +262,7 @@ details p{font-weight:600;color:var(--muted)}
 (()=>{
 const $=s=>document.querySelector(s);
 const esc=t=>String(t).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
-const DOMAIN='myworld.games',GAME='play.html?v=1794404951';
+const DOMAIN='myworld.games',GAME='play.html?v=1794405044';
 const playLink=g=>{const c={};['name','kid','style','acc','skin','hair','hood','jog','shoe','worlds','slug'].forEach(k=>{if(g[k]!==undefined)c[k]=g[k]});c.paid=true;
   return GAME+'&w='+btoa(unescape(encodeURIComponent(JSON.stringify(c)))).replace(/\+/g,'-').replace(/\//g,'_').replace(/=+$/,'')};
 const TRIPS={woolwich:['Woolwich','ui_card_woolwich.webp','#6d3fc0'],brixton:['Brixton','ui_card_brixton.webp','#e8701c'],greenwich:['Greenwich','ui_card_greenwich.webp','#00a4a7'],canarywharf:['Canary Wharf','ui_card_canarywharf.webp','#1f62b4'],
@@ -327,7 +327,7 @@ function renderAccount(){
 function feedbackLink(){let f={};try{f=JSON.parse(localStorage.getItem('lw_feedback_v2')||'{}')}catch(e){}
   const p=f.parts||{},one=p[1]||{},two=p[2]||{};
   if(one.done&&two.done)return '';
-  return `<a class="fbk" href="feedback.html?v=1794404951"><span><b>Got a few minutes?</b> Tell us what you think of Little Worlds.</span><i>${one.i||two.i?'Carry on':'Give feedback'} ▸</i></a>`}
+  return `<a class="fbk" href="feedback.html?v=1794405044"><span><b>Got a few minutes?</b> Tell us what you think of Little Worlds.</span><i>${one.i||two.i?'Carry on':'Give feedback'} ▸</i></a>`}
 
 /* Overview (desktop dashboard) */
 function vOverview(a){
@@ -336,13 +336,13 @@ function vOverview(a){
   const cards=a.games.map(g=>{const st=stats(g),n=(g.worlds||[]).length,first=TRIPS[(g.worlds||[])[0]]||TRIPS.woolwich,url=`${g.slug}.${DOMAIN}`;
     return `<div class="dw ${g.paused?'paused':''}"><div class="pic" style="background-image:url(${first[1]})"><span class="chip ${g.paused?'off':''}">${g.paused?'Paused':'Playing'}</span><h4>${esc(g.name)}<span class="s">’s</span> World</h4></div>
       <div class="b"><span class="lk">${esc(url)}</span><div class="meta"><span>Trips finished</span><span>${st.done} of ${n}</span></div><div class="pbar"><i style="width:${n?Math.round(st.done/n*100):0}%"></i></div>
-      <div class="btns"><a class="pill" href="${playLink(g)}">Play ▸</a><a class="pill ghost" href="builder.html?v=1794404951&edit=${encodeURIComponent(g.slug)}&step=1">Edit</a>
+      <div class="btns"><a class="pill" href="${playLink(g)}">Play ▸</a><a class="pill ghost" href="builder.html?v=1794405044&edit=${encodeURIComponent(g.slug)}&step=1">Edit</a>
         <button class="pill ghost" data-sharelink="https://${esc(url)}" data-name="${esc(g.name)}">Share</button><a class="pill ghost" href="#worlds" aria-label="More options for ${esc(g.name)}’s World">•••</a></div></div></div>`}).join('');
-  const add=room>0?`<a class="addw" href="builder.html?v=1794404951&fresh=1"><div><span class="plus">+</span><b>Add a world</b><p>${room} ${room>1?'spaces':'space'} left on your plan</p></div></a>`
-    :a.plan==='one'?`<a class="addw" href="builder.html?v=1794404951&fresh=1"><div><span class="plus">+</span><b>Add a world</b><p>Switch to Family for up to 4 worlds</p></div></a>`:'';
+  const add=room>0?`<a class="addw" href="builder.html?v=1794405044&fresh=1"><div><span class="plus">+</span><b>Add a world</b><p>${room} ${room>1?'spaces':'space'} left on your plan</p></div></a>`
+    :a.plan==='one'?`<a class="addw" href="builder.html?v=1794405044&fresh=1"><div><span class="plus">+</span><b>Add a world</b><p>Switch to Family for up to 4 worlds</p></div></a>`:'';
   const g0=a.games[0],g1=a.games[1]||a.games[0];
   const feed=g0?[['🏁',`${esc(g0.name)} finished ${esc(stats(g0).fav)}`,'Today, 4:12pm'],['🪙',`${esc(g1.name)} collected 60 coins`,'Yesterday'],['✏️',`You changed ${esc(g1.name)}’s trips`,'Monday']]:[];
-  return `<div class="dtop"><div><h2>Welcome back</h2><p>Here’s what’s happening in your worlds.</p></div><a class="pill" href="builder.html?v=1794404951&fresh=1">+ Build a new world</a></div>
+  return `<div class="dtop"><div><h2>Welcome back</h2><p>Here’s what’s happening in your worlds.</p></div><a class="pill" href="builder.html?v=1794405044&fresh=1">+ Build a new world</a></div>
     <div class="tiles">
       <a class="tile y" href="#worlds"><span>Worlds</span><b>${a.games.length} of ${p.max}</b><small>${p.label} plan</small></a>
       <a class="tile" href="#plan"><span>${a.cancelled?'Plan ends':'Next payment'}</span><b>${a.cancelled?fmt(nextPay(a)).split(' ').slice(0,2).join(' '):'£'+(a.yearly?p.y:p.m)}</b><small>${a.cancelled?'Worlds stay saved':fmt(nextPay(a))}</small></a>
@@ -402,8 +402,8 @@ function vWorlds(a){
   return `<div><p class="kicker">Logged in as ${esc(a.via==='apple'?'your Apple ID':a.via==='google'?'your Google account':a.email)}</p><h2 class="ph">Your <span class="hl">worlds</span></h2></div>
     <div class="wgrid">${games||'<div class="card"><h2>No worlds yet</h2><p class="lede">Build one to see it here.</p></div>'}</div>
     <div class="card"><p class="kicker">Add a world</p>
-      ${room>0?`<p class="lede">Your plan has room for ${room} more ${room>1?'worlds':'world'}.</p><a class="pill wide" href="builder.html?v=1794404951&fresh=1">Build another world ▸</a>`
-        :a.plan==='one'?`<p class="lede">The Family plan gives you up to 4 worlds (up to 4 children) for £? a month.</p><a class="pill wide" href="builder.html?v=1794404951&fresh=1">Add a world ▸</a>`
+      ${room>0?`<p class="lede">Your plan has room for ${room} more ${room>1?'worlds':'world'}.</p><a class="pill wide" href="builder.html?v=1794405044&fresh=1">Build another world ▸</a>`
+        :a.plan==='one'?`<p class="lede">The Family plan gives you up to 4 worlds (up to 4 children) for £? a month.</p><a class="pill wide" href="builder.html?v=1794405044&fresh=1">Add a world ▸</a>`
         :'<p class="lede">Your Family plan is full, with 4 worlds. Delete one to make room.</p>'}</div>
     <div class="card"><div><p class="kicker">Just landed</p><h2>New trips</h2></div><p class="lede">Swap any of these into their world. They keep their coins and progress.</p>
       <div class="newtrips">${nt}</div><a class="pill ghost wide" href="${swapTo}">Swap trips ▸</a></div>`;
