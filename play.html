@@ -18,7 +18,7 @@ html,body{height:100%;min-height:100lvh}
 }
 </style>
 <script>window.LW_SITE_MODE=1;(function(){var n='';try{var w=new URLSearchParams(location.search).get('w');if(w)n=JSON.parse(decodeURIComponent(escape(atob(w.replace(/-/g,'+').replace(/_/g,'/'))))).name||'';if(!n)n=(JSON.parse(localStorage.getItem('lw.config')||'null')||{}).name||''}catch(e){}window.LW_NAME=n.trim();if(window.LW_NAME)document.documentElement.classList.add('lw-loading');var c=(n.trim().charAt(0)||'').toUpperCase();if(/^[A-Z]$/.test(c)){document.querySelectorAll('link[rel=apple-touch-icon],link[rel=icon]').forEach(function(l){l.href='icons/'+(l.hasAttribute('data-dark')?'dark/':'')+c+'.png'})}})()</script>
-<script src="lw-ping.js?v=1794409784"></script>
+<script src="lw-ping.js?v=1794413689"></script>
 <!-- site-only:end -->
 </head><body>
 <meta charset="utf-8">
@@ -450,10 +450,10 @@ html.lw-loading .splash{visibility:hidden}
   </div>
 </section>
 
-<script src="kids/kids-meta.js?v=1794409784"></script>
-<script src="kids/kids.js?v=1794409784"></script>
-<script src="sfx.js?v=1794409784"></script>
-<script src="game.js?v=1794409784"></script>
+<script src="kids/kids-meta.js?v=1794413689"></script>
+<script src="kids/kids.js?v=1794413689"></script>
+<script src="sfx.js?v=1794413689"></script>
+<script src="game.js?v=1794413689"></script>
 <script>
 (() => {
 'use strict';
@@ -1350,7 +1350,7 @@ $('retryBtn').addEventListener('click', () => startLevel(levelIndex));
 // If the builder opened this tab, close it and show the builder again; otherwise open the builder with this child's world filled in.
 let lwJoinEnd = false;
 function lwBackToBuilder() {
-  const url = 'builder.html?v=1794409784&w=' + lwEncode(LW);
+  const url = 'builder.html?v=1794413689&w=' + lwEncode(LW);
   try { if (window.opener && !window.opener.closed && /builder\.html/.test(window.opener.location.pathname)) { window.opener.focus(); window.close(); setTimeout(() => { location.href = url; }, 400); return; } } catch (e) {}
   location.href = url;
 }
@@ -9685,11 +9685,11 @@ const DS_CAR = {
   ds_c2: { w: 2.085, h: 1.645, a: [0.156, 0.781], cr: 0.7872, aw: 0.29 },
   ds_c3: { w: 2.19, h: 1.55, a: [0.1724, 0.7888], cr: 0.7903, aw: 0.28 },
   // the Lagos outfit in the same buggy (lined up on the pictures above; lagos_outfit.py)
-  lg_b_drive: { w: 2.3255, h: 1.9567, a: [0.1707, 0.7594], cr: 0.8003, aw: 0.2607 },
-  lg_b_drive2: { w: 2.5568, h: 2.0005, a: [0.2042, 0.7347], cr: 0.7563, aw: 0.2348 },
-  lg_b_air: { w: 2.5938, h: 2.1188, a: [0.1951, 0.747], cr: 0.767, aw: 0.2481 },
-  lg_c1: { w: 3.5305, h: 2.5182, a: [0.1142, 0.561], cr: 0.7456, aw: 0.2099 },
-  lg_c2: { w: 2.125, h: 1.775, a: [0.1625, 0.7757], cr: 0.7887, aw: 0.2845 },
+  lg_b_drive: { w: 2.4005, h: 1.8942, a: [0.1862, 0.7565], cr: 0.8267, aw: 0.2526 },
+  lg_b_drive2: { w: 2.5006, h: 1.9442, a: [0.1788, 0.7262], cr: 0.8312, aw: 0.2425 },
+  lg_b_air: { w: 2.338, h: 2.1067, a: [0.1698, 0.7553], cr: 0.7581, aw: 0.2593 },
+  lg_c1: { w: 2.5881, h: 2.1067, a: [0.1703, 0.6993], cr: 0.7641, aw: 0.2343 },
+  lg_c2: { w: 2.3193, h: 2.0505, a: [0.1846, 0.7749], cr: 0.7911, aw: 0.2614 },
   ds_jeep: { w: 6.8, h: 1.994, a: [0.2121, 0.8139], cr: 0.6568, aw: 0.16 },   // the made-up grey off-roader
 };
 const DS_BUGGY_WB = (0.7957 - 0.1686) * 2.188, DS_BUGGY_R = 0.36, DS_JEEP_WB = (0.8139 - 0.2121) * 6.8, DS_JEEP_R = 0.57;

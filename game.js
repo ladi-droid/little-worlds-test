@@ -3761,20 +3761,25 @@ const ALL_LEVELS = [
     const S1 = D1 + 5.0, SW = aw('lg_seats', 3.0);      // two blocks of seats rising: up the rows
     for (const x of [S1, S1 + SW + 1.4]) { back('lg_seats', x, 3.0, { y: ST }); solid(x + 0.1, SW - 0.2, 1.0, ST); solid(x + 2.0, SW - 2.1, 2.0, ST); solid(x + 3.9, SW - 4.0, 3.0, ST); b.coins(x + 1.2, ST + 2.6, 3, 1.9, 0.9); }
     const DR = S1 + 2 * SW + 5.0;
-    const DRUMS = [['lg_drum1', 1.35, 3.2, 1.0], ['lg_drum2', 2.0, 3.8, 1.19], ['lg_drum3', 2.6, 4.8, 1.41]];
+    // the talking drums chain (Ladi 2026-11-11: "make sure the character bounces on them so we can hear them"): they stand close together;
+    // a tap jumps him onto the small one, and each drum throws him onto the next, bigger one: small, mid, big, each its own voice,
+    // the big one sending him up to special 2.
+    const DRUMS = [['lg_drum1', 1.2, 1.1, 2.2, 1.0, 0.3], ['lg_drum2', 2.0, 1.9, 3.0, 1.19, 0.3], ['lg_drum3', 2.6, 2.5, 4.6, 1.41, 3.0]];   // picture, height, top, bounce, voice, gap after
     L.lgDrums = [];
     let dx = DR;
-    for (const [k, h, bh, note] of DRUMS) {
+    for (const [k, h, top, bh, note, gap] of DRUMS) {
       const w = aw(k, h); back(k, dx, h, { y: ST, drum: true });
-      solid(dx + 0.1, w - 0.2, Math.max(1.35, h - 0.1), ST, { noGrab: true }); const o = { kind: 'ledge', x: dx + 0.05, y: ST + Math.max(1.35, h - 0.1) + 0.1, w: w - 0.1, bounce: bh, note, talk: true };   // (talk: it sounds like a talking drum)
-      L.oneways.push(o);   // (Ladi round 4: "can't hear the drums, are they bouncy?": this line had slipped into the comment, so they were plain blocks)
-      L.lgDrums.push({ x: dx, w, h, k, o }); b.arc(dx + w / 2 + 0.6, ST + h + 0.6, 4, 2.6, bh * 0.8);
-      dx += w + 2.6;
+      const o = solid(dx + 0.1, w - 0.2, top, ST, { noGrab: true, bounce: bh, note, talk: true });   // (talk: it sounds like a talking drum)
+      L.lgDrums.push({ x: dx, w, h, k, o });
+      dx += w + gap;
     }
+    for (let i = 0; i < 2; i++) { const n = L.lgDrums[i + 1]; L.lgDrums[i].o.hopTo = [n.x + n.w / 2, ST + DRUMS[i + 1][2]]; }   // each drum throws him onto the middle of the next
+    L.lgDrums[0].o.noVault = true; L.lgDrums[0].o.catchHop = true;                       // (he leans on the small drum and a tap jumps him onto its middle: 6s rule)
+    for (let i = 0; i < 2; i++) { const c = L.lgDrums[i], n = L.lgDrums[i + 1]; b.arc(c.x + c.w / 2 + 0.5, ST + DRUMS[i][2] + 1.2, 4, n.w / 2 + n.x - c.x - c.w / 2 - 0.8, DRUMS[i][3] * 0.6); }   // coins along each throw
     const DL = L.lgDrums[2];
     b.special(DL.x + DL.w / 2 + 2.2, ST + DL.h + 4.6);                                     // 2: at the top of the big drum's bounce
-    lean('lg_djembe', dx + 2.4, 2.4, 1.35, ST); b.coins(dx + 2.6, ST + 3.2, 4, 0.8);
-    const S2 = dx + 7.0;
+    lean('lg_djembe', dx + 4.6, 2.4, 1.35, ST); b.coins(dx + 4.8, ST + 3.2, 4, 0.8);   // (he lands on the floor after the big drum, then leans on this one: 6s rule)
+    const S2 = dx + 8.2;
     back('lg_seats', S2, 3.0, { y: ST }); solid(S2 + 0.1, SW - 0.2, 1.0, ST); solid(S2 + 2.0, SW - 2.1, 2.0, ST); solid(S2 + 3.9, SW - 4.0, 3.0, ST); b.coins(S2 + 1.2, ST + 2.6, 3, 1.9, 0.9);
     b.arc(S2 + SW + 0.4, ST + 3.8, 4, 3.0, 1.2);
     const D2 = S2 + SW + 7.0;                            // out by the far glass doors, down the theatre's other steps
@@ -4406,6 +4411,7 @@ function tick(g, dt) {
   if (p.buffer > 0) {
     if (p.onGround || p.coyote > 0) {
       p.vy = P.jumpV; p.onGround = false; p.coyote = 0; p.buffer = 0; p.rising = true; p.airT = 0; p.cut = true;
+      if (p.blocked && p.blockWall && p.blockWall.catchHop) p.hopStop = p.blockWall.x + p.blockWall.w / 2;
       g.events.push({ type: 'jump', x: p.x, y: p.y });
     } else if (p.wall || p.wallCoyote > 0) {
       const side = p.wall || p.wallSide;
@@ -4437,6 +4443,8 @@ function tick(g, dt) {
   const belt = p.onGround ? (p.ground && p.ground.belt) || 0 : p.carry || 0;
   p.carry = belt;
   p.vx = p.dir * P.speed * slow + belt;
+  if (p.hopVX !== undefined && !p.onGround) p.vx = p.hopVX;   // a hop aimed at a spot (Lagos's talking drums throw him from one drum onto the next)
+  if (p.hopStop !== undefined && !p.onGround && p.x + PW / 2 >= p.hopStop) p.vx = Math.min(p.vx, 0);   // (a jump onto a small drum stops over its middle)
   if (wind) p.vx += p.onGround ? wind[2] * 0.25 : wind[2];
 
   // moving platforms: set their height for this moment, and carry A if he is standing on one
@@ -4517,10 +4525,12 @@ function tick(g, dt) {
     }
   }
   if (p.onGround && !wasGround) { p.dir = 1; p.landT = 0.14; g.events.push({ type: 'land', x: p.x, y: p.y, hard: p.airT > 0.5 }); }
-  if (p.onGround) { p.coyote = P.coyote; p.airT = 0; p.wall = 0; p.cut = false; }
+  if (p.onGround) { p.coyote = P.coyote; p.airT = 0; p.wall = 0; p.cut = false; p.hopVX = undefined; p.hopStop = undefined; }
   // fly-tipped mattress: landing on it bounces A up high
   if (p.onGround && !wasGround && p.ground && (p.ground.kind === 'mattress' || p.ground.bounce) && (!p.ground.jet || mistOn(p.ground.jet, g.t))) {
     p.vy = Math.sqrt(2 * P.gUp * (p.ground.bounce || 5.2)); p.ground.bounceT = g.t; p.onGround = false; p.rising = false; p.cut = false; p.coyote = 0;
+    const to = p.ground.hopTo;   // [x, top]: aim the bounce at the next drum (time up to the peak, then down to its top)
+    if (to) p.hopVX = (to[0] - p.x - PW / 2) / (p.vy / P.gUp + Math.sqrt(2 * Math.max(0.05, p.y + p.ground.bounce - to[1]) / P.gFall));
     g.events.push({ type: 'bounce', x: p.x, y: p.y, note: p.ground.note, talk: p.ground.talk });
   }
   else { p.coyote = Math.max(0, p.coyote - dt); p.airT += dt; }
@@ -4529,11 +4539,11 @@ function tick(g, dt) {
   const wasBlocked = p.blocked; p.blocked = false;
   if (hitWall) {
     const rise = hitWall.y + hitWall.h - p.y;
-    if (p.onGround && rise <= P.vaultMax && rise > 0 && !(p.ground && p.ground.trig)) {   // (no hopping out of a moving lift: he waits and walks out)
+    if (p.onGround && rise <= P.vaultMax && rise > 0 && !(p.ground && p.ground.trig) && !hitWall.noVault) {   // (no hopping out of a moving lift: he waits and walks out)
       p.vy = Math.sqrt(2 * P.gUp * (rise + 0.35)); p.onGround = false; p.rising = false; p.coyote = 0;
       g.events.push({ type: 'vault' });
     } else if (p.onGround) {
-      if (p.dir > 0) { if (!wasBlocked) g.events.push({ type: 'block' }); p.blocked = true; }
+      if (p.dir > 0) { if (!wasBlocked) g.events.push({ type: 'block' }); p.blocked = true; p.blockWall = hitWall; }
       else p.dir = 1;
     } else if (p.lockT <= 0 && !hitWall.noGrab) {   // (lift shaft walls are too smooth to cling to)
       if (!p.wall) g.events.push({ type: 'grab' });

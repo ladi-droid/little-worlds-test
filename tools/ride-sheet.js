@@ -1,6 +1,8 @@
 // Ride sheet (level kit): a row of frames from one ride or moving moment, so Ladi can see how it moves without a video.
 // Puts A at (x, y), lets him run hands-off (or tapping, with --tap), and grabs a frame at each time given (seconds).
-// usage: node tools/ride-sheet.js <level id> <name> <x> <y> <t1,t2,...> [--tap] [--ride=N] [--kid=JSON] [out folder]
+// usage: node tools/ride-sheet.js <level id> <name> <x> <y> <t1,t2,...> [--tap | --tap-blocked] [--ride=N] [--kid=JSON] [out folder]
+// --size=WxH: screen size (default 844x390)
+// --tap-blocked: tap only when he is leaning on something (one tap per lean)
 //   --kid=JSON: play as a child (a Little Worlds config, e.g. '{"name":"Zoe","kid":"girl","style":"braids","skin":"#8d5524"}').
 //   --ride=N: the ride A should board next (L.rides index), when you place him just before a later ride.
 // Writes <out>/<name>_<i>_844x390.png per frame and <out>/<name>_sheet.png (frames in a row, phone sideways size).
@@ -11,7 +13,7 @@ const ROOT = path.resolve(__dirname, '..');
 const args = process.argv.slice(2), flags = args.filter(a => a.startsWith('--')), pos = args.filter(a => !a.startsWith('--'));
 const [id, name, X, Y, TS, outArg] = pos;
 if (!id || !name || X === undefined || Y === undefined || !TS) { console.log('usage: node tools/ride-sheet.js <level id> <name> <x> <y> <t1,t2,...> [--tap] [--ride=N] [out]'); process.exit(2); }
-const tap = flags.includes('--tap'), rf = flags.find(f => f.startsWith('--ride=')), rideN = rf ? +rf.slice(7) : null;
+const tap = flags.includes('--tap'), tapB = flags.includes('--tap-blocked'), rf = flags.find(f => f.startsWith('--ride=')), rideN = rf ? +rf.slice(7) : null;
 const OUT = path.resolve(outArg || 'rides-' + id), times = TS.split(',').map(Number);
 fs.mkdirSync(OUT, { recursive: true });
 const TYPES = { '.html': 'text/html', '.js': 'text/javascript', '.webp': 'image/webp', '.png': 'image/png', '.json': 'application/json', '.ico': 'image/x-icon', '.mp3': 'audio/mpeg' };
@@ -23,7 +25,8 @@ const server = http.createServer((q, r) => {
 (async () => {
   await new Promise(res => server.listen(0, res));
   const base = `http://localhost:${server.address().port}/`;
-  const br = await chromium.launch(), VW = 844, VH = 390, errs = [];
+  const sz = (flags.find(f => f.startsWith('--size=')) || '--size=844x390').slice(7).split('x').map(Number);   // --size=590x540
+  const br = await chromium.launch(), [VW, VH] = sz, errs = [];
   const pg = await br.newPage({ viewport: { width: VW, height: VH } });
   pg.on('pageerror', e => errs.push(e.message));
   const kf = flags.find(f => f.startsWith('--kid='));
@@ -37,6 +40,7 @@ const server = http.createServer((q, r) => {
   for (let k = 0; k < times.length;) {
     const el = (Date.now() - t0) / 1000;
     if (tap && Math.floor(el * 3) % 2 === 0) { await pg.keyboard.down('Space'); await pg.waitForTimeout(60); await pg.keyboard.up('Space'); }
+    if (tapB && await pg.evaluate(() => __arun.G.p.blocked)) { await pg.keyboard.down('Space'); await pg.waitForTimeout(60); await pg.keyboard.up('Space'); }
     if (el >= times[k]) {
       const f = path.join(OUT, `${name}_${k}_${VW}x${VH}.png`);
       await pg.screenshot({ path: f }); files.push(f);
