@@ -3736,7 +3736,7 @@ const ALL_LEVELS = [
 
     // ---------- 2. the National Theatre: Creative Park's pillars (wall-jump for coins), the fountain, up the steps, THE DOOR ----------
     lean('lg_tank', R2 + 0.2, 2.3, 1.35);              // (a water tank where the market street ends: lean on it, then up)
-    const P1 = J1 + 6.0, PW1 = aw('lg_pillar1', 8.0), GP = 1.8, P2 = P1 + PW1 + GP;
+    const P1 = J1 + 6.0, PW1 = aw('lg_pillar1', 8.0), GP = 2.5, P2 = P1 + PW1 + GP;
     back('lg_pillar1', P1, 8.0); back('lg_pillar2', P2, 8.0);
     solid(P1 + 0.2, PW1 - 0.2, 8.0 - 2.0, 2.0); solid(P2, aw('lg_pillar2', 8.0) - 0.2, 8.0 - 2.0, 2.0);   // (from just above his head: he runs under, or climbs)
     b.ledge(P1 + 0.1, 8.0, PW1 - 0.2); b.ledge(P2 + 0.1, 8.0, aw('lg_pillar2', 8.0) - 0.2);
@@ -3766,19 +3766,30 @@ const ALL_LEVELS = [
     // the big one sending him up to special 2.
     const DRUMS = [['lg_drum1', 1.2, 1.1, 2.2, 1.0, 0.3], ['lg_drum2', 2.0, 1.9, 3.0, 1.19, 0.3], ['lg_drum3', 2.6, 2.5, 4.6, 1.41, 3.0]];   // picture, height, top, bounce, voice, gap after
     L.lgDrums = [];
-    let dx = DR;
-    for (const [k, h, top, bh, note, gap] of DRUMS) {
-      const w = aw(k, h); back(k, dx, h, { y: ST, drum: true });
-      const o = solid(dx + 0.1, w - 0.2, top, ST, { noGrab: true, bounce: bh, note, talk: true });   // (talk: it sounds like a talking drum)
-      L.lgDrums.push({ x: dx, w, h, k, o });
-      dx += w + gap;
-    }
-    for (let i = 0; i < 2; i++) { const n = L.lgDrums[i + 1]; L.lgDrums[i].o.hopTo = [n.x + n.w / 2, ST + DRUMS[i + 1][2]]; }   // each drum throws him onto the middle of the next
-    L.lgDrums[0].o.noVault = true; L.lgDrums[0].o.catchHop = true;                       // (he leans on the small drum and a tap jumps him onto its middle: 6s rule)
-    for (let i = 0; i < 2; i++) { const c = L.lgDrums[i], n = L.lgDrums[i + 1]; b.arc(c.x + c.w / 2 + 0.5, ST + DRUMS[i][2] + 1.2, 4, n.w / 2 + n.x - c.x - c.w / 2 - 0.8, DRUMS[i][3] * 0.6); }   // coins along each throw
-    const DL = L.lgDrums[2];
+    const drumSet = (x0) => {   // three drums close together, small to big: returns the big one and where the floor after it starts
+      const set = []; let x = x0;
+      for (const [k, h, top, bh, note, gap] of DRUMS) {
+        const w = aw(k, h); back(k, x, h, { y: ST, drum: true });
+        const o = solid(x + 0.1, w - 0.2, top, ST, { noGrab: true, bounce: bh, note, talk: true });   // (talk: it sounds like a talking drum)
+        const d = { x, w, h, k, o }; L.lgDrums.push(d); set.push(d);
+        x += w + gap;
+      }
+      for (let i = 0; i < 2; i++) { const n = set[i + 1]; set[i].o.hopTo = [n.x + n.w / 2, ST + DRUMS[i + 1][2]]; }   // each drum throws him onto the middle of the next
+      set[0].o.noVault = true; set[0].o.catchHop = true;                                   // (he leans on the small drum and a tap jumps him onto its middle: 6s rule)
+      for (let i = 0; i < 2; i++) { const c = set[i], n = set[i + 1]; b.arc(c.x + c.w / 2 + 0.5, ST + DRUMS[i][2] + 1.2, 4, n.w / 2 + n.x - c.x - c.w / 2 - 0.8, DRUMS[i][3] * 0.6); }   // coins along each throw
+      return { big: set[2], end: x };
+    };
+    const A1 = drumSet(DR), DL = A1.big;
     b.special(DL.x + DL.w / 2 + 2.2, ST + DL.h + 4.6);                                     // 2: at the top of the big drum's bounce
+    let dx = A1.end;
     lean('lg_djembe', dx + 4.6, 2.4, 1.35, ST); b.coins(dx + 4.8, ST + 3.2, 4, 0.8);   // (he lands on the floor after the big drum, then leans on this one: 6s rule)
+    // a second set of talking drums (Ladi 2026-11-11: "add another set of those so you spend longer inside"): the big one throws him
+    // through a row of coins
+    const A2 = drumSet(dx + 9.0), DL2 = A2.big;
+    b.arc(DL2.x + DL2.w / 2 + 0.6, ST + DL2.h + 2.6, 5, 3.6, 1.8);
+    dx = A2.end;
+    lean('lg_djembe', dx + 4.6, 2.4, 1.35, ST); b.coins(dx + 4.8, ST + 3.2, 4, 0.8);   // (6s rule after the second set too)
+    dx += 4.0;
     const S2 = dx + 8.2;
     back('lg_seats', S2, 3.0, { y: ST }); solid(S2 + 0.1, SW - 0.2, 1.0, ST); solid(S2 + 2.0, SW - 2.1, 2.0, ST); solid(S2 + 3.9, SW - 4.0, 3.0, ST); b.coins(S2 + 1.2, ST + 2.6, 3, 1.9, 0.9);
     b.arc(S2 + SW + 0.4, ST + 3.8, 4, 3.0, 1.2);
@@ -3835,7 +3846,7 @@ const ALL_LEVELS = [
     for (let x = BR + 0.6, i = 0; x < BE + 6; i++) { const [k, h] = FAR[i % FAR.length]; L.lgFar.cars.push([k, x, h * 0.85]); x += aw(k, h * 0.85) + 1.1 + (i * 7 % 5) * 0.25; }
 
     // ---------- 5. Victoria Island: up between two glass towers (special 4: WALL-JUMP), the rooftop run ----------
-    const T1 = DE + 6.0, T1W = aw('lg_tower1', LG_ASP['lg_tower1:h']), T1H = LG_ASP['lg_tower1:h'], GG = 1.8, T2 = T1 + T1W + GG;
+    const T1 = DE + 6.0, T1W = aw('lg_tower1', LG_ASP['lg_tower1:h']), T1H = LG_ASP['lg_tower1:h'], GG = 2.3, T2 = T1 + T1W + GG;
     // (the green tower's picture is empty sky for its left third: it is drawn that much further left, so its wall is where he wall-jumps
     // off it; Ladi 2026-11-11: "the second building on the right is missing, he's jumping through thin air")
     const T2H = LG_ASP['lg_tower2:h'], T2P = aw('lg_tower2', T2H), T2W = T2P * 0.6;
