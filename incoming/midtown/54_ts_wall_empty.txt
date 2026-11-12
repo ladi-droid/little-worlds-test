@@ -1,0 +1,11 @@
+Make exactly ONE image for this picture, nothing else. Don't write any words inside the image.
+- One picture number = one image. Never put two picture numbers in one image, never a grid or collage. An asset sheet (several pieces in one picture) is fine when the prompt asks for one.
+- Same art style in every picture: 2D side-scrolling mobile game art, flat cartoon style with thick dark outlines, clean shapes and gentle cel shading, bright and friendly, matching A's World.
+- Light for this picture: sunset in New York in early December: warm golden-orange sun low on the left, long soft shadows falling to the right, a sky of gold, peach and soft pink, the first lights coming on in windows.
+- Modern, real, cheerful Midtown Manhattan as it is today: clean, busy, festive in early December.
+- No people unless the picture asks for them (then only friendly faceless chibi people drawn like the game's child in the attached a_sheet.png, in warm winter coats, hats and scarves, never silhouettes). No text, no letters, no numbers, no logos, no real brand, shop, theatre, hotel, bank or company names, no subway line letters or numbers, no number plates.
+
+
+Picture 54: Times Square wall of screens, screens empty  (wide 2:1)
+Straight side-on view, flat orthographic, no perspective. Exactly the same building as in the attached picture: the same wide Times Square building front of 10 floors, same size, same shape, same frames, same ground floor, same roof, but every screen on it is now empty. Keep the screens as about 12 big rectangles of different sizes fitted together, plus the long thin band across the middle. Every screen is EMPTY: filled with one solid flat bright cyan colour (#00FFFF), perfectly flat, no picture, no glow, no shading, no reflections, with a thin dark frame round each screen so its edges are crisp straight rectangles. Full height from the pavement to the roof, nothing cut off. On a solid flat magenta (#FF00FF) background, no magenta anywhere in the art, no cast shadow on the background.
+Reminder: one picture number = one image. Never put two picture numbers in one image, never a grid or collage.

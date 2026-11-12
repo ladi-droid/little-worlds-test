@@ -1,0 +1,2 @@
+54_ts_wall_empty	out/43_ts_screen_wall.png
+55_ts_curve_empty	out/42_ts_whale_screen.png
