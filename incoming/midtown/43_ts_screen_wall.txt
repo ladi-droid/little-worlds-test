@@ -1,0 +1,11 @@
+Make exactly ONE image for this picture, nothing else. Don't write any words inside the image.
+- One picture number = one image. Never put two picture numbers in one image, never a grid or collage. An asset sheet (several pieces in one picture) is fine when the prompt asks for one.
+- Same art style in every picture: 2D side-scrolling mobile game art, flat cartoon style with thick dark outlines, clean shapes and gentle cel shading, bright and friendly, matching A's World.
+- Light for this picture: sunset in New York in early December: warm golden-orange sun low on the left, long soft shadows falling to the right, a sky of gold, peach and soft pink, the first lights coming on in windows.
+- Modern, real, cheerful Midtown Manhattan as it is today: clean, busy, festive in early December.
+- No people unless the picture asks for them (then only friendly faceless chibi people drawn like the game's child in the attached a_sheet.png, in warm winter coats, hats and scarves, never silhouettes). No text, no letters, no numbers, no logos, no real brand, shop, theatre, hotel, bank or company names, no subway line letters or numbers, no number plates.
+
+
+Picture 43: Times Square wall of screens  (wide 2:1)
+Straight side-on view, flat orthographic, no perspective. A wide Times Square building front of 10 floors standing on the ground, covered almost completely in many glowing screens of different sizes fitted together like a patchwork: tall ones, wide ones, a long thin coloured light band running across the middle, each showing bold made-up cartoon pictures (a smiling orange cat, a pink ice-cream, a yellow taxi cartoon, a rainbow, a rocket, a big heart, balloons), no words, no logos, no numbers. Small lit edges and frames between screens. Ground floor of lit glass doors and windows with plain colours. Plain side walls running the full height so two can stand side by side. Full height from the pavement to the roof, nothing cut off. On a solid flat magenta (#FF00FF) background, no magenta anywhere in the art, no cast shadow on the background.
+Reminder: one picture number = one image. Never put two picture numbers in one image, never a grid or collage.
