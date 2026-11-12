@@ -162,3 +162,7 @@ Each entry: **level, date** — what Ladi saw → what fixed it → where to loo
 - Manhattan feels larger than life: big buildings may go past the top of the screen (wins over the skyline-above rule on this trip).
 - Billboards: our own made-up versions of famous brands, each with a product picture and its own font; layouts mixed (picture left/right, big picture with the name over it, small picture in the middle). Few car ads.
 - Biggest screens: the classy brands (Guccio, aPhone Duo, Netflips, Starbuzz, Louis Button).
+
+## New York round 5 (Ladi 2026-11-12)
+- Pictures blown up far past their size look soft next to sharp ones: when a building must be much bigger, make a new picture for it.
+- Passing trains go a little slower; skating is quicker than running, so the ice feels different.
