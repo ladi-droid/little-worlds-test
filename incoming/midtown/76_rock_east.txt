@@ -1,0 +1,11 @@
+Make exactly ONE image for this picture, nothing else. Don't write any words inside the image.
+- One picture number = one image. Never put two picture numbers in one image, never a grid or collage. An asset sheet (several pieces in one picture) is fine when the prompt asks for one.
+- Highly detailed, crisp and sharp: lots of fine architectural detail, like the game's best buildings (the Art Deco towers and St Patrick's on Fifth Avenue).
+- Same art style in every picture: 2D side-scrolling mobile game art, flat cartoon style with thick dark outlines, clean shapes and gentle cel shading, bright and friendly, matching A's World.
+- Light for this picture: dusk in New York in early December: the sun just set, a sky of pink, violet and deep blue, warm lights glowing in many windows, a little clean snow on ledges, cosy and magical, never too dark.
+- Modern, real, cheerful Midtown Manhattan as it is today: clean, busy, festive in early December.
+- No people unless the picture asks for them (then only friendly faceless chibi people drawn like the game's child in the attached a_sheet.png, in warm winter coats, hats and scarves, never silhouettes). No text, no letters, no numbers, no logos, no real brand, shop, theatre, hotel, bank or company names, no subway line letters or numbers, no number plates.
+
+Picture 76: Rockefeller Center building with flags, east  (tall 2:3)
+Straight side-on view, flat orthographic, no perspective. ONE grand Art Deco limestone building of Rockefeller Center, about 14 floors, filling the picture from the pavement to its flat roof: pale warm limestone with tall vertical pilasters between rows of warm lit windows, setbacks near the top, carved Art Deco panels above the windows, a little clean snow on ledges and sills. At street level: a big gold-framed entrance with tall glass and gold doors, a gold Art Deco relief panel above it, and a row of five flagpoles over the entrance flying plain flags (red, blue, yellow, green, purple). Lamps either side of the doors, a festive green garland with red bows along the canopy. Full height from the pavement to the roof, nothing cut off. On a solid flat magenta (#FF00FF) background, no magenta anywhere in the art, no cast shadow on the background.
+Reminder: one picture number = one image. Never put two picture numbers in one image, never a grid or collage.

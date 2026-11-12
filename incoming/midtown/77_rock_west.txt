@@ -1,0 +1,11 @@
+Make exactly ONE image for this picture, nothing else. Don't write any words inside the image.
+- One picture number = one image. Never put two picture numbers in one image, never a grid or collage. An asset sheet (several pieces in one picture) is fine when the prompt asks for one.
+- Highly detailed, crisp and sharp: lots of fine architectural detail, like the game's best buildings (the Art Deco towers and St Patrick's on Fifth Avenue).
+- Same art style in every picture: 2D side-scrolling mobile game art, flat cartoon style with thick dark outlines, clean shapes and gentle cel shading, bright and friendly, matching A's World.
+- Light for this picture: dusk in New York in early December: the sun just set, a sky of pink, violet and deep blue, warm lights glowing in many windows, a little clean snow on ledges, cosy and magical, never too dark.
+- Modern, real, cheerful Midtown Manhattan as it is today: clean, busy, festive in early December.
+- No people unless the picture asks for them (then only friendly faceless chibi people drawn like the game's child in the attached a_sheet.png, in warm winter coats, hats and scarves, never silhouettes). No text, no letters, no numbers, no logos, no real brand, shop, theatre, hotel, bank or company names, no subway line letters or numbers, no number plates.
+
+Picture 77: Rockefeller Center building with gold sculpture, west  (tall 2:3)
+Straight side-on view, flat orthographic, no perspective. ONE grand Art Deco limestone building of Rockefeller Center, about 15 floors, a matching twin of the other Rockefeller building but different: pale warm limestone with tall vertical stripes of stone and warm lit windows, two stepped setbacks near the top, a bronze-and-gold Art Deco sculpture of a figure with outstretched arms and sunrays over a tall gold entrance with glass doors, gold lanterns, festive wreaths with red bows on the doors, a little clean snow on ledges and sills. Full height from the pavement to the roof, nothing cut off. On a solid flat magenta (#FF00FF) background, no magenta anywhere in the art, no cast shadow on the background.
+Reminder: one picture number = one image. Never put two picture numbers in one image, never a grid or collage.
