@@ -1,0 +1,11 @@
+Make exactly ONE image for this picture, nothing else. Don't write any words inside the image.
+- One picture number = one image. Never put two picture numbers in one image, never a grid or collage.
+- Same art style in every picture: 2D mobile game art, flat cartoon style with thick dark outlines, clean shapes and gentle cel shading, bright and friendly, matching A's World.
+- This is a product picture for a cartoon billboard advert: ONE object, big and centred, seen from the side or a slight three-quarter angle, even bright light, no background scene.
+- No text, no letters, no numbers, no real logos or brand marks. Only the simple made-up shapes the prompt asks for.
+- On a solid flat magenta (#FF00FF) background, no magenta anywhere in the art, no cast shadow on the background. The whole object inside the picture, nothing cut off.
+
+
+Picture 71: Fancy striped bag  (square 1:1)
+A small cream leather shoulder bag with a gold chain strap and one wide stripe of green-red-green webbing across the middle, and a shiny gold bee clasp.
+Reminder: one picture number = one image. Never put two picture numbers in one image, never a grid or collage.
