@@ -4167,6 +4167,256 @@ const ALL_LEVELS = [
     b.end(FX + 30);
   },
 },
+{
+  // New York (Midtown Manhattan; plan: claude.ai/artifact/CuZr1H6CrS7QEpGVXvGxFz, Ladi's picks 2026-11-11: all recommended), built from
+  // the level kit on art made with the image maker (cut by london-runner/midtown/src/cut.py into atlas_mt*.webp). A crisp early-December
+  // afternoon on 42nd Street, sunset in Times Square, dusk on the rooftops and at Rockefeller Center. A keeps his London clothes; children
+  // wear their winter coats (L.outfit 'win', as in the West End). A yellow cab drops A by Grand Central -> the food carts, the roofs, a
+  // steam vent throws him up onto the viaduct (special 1) -> INSIDE Grand Central (the one inside visit): the great hall (wall-jump to
+  // the star ceiling, special 2), the whispering gallery, the subway, the silver shuttle to Times Square, up the tiled stair walls
+  // (special 3), out -> Times Square at sunset: the red steps, the billboard towers light up as he climbs (special 4) -> the rooftops at
+  // dusk: water towers, a chimney climb (special 5), down the fire escape -> the Channel Gardens' angels -> skating on the rink -> the
+  // giant tree lights up.
+  id: 'newyork', name: 'New York', plate: 'New York', area: 'newyork', city: 'New York',
+  build(b) {
+    const L = b.L, MT = {"mt_tree_off":{"asp":0.62,"h":9.0,"top":[0.161,0.231,0.311,0.378,0.507,0.576,0.618,0.703,0.919,0.929,0.967,0.993,1.0,0.966,0.967,0.921,0.709,0.626,0.551,0.45,0.346,0.312,0.221,0.158]},"mt_tree_on":{"asp":0.62,"h":9.0,"top":[0.161,0.231,0.312,0.378,0.507,0.576,0.618,0.703,0.919,0.929,0.967,0.993,1.0,0.966,0.967,0.921,0.708,0.626,0.551,0.449,0.347,0.312,0.22,0.173]},"mt_taxi":{"asp":1.715,"h":2.0,"top":[0.595,0.715,0.755,0.8,0.905,0.91,0.9,0.895,0.905,0.91,1.0,1.0,1.0,0.96,0.905,0.895,0.865,0.825,0.765,0.7,0.625,0.56,0.54,0.495]},"mt_taxi_open":{"asp":1.72,"h":2.0,"top":[0.595,0.715,0.76,0.8,0.905,0.91,0.9,0.895,0.905,0.92,1.0,1.0,1.0,0.955,0.905,0.89,0.865,0.82,0.765,0.695,0.625,0.56,0.54,0.49]},"mt_taxi_door":{"asp":0.6774,"h":1.55,"top":[0.684,0.768,0.832,0.871,0.897,0.916,0.935,0.948,0.955,0.968,0.974,0.981,0.987,0.994,0.994,1.0,1.0,1.0,1.0,0.968,0.877,0.781,0.645,0.555]},"mt_gc":{"asp":1.1912,"h":9.0,"top":[0.787,0.816,0.851,0.849,0.845,0.842,0.842,0.842,0.862,0.979,0.994,0.997,0.995,0.999,0.993,0.979,0.842,0.849,0.849,0.849,0.851,0.851,0.817,0.782]},"mt_gcdoor":{"asp":0.8583,"h":3.6,"top":[0.614,0.7,0.767,0.842,0.861,0.883,0.897,0.917,0.928,0.956,0.981,0.997,1.0,0.994,0.981,0.933,0.919,0.906,0.889,0.872,0.844,0.783,0.714,0.614]},"mt_gcdoor_far":{"asp":0.4321,"h":3.608,"top":[0.992,0.997,0.997,0.997,0.986,0.981,0.956,0.928,0.92,0.911,0.906,0.895,0.886,0.878,0.864,0.856,0.845,0.825,0.789,0.731,0.687,0.632,0.612,0.59]},"mt_b_fire":{"asp":0.6247,"h":4.93,"top":[0.982,0.996,0.998,0.998,0.99,0.99,0.98,0.98,0.978,0.974,0.974,0.976,0.976,0.976,0.976,0.976,0.974,0.978,0.984,0.986,0.99,0.994,0.994,0.99]},"mt_b_deco":{"asp":0.5427,"h":7.021,"top":[0.711,0.795,0.846,0.858,0.859,0.92,0.952,0.956,0.986,0.987,0.999,0.999,0.999,0.999,0.987,0.987,0.954,0.954,0.92,0.913,0.858,0.848,0.795,0.712]},"mt_b_glass":{"asp":0.5123,"h":7.714,"top":[0.956,0.966,0.971,0.971,0.968,0.968,0.965,0.958,0.957,0.955,0.953,0.953,1.0,0.999,0.999,1.0,1.0,0.955,0.956,0.96,0.964,0.966,0.966,0.957]},"mt_b_brown":{"asp":0.4454,"h":8.332,"top":[0.98,0.988,0.989,0.987,0.984,0.98,0.98,0.977,0.976,0.976,0.976,0.981,0.982,0.986,0.986,0.98,0.988,0.998,1.0,0.998,0.995,0.993,0.989,0.975]},"mt_endl":{"asp":0.5798,"h":6.64,"top":[0.977,0.992,0.997,0.998,0.998,0.991,0.965,0.956,0.956,0.956,0.956,0.956,0.955,0.944,0.925,0.756,0.756,0.752,0.721,0.625,0.625,0.617,0.383,0.375]},"mt_narrow":{"asp":0.3308,"h":6.593,"top":[0.97,0.983,0.992,0.995,0.998,0.998,0.997,0.995,0.992,0.992,0.992,0.991,0.992,0.994,0.994,0.994,0.997,0.998,0.998,0.998,0.997,0.994,0.986,0.971]},"mt_endr":{"asp":0.5783,"h":6.64,"top":[0.373,0.383,0.616,0.625,0.625,0.72,0.752,0.756,0.756,0.925,0.944,0.955,0.956,0.956,0.956,0.956,0.956,0.968,0.992,0.998,0.998,0.997,0.991,0.976]},"mt_pillar":{"asp":0.3556,"h":4.5,"top":[0.933,0.938,0.971,0.982,0.989,0.996,0.998,1.0,1.0,0.998,0.998,0.993,0.989,0.989,0.989,0.989,0.989,0.984,0.984,0.984,0.98,0.973,0.962,0.936]},"mt_lowwall":{"asp":1.33,"h":1.0,"top":[0.6,0.63,0.64,0.64,0.63,0.63,0.62,0.62,0.62,0.63,0.63,0.62,0.61,0.62,0.63,0.66,0.76,0.94,0.99,1.0,1.0,0.98,0.94,0.75]},"mt_carts":{"asp":3.0862,"h":2.9,"top":[0.903,0.903,0.903,0.903,0.903,0.903,0.903,0.903,0.869,0.917,0.952,0.997,1.0,0.955,0.928,0.879,0.903,0.903,0.903,0.903,0.903,0.903,0.903,0.903]},"mt_hydrant":{"asp":0.7889,"h":0.9,"top":[0.089,0.122,0.133,0.544,0.589,0.611,0.789,0.844,0.889,0.911,0.956,0.989,1.0,1.0,0.956,0.911,0.889,0.856,0.789,0.767,0.6,0.544,0.133,0.1]},"mt_chimney":{"asp":0.7105,"h":1.9,"top":[0.063,0.084,0.089,0.2,0.316,0.321,0.316,0.716,0.732,0.758,0.842,0.853,0.911,0.921,0.921,0.974,0.984,0.989,0.989,0.979,0.989,1.0,1.0,0.989]},"mt_vent":{"asp":0.7583,"h":2.4,"top":[0.092,0.15,0.179,0.179,0.179,0.658,0.692,0.704,0.867,0.883,0.921,0.95,0.962,0.962,0.983,0.996,1.0,0.996,0.983,0.938,0.858,0.821,0.154,0.1]},"mt_lamp":{"asp":0.5325,"h":4.0,"top":[0.835,0.852,0.88,0.985,0.988,0.988,0.94,0.94,0.935,0.93,0.918,0.902,0.992,0.998,0.995,0.942,0.645,0.64,0.612,0.565,0.098,0.088,0.083,0.068]},"mt_bench":{"asp":1.88,"h":1.0,"top":[0.69,0.72,0.99,1.0,0.97,0.97,0.97,0.97,0.97,0.97,0.97,0.97,0.97,0.97,0.97,0.97,0.97,0.97,0.97,0.99,1.0,0.94,0.72,0.67]},"mt_pittree":{"asp":0.9029,"h":3.4,"top":[0.815,0.806,0.882,0.944,0.932,0.962,0.929,0.985,0.994,0.982,0.874,0.997,0.959,0.997,0.938,0.976,0.959,0.985,0.944,0.888,0.862,0.894,0.838,0.768]},"mt_planter":{"asp":1.51,"h":1.0,"top":[0.68,0.74,0.81,0.87,0.87,0.9,0.96,0.99,1.0,0.95,0.93,0.88,0.92,0.92,0.86,0.84,0.89,0.94,0.99,0.98,0.93,0.84,0.73,0.55]},"mt_snow":{"asp":2.3636,"h":0.55,"top":[0.273,0.4,0.491,0.545,0.564,0.655,0.709,0.727,0.818,0.873,0.945,0.982,1.0,1.0,0.982,0.927,0.836,0.8,0.764,0.709,0.564,0.527,0.4,0.309]},"mt_booth":{"asp":0.7607,"h":2.8,"top":[0.5,0.507,0.511,0.514,0.518,0.518,0.821,0.864,0.882,0.896,0.921,0.996,1.0,0.968,0.907,0.889,0.868,0.839,0.518,0.518,0.514,0.511,0.507,0.504]},"mt_chand":{"asp":0.585,"h":2.0,"top":[0.355,0.39,0.39,0.39,0.44,0.45,0.45,0.445,0.465,0.585,0.635,1.0,1.0,0.64,0.585,0.475,0.445,0.45,0.45,0.44,0.395,0.39,0.39,0.36]},"mt_stairL":{"asp":1.3485,"h":3.3,"top":[0.485,0.5,0.491,0.536,0.585,0.63,0.676,0.721,0.761,0.803,0.839,0.985,1.0,0.985,0.918,0.918,0.918,0.918,0.918,0.918,0.918,0.918,0.918,0.918]},"mt_stairR":{"asp":1.3303,"h":3.3,"top":[0.918,0.918,0.918,0.918,0.918,0.918,0.918,0.918,0.918,0.918,1.0,0.997,0.861,0.824,0.785,0.742,0.703,0.661,0.615,0.57,0.524,0.494,0.5,0.479]},"mt_arch":{"asp":0.7109,"h":4.6,"top":[0.983,0.998,0.998,0.998,0.998,0.998,0.998,0.998,0.998,0.998,0.998,0.998,0.998,0.998,0.998,0.998,0.998,0.998,0.998,0.998,0.998,0.998,0.998,0.985]},"mt_vault":{"asp":3.0237,"h":3.8,"top":[0.742,0.863,0.921,0.955,0.974,0.987,0.992,0.997,0.997,0.997,0.997,1.0,1.0,1.0,1.0,1.0,1.0,0.997,0.995,0.987,0.971,0.939,0.879,0.758]},"mt_ramp":{"asp":3.0083,"h":2.4,"top":[1.0,1.0,0.921,0.921,0.921,0.904,0.875,0.85,0.821,0.792,0.762,0.738,0.708,0.679,0.65,0.625,0.596,0.567,0.542,0.512,0.483,0.462,0.475,0.475]},"mt_tickets":{"asp":1.4937,"h":3.2,"top":[1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0]},"mt_wreath":{"asp":0.9083,"h":1.2,"top":[0.7,0.767,0.817,0.875,0.883,0.925,0.925,0.958,0.958,0.983,0.983,0.975,1.0,0.983,0.983,0.975,0.958,0.958,0.933,0.9,0.883,0.825,0.783,0.717]},"mt_brasslamp":{"asp":0.3733,"h":3.0,"top":[0.057,0.88,0.92,0.937,0.957,0.97,0.977,0.987,0.993,0.997,0.997,1.0,1.0,0.997,0.997,0.99,0.987,0.977,0.967,0.957,0.94,0.917,0.883,0.057]},"mt_board":{"asp":1.0,"h":1.7,"top":[0.888,0.918,0.918,0.871,0.876,0.882,0.9,0.918,0.953,0.976,0.994,1.0,1.0,0.994,0.982,0.959,0.924,0.9,0.882,0.876,0.871,0.918,0.918,0.9]},"mt_mbench":{"asp":2.11,"h":1.0,"top":[0.69,1.0,1.0,1.0,0.98,0.97,0.97,0.97,0.97,0.97,0.97,0.97,0.97,0.97,0.97,0.97,0.97,0.97,0.97,0.97,1.0,1.0,1.0,0.7]},"mt_poinsettia":{"asp":0.9667,"h":0.9,"top":[0.667,0.711,0.844,0.867,0.889,0.9,0.9,0.956,0.967,0.967,0.967,0.967,0.944,0.967,0.989,1.0,0.956,0.922,0.922,0.911,0.9,0.811,0.778,0.733]},"mt_turnstiles":{"asp":3.1652,"h":1.15,"top":[0.939,1.0,1.0,1.0,1.0,0.765,0.765,0.765,0.922,0.991,1.0,1.0,1.0,0.765,0.765,0.765,0.896,0.991,1.0,1.0,1.0,0.765,0.765,0.765]},"mt_column":{"asp":0.5206,"h":3.4,"top":[1.0,0.997,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0]},"mt_stairsup":{"asp":1.1875,"h":3.2,"top":[0.113,0.113,0.194,0.194,0.275,0.278,0.278,0.359,0.359,0.441,0.441,0.522,0.522,0.522,0.994,1.0,0.997,0.947,0.612,0.612,0.981,1.0,1.0,0.978]},"mt_tilepillar":{"asp":0.4633,"h":3.0,"top":[0.993,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,0.993]},"mt_rail":{"asp":2.04,"h":1.0,"top":[1.0,1.0,1.0,0.96,0.82,0.82,0.82,0.82,0.82,0.82,0.82,0.82,0.82,0.82,0.82,0.82,0.82,0.82,0.82,0.82,0.95,1.0,1.0,1.0]},"mt_train":{"asp":5.875,"h":2.9,"top":[0.935,0.94,0.996,0.996,0.996,0.94,0.94,0.94,0.996,0.996,0.983,0.996,1.0,0.94,0.94,0.94,0.94,0.94,0.94,0.996,0.996,0.996,0.94,0.94]},"mt_train_open":{"asp":5.9004,"h":2.9,"top":[0.939,0.944,1.0,1.0,1.0,0.939,0.939,0.939,0.996,1.0,0.983,0.996,0.996,0.939,0.944,0.944,0.939,0.939,0.939,1.0,1.0,1.0,0.944,0.939]},"mt_traindoor":{"asp":1.0,"h":2.371,"top":[0.984,0.995,0.995,0.995,0.995,0.995,0.995,0.995,0.995,0.995,0.995,0.995,0.995,0.995,0.995,0.995,0.995,0.995,0.995,0.995,0.995,0.995,0.995,0.984]},"mt_scr0":{"asp":1.275,"h":2.0,"top":[0.99,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,0.99]},"mt_scr1":{"asp":1.28,"h":2.0,"top":[0.99,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,0.99]},"mt_scr2":{"asp":1.28,"h":2.0,"top":[0.99,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,0.99]},"mt_scr3":{"asp":1.27,"h":2.0,"top":[0.99,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,0.99]},"mt_scr4":{"asp":1.27,"h":2.0,"top":[0.985,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,0.99]},"mt_scr5":{"asp":1.27,"h":2.0,"top":[0.985,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,0.99]},"mt_redsteps":{"asp":2.8833,"h":3.6,"top":[0.258,0.258,0.258,0.314,0.367,0.419,0.469,0.522,0.572,0.622,0.672,0.722,0.769,0.819,0.867,0.917,0.964,1.0,1.0,1.0,1.0,1.0,1.0,1.0]},"mt_ts_theatre":{"asp":0.7797,"h":4.944,"top":[0.998,0.998,0.998,0.998,0.998,0.998,0.998,0.998,0.998,0.998,0.998,0.998,0.998,0.998,0.998,0.998,0.998,0.998,0.998,0.998,0.998,0.998,0.998,0.998]},"mt_ts_panels":{"asp":0.5135,"h":7.323,"top":[0.972,0.972,0.996,0.996,0.996,0.996,0.996,0.996,0.972,0.972,0.972,0.972,0.972,0.972,0.999,0.999,0.999,0.999,0.999,0.999,0.972,0.972,0.972,0.972]},"mt_ts_glass":{"asp":0.5612,"h":7.838,"top":[0.229,1.0,0.999,0.999,1.0,1.0,0.999,0.999,1.0,1.0,0.999,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,0.999,0.999,1.0,1.0,0.229]},"mt_ts_screen":{"asp":0.4523,"h":8.961,"top":[0.979,0.979,0.979,1.0,1.0,1.0,1.0,1.0,0.979,0.979,0.979,0.979,0.979,0.979,0.979,0.979,0.979,0.979,0.979,0.979,0.979,0.979,0.979,0.979]},"mt_bollard":{"asp":0.7111,"h":0.9,"top":[0.111,0.133,0.133,0.133,0.944,0.967,0.978,0.989,0.989,1.0,1.0,1.0,1.0,1.0,1.0,0.989,0.989,0.978,0.967,0.956,0.133,0.133,0.133,0.122]},"mt_table":{"asp":1.9727,"h":1.1,"top":[0.945,0.982,0.991,1.0,1.0,0.982,0.836,0.836,0.855,0.864,0.864,0.873,0.873,0.864,0.864,0.855,0.836,0.809,0.982,1.0,1.0,0.991,0.982,0.955]},"mt_xtree":{"asp":0.7182,"h":2.2,"top":[0.4,0.409,0.527,0.623,0.627,0.673,0.75,0.805,0.873,0.895,0.932,0.977,1.0,0.995,0.936,0.923,0.864,0.805,0.75,0.745,0.664,0.595,0.532,0.405]},"mt_tslamp":{"asp":0.5625,"h":4.0,"top":[0.062,0.065,0.065,0.09,0.233,0.945,0.962,0.962,0.962,0.96,0.952,0.962,0.97,0.982,0.99,0.992,0.998,0.998,1.0,1.0,1.0,1.0,0.998,0.992]},"mt_kiosk":{"asp":1.3542,"h":2.4,"top":[0.967,0.992,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,0.996,0.967]},"mt_pigeon_st":{"asp":0.98,"h":0.5,"top":[0.28,0.38,0.4,0.42,0.44,0.48,0.52,0.56,0.58,0.62,0.66,0.68,0.7,0.72,0.76,0.84,0.94,0.98,1.0,1.0,1.0,1.0,0.96,0.9]},"mt_wtower":{"asp":0.7227,"h":4.4,"top":[0.064,0.461,0.795,0.82,0.841,0.864,0.877,0.898,0.918,0.936,0.984,1.0,1.0,0.989,0.939,0.92,0.898,0.88,0.861,0.843,0.82,0.798,0.464,0.066]},"mt_hut":{"asp":1.1906,"h":3.2,"top":[0.941,0.969,0.984,0.984,0.997,1.0,0.997,0.978,0.969,0.953,0.95,0.95,0.95,0.95,0.953,0.956,0.956,0.972,0.978,0.991,0.997,0.994,0.975,0.953]},"mt_wtower2":{"asp":0.7594,"h":3.2,"top":[0.091,0.109,0.459,0.834,0.856,0.875,0.888,0.9,0.916,0.931,0.984,1.0,1.0,0.997,0.972,0.928,0.916,0.903,0.884,0.869,0.85,0.822,0.444,0.091]},"mt_rchimney":{"asp":0.8944,"h":1.8,"top":[0.094,0.733,0.772,0.789,0.894,0.906,0.911,0.911,0.906,0.978,0.994,1.0,1.0,1.0,1.0,0.989,0.906,0.911,0.911,0.906,0.9,0.783,0.767,0.722]},"mt_skylight":{"asp":2.2889,"h":0.9,"top":[0.367,0.467,0.589,0.711,0.922,0.978,0.989,0.978,0.956,0.944,0.944,0.944,0.944,0.956,0.978,0.989,1.0,1.0,0.967,0.889,0.7,0.578,0.467,0.367]},"mt_ac":{"asp":1.625,"h":0.8,"top":[0.175,0.925,0.975,0.988,0.988,0.975,0.962,0.962,0.95,0.95,0.95,0.95,0.962,0.975,0.975,1.0,1.0,1.0,0.975,0.95,0.625,0.612,0.55,0.175]},"mt_rb_red":{"asp":1.0861,"h":4.532,"top":[0.247,0.263,0.987,0.991,0.991,0.991,0.96,0.96,0.956,0.956,0.956,0.956,0.956,0.956,0.96,0.965,0.967,0.967,0.962,0.989,1.0,1.0,0.998,0.914]},"mt_rb_deco":{"asp":1.1396,"h":4.8,"top":[0.504,0.585,0.65,0.7,0.708,0.708,0.704,0.71,0.854,0.902,0.902,0.912,0.946,0.975,1.0,0.998,0.975,0.944,0.904,0.902,0.894,0.621,0.363,0.363]},"mt_rb_garden":{"asp":1.186,"h":4.733,"top":[0.856,0.858,0.97,0.989,1.0,0.973,0.947,0.945,0.922,0.901,0.888,0.882,0.886,0.894,0.918,0.945,0.924,0.949,0.989,1.0,0.989,0.962,0.858,0.841]},"mt_rb_pale":{"asp":1.1749,"h":4.455,"top":[0.22,0.928,0.989,0.991,0.991,0.984,0.948,0.951,0.944,0.944,0.944,0.944,0.944,0.944,0.948,0.951,0.955,0.955,0.948,0.991,0.998,0.998,0.996,0.93]},"mt_fireesc":{"asp":0.4467,"h":9.0,"top":[0.024,0.996,0.998,1.0,0.998,0.981,0.981,0.979,0.981,0.981,0.98,0.98,0.981,0.98,0.98,0.98,0.981,0.98,0.98,0.998,0.999,1.0,0.997,0.026]},"mt_rock1":{"asp":0.7225,"h":7.4,"top":[0.91,0.931,0.933,0.933,0.933,0.933,0.961,0.964,0.966,0.995,1.0,1.0,1.0,1.0,1.0,0.966,0.962,0.962,0.933,0.933,0.931,0.931,0.931,0.92]},"mt_rock2":{"asp":0.7225,"h":7.4,"top":[0.908,0.931,0.933,0.933,0.931,0.933,0.961,0.964,0.964,0.995,1.0,1.0,1.0,1.0,1.0,0.966,0.962,0.962,0.933,0.933,0.931,0.931,0.931,0.92]},"mt_30rock":{"asp":0.4862,"h":15.0,"top":[0.355,0.359,0.413,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,0.413,0.358,0.355]},"mt_gardens":{"asp":3.8583,"h":3.6,"top":[0.469,0.942,0.989,0.989,0.939,1.0,0.472,0.942,0.989,0.986,0.942,1.0,0.464,0.942,0.989,0.986,0.942,1.0,0.472,0.942,0.989,0.983,0.944,1.0]},"mt_rinksteps":{"asp":1.3917,"h":2.4,"top":[0.708,0.721,0.721,0.708,0.992,0.996,0.921,0.921,0.921,0.896,0.862,0.829,0.796,0.762,0.729,0.696,0.662,0.629,0.596,0.562,0.529,0.496,0.462,0.45]},"mt_statue":{"asp":0.9889,"h":3.6,"top":[0.244,0.267,0.272,0.281,0.603,0.631,0.642,0.711,0.717,0.717,0.728,0.736,0.736,0.739,0.75,0.825,0.847,0.856,0.847,0.756,0.928,0.992,0.997,0.972]},"mt_flagpole":{"asp":0.4667,"h":4.2,"top":[0.071,0.095,0.105,0.988,0.998,1.0,0.998,0.986,0.917,0.917,0.917,0.917,0.912,0.905,0.895,0.886,0.874,0.864,0.857,0.852,0.855,0.857,0.864,0.867]},"mt_sk1":{"asp":0.7733,"h":1.718,"top":[0.529,0.57,0.581,0.581,0.587,0.599,0.959,0.988,1.0,1.0,0.988,0.959,0.948,0.948,0.942,0.93,0.913,0.901,0.86,0.837,0.581,0.576,0.576,0.57]},"mt_sk2":{"asp":1.1029,"h":1.75,"top":[0.68,0.703,0.749,0.949,1.0,1.0,0.994,0.966,0.971,0.966,0.949,0.931,0.88,0.514,0.731,0.766,0.766,0.76,0.726,0.726,0.703,0.68,0.366,0.051]},"mt_sk3":{"asp":0.7674,"h":1.718,"top":[0.552,0.686,0.698,0.936,0.971,0.994,1.0,1.0,1.0,0.983,0.965,0.977,0.977,0.971,0.959,0.948,0.942,0.924,0.698,0.703,0.703,0.709,0.709,0.703]},"mt_shopper":{"asp":0.7127,"h":1.81,"top":[0.586,0.674,0.691,0.691,0.978,1.0,1.0,1.0,0.983,0.967,0.972,0.972,0.967,0.961,0.945,0.939,0.901,0.884,0.514,0.492,0.409,0.365,0.359,0.282]},"mt_commuter":{"asp":0.6022,"h":1.814,"top":[0.149,0.514,0.547,0.956,0.983,1.0,1.0,1.0,0.989,0.967,0.972,0.978,0.978,0.972,0.967,0.956,0.95,0.928,0.901,0.895,0.68,0.68,0.674,0.674]},"mt_kid":{"asp":0.5976,"h":1.694,"top":[0.893,0.935,0.959,0.964,0.982,0.988,0.994,1.0,1.0,1.0,0.994,1.0,0.994,0.988,0.976,0.935,0.834,0.805,0.775,0.828,0.84,0.864,0.876,0.876]},"mt_littree":{"asp":0.612,"h":5.0,"top":[0.816,0.798,0.808,0.882,0.882,0.94,0.948,0.92,0.99,0.986,0.922,1.0,0.966,0.8,0.834,0.95,0.974,0.99,0.93,0.95,0.902,0.818,0.83,0.832]},"mt_pit2":{"asp":0.65,"h":3.0,"top":[0.083,0.34,0.783,0.78,0.873,0.84,0.78,0.873,0.823,0.953,0.94,0.893,0.963,0.997,0.94,0.823,0.903,0.89,0.93,0.94,0.787,0.817,0.833,0.743]},"mt_evergreen":{"asp":0.5941,"h":3.4,"top":[0.429,0.55,0.568,0.676,0.697,0.709,0.803,0.871,0.879,0.921,0.947,1.0,1.0,0.965,0.929,0.879,0.865,0.791,0.782,0.688,0.679,0.571,0.562,0.444]},"mt_shrubs":{"asp":1.8333,"h":0.9,"top":[0.433,0.644,0.767,0.778,0.8,0.922,0.933,0.978,1.0,1.0,0.967,0.933,0.878,0.956,0.978,0.978,0.956,0.9,0.9,0.844,0.778,0.756,0.578,0.5]},"mt_garland":{"asp":1.6187,"h":1.6,"top":[0.819,0.994,1.0,0.988,0.806,0.756,0.712,0.681,0.65,0.644,0.638,0.638,0.631,0.638,0.644,0.65,0.675,0.712,0.756,0.781,0.981,1.0,0.994,0.825]},"mt_cloud0":{"asp":1.975,"h":2.0,"top":[0.43,0.485,0.505,0.65,0.76,0.805,0.82,0.82,0.86,0.93,0.97,0.99,1.0,1.0,0.99,0.965,0.905,0.815,0.715,0.715,0.685,0.525,0.515,0.47]},"mt_cloud1":{"asp":2.0438,"h":1.6,"top":[0.394,0.438,0.588,0.675,0.712,0.725,0.725,0.819,0.9,0.95,0.981,0.994,0.994,0.994,0.975,0.938,0.862,0.769,0.775,0.769,0.738,0.644,0.481,0.444]},"mt_cloud2":{"asp":1.9538,"h":1.3,"top":[0.431,0.477,0.546,0.662,0.7,0.715,0.715,0.831,0.915,0.954,0.985,1.0,1.0,1.0,0.977,0.938,0.862,0.777,0.777,0.769,0.738,0.638,0.515,0.485]},"mt_cloud3":{"asp":1.9495,"h":1.0,"top":[0.434,0.485,0.505,0.636,0.697,0.727,0.737,0.737,0.859,0.929,0.97,0.99,0.99,0.99,0.98,0.949,0.879,0.768,0.768,0.758,0.727,0.646,0.535,0.495]},"mt_cloud4":{"asp":1.5397,"h":0.7,"top":[0.54,0.603,0.651,0.667,0.683,0.714,0.825,0.889,0.937,0.968,0.984,0.984,1.0,1.0,0.984,0.968,0.937,0.905,0.841,0.73,0.667,0.651,0.619,0.556]},"mt_pigeon0":{"asp":1.12,"h":0.5,"top":[0.18,0.22,0.74,0.9,0.9,0.98,0.98,0.94,0.88,0.8,0.76,0.78,0.88,0.88,0.96,0.96,0.98,1.0,0.54,0.56,0.56,0.56,0.52,0.48]},"mt_pigeon1":{"asp":1.96,"h":0.5,"top":[0.9,0.92,0.94,0.94,0.96,0.96,0.98,0.98,0.98,1.0,1.0,1.0,0.98,0.96,0.9,0.74,0.8,0.86,0.92,0.96,0.96,0.94,0.9,0.8]},"mt_pigeon2":{"asp":1.06,"h":0.5,"top":[0.18,0.2,0.22,0.22,0.92,0.98,1.0,0.98,0.94,0.92,0.86,0.82,0.78,0.78,0.86,0.88,0.9,0.88,0.74,0.52,0.52,0.52,0.5,0.44]},"mt_gull0":{"asp":1.1333,"h":0.6,"top":[1.0,1.0,0.983,0.967,0.933,0.917,0.883,0.867,0.85,0.817,0.783,0.75,0.717,0.683,0.667,0.717,0.783,0.8,0.85,0.9,0.933,0.967,0.95,0.333]},"mt_gull1":{"asp":2.1,"h":0.6,"top":[0.75,0.783,0.8,0.833,0.867,0.883,0.917,0.933,0.967,0.983,0.983,1.0,1.0,1.0,0.967,0.867,0.85,0.9,0.933,0.95,0.967,0.95,0.9,0.817]},"mt_hawk":{"asp":1.0857,"h":0.7,"top":[0.814,0.914,0.986,0.986,0.957,1.0,0.986,0.943,0.9,0.857,0.829,0.786,0.729,0.643,0.557,0.6,0.671,0.743,0.743,0.814,0.8,0.857,0.857,0.771]},"mt_plane":{"asp":2.32,"h":0.5,"top":[0.54,0.96,1.0,1.0,1.0,0.92,0.82,0.72,0.82,0.84,0.84,0.82,0.78,0.74,0.7,0.7,0.72,0.72,0.72,0.72,0.72,0.7,0.64,0.58]},"mt_pigeon_st1":{"asp":1.08,"h":0.5,"top":[0.18,0.3,0.32,0.36,0.38,0.4,0.44,0.5,0.52,0.56,0.6,0.64,0.66,0.68,0.72,0.88,0.94,0.98,0.98,1.0,1.0,0.98,0.94,0.88]},"mt_pigeon_st2":{"asp":1.0,"h":0.5,"top":[0.28,0.3,0.32,0.36,0.38,0.4,0.44,0.48,0.52,0.56,0.58,0.62,0.66,0.68,0.76,0.9,0.96,0.98,1.0,1.0,1.0,0.98,0.94,0.88]},"mt_steam0":{"asp":0.8071,"h":1.4,"top":[0.586,0.629,0.764,0.829,0.864,0.893,0.9,0.914,0.914,0.914,0.907,0.936,0.971,0.986,0.993,1.0,1.0,0.993,0.986,0.971,0.943,0.914,0.771,0.736]},"mt_steam1":{"asp":0.83,"h":1.0,"top":[0.51,0.55,0.76,0.81,0.84,0.86,0.88,0.88,0.88,0.9,0.95,0.97,0.98,0.99,1.0,1.0,0.99,0.98,0.96,0.94,0.82,0.81,0.78,0.74]},"mt_steam2":{"asp":0.7286,"h":0.7,"top":[0.729,0.771,0.8,0.814,0.829,0.843,0.843,0.886,0.929,0.943,0.971,0.971,0.986,0.986,0.986,0.986,0.986,0.971,0.957,0.943,0.914,0.871,0.757,0.743]},"mt_darch":{"asp":0.8318,"h":4.4,"top":[0.609,0.732,0.789,0.832,0.864,0.886,0.905,0.92,0.932,0.961,0.975,1.0,1.0,1.0,0.973,0.934,0.923,0.907,0.889,0.866,0.832,0.793,0.736,0.614]},"mt_trim":{"asp":9.9,"h":0.4,"top":[1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0]},"mt_towerL":{"asp":0.2878,"h":11.5,"top":[0.837,0.847,0.853,0.882,0.902,0.902,0.905,0.909,0.923,0.925,0.999,1.0,0.938,0.924,0.909,0.928,0.928,0.928,0.928,0.927,0.912,0.902,0.882,0.833]},"mt_towerR":{"asp":0.3885,"h":9.784,"top":[0.004,0.004,0.004,0.832,0.84,0.894,0.897,0.899,0.922,0.922,0.922,0.922,0.997,0.999,0.924,0.93,0.933,0.933,0.933,0.931,0.914,0.894,0.847,0.835]}};
+    L.killY = -9; L.startX = 2.0; L.camMin = -12; L.introCam = 'centre'; L.outfit = 'win';   // the children's winter coats (A keeps his clothes)
+    const aw = (k, h) => MT[k].asp * h;
+    const H_ = k => MT[k].h;
+    const tp = (k, f) => MT[k].top[Math.max(0, Math.min(23, Math.floor(f * 24)))] * MT[k].h;   // the picture's top at part f of its width
+    const ground = (x0, x1, style, y = 0) => b.groundTop(x0, x1, y, style);
+    const art = (key, x, y, h, o = {}) => b.kitArt(key, x, y, h, Object.assign({ w: aw(key, h) }, o));
+    const back = (key, x, h, o = {}) => art(key, x, o.y || 0, h, Object.assign({ back: true }, o));
+    const solid = (x, w, h, y = 0, o = {}) => { const s = Object.assign({ kind: 'block', x, y, w, h, style: 'hidden' }, o); L.solids.push(s); return s; };
+    const Y = y => ({ y: y || 0 });
+    const lean = (key, x, h, sh, y) => { const w = aw(key, h); return b.kitProp(key, x, w, h, Object.assign(Y(y), { solid: [0.1, w - 0.2, sh], ledge: [0.1, sh, w - 0.2] })); };
+    const hop = (key, x, h, y, sh = Math.min(h, 1.0)) => { const w = aw(key, h); return b.kitProp(key, x, w, h, Object.assign(Y(y), { solid: [0.1, w - 0.2, sh] })); };
+    const prop = (key, x, h, y) => b.kitProp(key, x, aw(key, h), h, Y(y));
+    const swapAt = (x, to, why) => (L.kitSwaps = L.kitSwaps || []).push({ x, to, why });   // behind something reaching above the sky band: not a door
+    const zone = (x0, x1, z) => { for (const a of L.kitArt) if (a.zone === undefined && !a.out && a.x > x0 - 0.1 && a.x < x1) a.zone = z; };
+    const bld = (k, ledges) => ({ key: k, w: aw(k, H_(k)), h: H_(k), ledges: ledges(aw(k, H_(k)), H_(k)) });
+    L.mtLife = [];                                       // pigeons, gulls, people, skaters: [key, x, y, kind]
+    L.mtJoins = [];                                      // where two kinds of ground meet (a granite kerb post stands there)
+    L.mtSteam = [];                                      // steam puffing from the street: [x, y, big]
+    L.rides = []; L.camFloor = [];
+
+    // ---------- 1. 42nd Street: the cab drops A; the food carts; a row of Midtown buildings to run over ----------
+    b.wall(-12.5, 1, 22);
+    L.mtTaxi = { x: -3.6 };                              // a yellow cab: A jumps out of its back door, it drives off forwards
+    hop('mt_hydrant', 6.0, 0.9); prop('mt_lamp', 8.4, 4.0);
+    L.mtLife.push(['mt_pigeon_st1', 4.4, 0, 'stand'], ['mt_pigeon0', 16, 9.5, 'fly'], ['mt_gull0', 40, 10.5, 'fly']);
+    const CX = 11.0, CW = aw('mt_carts', 2.9);           // the three food carts in a row: hop up onto their canopies
+    back('mt_carts', CX, 2.9);
+    b.ledge(CX + 0.2, 2.55, CW - 0.4);
+    b.arc(CX + 0.8, 3.2, 7, CW - 1.6, 0.9);
+    L.mtLife.push(['mt_commuter', CX + CW + 1.2, 0, 'stand']);
+    const snow = (x, y) => lean('mt_snow', x, 1.45, 1.35, y);   // a ploughed snow pile, waist high: he leans on it, a tap hops it
+    snow(CX + CW + 0.5); prop('mt_bench', CX + CW + 4.2, 1.0);
+    // the row: a stepped brick end, the fire-escape walk-up, the stone art-deco block, the brownstone, a stepped end
+    const R1X = CX + CW + 6.5;
+    const endR = bld('mt_endr', (w, h) => [[0.05, 2.45, w * 0.2], [w * 0.22, 4.05, w * 0.15], [w * 0.4, 4.95, w * 0.15], [w * 0.58, 6.25, w * 0.4]]);
+    const endL = bld('mt_endl', (w, h) => [[0.05, 6.25, w * 0.4], [w * 0.62, 4.95, w * 0.15], [w * 0.78, 4.05, w * 0.12], [w * 0.92, 2.45, w * 0.07]]);
+    const R1 = b.kitRow(R1X, [
+      bld('mt_b_fire', (w, h) => [[0.2, 4.78, w - 0.4]]),
+      bld('mt_b_deco', (w, h) => [[0.15, 5.9, w * 0.25], [w * 0.3, 6.65, w * 0.4], [w * 0.75, 5.9, w * 0.22]]),
+      bld('mt_b_brown', (w, h) => [[0.15, 8.08, w - 0.3]]),
+    ], { capL: endR, capR: endL });
+    b.coins(R1X + 4.4, 5.9, 3, 0.9); b.coins(R1X + 7.6, 7.9, 3, 0.9); b.coins(R1X + 11.4, 9.3, 3, 0.9);
+    L.mtLife.push(['mt_pigeon_st2', R1X + 12.0, 8.08, 'stand']);
+    b.pigeon(R1 + 3.0);
+    // a steam vent in the road: its puff always throws him up and over onto Grand Central's viaduct (special 1 at the top)
+    snow(R1 + 0.5); prop('mt_chimney', R1 + 5.0, 1.9); L.mtSteam.push([R1 + 5.0 + aw('mt_chimney', 1.9) / 2, 1.9, 0]);
+    const VX = R1 + 8.5, VW = aw('mt_vent', 2.4);
+    back('mt_vent', VX, 2.4, { vent: true });
+    L.mtVent = { x: VX, w: VW, s: solid(VX + VW * 0.15, VW * 0.7, 0.3, 0, { bounce: 7.6, noGrab: true }) };
+    b.arc(VX + VW / 2 + 0.6, 2.6, 7, 6.0, 5.4);
+    b.special(VX + VW / 2 + 3.6, 8.9);                                                        // 1: at the top of the steam vent's throw
+    // Grand Central's front: the viaduct's stone railing to run along, then down to the doors in the middle: THE DOOR
+    const GX = VX + 4.5, GH = 9.0, GW = aw('mt_gc', GH);
+    back('mt_gc', GX, GH); L.mtGc = { x: GX, w: GW, h: GH };
+    b.ledge(GX + GW * 0.04, 2.72, GW * 0.34);           // (the viaduct's railing, left of the doors)
+    b.coins(GX + 1.4, 3.8, 4, 0.9);
+    const DH = 3.6, DWW = aw('mt_gcdoor', DH);
+    const D1 = GX + GW * 0.5;                            // the doorway at the middle of the front
+    back('mt_gcdoor', D1 - DWW / 2, DH); L.mtDoor1 = D1; L.mtDoorW = DWW;
+    prop('mt_xtree', D1 - DWW / 2 - 2.6, 2.2);
+    b.kitDoor(D1, { inside: true }); b.kitSwap(D1, 'hall');
+    ground(-14, D1 + 0.5, 'mtwalk');
+
+    // ---------- 2. inside Grand Central: the great hall (the info booth, a wall-jump up to the star ceiling, special 2) ----------
+    prop('mt_poinsettia', D1 + 1.6, 0.9);
+    L.mtLife.push(['mt_commuter', D1 + 3.4, 0, 'stand2']);
+    const BX = D1 + 6.0, BW = aw('mt_booth', 2.8);       // the round info booth with its gold clock: hop onto its counter, then its roof
+    back('mt_booth', BX, 2.8);
+    solid(BX + BW * 0.05, BW * 0.9, 1.35, 0, { noGrab: true }); b.ledge(BX + BW * 0.28, 2.3, BW * 0.44);
+    b.coins(BX + 0.3, 2.4, 2, 1.4); b.coins(BX + BW * 0.5 - 0.2, 3.4, 1);
+    prop('mt_mbench', BX + BW + 2.0, 1.0);
+    // a wall-jump climb he can get into: the left wall stands on an arch / columns he runs under, into the gap (like Barcelona's arcade)
+    const climbIn = (x, o) => {
+      const xr = x + o.wL + o.gap, top = Math.max(o.hL, o.hR);
+      solid(x, 0.4, o.hL - o.under, o.under, { noGrab: true }); solid(x + 0.4, o.wL - 0.4, o.hL - o.under, o.under); solid(xr, o.wR, o.hR, 0);
+      for (let i = 0, y = 1.4; y < top - 0.4; i++, y += 1.5) b.coins(x + o.wL + (i % 2 ? o.gap - 0.55 : 0.15), y, 1);
+      b.special(o.hL >= o.hR ? x + o.wL / 2 : xr + o.wR / 2, top + 1.6);
+      (L.kitClimbs = L.kitClimbs || []).push({ x, xr, gap: o.gap, hL: o.hL, hR: o.hR });
+      return xr + o.wR;
+    };
+    // two marble pillars facing each other: wall-jump up between them to the balcony under the stars
+    const PX = BX + BW + 5.0, PG = 1.9, PWd = 1.6, LWd = 2.2, UND = 3.45;   // (the left one stands on a gold arch he runs through)
+    const PE = climbIn(PX, { gap: PG, hL: 8.6, hR: 7.2, wL: LWd, wR: PWd, under: UND });   // 2: above the taller wall
+    art('mt_pillar', PX, UND - 0.1, 8.6 - UND + 0.1, { w: LWd, back: true, mine: 'stretch', clipTop: 0.13 });
+    art('mt_darch', PX, 0, UND + 0.15, { w: LWd, back: true, mine: 'stretch' });
+    art('mt_pillar', PX + LWd + PG, 0, 7.2, { w: PWd, back: true, mine: 'stretch', clipTop: 0.13 });
+    b.ledge(PX + 0.05, 8.6, LWd - 0.1); b.ledge(PX + LWd + PG + 0.05, 7.2, PWd - 0.1);
+    L.mtBalc = { x0: PX - 0.3, x1: PE + 0.3, y: 7.2 };
+    back('mt_tickets', PE + 2.2, 3.2); b.ledge(PE + 2.4, 3.15, aw('mt_tickets', 3.2) - 0.4);
+    b.coins(PE + 2.8, 4.3, 4, 1.0);
+    prop('mt_brasslamp', PE + 8.4, 3.0); lean('mt_board', PE + 10.0, 1.7, 1.55);
+    L.mtLife.push(['mt_shopper', PE + 12.6, 0, 'stand2']);
+    // a deep archway into the whispering gallery (the room changes in its shadow)
+    const A1 = PE + 16.0; L.mtArch1 = A1;
+    // ---------- 3. the whispering gallery: the coins follow its arches, every one echoes ----------
+    const VX2 = A1 + 2.6, VWd = aw('mt_vault', 3.8);
+    back('mt_vault', VX2, 3.8);
+    for (let i = 0; i < 3; i++) b.arc(VX2 + VWd * (0.08 + i * 0.29), 1.3, 5, VWd * 0.24, 1.5);
+    L.mtEcho = [VX2, VX2 + VWd];
+    const A2 = VX2 + VWd + 2.6; L.mtArch2 = A2;
+    // ---------- 4. the subway: over the turnstiles, onto the silver shuttle (about 5 seconds to Times Square) ----------
+    lean('mt_turnstiles', A2 + 2.6, 1.15, 1.3);           // (a tap hops him over the turnstile bars)
+    prop('mt_column', A2 + 7.2, 3.4);
+    L.mtLife.push(['mt_commuter', A2 + 9.0, 0, 'stand2']);
+    const TH = 3.2, TW = aw('mt_train', TH), SEAT = 0.4;  // the train: he gets in at the door this far along it
+    const RX = A2 + 12.0 + TW * SEAT, RLEN = 30.0;
+    const train = { kind: 'mttrain', x0: RX, pts: [[RX, 0], [RX + RLEN, 0]], v: 10.5, acc: 7.5, vEnd: 6.2, walkOut: 2.0, w0: 0.9, w1: 0, seat: 0, exitY: 0 };
+    L.rides.push(train); L.mtTrain = train; L.mtTrainH = TH; L.mtSeat = SEAT;
+    L.mtTunnel = [RX + TW * (1 - SEAT) + 1.0, RX + RLEN - TW * SEAT - 1.0];   // (the tunnel between the two platforms: only seen from the train)
+    b.coins(RX - 4.0, 1.2, 3, 0.8);
+    // ---------- 5. Times Square station: up between the two tiled stair walls (special 3), out at the top of the stairs: THE DOOR ----------
+    const TE = RX + RLEN + TW * (1 - SEAT);
+    prop('mt_column', TE + 1.0, 3.4);
+    const SC = TE + 3.6;
+    const MW = 2.6, MU = 2.45;   // the left wall is a tiled stair landing on two green columns he runs under
+    const SE = climbIn(SC, { gap: 1.9, hL: 6.4, hR: 5.2, wL: MW, wR: 1.39, under: MU });   // 3
+    art('mt_tilepillar', SC, MU, 6.4 - MU, { w: MW, back: true, mine: 'tile' });
+    for (const cx of [SC + 0.05, SC + MW - 0.75]) art('mt_column', cx, 0, MU + 0.05, { w: 0.7, back: true, mine: 'stretch' });
+    art('mt_tilepillar', SC + MW + 1.9, 0, 5.2, { w: 1.39, back: true, mine: 'tile' });
+    b.ledge(SC + 0.05, 6.4, MW - 0.1); b.ledge(SC + MW + 1.9 + 0.05, 5.2, 1.29);
+    b.coins(SE + 0.8, 2.0, 3, 0.8);
+    const SU = SE + 3.0, SUW = aw('mt_stairsup', 3.2);
+    back('mt_stairsup', SU, 3.2); L.mtStairs = { x: SU, w: SUW };
+    const D2 = SU + SUW * 0.55; L.mtDoor2 = D2;
+    L.mtIn = [D1, D2]; zone(D1, D2, 2);
+    b.kitDoor(D2, { inside: false }); b.kitSwap(D2, 'ts');
+    ground(D1 + 0.5, A2, 'mtmarble'); ground(A2, D2 + 0.5, 'mtplatform');
+    L.camFloor.push([D1 - 0.5, D2 + 0.5, 0]);
+    for (const a of L.kitArt) if (a.out && a.zone === undefined) a.zone = 0;
+
+    // ---------- 6. Times Square at sunset: up the red steps, wall-jump up the billboard towers as their screens light up (special 4) ----------
+    const T0 = D2 + 0.5;
+    ground(T0, T0 + 2.0, 'mtplaza');
+    back('mt_rail', T0 - 3.2, 1.0, { out: true });       // (the subway stairs' railing he came up by)
+    L.mtJoins.push(T0 + 2.0);
+    snow(T0 + 1.8); prop('mt_tslamp', T0 + 6.0, 4.0);
+    L.mtLife.push(['mt_kid', T0 + 8.0, 0, 'stand'], ['mt_pigeon1', T0 + 14, 9.0, 'fly']);
+    const TS1 = T0 + 10.0;
+    const TR = b.kitRow(TS1, [
+      bld('mt_ts_theatre', (w, h) => [[0.2, 4.85, w - 0.4]]),
+      bld('mt_ts_panels', (w, h) => [[0.2, 7.05, w - 0.4]]),
+      bld('mt_ts_glass', (w, h) => [[0.3, 7.75, w - 0.6]]),
+    ], { capL: endR, capR: endL });
+    b.coins(TS1 + 4.8, 6.0, 3, 0.9); b.coins(TS1 + 8.8, 8.3, 3, 0.9);
+    lean('mt_table', TR + 1.0, 1.1, 0.95); prop('mt_xtree', TR + 4.2, 2.2);
+    L.mtLife.push(['mt_shopper', TR + 6.4, 0, 'stand']);
+    b.pigeon(TR + 7.5);
+    hop('mt_kiosk', TR + 9.0, 2.4, 0, 2.3); b.ledge(TR + 9.1, 2.35, aw('mt_kiosk', 2.4) - 0.2); b.coins(TR + 9.4, 3.4, 3, 0.9);
+    const RSX = TR + 15.0, RSW = aw('mt_redsteps', 3.6);
+    back('mt_redsteps', RSX, 3.6);
+    const S0 = RSX + RSW * 0.12, S1x = RSX + RSW * 0.7;
+    b.slope(S0, 0.0, S1x, 3.45);
+    solid(S1x, RSW * 0.98 - (S1x - RSX), 3.45, 0, { noGrab: true });
+    for (let i = 0; i < 6; i++) L.coins.push({ x: S0 + 0.8 + i * (S1x - S0) / 6, y: 1.2 + i * 3.45 / 6 });
+    const TWX = RSX + RSW + 1.8, TLW = aw('mt_towerL', H_('mt_towerL')), TRW = aw('mt_towerR', H_('mt_towerR'));
+    const TG = 2.1, TLH = 10.35, TRH = 8.95;
+    back('mt_towerL', TWX, H_('mt_towerL'), { towerL: true }); back('mt_towerR', TWX + TLW + TG, H_('mt_towerR'), { towerR: true });
+    solid(TWX + 0.1, 0.4, TLH - 2.0, 2.0, { noGrab: true }); solid(TWX + 0.5, TLW - 0.6, TLH - 2.0, 2.0); solid(TWX + TLW + TG, TRW - 0.1, TRH);   // (he runs past in front of the left tower's foot into the gap, like Barcelona's lift shaft)
+    (L.kitClimbs = L.kitClimbs || []).push({ x: TWX, xr: TWX + TLW + TG, gap: TG, hL: TLH, hR: TRH });
+    for (let i = 0, y = 4.8; y < TLH - 0.6; i++, y += 1.5) L.coins.push({ x: TWX + TLW + (i % 2 ? TG - 0.55 : 0.15), y });
+    b.ledge(TWX + 0.1, TLH, TLW - 0.2); b.ledge(TWX + TLW + TG, TRH, TRW - 0.1);
+    b.special(TWX + TLW * 0.5, TLH + 1.7);                                                     // 4: over the taller billboard tower
+    L.mtTowers = { x: TWX, wl: TLW, xr: TWX + TLW + TG, wr: TRW };
+    L.mtGold = [D2, RSX];
+
+    // ---------- 7. the rooftops at dusk: water towers, a chimney climb (special 5), down the fire escape ----------
+    const RY = 8.8;                                      // the roofs' height
+    const RF0 = TWX + TLW + TG + TRW - 0.1;
+    const RBS = ['mt_rb_red', 'mt_rb_garden', 'mt_rb_pale', 'mt_rb_deco', 'mt_rb_red', 'mt_rb_pale'];
+    let rx = RF0; L.mtRoofs = [];
+    for (const k of RBS) {
+      const h = H_(k), w = aw(k, h), top = Math.min(tp(k, 0.35), tp(k, 0.5), tp(k, 0.65));
+      back(k, rx, h, { y: RY - top, roof: true }); L.mtRoofs.push({ k, x: rx, w, y: RY - top, h });
+      rx += w - 0.05;
+    }
+    const RE = rx;
+    solid(RF0, RE - RF0, RY - 0.4, 0.4, { noGrab: true }); b.ledge(RF0, RY, RE - RF0);
+    L.mtRoofRun = [RF0, RE, RY];
+    const r = L.mtRoofs;
+    hop('mt_ac', r[0].x + 1.4, 0.8, RY, 0.75);
+    back('mt_wtower2', r[0].x + 3.2, 3.2, { y: RY });
+    prop('mt_skylight', r[1].x + 1.0, 0.9, RY); L.mtLife.push(['mt_pigeon_st1', r[1].x + 3.4, RY, 'stand']);
+    b.coins(r[0].x + 1.0, RY + 1.6, 4, 1.0); b.coins(r[1].x + 1.6, RY + 2.4, 3, 0.9);
+    // two tall brick chimney stacks facing each other: wall-jump up between them; the big water tower behind
+    const CHX = r[2].x + 1.0, CG = 1.9, CWd = 1.5, CHL = 5.0, CHR = 4.1;
+    back('mt_wtower', CHX + CWd + CG + CWd + 0.6, 4.4, { y: RY });
+    art('mt_rchimney', CHX, RY, CHL, { w: CWd, back: true, mine: 'stretch' }); art('mt_rchimney', CHX + CWd + CG, RY, CHR, { w: CWd, back: true, mine: 'stretch' });
+    solid(CHX, 0.4, CHL - 2.0, RY + 2.0, { noGrab: true }); solid(CHX + 0.4, CWd - 0.4, CHL - 2.0, RY + 2.0); solid(CHX + CWd + CG, CWd, CHR, RY);   // (in front of the left stack's foot into the gap)
+    (L.kitClimbs = L.kitClimbs || []).push({ x: CHX, xr: CHX + CWd + CG, gap: CG, hL: CHL, hR: CHR, y: RY });
+    for (let i = 0, y = RY + 1.4; y < RY + CHL - 0.4; i++, y += 1.5) L.coins.push({ x: CHX + CWd + (i % 2 ? CG - 0.55 : 0.15), y });
+    b.special(CHX + CWd / 2, RY + CHL + 1.6);                                                  // 5: over the taller chimney stack
+    prop('mt_skylight', r[3].x + 2.6, 0.9, RY); lean('mt_hut', r[4].x + 0.4, 3.2, Math.min(tp('mt_hut', 0.3), tp('mt_hut', 0.5), tp('mt_hut', 0.7)) - 0.05, RY);   // the stair hut
+    back('mt_wtower2', r[5].x + 0.6, 3.2, { y: RY }); L.mtLife.push(['mt_pigeon_st2', r[5].x + 3.4, RY, 'stand']);
+    b.coins(r[4].x + 0.6, RY + 1.8, 4, 1.0);
+    L.mtLife.push(['mt_hawk', r[2].x, RY + 7.5, 'fly'], ['mt_plane', r[4].x, RY + 9.5, 'plane']);
+    // the fire escape: its landings step down to the street
+    const FX = RE - 0.05, FH = 9.0, FW = aw('mt_fireesc', FH), FY = RY - tp('mt_fireesc', 0.5);
+    back('mt_fireesc', FX, FH, { y: FY }); L.mtFire = { x: FX, w: FW, y: FY };
+    b.ledge(FX, RY, FW * 0.35);
+    const LAND = [7.25, 5.65, 4.05, 2.45];
+    LAND.forEach((y, i) => { b.ledge(FX + FW * (0.22 + 0.13 * i), y, FW * 0.42); });
+    for (let i = 0; i < 4; i++) b.coins(FX + FW * (0.42 + 0.13 * i), LAND[i] + 1.0, 1);
+    L.mtDusk = [RF0 - 6, RE];
+    swapAt(TWX + TLW * 0.5, 'roof', 'behind the tall billboard tower (reaches the top of the screen)');
+
+    // ---------- 8. Rockefeller Center: the angels, the rink (he skates), the tree lights up ----------
+    const G0 = FX + FW;
+    prop('mt_shrubs', G0 + 0.6, 0.9); lean('mt_lowwall', G0 + 3.0, 1.4, 1.35);
+    const R2X = G0 + 6.0, RKW = aw('mt_rock1', 7.4);
+    back('mt_rock1', R2X, 7.4); b.ledge(R2X + 0.4, 6.85, RKW - 0.8);
+    const GD = R2X + RKW + 0.6, GDW = aw('mt_gardens', 3.6);
+    back('mt_gardens', GD, 3.6);
+    for (let i = 0; i < 4; i++) { solid(GD + GDW * (0.02 + i * 0.25), GDW * 0.21, 1.05, 0, { noGrab: true }); b.coins(GD + GDW * (0.06 + i * 0.25), 2.1, 2, 0.9); }
+    L.mtLife.push(['mt_kid', GD + GDW + 0.8, 0, 'stand']);
+    snow(GD + GDW + 13.4);
+    const R3X = GD + GDW + 2.5;
+    back('mt_rock2', R3X, 7.4); b.ledge(R3X + 0.4, 6.85, RKW - 0.8);
+    const RRX = R3X + RKW + 1.5, RRW = aw('mt_30rock', 15.0);
+    back('mt_30rock', RRX, 15.0);
+    swapAt(RRX + RRW / 2, 'view', 'behind 30 Rockefeller Plaza (15 tall: reaches the top of the screen)');
+    // the rink: down its steps, then the ice
+    const IK = RRX + RRW + 2.0;
+    ground(T0 + 2.0, IK, 'mtplaza');
+    L.mtJoins.push(IK);
+    back('mt_rinksteps', IK - aw('mt_rinksteps', 2.4) - 0.2, 2.4);
+    const IE = IK + 40;
+    ground(IK, IE, 'mtice'); L.weIce = [IK + 0.4, IE];
+    L.mtRink = [IK, IE];
+    L.mtLife.push(['mt_sk1', IK + 6, 0, 'skate'], ['mt_sk2', IK + 14, 0, 'skate'], ['mt_sk3', IK + 22, 0, 'skate']);
+    b.coins(IK + 3.0, 1.4, 6, 1.4); b.arc(IK + 13.0, 1.5, 5, 4.0, 2.2);
+    const FL = IK + 24.0;
+    b.flag(FL); L.flagY = 0;
+    L.mtFinale = true; L.finale = FL + 8.5; L.finaleT = 7; L.mtView = FL + 8.5;   // (the tree stands well clear of the flag pole)
+    b.wall(IE - 4, 1, 40);
+    b.end(IE - 4);
+  },
+},
 ];
 // Tower Bridge is parked for now (Ladi 2026-10-28): its build and art stay, it just isn't in the game.
 const PARKED = ['towerbridge', 'practice'];
