@@ -18,7 +18,7 @@ html,body{height:100%;min-height:100lvh}
 }
 </style>
 <script>window.LW_SITE_MODE=1;(function(){var n='';try{var w=new URLSearchParams(location.search).get('w');if(w)n=JSON.parse(decodeURIComponent(escape(atob(w.replace(/-/g,'+').replace(/_/g,'/'))))).name||'';if(!n)n=(JSON.parse(localStorage.getItem('lw.config')||'null')||{}).name||''}catch(e){}window.LW_NAME=n.trim();if(window.LW_NAME)document.documentElement.classList.add('lw-loading');var c=(n.trim().charAt(0)||'').toUpperCase();if(/^[A-Z]$/.test(c)){document.querySelectorAll('link[rel=apple-touch-icon],link[rel=icon]').forEach(function(l){l.href='icons/'+(l.hasAttribute('data-dark')?'dark/':'')+c+'.png'})}})()</script>
-<script src="lw-ping.js?v=1794508720"></script>
+<script src="lw-ping.js?v=1794509168"></script>
 <!-- site-only:end -->
 </head><body>
 <meta charset="utf-8">
@@ -28,6 +28,7 @@ html,body{height:100%;min-height:100lvh}
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bowlby+One&family=Figtree:wght@500;700;800&family=Yellowtail&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anton&family=Bangers&family=Bebas+Neue&family=Black+Ops+One&family=Bungee&family=Cinzel:wght@700&family=Cinzel+Decorative:wght@700&family=Creepster&family=Fredoka:wght@700&family=Lobster&family=Permanent+Marker&family=Playfair+Display:wght@700&family=Righteous&family=Russo+One&display=swap">
 <style>
 /* Layout: one full-screen canvas; HUD and menus float over it. Single blue-hour look. */
 :root{
@@ -452,10 +453,10 @@ html.lw-loading .splash{visibility:hidden}
   </div>
 </section>
 
-<script src="kids/kids-meta.js?v=1794508720"></script>
-<script src="kids/kids.js?v=1794508720"></script>
-<script src="sfx.js?v=1794508720"></script>
-<script src="game.js?v=1794508720"></script>
+<script src="kids/kids-meta.js?v=1794509168"></script>
+<script src="kids/kids.js?v=1794509168"></script>
+<script src="sfx.js?v=1794509168"></script>
+<script src="game.js?v=1794509168"></script>
 <script>
 (() => {
 'use strict';
@@ -1355,7 +1356,7 @@ $('retryBtn').addEventListener('click', () => startLevel(levelIndex));
 // If the builder opened this tab, close it and show the builder again; otherwise open the builder with this child's world filled in.
 let lwJoinEnd = false;
 function lwBackToBuilder() {
-  const url = 'builder.html?v=1794508720&w=' + lwEncode(LW);
+  const url = 'builder.html?v=1794509168&w=' + lwEncode(LW);
   try { if (window.opener && !window.opener.closed && /builder\.html/.test(window.opener.location.pathname)) { window.opener.focus(); window.close(); setTimeout(() => { location.href = url; }, 400); return; } } catch (e) {}
   location.href = url;
 }
@@ -9493,45 +9494,58 @@ Object.assign(MT_ADS, {
   air: mtProd('sy_plane', '#4fb3ff', () => 'AIR ' + mtName(), '#ffffff'),
   speedy: mtProd('sy_jet', '#0e2a6b', 'SPLASH', '#5fe0ff', true),
 });
-// made-up brands (Ladi 2026-11-12: "our own version" of the big real ones): the product picture on one block colour, the name, a small line under it
-function mtBrand(key, bg, word, col, tag, tcol = col, font = MT_BIG) {
+// made-up brands (Ladi 2026-11-12: "our own version" of the big real ones): the product picture on one block colour, the name, a small line.
+// Each has its own font and layout (Ladi: mix it up): L picture left, R picture right, BIG picture filling the screen with the name over it,
+// C small picture in the middle with the name above it; tall screens: picture on top, or name on top, or big picture with the name over it
+const MT_FONTS = ['Anton', 'Bangers', 'Bebas Neue', 'Black Ops One', 'Bungee', 'Cinzel', 'Cinzel Decorative', 'Creepster', 'Fredoka', 'Lobster', 'Permanent Marker', 'Playfair Display', 'Righteous', 'Russo One', 'Yellowtail'];
+try { if (document.fonts && document.fonts.load) for (const f of MT_FONTS) document.fonts.load(`700 40px "${f}"`).catch(() => {}); } catch (e) {}
+const mtFont = (f, w = 400, it = false) => `${it ? 'italic ' : ''}${w} # "${f}", "Bowlby One", Impact, sans-serif`;
+const MT_TAG = 'italic 700 # Figtree, sans-serif';
+function mtBrand(key, bg, word, col, tag, tcol = col, o = {}) {
+  const font = o.font || MT_BIG, tfont = o.tfont || MT_TAG, sp = o.sp === undefined ? 0.03 : o.sp;
   return (X, Y, w, h) => {
     ctx.fillStyle = bg; ctx.fillRect(X, Y, w, h);
     const im = IMG[key], tall = h > w * 1.1, wd = typeof word === 'function' ? word() : word, tg = typeof tag === 'function' ? tag() : tag;
-    if (im) {
-      const bw = tall ? w * 0.86 : w * 0.46, bh = tall ? h * 0.52 : h * 0.84, s = Math.min(bw / im.width, bh / im.height), iw = im.width * s, ih = im.height * s;
-      const cx = tall ? X + w / 2 : X + w * 0.27, cy = tall ? Y + h * 0.33 : Y + h * 0.5;
-      ctx.drawImage(im, cx - iw / 2, cy - ih / 2, iw, ih);
-    }
-    if (tall) { weAdText(wd, font, X + w / 2, Y + h * 0.73, w, h, 0.88, 0.12, col, 0.03); if (tg) weAdText(tg, 'italic 700 # Figtree, sans-serif', X + w / 2, Y + h * 0.86, w, h, 0.84, 0.06, tcol); }
-    else { weAdText(wd, font, X + w * 0.74, Y + h * (tg ? 0.42 : 0.5), w, h, 0.47, 0.3, col, 0.03); if (tg) weAdText(tg, 'italic 700 # Figtree, sans-serif', X + w * 0.74, Y + h * 0.7, w, h, 0.44, 0.12, tcol); }
+    const lay = tall ? (o.tlay || 'T') : (o.lay || 'L');
+    const pic = (cx, cy, bw, bh) => { if (!im) return; const s = Math.min(bw / im.width, bh / im.height), iw = im.width * s, ih = im.height * s; ctx.drawImage(im, cx - iw / 2, cy - ih / 2, iw, ih); };
+    const name = (x, y, mw, mh, sh) => { if (sh) { ctx.shadowColor = 'rgba(0,0,0,.65)'; ctx.shadowBlur = h * 0.04; ctx.shadowOffsetY = h * 0.012; } weAdText(wd, font, x, y, w, h, mw, mh, col, sp); ctx.shadowColor = 'transparent'; ctx.shadowBlur = 0; ctx.shadowOffsetY = 0; };
+    const line = (x, y, mw, mh) => { if (tg) weAdText(tg, tfont, x, y, w, h, mw, mh, tcol); };
+    const shade = (y0, y1) => { const g = ctx.createLinearGradient(0, Y + h * y0, 0, Y + h * y1); g.addColorStop(0, 'rgba(0,0,0,0)'); g.addColorStop(1, o.shade || 'rgba(0,0,0,.55)'); ctx.fillStyle = g; ctx.fillRect(X, Y + h * y0, w, h * (y1 - y0)); };
+    if (lay === 'L') { pic(X + w * 0.27, Y + h * 0.5, w * 0.46, h * 0.84); name(X + w * 0.75, Y + h * (tg ? 0.42 : 0.5), 0.42, 0.3); line(X + w * 0.75, Y + h * 0.7, 0.42, 0.12); }
+    else if (lay === 'R') { pic(X + w * 0.74, Y + h * 0.5, w * 0.44, h * 0.84); name(X + w * 0.26, Y + h * (tg ? 0.42 : 0.5), 0.42, 0.3); line(X + w * 0.26, Y + h * 0.7, 0.42, 0.12); }
+    else if (lay === 'BIG') { pic(X + w * (o.px || 0.5), Y + h * 0.5, w * (o.pw || 0.8), h * 1.0); shade(0.55, 1); name(X + w * (o.nx || 0.7), Y + h * 0.76, 0.5, 0.26, true); line(X + w * (o.nx || 0.7), Y + h * 0.92, 0.5, 0.1); }
+    else if (lay === 'C') { pic(X + w * 0.5, Y + h * 0.53, w * 0.34, h * 0.46); name(X + w * 0.5, Y + h * 0.2, 0.9, 0.24); line(X + w * 0.5, Y + h * 0.86, 0.8, 0.12); }
+    else if (lay === 'TT') { name(X + w / 2, Y + h * 0.14, 0.88, 0.11); line(X + w / 2, Y + h * 0.25, 0.84, 0.055); pic(X + w / 2, Y + h * 0.62, w * 0.86, h * 0.6); }
+    else if (lay === 'TBIG') { pic(X + w / 2, Y + h * 0.45, w * 1.1, h * 0.85); shade(0.6, 1); name(X + w / 2, Y + h * 0.82, 0.9, 0.11, true); line(X + w / 2, Y + h * 0.92, 0.84, 0.05); }
+    else { pic(X + w / 2, Y + h * 0.33, w * 0.86, h * 0.52); name(X + w / 2, Y + h * 0.73, 0.88, 0.12); line(X + w / 2, Y + h * 0.86, 0.84, 0.06); }
   };
 }
 Object.assign(MT_ADS, {
-  console: mtBrand('mt_ad_console', '#1238c9', 'PLAYSPACE 6', '#ffffff', 'play has no limits'),
-  taxigame: mtBrand('mt_ad_taxi_game', '#ff3d8a', 'GRAND TAXI AUTO', '#ffffff', 'out now', '#ffe14d'),
-  dinner: mtBrand('mt_ad_dinner', '#3b4a2a', 'CALL OF DINNER', '#f2e6c8', 'mum is calling', '#ffc94d'),
-  burger: mtBrand('mt_ad_burger', '#d81e2c', "McBURGLE'S", '#ffc72c', "i'm munchin' it", '#ffffff'),
-  bucket: mtBrand('mt_ad_bucket', '#e4002b', 'KLUCK', '#ffffff', "finger crunchin' good"),
-  sub: mtBrand('mt_ad_sub', '#008938', 'SUBMARINO', '#ffc600', 'dive in!', '#ffffff'),
-  coffee: mtBrand('mt_ad_coffee', '#00704a', 'STARBUZZ', '#ffffff', 'hot chocolate too'),
-  can: mtBrand('mt_ad_can', '#0a1a4f', 'RED RHINO', '#ff2a45', 'gives you horns', '#ffd34d'),
-  duo: mtBrand('mt_ad_phone_duo', '#f5f5f7', 'aPHONE DUO', '#111111', 'twice the phone', '#555555', MT_F),
-  peas: mtBrand('mt_ad_earbuds', '#bff0c9', 'AirPeas', '#1d1d1f', 'pop them in', '#2f7d3f', MT_F),
-  niko: mtBrand('mt_ad_runner', '#111111', 'NIKO', '#ffffff', 'JUST RUN IT.', '#ff6a1f'),
-  adidos: mtBrand('mt_ad_stripes', '#1a3fa0', 'adidos', '#ffffff', 'four is more', '#ffffff', MT_F),
-  jumper: mtBrand('mt_ad_hightop', '#c8102e', () => 'AIR ' + mtName(), '#ffffff', 'fly high', '#111111'),
-  yeehaw: mtBrand('mt_ad_foam', '#d9c7a7', 'YEEHAW', '#5b4636', 'walk on clouds'),
-  button: mtBrand('mt_ad_bag', '#5a3a22', 'LOUIS BUTTON', '#e8c77a', 'Paris', '#f5e6c4'),
-  gucco: mtBrand('mt_ad_loafer', '#0f3d2e', 'GUCCO', '#e9d3a1', 'Milano', '#ffffff'),
-  avo: mtBrand('mt_ad_avocado', '#1b1b2e', 'THE AVOCADERS', '#9be15d', 'only in cinemas', '#ffffff'),
-  potter: mtBrand('mt_ad_pot', '#3b1f5e', 'HAIRY POTTER', '#f2c14e', 'and the magic comb', '#ffffff'),
-  flips: mtBrand('mt_ad_popcorn', '#000000', 'NETFLIPS', '#e50914', () => 'now streaming: ' + mtName() + "'s World", '#ffffff'),
-  spotty: mtBrand('mt_ad_headphones', '#121212', 'Spottify', '#1ed760', 'press play', '#ffffff', MT_F),
+  console: mtBrand('mt_ad_console', '#1238c9', 'PLAYSPACE 6', '#ffffff', 'play has no limits', '#ffffff', { font: mtFont('Russo One'), lay: 'R', tlay: 'TT' }),
+  taxigame: mtBrand('mt_ad_taxi_game', '#ff3d8a', 'GRAND TAXI AUTO', '#ffffff', 'out now', '#ffe14d', { font: mtFont('Bungee'), lay: 'BIG', px: 0.4, nx: 0.68 }),
+  dinner: mtBrand('mt_ad_dinner', '#3b4a2a', 'CALL OF DINNER', '#f2e6c8', 'mum is calling', '#ffc94d', { font: mtFont('Black Ops One'), lay: 'C', tlay: 'TT' }),
+  burger: mtBrand('mt_ad_burger', '#d81e2c', "McBURGLE'S", '#ffc72c', "i'm munchin' it", '#ffffff', { font: mtFont('Fredoka', 700), lay: 'BIG', px: 0.32, nx: 0.7, tlay: 'TBIG' }),
+  bucket: mtBrand('mt_ad_bucket', '#e4002b', 'JFC', '#ffffff', "finger crunchin' good", '#ffffff', { lay: 'R' }),
+  sub: mtBrand('mt_ad_sub', '#008938', 'SUBMARINO', '#ffc600', 'dive in!', '#ffffff', { font: mtFont('Righteous'), lay: 'C' }),
+  coffee: mtBrand('mt_ad_coffee', '#00704a', 'Starbuzz', '#ffffff', 'hot chocolate too', '#ffffff', { font: mtFont('Lobster'), tfont: '400 # Yellowtail, cursive', sp: 0.01, lay: 'R', tlay: 'TT' }),
+  can: mtBrand('mt_ad_can', '#0a1a4f', 'RED RHINO', '#ff2a45', 'gives you horns', '#ffd34d', { font: mtFont('Anton'), sp: 0.06, lay: 'L', tlay: 'TBIG' }),
+  duo: mtBrand('mt_ad_phone_duo', '#f5f5f7', 'aPhone Duo', '#111111', 'twice the phone', '#555555', { font: '500 # Figtree, sans-serif', tfont: '500 # Figtree, sans-serif', sp: 0, lay: 'C', tlay: 'TT' }),
+  peas: mtBrand('mt_ad_earbuds', '#bff0c9', 'AirPeas', '#1d1d1f', 'pop them in', '#2f7d3f', { font: '500 # Figtree, sans-serif', sp: 0, lay: 'R' }),
+  niko: mtBrand('mt_ad_runner', '#111111', 'NIKO', '#ffffff', 'JUST RUN IT.', '#ff6a1f', { font: mtFont('Anton', 400, true), tfont: mtFont('Anton', 400, true), sp: 0.04, lay: 'BIG', px: 0.36, pw: 0.75, nx: 0.78 }),
+  adidos: mtBrand('mt_ad_stripes', '#1a3fa0', 'adidos', '#ffffff', 'four is more', '#ffffff', { font: MT_F, lay: 'L' }),
+  jumper: mtBrand('mt_ad_hightop', '#c8102e', () => 'AIR ' + mtName(), '#ffffff', 'fly high', '#111111', { font: mtFont('Permanent Marker'), sp: 0.01, lay: 'R', tlay: 'TBIG' }),
+  yeehaw: mtBrand('mt_ad_foam', '#d9c7a7', 'YEEHAW', '#5b4636', 'walk on clouds', '#5b4636', { font: mtFont('Bebas Neue'), sp: 0.12, lay: 'C' }),
+  button: mtBrand('mt_ad_bag', '#5a3a22', 'LOUIS BUTTON', '#e8c77a', 'PARIS', '#f5e6c4', { font: mtFont('Playfair Display', 700), tfont: mtFont('Playfair Display', 700), sp: 0.12, lay: 'R', tlay: 'TT' }),
+  gucco: mtBrand('mt_ad_loafer', '#0f3d2e', 'GUCCIO', '#e9d3a1', 'MILANO', '#ffffff', { font: mtFont('Cinzel', 700), tfont: mtFont('Cinzel', 700), sp: 0.14, lay: 'C', tlay: 'TBIG', shade: 'rgba(5,30,20,.8)' }),
+  avo: mtBrand('mt_ad_avocado', '#1b1b2e', 'THE AVOCADERS', '#9be15d', 'only in cinemas', '#ffffff', { font: mtFont('Bangers'), sp: 0.05, lay: 'BIG', px: 0.5, nx: 0.5, tlay: 'TBIG' }),
+  potter: mtBrand('mt_ad_pot', '#3b1f5e', 'Hairy Potter', '#f2c14e', 'and the magic comb', '#ffffff', { font: mtFont('Cinzel Decorative', 700), sp: 0.02, lay: 'L', tlay: 'TT' }),
+  flips: mtBrand('mt_ad_popcorn', '#000000', 'NETFLIPS', '#e50914', () => 'now streaming: ' + mtName() + "'s World", '#ffffff', { font: mtFont('Bebas Neue'), sp: 0.04, lay: 'R', tlay: 'TT' }),
+  spotty: mtBrand('mt_ad_headphones', '#121212', 'Horrify', '#1ed760', 'scary good music', '#ffffff', { font: mtFont('Creepster'), sp: 0.04, lay: 'BIG', px: 0.27, pw: 0.6, nx: 0.72, tlay: 'TBIG' }),
 });
 const MT_BRANDS = ['console', 'burger', 'niko', 'taxigame', 'coffee', 'button', 'can', 'flips', 'adidos', 'bucket', 'duo', 'avo', 'jumper', 'sub', 'spotty', 'dinner', 'gucco', 'peas', 'potter', 'yeehaw'];
-const MT_WIDE = ['console', 'broadway', 'burger', 'niko', 'taxigame', 'heart', 'coffee', 'button', 'can', 'flips', 'taxi', 'adidos', 'bucket', 'duo', 'avo', 'pigeon', 'jumper', 'sub', 'spotty', 'dinner', 'honka', 'gucco', 'peas', 'potter', 'yeehaw', 'rock'],
-  MT_TALL = ['coffee', 'can', 'console', 'heart', 'duo', 'potter', 'jumper', 'bucket', 'peas', 'button', 'burger', 'flips', 'spotty', 'avo', 'niko', 'dinner'];
+const MT_WIDE = ['console', 'broadway', 'burger', 'niko', 'taxigame', 'heart', 'can', 'adidos', 'taxi', 'bucket', 'avo', 'pigeon', 'jumper', 'sub', 'spotty', 'dinner', 'honka', 'peas', 'potter', 'yeehaw', 'rock'],
+  MT_TALL = ['can', 'console', 'heart', 'potter', 'jumper', 'bucket', 'peas', 'burger', 'spotty', 'avo', 'niko', 'dinner'],
+  MT_BIGS = ['gucco', 'duo', 'flips', 'coffee', 'button'];   // the biggest screens (Ladi 2026-11-12)
 function mtCount(X, Y, w, h) {   // under the ball: 10, 9, 8 ... then HAPPY NEW YEAR
   ctx.fillStyle = '#07070c'; ctx.fillRect(X, Y, w, h);
   const n = 10 - Math.floor(animT % 13);
@@ -9546,7 +9560,7 @@ function mtTicker(X, Y, w, h) {   // the news ticker: lit words running along
   for (; x < X + w; x += tw) ctx.fillText(txt, x, Y + h * 0.54);
 }
 // the thin upright screens: one bold word running up a block of colour
-const MT_STRIPS = [['#d81e2c', '#ffc72c', "McBURGLE'S"], ['#111111', '#fff', 'NIKO'], ['#ffc914', '#141414', 'TAXI!'], ['#1238c9', '#fff', 'PLAYSPACE'], ['#000', '#e50914', 'NETFLIPS'], ['#5b2a86', '#ffd34d', 'BROADWAY'], ['#00704a', '#fff', 'STARBUZZ'], ['#0a1a4f', '#ff2a45', 'RED RHINO'], ['#121212', '#1ed760', 'Spottify']];
+const MT_STRIPS = [['#d81e2c', '#ffc72c', "McBURGLE'S"], ['#111111', '#fff', 'NIKO'], ['#ffc914', '#141414', 'TAXI!'], ['#1238c9', '#fff', 'PLAYSPACE'], ['#000', '#e50914', 'NETFLIPS'], ['#5b2a86', '#ffd34d', 'BROADWAY'], ['#00704a', '#fff', 'STARBUZZ'], ['#e4002b', '#fff', 'JFC'], ['#0a1a4f', '#ff2a45', 'RED RHINO'], ['#121212', '#1ed760', 'HORRIFY']];
 function mtStrip(X, Y, w, h, seed) {
   const [bg, col, wd] = MT_STRIPS[(seed + Math.floor((animT + seed * 0.37) / 4.5)) % MT_STRIPS.length];
   ctx.fillStyle = bg; ctx.fillRect(X, Y, w, h);
@@ -9569,7 +9583,7 @@ function mtScreens() {
       else if (a.key === 'mt_ts1' && i === big) mtCount(X - 1, Y - 1, sw + 2, sh + 2);
       else if (sh > sw * 3) mtStrip(X - 1, Y - 1, sw + 2, sh + 2, (i * 5 + Math.round(a.x)) % 97);
       else {
-        const bx = Math.round(a.x), pool = sh > sw * 1.5 ? MT_TALL : MT_WIDE;   // (5 apart, so no two screens of a building show the same advert at once)
+        const bx = Math.round(a.x), pool = (i === big && sc.length > 1) || a.key === 'mt_ts_whale' ? MT_BIGS : sh > sw * 1.5 ? MT_TALL : MT_WIDE;   // (5 apart, so no two screens of a building show the same advert at once)
         MT_ADS[pool[(i * 5 + bx + Math.floor((animT + (bx % 7) * 0.6) / 4.5)) % pool.length]](X - 1, Y - 1, sw + 2, sh + 2);
       }
       ctx.restore();
