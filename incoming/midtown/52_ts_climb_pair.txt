@@ -1,0 +1,11 @@
+Make exactly ONE image for this picture, nothing else. Don't write any words inside the image.
+- One picture number = one image. Never put two picture numbers in one image, never a grid or collage. An asset sheet (several pieces in one picture) is fine when the prompt asks for one.
+- Same art style in every picture: 2D side-scrolling mobile game art, flat cartoon style with thick dark outlines, clean shapes and gentle cel shading, bright and friendly, matching A's World.
+- Light for this picture: sunset in New York in early December: warm golden-orange sun low on the left, long soft shadows falling to the right, a sky of gold, peach and soft pink, the first lights coming on in windows.
+- Modern, real, cheerful Midtown Manhattan as it is today: clean, busy, festive in early December.
+- No people unless the picture asks for them (then only friendly faceless chibi people drawn like the game's child in the attached a_sheet.png, in warm winter coats, hats and scarves, never silhouettes). No text, no letters, no numbers, no logos, no real brand, shop, theatre, hotel, bank or company names, no subway line letters or numbers, no number plates.
+
+
+Picture 52: Times Square climb towers with empty screens  (tall 2:3)
+Straight side-on view, flat orthographic, no perspective. Two very tall Times Square towers side by side with a clear gap between them, both standing on the ground: on the left a taller tower about 16 floors high, on the right a slightly shorter one about 13 floors, both covered top to bottom in big screens stacked one above another, their inner faces flat and solid so a child can wall-jump between them, small metal ledges with lights between the screens. Every screen is EMPTY: filled with one solid flat bright cyan colour (#00FFFF), perfectly flat, no picture, no glow, no shading, no reflections on it, with a thin dark frame round each screen so its edges are crisp straight rectangles. Dark glass and grey metal between the screens. Ground floors of lit glass shop windows. Full height from the ground to the tops, nothing cut off. On a solid flat magenta (#FF00FF) background, no magenta anywhere in the art, no cast shadow on the background.
+Reminder: one picture number = one image. Never put two picture numbers in one image, never a grid or collage.

@@ -1,0 +1,11 @@
+Make exactly ONE image for this picture, nothing else. Don't write any words inside the image.
+- One picture number = one image. Never put two picture numbers in one image, never a grid or collage. An asset sheet (several pieces in one picture) is fine when the prompt asks for one.
+- Same art style in every picture: 2D side-scrolling mobile game art, flat cartoon style with thick dark outlines, clean shapes and gentle cel shading, bright and friendly, matching A's World.
+- Light for this picture: dusk in New York in early December: the sun just set, a sky of pink, violet and deep blue, warm lights glowing in many windows, a little clean snow on ledges, cosy and magical, never too dark.
+- Modern, real, cheerful Midtown Manhattan as it is today: clean, busy, festive in early December.
+- No people unless the picture asks for them (then only friendly faceless chibi people drawn like the game's child in the attached a_sheet.png, in warm winter coats, hats and scarves, never silhouettes). No text, no letters, no numbers, no logos, no real brand, shop, theatre, hotel, bank or company names, no subway line letters or numbers, no number plates.
+
+
+Picture 53: Rockefeller Center backdrop behind the rink  (very wide 3:1 strip)
+Straight side-on view, flat orthographic, no perspective. Side-on game background strip in the same style and scale as the other far skylines of this trip, softer and hazier than the front art with a little paper grain. Rockefeller Center seen from far back across the plaza: the tall pale stone art-deco 30 Rockefeller Plaza tower rising in the middle, seen whole from bottom to top with its lit windows and stepped top, smaller than the strip's height, lower art-deco buildings on each side, a ring of flags on poles in plain colours, and behind them the Midtown skyline with warm windows. NO Christmas tree and NO ice rink in it. Everything sits on one flat baseline along the bottom, the left and right ends match so it can repeat, and the sky above is solid #FF00FF magenta. Nothing close up: everything is at least a street away. On a solid flat magenta (#FF00FF) background, no magenta anywhere in the art, no cast shadow on the background.
+Reminder: one picture number = one image. Never put two picture numbers in one image, never a grid or collage.
