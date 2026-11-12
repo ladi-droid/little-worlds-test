@@ -18,7 +18,7 @@ html,body{height:100%;min-height:100lvh}
 }
 </style>
 <script>window.LW_SITE_MODE=1;(function(){var n='';try{var w=new URLSearchParams(location.search).get('w');if(w)n=JSON.parse(decodeURIComponent(escape(atob(w.replace(/-/g,'+').replace(/_/g,'/'))))).name||'';if(!n)n=(JSON.parse(localStorage.getItem('lw.config')||'null')||{}).name||''}catch(e){}window.LW_NAME=n.trim();if(window.LW_NAME)document.documentElement.classList.add('lw-loading');var c=(n.trim().charAt(0)||'').toUpperCase();if(/^[A-Z]$/.test(c)){document.querySelectorAll('link[rel=apple-touch-icon],link[rel=icon]').forEach(function(l){l.href='icons/'+(l.hasAttribute('data-dark')?'dark/':'')+c+'.png'})}})()</script>
-<script src="lw-ping.js?v=1794432374"></script>
+<script src="lw-ping.js?v=1794461736"></script>
 <!-- site-only:end -->
 </head><body>
 <meta charset="utf-8">
@@ -452,10 +452,10 @@ html.lw-loading .splash{visibility:hidden}
   </div>
 </section>
 
-<script src="kids/kids-meta.js?v=1794432374"></script>
-<script src="kids/kids.js?v=1794432374"></script>
-<script src="sfx.js?v=1794432374"></script>
-<script src="game.js?v=1794432374"></script>
+<script src="kids/kids-meta.js?v=1794461736"></script>
+<script src="kids/kids.js?v=1794461736"></script>
+<script src="sfx.js?v=1794461736"></script>
+<script src="game.js?v=1794461736"></script>
 <script>
 (() => {
 'use strict';
@@ -911,6 +911,7 @@ function sndEvent(e) {
     case 'special': if (G.got.filter(Boolean).length === 5) snd('all_five', { delay: 0.45 }); break;
     case 'stomp': { const k = e.kind === 'fox' && AREAS[L.area].dubai ? 'crab' : e.kind; if (SND_VOL[k] !== undefined) snd(k, { delay: 0.04 }); break; }
     case 'bonk': snd('bonk'); break;
+    case 'sink': snd('land_hard', { rate: 0.75 }); break;   // (New York: into a snow pile)
     case 'ctbonk': if (e.hit) snd('bonk'); break;
     case 'sgbonk': if (e.hit) snd('bonk'); break;
     case 'ctsoak': snd('splash', { vol: e.hit ? 1 : 0.6 }); break;
@@ -1354,7 +1355,7 @@ $('retryBtn').addEventListener('click', () => startLevel(levelIndex));
 // If the builder opened this tab, close it and show the builder again; otherwise open the builder with this child's world filled in.
 let lwJoinEnd = false;
 function lwBackToBuilder() {
-  const url = 'builder.html?v=1794432374&w=' + lwEncode(LW);
+  const url = 'builder.html?v=1794461736&w=' + lwEncode(LW);
   try { if (window.opener && !window.opener.closed && /builder\.html/.test(window.opener.location.pathname)) { window.opener.focus(); window.close(); setTimeout(() => { location.href = url; }, 400); return; } } catch (e) {}
   location.href = url;
 }
@@ -9217,7 +9218,7 @@ function drawSgRideA(cx, by, RUN_H, JUMP_H) {
 // New York, Midtown (2026-11-11, from the level kit), drawn from art made with the image maker: pieces cut by midtown/src/cut.py into
 // atlas_mt*.webp, backdrops, Grand Central's hall, the subway, the ending view and ground strips as their own files. A crisp December
 // afternoon on 42nd Street, sunset in Times Square, dusk on the rooftops and at Rockefeller Center.
-const MT_IMAGES = ["mt_towerL", "mt_30rock", "mt_towerR", "mt_tree_off", "mt_tree_on", "mt_fireesc", "mt_gc", "mt_ts_screen", "mt_b_brown", "mt_b_glass", "mt_ts_glass", "mt_ts_panels", "mt_b_deco", "mt_endl", "mt_endr", "mt_narrow", "mt_rock1", "mt_rock2", "mt_littree", "mt_b_fire", "mt_rb_deco", "mt_rb_garden", "mt_ts_theatre", "mt_arch", "mt_rb_red", "mt_pillar", "mt_rb_pale", "mt_wtower", "mt_darch", "mt_flagpole", "mt_lamp", "mt_tslamp", "mt_vault", "mt_gcdoor_far", "mt_gcdoor", "mt_redsteps", "mt_gardens", "mt_statue", "mt_pittree", "mt_column", "mt_evergreen", "mt_stairL", "mt_stairR", "mt_tickets", "mt_stairsup", "mt_hut", "mt_wtower2", "mt_brasslamp", "mt_tilepillar", "mt_pit2", "mt_carts", "mt_booth", "mt_vent", "mt_ramp", "mt_kiosk", "mt_rinksteps", "mt_train", "mt_train_open", "mt_xtree", "mt_taxi", "mt_taxi_open", "mt_chand", "mt_scr0", "mt_scr1", "mt_scr2", "mt_scr3", "mt_scr4", "mt_scr5", "mt_cloud0", "mt_chimney", "mt_traindoor", "mt_shopper", "mt_commuter", "mt_rchimney", "mt_sk2", "mt_sk1", "mt_sk3", "mt_board", "mt_kid", "mt_garland", "mt_cloud1", "mt_taxi_door", "mt_steam0", "mt_cloud2", "mt_wreath", "mt_turnstiles", "mt_table", "mt_lowwall", "mt_bench", "mt_planter", "mt_mbench", "mt_rail", "mt_steam1", "mt_cloud3", "mt_hydrant", "mt_poinsettia", "mt_bollard", "mt_skylight", "mt_shrubs", "mt_ac", "mt_hawk", "mt_steam2", "mt_cloud4", "mt_gull0", "mt_gull1", "mt_snow", "mt_pigeon_st", "mt_pigeon0", "mt_pigeon1", "mt_pigeon2", "mt_plane", "mt_pigeon_st1", "mt_pigeon_st2", "mt_trim", "mt_far1", "mt_far2", "mt_far3", "mt_g_ice", "mt_g_marble", "mt_g_platform", "mt_g_plaza", "mt_g_roof", "mt_g_walk", "mt_in_hall", "mt_in_subway", "mt_mid1", "mt_mid2", "mt_mid3", "mt_rinkwall", "mt_view"];
+const MT_IMAGES = ["mt_towerL", "mt_30rock", "mt_towerR", "mt_tree_off", "mt_tree_on", "mt_fireesc", "mt_gc", "mt_ts_screen", "mt_b_brown", "mt_b_glass", "mt_ts_glass", "mt_ts_panels", "mt_b_deco", "mt_endl", "mt_endr", "mt_narrow", "mt_rock1", "mt_rock2", "mt_littree", "mt_b_fire", "mt_rb_deco", "mt_rb_garden", "mt_ts_theatre", "mt_arch", "mt_rb_red", "mt_pillar", "mt_rb_pale", "mt_wtower", "mt_darch", "mt_flagpole", "mt_lamp", "mt_tslamp", "mt_vault", "mt_gcdoor_far", "mt_gcdoor", "mt_redsteps", "mt_gardens", "mt_statue", "mt_pittree", "mt_column", "mt_evergreen", "mt_stairL", "mt_stairR", "mt_tickets", "mt_stairsup", "mt_hut", "mt_wtower2", "mt_brasslamp", "mt_tilepillar", "mt_pit2", "mt_carts", "mt_booth", "mt_vent", "mt_ramp", "mt_kiosk", "mt_rinksteps", "mt_train", "mt_train_open", "mt_xtree", "mt_taxi", "mt_taxi_open", "mt_chand", "mt_scr0", "mt_scr1", "mt_scr2", "mt_scr3", "mt_scr4", "mt_scr5", "mt_cloud0", "mt_chimney", "mt_traindoor", "mt_shopper", "mt_commuter", "mt_rchimney", "mt_sk2", "mt_sk1", "mt_sk3", "mt_board", "mt_kid", "mt_garland", "mt_cloud1", "mt_taxi_door", "mt_steam0", "mt_cloud2", "mt_wreath", "mt_turnstiles", "mt_table", "mt_lowwall", "mt_bench", "mt_planter", "mt_mbench", "mt_rail", "mt_steam1", "mt_cloud3", "mt_hydrant", "mt_poinsettia", "mt_bollard", "mt_skylight", "mt_shrubs", "mt_ac", "mt_hawk", "mt_steam2", "mt_cloud4", "mt_gull0", "mt_gull1", "mt_snow", "mt_pigeon_st", "mt_pigeon0", "mt_pigeon1", "mt_pigeon2", "mt_plane", "mt_pigeon_st1", "mt_pigeon_st2", "mt_trim", "mt_far1", "mt_far2", "mt_far3", "mt_g_ice", "mt_g_marble", "mt_g_platform", "mt_g_plaza", "mt_g_roof", "mt_g_walk", "mt_in_hall", "mt_in_subway", "mt_in_subway_cols", "mt_mid1", "mt_mid2", "mt_mid3", "mt_rinkwall", "mt_view"];
 // ground strips: [tile, strip height, how much shows above the floor line, fill top, fill bottom]
 const MT_GROUND = { mtwalk: ['mt_g_walk', 1.2, 0.3, '#5a5c64', '#2e3036'], mtmarble: ['mt_g_marble', 1.0, 0.26, '#a88a70', '#5a4636'],
   mtplatform: ['mt_g_platform', 1.0, 0.26, '#6a6c70', '#34363a'], mtplaza: ['mt_g_plaza', 1.0, 0.26, '#4a4c56', '#26272e'],
@@ -9316,10 +9317,10 @@ function mtTint() {
 // the ending view: Rockefeller Center at dusk, its rink lined up with the ice he skates on; the giant tree stands behind the gold statue
 // and lights up when he stops under it. One picture, mirrored either side
 function mtViewGeo() {
-  const im = IMG.mt_view, L = G.L, h = Math.max(H * 0.8, 9.5 * U), w = h * im.width / im.height;
+  const im = IMG.mt_view, L = G.L, h0 = Math.max(H * 0.8, 9.5 * U), h = Math.max(h0, (sy(0) + 0.06 * H) / 0.62), w = h * im.width / im.height;   // (tall enough that its own sky reaches the top of the screen)
   // where the camera comes to rest at the end: the tree is placed so that, from there, it stands right behind A
   const vw = viewW(), camEnd = Math.min(L.finale + ARun.PW / 2 - 0.3 * vw, L.endX - vw);
-  return { h, w, Y: sy(0) + 0.06 * h - h * 0.9 + h * 0.06, X: (L.finale + ARun.PW / 2 - camEnd) * U - w / 2 - (cam.x - camEnd) * U * 0.05 };
+  return { h, h0, w, Y: sy(0) + 0.06 * h - h * 0.9 + h * 0.06, X: (L.finale + ARun.PW / 2 - camEnd) * U - w / 2 - (cam.x - camEnd) * U * 0.05 };
 }
 function mtTreeOn() { const F = G.flag; return !!(F && F.slid && F.t2 > 0.9); }
 function mtView(c = ctx) {
@@ -9335,7 +9336,7 @@ function mtView(c = ctx) {
     if (k === 0) {   // the tree behind the statue, then the statue and the rink's far wall drawn again in front of its foot
       const tk = mtTreeOn() ? 'mt_tree_on' : 'mt_tree_off', ti = IMG[tk];
       if (ti) {
-        const th = g.h * 0.62, tw = th * ti.width / ti.height, tb = g.Y + g.h * 0.8;
+        const th = g.h0 * 0.62, tw = th * ti.width / ti.height, tb = g.Y + g.h * 0.8;
         if (mtTreeOn()) { const gl = c.createRadialGradient(x + g.w / 2, tb - th * 0.5, 0, x + g.w / 2, tb - th * 0.5, th * 0.7); gl.addColorStop(0, 'rgba(255,220,140,.35)'); gl.addColorStop(1, 'rgba(255,220,140,0)'); c.fillStyle = gl; c.fillRect(x, g.Y, g.w, g.h); }
         c.drawImage(ti, x + g.w / 2 - tw / 2, tb - th, tw, th);
         const s0 = 0.4, s1 = 0.6, r0 = 0.72;
@@ -9475,52 +9476,40 @@ function mtTaxiIntro() {
   bxImg(it < 1.45 ? 'mt_taxi_open' : 'mt_taxi', x, -0.02, MT_TAXI_H, true);   // (the picture faces right: flipped, it faces left and drives off that way)
 }
 // ---------- the shuttle train: doors open at the platform, shut while it runs (A out of sight inside), open again at Times Square ----------
-function mtTrainAt() {
-  const L = G.L, r = L.mtTrain, z = mtOn(r), end = r.pts[r.pts.length - 1][0];
-  const s = z ? (z.wx !== undefined ? Math.min(z.s, end) : z.s) : mtDone(r) ? end : r.x0;
-  const w = mtW('mt_train', L.mtTrainH);
-  return { z, s, x: s - w * L.mtSeat, w, open: !z || z.t < r.w0 + 0.1 || z.wx !== undefined || z.s >= end - 0.05 };
-}
-function mtTrain() {
-  const L = G.L; if (!L.mtTrain) return;
-  const T = mtTrainAt(); if (sx(T.x + T.w + 1) < 0 || sx(T.x - 1) > W) return;
-  const shake = T.z && !T.open ? Math.sin(animT * 40) * 0.015 : 0;
-  shadow(T.x + T.w / 2, 0.03, T.w, 0.3);
-  bxImg(T.open ? 'mt_train_open' : 'mt_train', T.x, 0.05 + shake, L.mtTrainH);
-}
-// the tunnel between the two platforms: dark, with lamps rushing past
-function mtTunnel() {
-  const L = G.L, T = L.mtTunnel; if (!T) return;
-  const X0 = sx(T[0]), X1 = sx(T[1]); if (X1 < 0 || X0 > W) return;
-  const g = ctx.createLinearGradient(0, 0, 0, H); g.addColorStop(0, '#16181e'); g.addColorStop(1, '#2a2c34');
-  ctx.fillStyle = g; ctx.fillRect(X0, 0, X1 - X0, H);
-  for (let x = Math.ceil(T[0]); x < T[1]; x += 1) {   // the tunnel's ribs, and a small work lamp on every third one
-    const X = sx(x); if (X < X0 - U || X > X1 + U) continue;
-    ctx.fillStyle = 'rgba(0,0,0,.28)'; ctx.fillRect(X, 0, 0.22 * U, H);
-    ctx.fillStyle = 'rgba(255,255,255,.05)'; ctx.fillRect(X + 0.22 * U, 0, 0.06 * U, H);
-    if (x % 3) continue;
-    ctx.fillStyle = 'rgba(255,200,110,.18)'; ctx.beginPath(); ctx.arc(X + 0.11 * U, sy(2.6), 0.32 * U, 0, 7); ctx.fill();
-    ctx.fillStyle = '#ffd890'; ctx.fillRect(X + 0.02 * U, sy(2.66), 0.18 * U, 0.12 * U);
-  }
-  ctx.fillStyle = '#3a3c44'; ctx.fillRect(X0, sy(0.55), X1 - X0, 0.08 * U);   // a cable run along the wall
-  for (const e of [T[0], T[1]]) {   // the platform walls end in a tiled portal
-    const X = sx(e) - 0.3 * U; ctx.fillStyle = '#e8e4da'; ctx.fillRect(X, 0, 0.6 * U, H);
-    ctx.fillStyle = '#2a5a3a'; ctx.fillRect(X, 0, 0.12 * U, H); ctx.fillRect(X + 0.48 * U, 0, 0.12 * U, H);
+// the silver train rushes past along the platform, behind its pillars, every few seconds once A is down on it
+function mtPassTrain() {
+  const L = G.L; if (L.mtPass === undefined) return;
+  if (G.mtPassT === undefined) { if (G.p.x > L.mtPass) G.mtPassT = G.t; else return; }
+  const TH = L.mtTrainH, w = mtW('mt_train', TH), v = 15, per = 7.0;
+  const t = (G.t - G.mtPassT) % per, x = L.mtPass - w - 10 + t * v + Math.floor((G.t - G.mtPassT) / per) * 6.2 * per;
+  if (sx(x + w) > 0 && sx(x) < W) {
+    ctx.save(); ctx.beginPath(); ctx.rect(sx(L.mtArch2 + 3), -10, W + 20, H + 20); ctx.clip();
+    bxImg('mt_train', x, -0.3 + Math.sin(animT * 40) * 0.015, TH);
+    ctx.restore();
+    mtRoom('mt_in_subway_cols', L.mtArch2 + 3, L.mtDoor2 + 4, null, L.mtArch2);   // the platform's pillars stand in front of it
   }
 }
 // ---------- inside Grand Central: the hall, the whispering gallery, the subway; each picture fills the screen from the floor up ----------
 const MT_ARCH_H = 4.6;
-function mtRoom(key, x0, x1, tint) {
-  const im = IMG[key], L = G.L;
-  const a = Math.max(-2, sx(x0)), b = Math.min(W + 2, sx(x1)); if (b <= a) return;
-  ctx.save(); ctx.beginPath(); ctx.rect(a, -10, b - a, H + 20); ctx.clip();
-  if (im) {
+function mtRoom(key, x0, x1, tint, org = x0, fade = 0) {
+  const im = IMG[key];
+  const a = Math.max(-2, sx(x0)), b = Math.min(W + 2, sx(x1)); if (b <= a || !im) return;
+  const N = fade ? 12 : 1, fw = fade / N;
+  for (let n = 0; n < N; n++) {   // fade: the first `fade` units come in a little at a time (rooms change softly inside the arch)
+    const s0 = fade ? x0 + n * fw : x0, s1 = fade ? (n === N - 1 ? x1 : x0 + (n + 1) * fw + 0.02) : x1;
+    const A = Math.max(-2, sx(s0)), B = Math.min(W + 2, sx(s1)); if (B <= A) continue;
+    ctx.save(); ctx.beginPath(); ctx.rect(A, -10, B - A, H + 20); ctx.clip();
+    if (fade) ctx.globalAlpha = n === N - 1 ? 1 : (n + 0.5) / N;
     const bot = sy(0) + 0.04 * H, h = Math.max(H * 0.55, bot + 2), w = h * im.width / im.height, top = bot - h;
-    let xo = -(((cam.x - x0) * U * 0.3) % w); if (xo > 0) xo -= w;
-    for (let x = xo; x < W; x += w - 1) ctx.drawImage(im, x, top, w, h);
+    const st = -(cam.x - org) * U * 0.3;
+    for (let k = Math.floor((-st) / w) - 1; st + k * w < W; k++) {   // every other copy mirrored, so the picture runs on without a seam
+      const x = st + k * w; if (x + w < 0) continue;
+      if (k & 1) { ctx.save(); ctx.translate(2 * x + w, 0); ctx.scale(-1, 1); ctx.drawImage(im, x, top, w, h); ctx.restore(); }
+      else ctx.drawImage(im, x, top, w, h);
+    }
+    if (tint) { ctx.fillStyle = tint; ctx.fillRect(A, 0, B - A, H); }
+    ctx.restore();
   }
-  if (tint) { ctx.fillStyle = tint; ctx.fillRect(a, 0, b - a, H); }
-  ctx.restore();
 }
 function mtArch(x) {   // a deep archway: the next room starts in its shadow
   const a = mtW('mt_arch', MT_ARCH_H);
@@ -9531,10 +9520,11 @@ function mtArch(x) {   // a deep archway: the next room starts in its shadow
 function mtInside() {
   const L = G.L;
   ctx.fillStyle = '#d8b98a'; ctx.fillRect(0, 0, W, H);
-  mtRoom('mt_in_hall', L.mtDoor1 - 4, L.mtArch1);
-  mtRoom('mt_in_hall', L.mtArch1, L.mtArch2, 'rgba(150,70,30,.38)');   // (the whispering gallery: the hall's stone in the warm glow of its tiles)
-  mtRoom('mt_in_subway', L.mtArch2, L.mtDoor2 + 4);
-  mtTunnel();
+  const F = 6;   // (each room comes in over 6 units, centred on its archway)
+  mtRoom('mt_in_hall', L.mtDoor1 - 4, L.mtArch1 + F / 2, null, L.mtDoor1 - 4);
+  mtRoom('mt_in_hall', L.mtArch1 - F / 2, L.mtArch2 + F / 2, 'rgba(150,70,30,.38)', L.mtDoor1 - 4, F);   // (the whispering gallery: the hall's stone in the warm glow of its tiles)
+  mtRoom('mt_in_subway', L.mtArch2 - F / 2, L.mtDoor2 + 4, null, L.mtArch2, F);
+  mtPassTrain();
   const a = mtW('mt_darch', 4.4);   // the doorway he came in by
   bxImg('mt_darch', L.mtDoor1 - a / 2, 0, 4.4);
   mtArch(L.mtArch1); mtArch(L.mtArch2);
@@ -9551,7 +9541,6 @@ function drawNewyork(dt) {
     drawKit(a => a.back && a.zone === 2 && !a.mine);
     for (const a of L.kitArt) if (a.mine && a.zone === 2) mtMine(a);
     for (const s of L.solids) if (s.kind === 'ground' && (s.style === 'mtmarble' || s.style === 'mtplatform')) mtGround(s);
-    mtTrain();
     drawKit(a => !a.back && a.zone === 2);
     mtLife();
     return;
@@ -9595,12 +9584,13 @@ function drawMtRideA(cx, by, RUN_H, JUMP_H) {
     const h = 1.62 * U, w = h * im.width / im.height; ctx.drawImage(im, cx - w / 2, by + 0.04 * U - h, w, h);
     return true;
   }
-  const z = mtOn(L.mtTrain);
-  if (z) {
-    const r = L.mtTrain, end = r.pts[r.pts.length - 1][0];
-    if (z.wx !== undefined) { drawSprite('a_run', Math.floor(z.wx / 0.42) % 6, cx, by + 0.04 * U, RUN_H, false); return true; }   // (out of the doors at running pace)
-    if (z.t < r.w0) { drawSprite('a_run', Math.floor(z.t * 9) % 6, cx, by + 0.04 * U, RUN_H, false); return true; }   // (stepping in)
-    return true;   // (inside, out of sight, while it runs)
+  if (p.sunk && p.onGround) {   // in deep snow: only his head shows above the pile until he jumps out
+    const k = p.sunk, d = Math.min(1, (p.sinkT || 0) / 0.15) * 0.22;
+    ctx.save(); ctx.beginPath(); ctx.rect(cx - 2 * U, 0, 4 * U, sy(k.y) + 0.02 * U); ctx.clip();   // (nothing of him below the pavement)
+    drawSprite('a_run', 0, cx, by + 0.04 * U + d * U, RUN_H, false);
+    ctx.restore();
+    bxImg('mt_snow', k.x, k.y, k.h);
+    return true;
   }
   if (L.weIce && p.onGround && p.x > L.weIce[0] && p.x < L.weIce[1]) {   // skating on the rink: crouched, arms out (the West End's ice pose)
     if (weKid()) return IMG.a_slide_win ? drawSprite('a_slide_win', Math.floor(animT * 3) % 2, cx, by + 0.04 * U, RUN_H, false) : false;

@@ -4209,8 +4209,9 @@ const ALL_LEVELS = [
     back('mt_carts', CX, 2.9);
     b.ledge(CX + 0.2, 2.55, CW - 0.4);
     b.arc(CX + 0.8, 3.2, 7, CW - 1.6, 0.9);
-    L.mtLife.push(['mt_commuter', CX + CW + 1.2, 0, 'stand']);
-    const snow = (x, y) => lean('mt_snow', x, 1.45, 1.35, y);   // a ploughed snow pile, waist high: he leans on it, a tap hops it
+    // a ploughed snow pile: step or land in it and A sinks in up to his head; a tap jumps him out (Ladi 2026-11-12)
+    L.sinks = [];
+    const snow = (x, y = 0) => { const h = 1.1, w = aw('mt_snow', h); prop('mt_snow', x, h, y); L.sinks.push({ x0: x + w * 0.22, x1: x + w * 0.78, y, x, w, h }); };
     snow(CX + CW + 0.5); prop('mt_bench', CX + CW + 4.2, 1.0);
     // the row: a stepped brick end, the fire-escape walk-up, the stone art-deco block, the brownstone, a stepped end
     const R1X = CX + CW + 6.5;
@@ -4284,14 +4285,11 @@ const ALL_LEVELS = [
     lean('mt_turnstiles', A2 + 2.6, 1.15, 1.3);           // (a tap hops him over the turnstile bars)
     prop('mt_column', A2 + 7.2, 3.4);
     L.mtLife.push(['mt_commuter', A2 + 9.0, 0, 'stand2']);
-    const TH = 3.2, TW = aw('mt_train', TH), SEAT = 0.4;  // the train: he gets in at the door this far along it
-    const RX = A2 + 12.0 + TW * SEAT, RLEN = 30.0;
-    const train = { kind: 'mttrain', x0: RX, pts: [[RX, 0], [RX + RLEN, 0]], v: 10.5, acc: 7.5, vEnd: 6.2, walkOut: 2.0, w0: 0.9, w1: 0, seat: 0, exitY: 0 };
-    L.rides.push(train); L.mtTrain = train; L.mtTrainH = TH; L.mtSeat = SEAT;
-    L.mtTunnel = [RX + TW * (1 - SEAT) + 1.0, RX + RLEN - TW * SEAT - 1.0];   // (the tunnel between the two platforms: only seen from the train)
-    b.coins(RX - 4.0, 1.2, 3, 0.8);
+    // he runs the platform; the silver train rushes past behind the pillars (Ladi 2026-11-12: no ride)
+    L.mtTrainH = 3.2; L.mtPass = A2 + 1.0;
+    b.coins(A2 + 11.0, 1.2, 4, 0.8); b.arc(A2 + 15.5, 1.6, 4, 2.6, 1.6);
     // ---------- 5. Times Square station: up between the two tiled stair walls (special 3), out at the top of the stairs: THE DOOR ----------
-    const TE = RX + RLEN + TW * (1 - SEAT);
+    const TE = A2 + 19.0;
     prop('mt_column', TE + 1.0, 3.4);
     const SC = TE + 3.6;
     const MW = 2.6, MU = 2.45;   // the left wall is a tiled stair landing on two green columns he runs under
@@ -4393,7 +4391,7 @@ const ALL_LEVELS = [
     const GD = R2X + RKW + 0.6, GDW = aw('mt_gardens', 3.6);
     back('mt_gardens', GD, 3.6);
     for (let i = 0; i < 4; i++) { solid(GD + GDW * (0.02 + i * 0.25), GDW * 0.21, 1.05, 0, { noGrab: true }); b.coins(GD + GDW * (0.06 + i * 0.25), 2.1, 2, 0.9); }
-    L.mtLife.push(['mt_kid', GD + GDW + 0.8, 0, 'stand']);
+    snow(GD + GDW + 0.2);
     snow(GD + GDW + 13.4);
     const R3X = GD + GDW + 2.5;
     back('mt_rock2', R3X, 7.4); b.ledge(R3X + 0.4, 6.85, RKW - 0.8);
@@ -4405,12 +4403,16 @@ const ALL_LEVELS = [
     ground(T0 + 2.0, IK, 'mtplaza');
     L.mtJoins.push(IK);
     back('mt_rinksteps', IK - aw('mt_rinksteps', 2.4) - 0.2, 2.4);
-    const IE = IK + 40;
+    const IE = IK + 72;   // (a long skate: Ladi 2026-11-12)
     ground(IK, IE, 'mtice'); L.weIce = [IK + 0.4, IE];
     L.mtRink = [IK, IE];
-    L.mtLife.push(['mt_sk1', IK + 6, 0, 'skate'], ['mt_sk2', IK + 14, 0, 'skate'], ['mt_sk3', IK + 22, 0, 'skate']);
-    b.coins(IK + 3.0, 1.4, 6, 1.4); b.arc(IK + 13.0, 1.5, 5, 4.0, 2.2);
-    const FL = IK + 24.0;
+    const SK = ['mt_sk1', 'mt_sk2', 'mt_sk3', 'mt_kid', 'mt_sk2', 'mt_sk1', 'mt_sk3'];
+    for (let i = 0; i < 13; i++) L.mtLife.push([SK[i % SK.length], IK + 4 + i * 4.1 + (i % 3) * 0.7, 0, 'skate']);   // lots of skaters
+    b.coins(IK + 3.0, 1.4, 6, 1.4);
+    b.arc(IK + 12.0, 1.5, 5, 4.0, 3.0); b.arc(IK + 30.0, 1.5, 5, 4.0, 3.2); b.arc(IK + 44.0, 1.5, 5, 4.0, 3.0);   // jumps on the ice
+    snow(IK + 20.0); snow(IK + 37.0);   // (ploughed off the ice: sink in, jump out)
+    b.coins(IK + 50.0, 1.4, 5, 1.2);
+    const FL = IK + 56.0;
     b.flag(FL); L.flagY = 0;
     L.mtFinale = true; L.finale = FL + 8.5; L.finaleT = 7; L.mtView = FL + 8.5;   // (the tree stands well clear of the flag pole)
     b.wall(IE - 4, 1, 40);
@@ -4704,6 +4706,9 @@ function tick(g, dt) {
   const belt = p.onGround ? (p.ground && p.ground.belt) || 0 : p.carry || 0;
   p.carry = belt;
   p.vx = p.dir * P.speed * slow + belt;
+  // deep snow (L.sinks, New York): stepping or landing in a pile sinks A in up to his head; he stays put until a tap jumps him out
+  if (L.sinks && p.onGround && !p.sunk) { const cx = p.x + PW / 2; const sk = L.sinks.find(k => cx > k.x0 && cx < k.x1 && Math.abs(p.y - k.y) < 0.05); if (sk) { p.sunk = sk; p.sinkT = 0; g.events.push({ type: 'sink', x: cx, y: p.y }); } }
+  if (p.sunk) { if (!p.onGround) p.sunk = null; else { p.vx = 0; p.sinkT += dt; } }
   if (p.hopVX !== undefined && !p.onGround) p.vx = p.hopVX;   // a hop aimed at a spot (Lagos's talking drums throw him from one drum onto the next)
   if (p.hopStop !== undefined && !p.onGround && p.x + PW / 2 >= p.hopStop) p.vx = Math.min(p.vx, 0);   // (a jump onto a small drum stops over its middle)
   if (wind) p.vx += p.onGround ? wind[2] * 0.25 : wind[2];
