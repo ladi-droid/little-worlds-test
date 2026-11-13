@@ -18,7 +18,7 @@ html,body{height:100%;min-height:100lvh}
 }
 </style>
 <script>window.LW_SITE_MODE=1;(function(){var n='';try{var w=new URLSearchParams(location.search).get('w');if(w)n=JSON.parse(decodeURIComponent(escape(atob(w.replace(/-/g,'+').replace(/_/g,'/'))))).name||'';if(!n)n=(JSON.parse(localStorage.getItem('lw.config')||'null')||{}).name||''}catch(e){}window.LW_NAME=n.trim();if(window.LW_NAME)document.documentElement.classList.add('lw-loading');var c=(n.trim().charAt(0)||'').toUpperCase();if(/^[A-Z]$/.test(c)){document.querySelectorAll('link[rel=apple-touch-icon],link[rel=icon]').forEach(function(l){l.href='icons/'+(l.hasAttribute('data-dark')?'dark/':'')+c+'.png'})}})()</script>
-<script src="lw-ping.js?v=1794587125"></script>
+<script src="lw-ping.js?v=1794588186"></script>
 <!-- site-only:end -->
 </head><body>
 <meta charset="utf-8">
@@ -455,10 +455,10 @@ html.lw-loading .splash{visibility:hidden}
   </div>
 </section>
 
-<script src="kids/kids-meta.js?v=1794587125"></script>
-<script src="kids/kids.js?v=1794587125"></script>
-<script src="sfx.js?v=1794587125"></script>
-<script src="game.js?v=1794587125"></script>
+<script src="kids/kids-meta.js?v=1794588186"></script>
+<script src="kids/kids.js?v=1794588186"></script>
+<script src="sfx.js?v=1794588186"></script>
+<script src="game.js?v=1794588186"></script>
 <script>
 (() => {
 'use strict';
@@ -502,7 +502,7 @@ function lwClean(c) {
   const kid = c.kid === 'girl' || c.kid === 'boy' ? c.kid : null;
   const kidStyles = kid && window.KidArt ? KidArt.styles(kid === 'girl' ? 'G' : 'B') : [];
   const out = { name, kid, style: kid ? (kidStyles.includes(c.style) ? c.style : kidStyles[0]) : LW_STYLES.some(s => s[0] === c.style) ? c.style : 'curls', acc: typeof c.acc === 'string' ? c.acc : 'none', worlds,
-    slug: String(c.slug || name).toLowerCase().replace(/[^a-z0-9-]/g, '').slice(0, 24) || 'child', paid: c.paid !== false };
+    slug: String(c.slug || name).toLowerCase().replace(/[^a-z0-9-]/g, '').slice(0, 24) || 'child', paid: c.paid !== false, paused: c.paused === true };
   for (const k in LW_LISTS) {
     const v = c[k];
     out[k] = typeof v === 'string' && /^#[0-9a-f]{6}$/i.test(v) ? v.toLowerCase() : Number.isInteger(v) && v >= 0 && v < LW_LISTS[k].length ? v : LW_DEFAULT[k];
@@ -523,6 +523,14 @@ const LW = (() => {
   try { return lwClean(JSON.parse(localStorage.getItem('lw.config') || 'null')); } catch (e) { return null; }
 })();
 const LW_INITIAL = LW ? LW.name.charAt(0).toLocaleUpperCase() : 'A';
+if (LW && LW.paused) {   // LW_PAUSED: the parent paused this world in their account
+  const showBreak = () => { const el = document.createElement('div'); el.id = 'lwBreak';
+    el.style.cssText = 'position:fixed;inset:0;z-index:2147483000;background:#ffd23f;display:grid;place-items:center;text-align:center;padding:24px;font-family:Figtree,system-ui,sans-serif;color:#0b0b0e';
+    const nm = LW.name.replace(/[&<>"]/g, '');
+    el.innerHTML = `<div><img src="icons/${LW_INITIAL}.png" alt="" style="width:110px;height:110px;border-radius:26px;border:4px solid #0b0b0e;box-shadow:0 6px 0 #0b0b0e"><div style="font:900 30px/1.2 Figtree,system-ui,sans-serif;margin:22px 0 8px;-webkit-text-stroke:0;text-shadow:none;letter-spacing:0">${nm}’s World is taking a break</div><div style="font:600 18px/1.4 Figtree,system-ui,sans-serif">Ask a grown-up to turn it back on.</div></div>`;
+    document.body.appendChild(el); document.documentElement.classList.remove('lw-loading'); };
+  document.readyState === 'loading' ? document.addEventListener('DOMContentLoaded', showBreak) : showBreak();
+}
 if (LW) ARun.setTrips(LW.worlds);
 function lwColour(k) {
   if (!LW) return null;
@@ -1360,7 +1368,7 @@ $('retryBtn').addEventListener('click', () => startLevel(levelIndex));
 // If the builder opened this tab, close it and show the builder again; otherwise open the builder with this child's world filled in.
 let lwJoinEnd = false;
 function lwBackToBuilder() {
-  const url = 'builder.html?v=1794587125&w=' + lwEncode(LW);
+  const url = 'builder.html?v=1794588186&w=' + lwEncode(LW);
   try { if (window.opener && !window.opener.closed && /builder\.html/.test(window.opener.location.pathname)) { window.opener.focus(); window.close(); setTimeout(() => { location.href = url; }, 400); return; } } catch (e) {}
   location.href = url;
 }
