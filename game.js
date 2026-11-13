@@ -4675,17 +4675,17 @@ const ALL_LEVELS = [
     b.coins(CA + CAW + 3.2, 2.0, 3, 0.8);
 
     // ---------- 9. the ending: under the giant Eiffel Tower to the flag; A sits on a picnic blanket; the tower lights up and sparkles ----------
-    const T = PR_ASP.tower, TX = CA + CAW + 12.0;
+    // (Ladi 2026-11-13: the tower stands AFTER the flag; A walks on under its arch and sits at the picnic right below it)
+    const T = PR_ASP.tower, FX = CA + CAW + 12.0, TX = FX + 2.5, TC = TX + T.pr_tw_legs.w / 2;
+    b.coins(FX - 5.5, 2.2, 4, 1.0);                      // (a line of coins on the way to the flag)
     L.prTower = { x: TX, w: T.pr_tw_legs.w, lh: T.pr_tw_legs.h, mw: T.pr_tw_mid.w, mh: T.pr_tw_mid.h, tw: T.pr_tw_top.w, th: T.pr_tw_top.h };
-    b.coins(TX + 3.0, 2.2, 8, 1.0);                      // (a line of coins right under its arch)
-    const FX = TX + T.pr_tw_legs.w + 3.0;
     ground(CM, FX + 40, 'prlawn');
     b.flag(FX); L.flagY = 0;
-    prop('pr_hedge', FX + 9.0, 0.9); prop('pr_lavender', FX + 11.0, 1.0);
+    prop('pr_hedge', TX + T.pr_tw_legs.w + 2.0, 0.9); prop('pr_lavender', TX + T.pr_tw_legs.w + 4.0, 1.0);
     L.prLife.push(['pr_bfly1', FX + 3, 2.6, 'bfly']);
     L.prFinale = true;
-    L.finale = FX + 4.0; L.finaleT = 9.5; L.prView = FX + 4.0;
-    L.prPicnic = FX + 3.3;
+    L.finale = TC + 0.4; L.finaleT = 9.5; L.prView = TC + 0.4;
+    L.prPicnic = TC - 0.3;
     b.wall(FX + 30, 1, 40);
     b.end(FX + 30);
   },
