@@ -4675,17 +4675,18 @@ const ALL_LEVELS = [
     b.coins(CA + CAW + 3.2, 2.0, 3, 0.8);
 
     // ---------- 9. the ending: under the giant Eiffel Tower to the flag; A sits on a picnic blanket; the tower lights up and sparkles ----------
-    // (Ladi 2026-11-13, evening: the ending is a postcard. A walks a few steps past the flag, then the picture cuts to the Champ de Mars
-    //  head-on at night: the lawn running away between mirror-matched clipped trees, the Eiffel Tower far off in the middle, A sitting
-    //  on the picnic blanket from behind in the centre; the tower lights up and sparkles.)
+    // (Ladi 2026-11-13: no cutscene. Seamless from before the flag: the backdrop turns into the Champ de Mars avenue at night (behind the
+    //  carousel), he passes the flag, walks on into the middle of the opening and sits on the picnic blanket; the camera eases to centre
+    //  the avenue, the Eiffel Tower standing far off at its end, and it lights up and sparkles.)
     const FX = CA + CAW + 12.0;
+    swapAt(FX - 22, 'avenue', 'the avenue at night comes in slowly behind the carousel');
     b.coins(FX - 5.5, 2.2, 4, 1.0);                      // (a line of coins on the way to the flag)
     ground(CM, FX + 40, 'prlawn');
     b.flag(FX); L.flagY = 0;
-    prop('pr_hedge', FX + 6.0, 0.9); prop('pr_lavender', FX + 8.0, 1.0);
     L.prLife.push(['pr_bfly1', FX + 3, 2.6, 'bfly']);
     L.prFinale = true;
-    L.finale = FX + 2.6; L.finaleT = 9.0;
+    L.finale = FX + 6.0; L.finaleT = 9.0;
+    L.prPicnic = L.finale - 0.98;
     b.wall(FX + 30, 1, 40);
     b.end(FX + 30);
   },
