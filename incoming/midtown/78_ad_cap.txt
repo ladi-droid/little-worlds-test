@@ -1,0 +1,11 @@
+Make exactly ONE image for this picture, nothing else. The only words in the image are the ones this prompt asks for.
+- One picture number = one image. Never put two picture numbers in one image, never a grid or collage.
+- Same art style in every picture: 2D mobile game art, flat cartoon style with thick dark outlines, clean shapes and gentle cel shading, bright and friendly, matching A's World.
+- This is a product picture for a cartoon billboard advert: ONE object, big and centred, seen from the side or a slight three-quarter angle, even bright light, no background scene.
+- No other text, letters, numbers or logos.
+- On a solid flat magenta (#FF00FF) background, no magenta anywhere in the art, no cast shadow on the background. The whole object inside the picture, nothing cut off.
+
+
+Picture 78: Vinotelli cap  (square 1:1)
+One washed navy-blue cotton baseball cap (a soft 'dad hat' with a curved peak), seen from the front at a slight three-quarter angle, exactly like the caps in the attached photo: faded denim-navy fabric with visible stitching lines on the peak, small stitched eyelets, a button on top. Across the front, small and neat, the word "vinotelli." embroidered in white thread in an elegant lower-case serif font, spelled exactly v-i-n-o-t-e-l-l-i followed by a full stop, nothing else written anywhere. Drawn in the game's flat cartoon style with thick dark outlines, not a photo.
+Reminder: one picture number = one image. Never put two picture numbers in one image, never a grid or collage.
