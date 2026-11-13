@@ -18,7 +18,7 @@ html,body{height:100%;min-height:100lvh}
 }
 </style>
 <script>window.LW_SITE_MODE=1;(function(){var n='';try{var w=new URLSearchParams(location.search).get('w');if(w)n=JSON.parse(decodeURIComponent(escape(atob(w.replace(/-/g,'+').replace(/_/g,'/'))))).name||'';if(!n)n=(JSON.parse(localStorage.getItem('lw.config')||'null')||{}).name||''}catch(e){}window.LW_NAME=n.trim();if(window.LW_NAME)document.documentElement.classList.add('lw-loading');var c=(n.trim().charAt(0)||'').toUpperCase();if(/^[A-Z]$/.test(c)){document.querySelectorAll('link[rel=apple-touch-icon],link[rel=icon]').forEach(function(l){l.href='icons/'+(l.hasAttribute('data-dark')?'dark/':'')+c+'.png'})}})()</script>
-<script src="lw-ping.js?v=1794553790"></script>
+<script src="lw-ping.js?v=1794575056"></script>
 <!-- site-only:end -->
 </head><body>
 <meta charset="utf-8">
@@ -455,10 +455,10 @@ html.lw-loading .splash{visibility:hidden}
   </div>
 </section>
 
-<script src="kids/kids-meta.js?v=1794553790"></script>
-<script src="kids/kids.js?v=1794553790"></script>
-<script src="sfx.js?v=1794553790"></script>
-<script src="game.js?v=1794553790"></script>
+<script src="kids/kids-meta.js?v=1794575056"></script>
+<script src="kids/kids.js?v=1794575056"></script>
+<script src="sfx.js?v=1794575056"></script>
+<script src="game.js?v=1794575056"></script>
 <script>
 (() => {
 'use strict';
@@ -1360,7 +1360,7 @@ $('retryBtn').addEventListener('click', () => startLevel(levelIndex));
 // If the builder opened this tab, close it and show the builder again; otherwise open the builder with this child's world filled in.
 let lwJoinEnd = false;
 function lwBackToBuilder() {
-  const url = 'builder.html?v=1794553790&w=' + lwEncode(LW);
+  const url = 'builder.html?v=1794575056&w=' + lwEncode(LW);
   try { if (window.opener && !window.opener.closed && /builder\.html/.test(window.opener.location.pathname)) { window.opener.focus(); window.close(); setTimeout(() => { location.href = url; }, 400); return; } } catch (e) {}
   location.href = url;
 }
@@ -10175,7 +10175,7 @@ function prTwDark(key) {
   }
   return PR_TW[key];
 }
-function prLit() { const F = G.flag; return F && F.slid && F.t2 !== undefined ? Math.max(0, Math.min(1, (F.t2 - 0.8) / 1.4)) : 0; }
+function prLit() { const F = G.flag; return F && F.ride !== undefined ? Math.max(0, Math.min(1, (F.ride - 0.2) / 1.4)) : 0; }   // (lights up once he sits down below it)
 function prTower() {
   const T = G.L.prTower; if (!T) return;
   const cx = T.x + T.w / 2, top = T.lh + T.mh + T.th; if (sx(T.x + T.w + 1) < 0 || sx(T.x - 1) > W || sy(top) > H) return;
@@ -10188,7 +10188,7 @@ function prTower() {
     const X = sx(cx - w / 2), Y = sy(y + h), D = prTwDark(k); if (Y > H || Y + h * U < 0) continue;
     if (lit < 1 && D) ctx.drawImage(D.dark, X, Y, w * U, h * U);
     if (lit > 0 && IMG[k]) { ctx.globalAlpha = lit; ctx.drawImage(IMG[k], X, Y, w * U, h * U); ctx.globalAlpha = 1; }
-    const sp = Math.max(0, Math.min(1, ((G.flag && G.flag.t2) || 0) - 2.6));   // then the sparkles, all over it
+    const sp = Math.max(0, Math.min(1, ((G.flag && G.flag.ride) || 0) - 1.8));   // then the sparkles, all over it
     if (sp > 0 && D) for (let i = 0; i < D.pts.length; i++) {
       const tw = Math.sin(animT * 9 + i * 2.39); if (tw < 0.55) continue;
       const [fx, fy] = D.pts[i], px = X + fx * w * U, py = Y + fy * h * U, s = (0.1 + 0.16 * (tw - 0.55)) * U * sp;
