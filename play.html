@@ -18,7 +18,7 @@ html,body{height:100%;min-height:100lvh}
 }
 </style>
 <script>window.LW_SITE_MODE=1;(function(){var n='';try{var w=new URLSearchParams(location.search).get('w');if(w)n=JSON.parse(decodeURIComponent(escape(atob(w.replace(/-/g,'+').replace(/_/g,'/'))))).name||'';if(!n)n=(JSON.parse(localStorage.getItem('lw.config')||'null')||{}).name||''}catch(e){}window.LW_NAME=n.trim();if(window.LW_NAME)document.documentElement.classList.add('lw-loading');var c=(n.trim().charAt(0)||'').toUpperCase();if(/^[A-Z]$/.test(c)){document.querySelectorAll('link[rel=apple-touch-icon],link[rel=icon]').forEach(function(l){l.href='icons/'+(l.hasAttribute('data-dark')?'dark/':'')+c+'.png'})}})()</script>
-<script src="lw-ping.js?v=1794575056"></script>
+<script src="lw-ping.js?v=1794585644"></script>
 <!-- site-only:end -->
 </head><body>
 <meta charset="utf-8">
@@ -455,10 +455,10 @@ html.lw-loading .splash{visibility:hidden}
   </div>
 </section>
 
-<script src="kids/kids-meta.js?v=1794575056"></script>
-<script src="kids/kids.js?v=1794575056"></script>
-<script src="sfx.js?v=1794575056"></script>
-<script src="game.js?v=1794575056"></script>
+<script src="kids/kids-meta.js?v=1794585644"></script>
+<script src="kids/kids.js?v=1794585644"></script>
+<script src="sfx.js?v=1794585644"></script>
+<script src="game.js?v=1794585644"></script>
 <script>
 (() => {
 'use strict';
@@ -1360,7 +1360,7 @@ $('retryBtn').addEventListener('click', () => startLevel(levelIndex));
 // If the builder opened this tab, close it and show the builder again; otherwise open the builder with this child's world filled in.
 let lwJoinEnd = false;
 function lwBackToBuilder() {
-  const url = 'builder.html?v=1794575056&w=' + lwEncode(LW);
+  const url = 'builder.html?v=1794585644&w=' + lwEncode(LW);
   try { if (window.opener && !window.opener.closed && /builder\.html/.test(window.opener.location.pathname)) { window.opener.focus(); window.close(); setTimeout(() => { location.href = url; }, 400); return; } } catch (e) {}
   location.href = url;
 }
@@ -1597,7 +1597,6 @@ function updateCamera(dt) {
   const ty = bcIn ? (G.L.syHallY !== undefined ? G.L.syHallY + 0.8 : 0) : syLv !== undefined ? syLv : bbub ? Math.max(floor, p.y + 0.8 - vh * 0.5) : bcab ? ARun.rideY(G.L.bcCable.ride, p.ride.s + 1.0) + 1.9 - vh * 0.5 : cable ? ARun.rideY(G.L.ctCab, p.ride.s + 1.2) + 2.2 - vh * 0.5 : Math.max(floor, (riding ? p.y + ARun.moverY(p.ground, G.t + 0.3) - p.ground.y : p.y) + 1.5 - vh * 0.55);
   if (G.camSnap) { cam.y = ty; G.camSnap = false; }
   else cam.y += (ty - cam.y) * Math.min(1, dt * (riding || cable ? 14 : bcab || bbub ? 6 : 3));
-  if (G.L.prFinale) prRise();   // Paris: the camera rises up the Eiffel Tower at the end
 }
 
 function drawSky() {
@@ -2440,6 +2439,7 @@ function draw(dt) {
   else if (gw) { drawGwBack(); drawGwHaze(); drawGwMid(); drawGwGlints(); drawGwBoat(); drawGwRiver(); drawGwGulls(); }
   else { drawSkyline(); drawFarStreet(); drawRoad(); drawPavement(); }
   if (dx && G.intro && state === 'ready' && introDx() < dxLandT()) { ctx.restore(); return; }   // the landing cutaway fills the screen
+  if (prs && prEndOn()) { ctx.restore(); return; }   // Paris: the postcard ending fills the screen
   if (ww || tb) { /* drawn above */ }
   else if (gw) { // riverside: props stand on the walkway, in front of its railing
     for (const s of G.L.solids) if (s.kind === 'ground') drawGround(s);
@@ -9840,7 +9840,7 @@ function drawMtRideA(cx, by, RUN_H, JUMP_H) {
 // Paris (rebuilt 2026-11-13, from the level kit), drawn from art made with the image maker: pieces cut by paris2/src/cut.py into
 // atlas_pr*.webp, backdrops, the Louvre's rooms, the Eiffel Tower (three tall pictures) and ground strips as their own files.
 // A summer afternoon at Notre-Dame, golden in the Tuileries, sunset on the Seine, dusk under the tower. A wears his summer outfit.
-const PR_IMAGES = ["pr_notre", "pr_pillarL", "pr_daruL", "pr_daruR", "pr_pillarR", "pr_wheel", "pr_h_macaron", "pr_obelisk", "pr_endl", "pr_endr", "pr_h_flowers", "pr_carrousel", "pr_narrow", "pr_plane", "pr_h_bakery", "pr_pyramid", "pr_carousel", "pr_wing", "pr_h_cafe", "pr_plane2", "pr_lampcol", "pr_lamp", "pr_odoor", "pr_fountain", "pr_chestnut", "pr_dframe", "pr_guignol", "pr_odoor_far", "pr_arch", "pr_pier", "pr_blamp", "pr_stalls", "pr_ptree", "pr_gstatue", "pr_plamp", "pr_column", "pr_metro", "pr_chand", "pr_barch", "pr_statue", "pr_balloons", "pr_kiosk", "pr_yew", "pr_qsteps", "pr_pdoor_far", "pr_pdoor", "pr_ships", "pr_book_b", "pr_boat", "pr_boat_open", "pr_wallace", "pr_mona", "pr_barge", "pr_bay", "pr_flowerman", "pr_family", "pr_cyclist", "pr_taxi", "pr_taxi_open", "pr_sphinx", "pr_cloud0", "pr_book_a", "pr_baker", "pr_balloonkid", "pr_dog", "pr_accordion", "pr_boatkid", "pr_boat_gate", "pr_pond", "pr_rower", "pr_cloud1", "pr_taxi_door", "pr_cart", "pr_tramps", "pr_gondola", "pr_pontoon", "pr_bikes", "pr_bistro", "pr_kayaks", "pr_launch", "pr_asit", "pr_cloud2", "pr_lowwall", "pr_board", "pr_chairs", "pr_pbench", "pr_bench", "pr_puppets", "pr_rope", "pr_lavender", "pr_cloud3", "pr_bollard", "pr_pot", "pr_hedge", "pr_flowers", "pr_balloon0", "pr_balloon1", "pr_balloon2", "pr_mbench", "pr_book_wall", "pr_picnic", "pr_cloud4", "pr_tboat1", "pr_tboat2", "pr_pigeon0", "pr_pigeon1", "pr_pigeon2", "pr_gull0", "pr_gull1", "pr_hoops", "pr_peck0", "pr_peck1", "pr_peck2", "pr_trim", "pr_sparrow0", "pr_sparrow1", "pr_sparrow2", "pr_bfly0", "pr_bfly1", "pr_far1", "pr_far2", "pr_far3", "pr_far4", "pr_g_court", "pr_g_lawn", "pr_g_parquet", "pr_g_path", "pr_g_pave", "pr_g_quay", "pr_in_gallery", "pr_in_hall", "pr_mid1", "pr_mid2", "pr_mid3", "pr_tw_legs", "pr_tw_mid", "pr_tw_top", "pr_water"];
+const PR_IMAGES = ["pr_notre", "pr_pillarL", "pr_daruL", "pr_daruR", "pr_pillarR", "pr_wheel", "pr_h_macaron", "pr_obelisk", "pr_endl", "pr_endr", "pr_h_flowers", "pr_carrousel", "pr_narrow", "pr_plane", "pr_h_bakery", "pr_pyramid", "pr_carousel", "pr_wing", "pr_h_cafe", "pr_plane2", "pr_lampcol", "pr_lamp", "pr_odoor", "pr_fountain", "pr_chestnut", "pr_dframe", "pr_guignol", "pr_odoor_far", "pr_arch", "pr_pier", "pr_blamp", "pr_stalls", "pr_ptree", "pr_gstatue", "pr_plamp", "pr_column", "pr_metro", "pr_chand", "pr_barch", "pr_statue", "pr_balloons", "pr_kiosk", "pr_yew", "pr_qsteps", "pr_pdoor_far", "pr_pdoor", "pr_ships", "pr_book_b", "pr_boat", "pr_boat_open", "pr_wallace", "pr_mona", "pr_barge", "pr_bay", "pr_flowerman", "pr_family", "pr_cyclist", "pr_taxi", "pr_taxi_open", "pr_sphinx", "pr_cloud0", "pr_book_a", "pr_baker", "pr_balloonkid", "pr_dog", "pr_accordion", "pr_boatkid", "pr_boat_gate", "pr_pond", "pr_rower", "pr_cloud1", "pr_taxi_door", "pr_cart", "pr_tramps", "pr_gondola", "pr_pontoon", "pr_bikes", "pr_bistro", "pr_kayaks", "pr_launch", "pr_asit", "pr_cloud2", "pr_lowwall", "pr_board", "pr_chairs", "pr_pbench", "pr_bench", "pr_puppets", "pr_rope", "pr_lavender", "pr_cloud3", "pr_bollard", "pr_pot", "pr_hedge", "pr_flowers", "pr_balloon0", "pr_balloon1", "pr_balloon2", "pr_mbench", "pr_book_wall", "pr_picnic", "pr_cloud4", "pr_tboat1", "pr_tboat2", "pr_pigeon0", "pr_pigeon1", "pr_pigeon2", "pr_gull0", "pr_gull1", "pr_hoops", "pr_peck0", "pr_peck1", "pr_peck2", "pr_trim", "pr_sparrow0", "pr_sparrow1", "pr_sparrow2", "pr_bfly0", "pr_bfly1", "pr_far1", "pr_far2", "pr_far3", "pr_far4", "pr_g_court", "pr_g_lawn", "pr_g_parquet", "pr_g_path", "pr_g_pave", "pr_g_quay", "pr_in_gallery", "pr_in_hall", "pr_mid1", "pr_mid2", "pr_mid3", "pr_end_park", "pr_end_tower", "pr_water"];
 const PR_H = {"pr_taxi":2.0,"pr_taxi_open":2.0,"pr_taxi_door":1.557,"pr_notre":15.0,"pr_wallace":2.4,"pr_lamp":4.6,"pr_column":3.4,"pr_bench":1.1,"pr_ptree":3.6,"pr_bikes":1.3,"pr_bollard":0.9,"pr_pot":0.9,"pr_h_cafe":7.213,"pr_h_bakery":8.738,"pr_h_flowers":10.15,"pr_h_macaron":11.375,"pr_endl":10.338,"pr_narrow":10.038,"pr_endr":10.338,"pr_pier":4.2,"pr_lowwall":1.2,"pr_stalls":3.8,"pr_bistro":1.3,"pr_board":1.2,"pr_bay":2.2,"pr_cart":1.5,"pr_metro":3.4,"pr_pyramid":12.0,"pr_pdoor":2.6,"pr_pdoor_far":2.765,"pr_wing":11.0,"pr_mbench":0.8,"pr_rope":1.0,"pr_statue":3.0,"pr_chand":3.4,"pr_mona":2.4,"pr_ships":2.6,"pr_sphinx":2.0,"pr_daru":12.0,"pr_arch":4.316,"pr_odoor":4.6,"pr_odoor_far":4.352,"pr_carrousel":8.0,"pr_wheel":12.0,"pr_gondola":1.4,"pr_tramps":1.5,"pr_pond":1.6,"pr_tboat1":0.6,"pr_tboat2":0.6,"pr_gstatue":3.6,"pr_balloons":3.0,"pr_kiosk":3.0,"pr_chairs":1.2,"pr_obelisk":12.0,"pr_fountain":4.6,"pr_lampcol":5.0,"pr_pillarL":12.0,"pr_pillarR":11.054,"pr_barch":3.4,"pr_blamp":4.4,"pr_qsteps":3.0,"pr_pontoon":1.4,"pr_boat":2.6,"pr_boat_open":2.59,"pr_boat_gate":1.864,"pr_barge":2.4,"pr_rower":1.6,"pr_kayaks":1.3,"pr_launch":1.3,"pr_guignol":4.4,"pr_puppets":1.1,"pr_carousel":6.4,"pr_picnic":0.75,"pr_hedge":0.9,"pr_flowers":0.9,"pr_plamp":3.6,"pr_pbench":1.2,"pr_hoops":0.45,"pr_accordion":1.856,"pr_baker":1.95,"pr_dog":1.896,"pr_balloonkid":1.919,"pr_family":2.071,"pr_flowerman":2.129,"pr_boatkid":1.838,"pr_cyclist":2.049,"pr_asit":1.3,"pr_plane":7.8,"pr_plane2":5.2,"pr_chestnut":4.6,"pr_lavender":1.0,"pr_yew":3.0,"pr_cloud0":2.0,"pr_cloud1":1.6,"pr_cloud2":1.3,"pr_cloud3":1.0,"pr_cloud4":0.8,"pr_pigeon0":0.5,"pr_pigeon1":0.5,"pr_pigeon2":0.5,"pr_gull0":0.5,"pr_gull1":0.5,"pr_sparrow0":0.3,"pr_sparrow1":0.3,"pr_sparrow2":0.3,"pr_balloon0":0.9,"pr_balloon1":0.9,"pr_balloon2":0.9,"pr_peck0":0.42,"pr_peck1":0.42,"pr_peck2":0.42,"pr_bfly0":0.3,"pr_bfly1":0.3,"pr_trim":0.4,"pr_dframe":4.6,"pr_book_a":2.0,"pr_book_b":2.567,"pr_book_wall":0.79,"pr_daruL":12.0,"pr_daruR":12.0};   // each piece's height in units, as cut
 // ground strips: [tile, strip height, how much shows above the floor line, fill top, fill bottom]
 const PR_GROUND = { prquay: ['pr_g_quay', 1.2, 0.3, '#b49a72', '#6a5640'], prland: ['pr_g_quay', 1.2, 0.3, '#b49a72', '#6a5640'],
@@ -10155,10 +10155,6 @@ function prGuignol() {
   ctx.save(); ctx.beginPath(); ctx.rect(sx(Gu.x + Gu.w * 0.2), sy(0.82 * H4), Gu.w * 0.6 * U, (0.82 * H4 - sill) * U); ctx.clip();
   bxImg('pr_puppets', Gu.x + Gu.w / 2 - pw / 2, sill - ph + up * (ph + 0.05) + bob, ph); ctx.restore();
 }
-function prPicnic() {
-  const x = G.L.prPicnic; if (x === undefined || sx(x + 3) < 0 || sx(x - 1) > W) return;
-  bxImg('pr_picnic', x, 0.01, 0.75);
-}
 // ---------- the Eiffel Tower: three tall pictures standing on the lawn, ~56 units high. Before he arrives it stands unlit in the dusk;
 // when he sits down it lights up gold, then sparkles all over, and the camera rises slowly up it to the tip ----------
 const PR_TW = {};
@@ -10168,50 +10164,61 @@ function prTwDark(key) {
     const c = document.createElement('canvas'), s = Math.min(1, 900 / im.height); c.width = Math.round(im.width * s); c.height = Math.round(im.height * s);
     const x = c.getContext('2d'); x.drawImage(im, 0, 0, c.width, c.height);
     let pts = []; try { const d = x.getImageData(0, 0, c.width, c.height).data;   // (where the sparkles may twinkle: the bright golden lamps)
-      for (let n = 0; n < 4000 && pts.length < 160; n++) { const px = Math.floor(((n * 7919) % 9973) / 9973 * c.width), py = Math.floor(((n * 104729) % 99991) / 99991 * c.height), i = (py * c.width + px) * 4;
+      for (let n = 0; n < 4000 && pts.length < 160; n++) { const px = Math.floor(((n * 0.7548777) % 1) * c.width), py = Math.floor(((n * 0.5698403) % 1) * c.height), i = (py * c.width + px) * 4;
         if (d[i + 3] > 220 && d[i] > 200 && d[i + 1] > 150) pts.push([px / c.width, py / c.height]); } } catch (e) { pts = []; }
     x.globalCompositeOperation = 'source-atop'; x.fillStyle = 'rgba(46,32,62,.62)'; x.fillRect(0, 0, c.width, c.height);
     PR_TW[key] = { dark: c, pts };
   }
   return PR_TW[key];
 }
-function prLit() { const F = G.flag; return F && F.ride !== undefined ? Math.max(0, Math.min(1, (F.ride - 0.2) / 1.4)) : 0; }   // (lights up once he sits down below it)
-function prTower() {
-  const T = G.L.prTower; if (!T) return;
-  const cx = T.x + T.w / 2, top = T.lh + T.mh + T.th; if (sx(T.x + T.w + 1) < 0 || sx(T.x - 1) > W || sy(top) > H) return;
-  const lit = prLit(), parts = [['pr_tw_legs', T.w, T.lh, 0], ['pr_tw_mid', T.mw, T.mh, T.lh], ['pr_tw_top', T.tw, T.th, T.lh + T.mh]];
-  if (lit > 0) {   // a soft glow round it once it is lit
-    const gx = sx(cx), gy = sy(top * 0.35), r = top * 0.55 * U, gl = ctx.createRadialGradient(gx, gy, 0, gx, gy, r);
-    gl.addColorStop(0, `rgba(255,200,110,${0.28 * lit})`); gl.addColorStop(1, 'rgba(255,200,110,0)'); ctx.fillStyle = gl; ctx.fillRect(gx - r, gy - r, 2 * r, 2 * r);
+function prLit() { const F = G.flag; return F && F.ride !== undefined ? Math.max(0, Math.min(1, (F.ride - 1.0) / 1.4)) : 0; }
+// ---------- the ending (Ladi 2026-11-13): once he reaches his spot past the flag, the picture cuts to the Champ de Mars head-on at night,
+// like a postcard: the lawn runs away between mirror-matched clipped trees to the Eiffel Tower far off in the middle; he sits on the picnic
+// blanket from behind in the centre. The tower stands unlit, then lights up gold, sparkles all over, and its beacon sweeps. ----------
+const PR_END = { horizon: 0.705, top: 0.06 };   // (the tower's feet on the park picture's horizon, as a part of its height; its tip below the screen top)
+function prEndOn() { const F = G.flag; return !!(G.L.prFinale && F && F.ride !== undefined); }
+function prEndView() {
+  const F = G.flag, P = IMG.pr_end_park, T = IMG.pr_end_tower; if (!P) return;
+  ctx.setTransform(1, 0, 0, 1, 0, 0); ctx.scale(DPR, DPR);
+  if (!$('hud').hidden) $('hud').hidden = true;
+  const s = Math.max(W / P.width, H / P.height), pw = P.width * s, ph = P.height * s, ox = (W - pw) / 2, oy = H - ph;   // (fills the screen, lawn kept whole)
+  ctx.fillStyle = '#16205a'; ctx.fillRect(0, 0, W, H); ctx.drawImage(P, ox, oy, pw, ph);
+  ctx.globalCompositeOperation = 'multiply'; ctx.fillStyle = '#7a86c8'; ctx.fillRect(0, 0, W, H); ctx.globalCompositeOperation = 'source-over';   // (deeper into the night)
+  for (let i = 0; i < 14; i++) {   // a few stars twinkle
+    const tw = Math.sin(animT * 2.2 + i * 1.7); if (tw < 0.6) continue;
+    const x = ((i * 0.618034) % 1) * W, y = (0.03 + ((i * 0.381966) % 1) * 0.3) * H, r = 1.2 + (tw - 0.6) * 4;
+    ctx.fillStyle = `rgba(255,255,255,${(tw - 0.6) * 2})`; ctx.fillRect(x - r / 2, y - r / 2, r, r);
   }
-  for (const [k, w, h, y] of parts) {
-    const X = sx(cx - w / 2), Y = sy(y + h), D = prTwDark(k); if (Y > H || Y + h * U < 0) continue;
-    if (lit < 1 && D) ctx.drawImage(D.dark, X, Y, w * U, h * U);
-    if (lit > 0 && IMG[k]) { ctx.globalAlpha = lit; ctx.drawImage(IMG[k], X, Y, w * U, h * U); ctx.globalAlpha = 1; }
-    const sp = Math.max(0, Math.min(1, ((G.flag && G.flag.ride) || 0) - 1.8));   // then the sparkles, all over it
+  if (T) {
+    const feet = oy + PR_END.horizon * ph, th = feet - PR_END.top * H, tw = th * T.width / T.height, X = W / 2 - tw / 2, Y = feet - th;
+    const lit = prLit(), D = prTwDark('pr_end_tower');
+    if (lit > 0) { const gx = W / 2, gy = Y + th * 0.6, r = th * 0.7, gl = ctx.createRadialGradient(gx, gy, 0, gx, gy, r);
+      gl.addColorStop(0, `rgba(255,200,110,${0.3 * lit})`); gl.addColorStop(1, 'rgba(255,200,110,0)'); ctx.fillStyle = gl; ctx.fillRect(gx - r, gy - r, 2 * r, 2 * r); }
+    if (lit < 1 && D) ctx.drawImage(D.dark, X, Y, tw, th);
+    if (lit > 0) { ctx.globalAlpha = lit; ctx.drawImage(T, X, Y, tw, th); ctx.globalAlpha = 1; }
+    const sp = Math.max(0, Math.min(1, F.ride - 2.6));   // then the sparkles, all over it
     if (sp > 0 && D) for (let i = 0; i < D.pts.length; i++) {
-      const tw = Math.sin(animT * 9 + i * 2.39); if (tw < 0.55) continue;
-      const [fx, fy] = D.pts[i], px = X + fx * w * U, py = Y + fy * h * U, s = (0.1 + 0.16 * (tw - 0.55)) * U * sp;
-      ctx.fillStyle = 'rgba(255,255,255,.95)'; ctx.beginPath(); ctx.moveTo(px, py - s * 2); ctx.lineTo(px + s * 0.4, py); ctx.lineTo(px, py + s * 2); ctx.lineTo(px - s * 0.4, py); ctx.fill();
-      ctx.beginPath(); ctx.moveTo(px - s * 2, py); ctx.lineTo(px, py + s * 0.4); ctx.lineTo(px + s * 2, py); ctx.lineTo(px, py - s * 0.4); ctx.fill();
+      const k = Math.sin(animT * 9 + i * 2.39); if (k < 0.55) continue;
+      const [fx, fy] = D.pts[i], px = X + fx * tw, py = Y + fy * th, z = (0.6 + 1.6 * (k - 0.55)) * Math.max(1.5, tw / 40) * sp;
+      ctx.fillStyle = 'rgba(255,255,255,.95)'; ctx.beginPath(); ctx.moveTo(px, py - z * 2); ctx.lineTo(px + z * 0.4, py); ctx.lineTo(px, py + z * 2); ctx.lineTo(px - z * 0.4, py); ctx.fill();
+      ctx.beginPath(); ctx.moveTo(px - z * 2, py); ctx.lineTo(px, py + z * 0.4); ctx.lineTo(px + z * 2, py); ctx.lineTo(px, py - z * 0.4); ctx.fill();
+    }
+    if (lit > 0.5) {   // the beacon at the very top sweeps round
+      const bx = W / 2, by = Y + th * 0.02, a = animT * 1.4, len = W * 0.45 * Math.abs(Math.cos(a)), dir = Math.cos(a) > 0 ? 1 : -1, hw = Math.max(3, th * 0.012);
+      const g = ctx.createLinearGradient(bx, by, bx + dir * len, by); g.addColorStop(0, `rgba(255,244,200,${0.5 * (lit - 0.5) * 2})`); g.addColorStop(1, 'rgba(255,244,200,0)');
+      ctx.fillStyle = g; ctx.beginPath(); ctx.moveTo(bx, by); ctx.lineTo(bx + dir * len, by - hw); ctx.lineTo(bx + dir * len, by + hw); ctx.fill();
     }
   }
-  if (lit > 0.5) {   // the beacon at the very top sweeps round
-    const bx = sx(cx), by = sy(top - 1.2), a = animT * 1.4, len = 14 * U * Math.abs(Math.cos(a)), dir = Math.cos(a) > 0 ? 1 : -1;
-    const g = ctx.createLinearGradient(bx, by, bx + dir * len, by); g.addColorStop(0, `rgba(255,244,200,${0.45 * (lit - 0.5) * 2})`); g.addColorStop(1, 'rgba(255,244,200,0)');
-    ctx.fillStyle = g; ctx.beginPath(); ctx.moveTo(bx, by); ctx.lineTo(bx + dir * len, by - 0.9 * U); ctx.lineTo(bx + dir * len, by + 0.9 * U); ctx.fill();
-  }
-}
-// the camera rises slowly up the tower to its tip once he has sat down on the blanket (called at the end of updateCamera)
-function prRise() {
-  const L = G.L, F = G.flag, T = L.prTower; if (!T || !F || F.ride === undefined) { G.prRise0 = null; return; }
-  if (!G.prRise0) G.prRise0 = { x: cam.x, y: cam.y };
-  const k = Math.max(0, Math.min(1, (F.ride - 1.4) / 6.2)), e = k * k * (3 - 2 * k);
-  const top = T.lh + T.mh + T.th, tx = T.x + T.w / 2 - viewW() / 2, ty = top + 0.6 - (H * GROUND_FRAC - 0.1 * H) / U;
-  cam.x = G.prRise0.x + (tx - G.prRise0.x) * e; cam.y = G.prRise0.y + (ty - G.prRise0.y) * e;
+  // the picnic blanket on the lawn in the middle, and him sitting on it from behind, looking at the tower
+  const base = H * 0.95, ah = Math.min(H * 0.24, W * 0.2), Pc = IMG.pr_picnic;
+  if (Pc) { const bw = ah * 2.3, bh = bw / (Pc.width / Pc.height); ctx.drawImage(Pc, W / 2 - bw / 2, base - bh * 0.85, bw, bh); }
+  const kb = ctKidBack();
+  if (kb !== null) { if (kb) { const s2 = ah * 1.1 / (kb.lwH - kb.lwEar); ctx.drawImage(kb, W / 2 - (kb.lwPX + kb.lwFeet) * s2, base - kb.height * s2, kb.width * s2, kb.height * s2); } }
+  else if (IMG.pr_asit) { const im = IMG.pr_asit, w = ah * im.width / im.height; ctx.drawImage(im, W / 2 - w / 2, base - ah, w, ah); }
 }
 function drawParis(dt) {
   const L = G.L;
+  if (prEndOn()) { prEndView(); return; }
   kitDoorTick();
   if (G.kitIn) {   // inside the Louvre: nothing outside shows
     prInside();
@@ -10227,7 +10234,6 @@ function drawParis(dt) {
   prRiverBoats();
   prWater();
   prBoat(false);
-  prTower();
   drawKit(a => a.back && !a.zone);
   prDoorsOut(false);
   prWheel();
@@ -10238,7 +10244,6 @@ function drawParis(dt) {
   prPond();
   prBalloonUp();
   prBooks();
-  prPicnic();
   prLife();
   prTaxiIntro();
   drawKit(a => !a.back && !a.zone);
