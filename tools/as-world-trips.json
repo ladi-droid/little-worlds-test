@@ -1,11 +1,11 @@
 {
  "trips": [
   "westend",
-  "sydney",
   "rome",
   "lagos",
   "singapore",
-  "newyork"
+  "newyork",
+  "paris"
  ],
  "published": "2026-11-13"
 }
