@@ -4439,6 +4439,257 @@ const ALL_LEVELS = [
     b.end(IE - 4);
   },
 },
+{
+  // Paris (rebuilt from scratch 2026-11-13; plan: claude.ai/artifact/Bj5cYGGAs3onxQh7D4fWZW, Ladi: all recommended, the Eiffel Tower
+  // massive, as charming as possible), built from the level kit on art made with the image maker (cut by london-runner/paris2/src/cut.py
+  // into atlas_pr*.webp). A summer afternoon going golden in the Tuileries, sunset on the Seine, dusk at the tower; A in his summer outfit.
+  // A taxi drops A at Notre-Dame -> the green bookstalls on the quay (an open lid bounces him up, special 1) -> the cafe street (the
+  // stalls' canopies, then the roofs) -> the Louvre's glass pyramid, THE ONE DOOR -> inside: the hall, the gallery, the Mona Lisa, the
+  // sphinx, up the Winged Victory staircase (special 2) -> out into the Tuileries funfair (the trampolines throw him up, special 3) ->
+  // Place de la Concorde -> Pont Alexandre III's gold-horse pillars (wall-jump, special 4) -> a river boat on the Seine -> the Champ de Mars:
+  // Guignol, the carousel's brass ring (special 5) -> under the giant Eiffel Tower to the flag; it lights up and sparkles, the camera
+  // rises up it to its tip.
+  id: 'paris', name: 'Paris', plate: 'Paris', area: 'paris', city: 'Paris',
+  build(b) {
+    const L = b.L, PR_ASP = {"pr_taxi":1.83,"pr_taxi:h":2.0,"pr_taxi_open":1.83,"pr_taxi_open:h":2.0,"pr_taxi_door":0.5641,"pr_taxi_door:h":1.557,"pr_notre":0.7121,"pr_notre:h":15.0,"pr_wallace":0.5125,"pr_wallace:h":2.4,"pr_lamp":0.3935,"pr_lamp:h":4.6,"pr_column":0.4882,"pr_column:h":3.4,"pr_bench":1.6545,"pr_bench:h":1.1,"pr_ptree":0.8361,"pr_ptree:h":3.6,"pr_bikes":1.8692,"pr_bikes:h":1.3,"pr_bollard":0.7,"pr_bollard:h":0.9,"pr_pot":0.9,"pr_pot:h":0.9,"pr_h_cafe":0.5792,"pr_h_cafe:h":7.213,"pr_h_bakery":0.4761,"pr_h_bakery:h":8.738,"pr_h_flowers":0.419,"pr_h_flowers:h":10.15,"pr_h_macaron":0.3744,"pr_h_macaron:h":11.375,"pr_endl":0.5043,"pr_endl:h":10.338,"pr_narrow":0.4035,"pr_narrow:h":10.038,"pr_endr":0.5031,"pr_endr:h":10.338,"pr_pier":0.2571,"pr_pier:h":4.2,"pr_lowwall":1.4667,"pr_lowwall:h":1.2,"pr_stalls":3.2447,"pr_stalls:h":3.8,"pr_bistro":1.5077,"pr_bistro:h":1.3,"pr_board":0.8833,"pr_board:h":1.2,"pr_bay":0.6455,"pr_bay:h":2.2,"pr_cart":1.08,"pr_cart:h":1.5,"pr_metro":1.2118,"pr_metro:h":3.4,"pr_pyramid":1.6953,"pr_pyramid:h":12.0,"pr_pdoor":1.5,"pr_pdoor:h":2.6,"pr_pdoor_far":0.6341,"pr_pdoor_far:h":2.765,"pr_wing":3.2381,"pr_wing:h":11.0,"pr_mbench":3.6125,"pr_mbench:h":0.8,"pr_rope":1.78,"pr_rope:h":1.0,"pr_statue":0.7,"pr_statue:h":3.0,"pr_chand":0.3853,"pr_chand:h":3.4,"pr_mona":0.7708,"pr_mona:h":2.4,"pr_ships":1.4885,"pr_ships:h":2.6,"pr_sphinx":3.47,"pr_sphinx:h":2.0,"pr_daru":0.7625,"pr_daru:h":12.0,"pr_arch":0.8681,"pr_arch:h":4.316,"pr_odoor":0.9239,"pr_odoor:h":4.6,"pr_odoor_far":0.3793,"pr_odoor_far:h":4.352,"pr_carrousel":1.155,"pr_carrousel:h":8.0,"pr_wheel":0.8128,"pr_wheel:h":12.0,"pr_gondola":0.65,"pr_gondola:h":1.4,"pr_tramps":4.3867,"pr_tramps:h":1.5,"pr_pond":2.95,"pr_pond:h":1.6,"pr_tboat1":0.9,"pr_tboat1:h":0.6,"pr_tboat2":0.9,"pr_tboat2:h":0.6,"pr_gstatue":0.4806,"pr_gstatue:h":3.6,"pr_balloons":0.6367,"pr_balloons:h":3.0,"pr_kiosk":0.7867,"pr_kiosk:h":3.0,"pr_chairs":1.4167,"pr_chairs:h":1.2,"pr_obelisk":0.2778,"pr_obelisk:h":12.0,"pr_fountain":0.9174,"pr_fountain:h":4.6,"pr_lampcol":0.35,"pr_lampcol:h":5.0,"pr_pillarL":0.2375,"pr_pillarL:h":12.0,"pr_pillarR":0.2525,"pr_pillarR:h":11.054,"pr_barch":3.4534,"pr_barch:h":3.4,"pr_blamp":1.2251,"pr_blamp:h":4.4,"pr_qsteps":2.3825,"pr_qsteps:h":3.0,"pr_pontoon":3.6071,"pr_pontoon:h":1.4,"pr_boat":6.9333,"pr_boat:h":2.6,"pr_boat_open":6.9333,"pr_boat_open:h":2.59,"pr_boat_gate":1.6243,"pr_boat_gate:h":1.864,"pr_barge":2.7542,"pr_barge:h":2.4,"pr_rower":1.2063,"pr_rower:h":1.6,"pr_kayaks":2.8154,"pr_kayaks:h":1.3,"pr_launch":3.1154,"pr_launch:h":1.3,"pr_guignol":0.7568,"pr_guignol:h":4.4,"pr_puppets":1.8727,"pr_puppets:h":1.1,"pr_carousel":1.3141,"pr_carousel:h":6.4,"pr_picnic":2.6,"pr_picnic:h":0.75,"pr_hedge":2.8556,"pr_hedge:h":0.9,"pr_flowers":2.1778,"pr_flowers:h":0.9,"pr_plamp":0.4083,"pr_plamp:h":3.6,"pr_pbench":1.85,"pr_pbench:h":1.2,"pr_hoops":4.3556,"pr_hoops:h":0.45,"pr_accordion":0.6075,"pr_accordion:h":1.856,"pr_baker":0.8462,"pr_baker:h":1.95,"pr_dog":1.0,"pr_dog:h":1.896,"pr_balloonkid":0.6927,"pr_balloonkid:h":1.919,"pr_family":0.9034,"pr_family:h":2.071,"pr_flowerman":0.6056,"pr_flowerman:h":2.129,"pr_boatkid":0.9239,"pr_boatkid:h":1.838,"pr_cyclist":0.8829,"pr_cyclist:h":2.049,"pr_asit":0.7846,"pr_asit:h":1.3,"pr_plane":0.7013,"pr_plane:h":7.8,"pr_plane2":0.5654,"pr_plane2:h":5.2,"pr_chestnut":0.6652,"pr_chestnut:h":4.6,"pr_lavender":1.57,"pr_lavender:h":1.0,"pr_yew":0.3533,"pr_yew:h":3.0,"pr_cloud0":1.82,"pr_cloud0:h":2.0,"pr_cloud1":1.775,"pr_cloud1:h":1.6,"pr_cloud2":1.7538,"pr_cloud2:h":1.3,"pr_cloud3":1.76,"pr_cloud3:h":1.0,"pr_cloud4":1.7778,"pr_cloud4:h":0.8,"pr_pigeon0":1.1,"pr_pigeon0:h":0.5,"pr_pigeon1":1.08,"pr_pigeon1:h":0.5,"pr_pigeon2":1.06,"pr_pigeon2:h":0.5,"pr_gull0":1.52,"pr_gull0:h":0.5,"pr_gull1":1.5,"pr_gull1:h":0.5,"pr_sparrow0":1.2667,"pr_sparrow0:h":0.3,"pr_sparrow1":1.2667,"pr_sparrow1:h":0.3,"pr_sparrow2":1.2667,"pr_sparrow2:h":0.3,"pr_balloon0":0.4778,"pr_balloon0:h":0.9,"pr_balloon1":0.4889,"pr_balloon1:h":0.9,"pr_balloon2":0.4889,"pr_balloon2:h":0.9,"pr_peck0":1.881,"pr_peck0:h":0.42,"pr_peck1":1.881,"pr_peck1:h":0.42,"pr_peck2":1.881,"pr_peck2:h":0.42,"pr_bfly0":1.0667,"pr_bfly0:h":0.3,"pr_bfly1":1.0667,"pr_bfly1:h":0.3,"pr_trim":16.75,"pr_trim:h":0.4,"pr_dframe":0.7413,"pr_dframe:h":4.6,"pr_book_a":1.44,"pr_book_a:h":2.0,"pr_book_b":1.144,"pr_book_b:h":2.567,"pr_book_wall":3.7595,"pr_book_wall:h":0.79,"pr_daruL":0.3717,"pr_daruL:h":12.0,"pr_daruR":0.3908,"pr_daruR:h":12.0,"daruL_face":0.8834,"daruR_face":0.1109,"tramps_mats":[[0.02,0.32],[0.345,0.655],[0.68,0.98]],"tower":{"pr_tw_legs":{"w":13.858,"h":9.166,"cx":0.5003,"cxTop":0.5003},"pr_tw_mid":{"w":12.524,"h":16.583,"cx":0.4991,"cxTop":0.5005},"pr_tw_top":{"w":10.336,"h":30.964,"cx":0.4993}}};
+    L.killY = -9; L.startX = 2.0; L.camMin = -12; L.introCam = 'centre'; L.outfit = 'dxb';   // the summer outfit
+    const aw = (k, h) => PR_ASP[k] * h;
+    const H_ = k => PR_ASP[k + ':h'];
+    const ground = (x0, x1, style, y = 0) => b.groundTop(x0, x1, y, style);
+    const art = (key, x, y, h, o = {}) => b.kitArt(key, x, y, h, Object.assign({ w: aw(key, h) }, o));
+    const back = (key, x, h, o = {}) => art(key, x, o.y || 0, h, Object.assign({ back: true }, o));
+    const solid = (x, w, h, y = 0, o = {}) => { const s = Object.assign({ kind: 'block', x, y, w, h, style: 'hidden' }, o); L.solids.push(s); return s; };
+    const Y = y => ({ y: y || 0 });
+    const lean = (key, x, h, sh, y) => { const w = aw(key, h); return b.kitProp(key, x, w, h, Object.assign(Y(y), { solid: [0.1, w - 0.2, sh], ledge: [0.1, sh, w - 0.2] })); };
+    const hop = (key, x, h, y, sh = Math.min(h, 1.0)) => { const w = aw(key, h); return b.kitProp(key, x, w, h, Object.assign(Y(y), { solid: [0.1, w - 0.2, sh] })); };
+    const prop = (key, x, h, y) => b.kitProp(key, x, aw(key, h), h, Y(y));
+    const bounce = (x, w, y, h, note, o = {}) => { const s = Object.assign({ kind: 'ledge', x, y, w, bounce: h, note }, o); L.oneways.push(s); return s; };
+    const swapAt = (x, to, why) => (L.kitSwaps = L.kitSwaps || []).push({ x, to, why });   // behind something tall, blended in over 12 units: not a door
+    const zone = (x0, x1, z) => { for (const a of L.kitArt) if (a.zone === undefined && !a.out && a.x > x0 - 0.1 && a.x < x1) a.zone = z; };
+    const house = (k, top, sc = 1) => { const h = H_(k) * sc, w = aw(k, h); return { key: k, w, h, ledges: [[0.35, top * h, w - 0.7]] }; };
+    L.prLife = [];                                       // birds, people, butterflies: [key, x, y, kind, speed]
+    L.prJoins = [];                                      // where two kinds of ground meet (a stone kerb post stands there)
+    L.prWater = [];                                      // stretches of the Seine under the boat: [x0, x1, surface]
+    L.prNames = [];                                      // shop names painted on the blank bands over the shops: [x, y, w, h, text, colour]
+    L.rides = []; L.camFloor = [];
+    const WY = -2.4;                                     // the Seine's surface
+
+    // ---------- 1. Notre-Dame and the quay: the taxi drops A; the green bookstalls (an open lid bounces him up, special 1) ----------
+    b.wall(-12.5, 1, 22);
+    L.prTaxi = { x: -3.6 };                              // a dark-blue taxi: A jumps out of its open back door, it drives away
+    back('pr_notre', 2.4 - aw('pr_notre', 10.0) / 2, 10.0);   // Notre-Dame across the square, right behind where A starts (whole, never cut by the screen)
+    prop('pr_lamp', 4.6, 4.6); hop('pr_bench', 7.0, 1.1);
+    L.prLife.push(['pr_peck0', 9.5, 0, 'peck'], ['pr_peck1', 10.4, 0, 'peck'], ['pr_gull0', 14, 12.5, 'fly'], ['pr_pigeon0', 30, 11.0, 'fly']);
+    L.prLife.push(['pr_accordion', 6.0, 0, 'walk', 1.1]);   // the accordion player strolls along the quay, playing
+    const BS = 12.0;                                     // the bookstalls: five green boxes on the quay wall, side by side
+    const STALLS = ['pr_book_a', 'pr_book_b', 'pr_book_a', 'pr_book_a', 'pr_book_b'];
+    let bx = BS; L.prBooks = [];
+    STALLS.forEach((k, i) => {
+      const h = H_(k), w = aw(k, h), open = k === 'pr_book_b', top = open ? 0.6 * h : 0.95 * h;
+      back(k, bx, h);
+      solid(bx + 0.1, w - 0.2, top, 0, { noGrab: true });
+      if (open) { const o = bounce(bx + 0.2, w - 0.4, top, i === 4 ? 7.2 : 3.6, i === 4 ? 1.26 : 1.0); L.prBooks.push({ x: bx, w, h, o }); }
+      else b.ledge(bx + 0.1, top, w - 0.2);
+      b.coins(bx + 0.6, top + 1.2, 2, 1.0);
+      bx += w - 0.04;
+    });
+    const BE = bx;
+    const LB = L.prBooks[1];
+    b.special(LB.x + LB.w / 2 + 2.4, 0.6 * LB.h + 7.6);                                       // 1: at the top of the last open lid's bounce
+    b.arc(LB.x + LB.w / 2 + 0.4, 0.6 * LB.h + 1.5, 5, 3.4, 5.0);
+    L.prLife.push(['pr_dog', BE + 4.0, 0, 'walk', 1.3]);
+    prop('pr_ptree', BE + 2.0, 3.6); hop('pr_bollard', BE + 5.6, 0.9); lean('pr_column', BE + 8.0, 3.4, 1.35);
+    b.coins(BE + 6.0, 2.2, 3, 0.8); b.coins(BE + 9.0, 3.0, 3, 0.9);
+    const Q1 = BE + 12.5;
+    ground(-14, Q1, 'prquay'); L.prJoins.push(Q1);
+
+    // ---------- 2. the cafe street: three stalls (crepes, macarons, flowers), up their canopies onto the roofs of the cream buildings ----------
+    const SX = Q1 + 3.0, SH = H_('pr_stalls'), SW = aw('pr_stalls', SH);
+    b.kitStalls(SX, [{ key: 'pr_stalls', w: SW / 3, h: SH, top: 0.95 * SH }, { key: null, w: SW / 3, h: SH, top: 0.95 * SH }, { key: null, w: SW / 3, h: SH, top: 0.95 * SH }]);
+    L.kitArt = L.kitArt.filter(a => a.key !== null);   // (the three stalls are one picture: drawn once, its three canopies are the ledges)
+    L.kitArt.find(a => a.key === 'pr_stalls' && a.stall === SX).w = SW;
+    hop('pr_pot', SX - 1.6, 0.9); b.coins(SX + 1.0, 0.95 * SH + 1.2, 6, 1.6);
+    const S1 = 0.8;                                      // (the front row, scaled so its roofs and the skyline above them fit a phone held sideways)
+    const RX = SX + SW - 0.05;
+    const ROW = [['pr_h_cafe', 0.938], ['pr_h_bakery', 0.946], ['pr_h_flowers', 0.954], ['pr_h_macaron', 0.962]];
+    const R1 = b.kitRow(RX, ROW.map(([k, t]) => house(k, t, S1)), { capL: null, capR: house('pr_endr', 0.925, S1) });
+    L.kitWarn = (L.kitWarn || []).filter(w => !w.startsWith(`kitRow at ${RX}`));   // (its left end is the stalls' canopies, not an end piece)
+    let hx = RX; const ROOFS = [];
+    const NAMES = [['cafe', '#c8282c'], ['Le Petit Pain', '#1f4fa0'], ['Bloom Voyage', '#1f7a44'], ['Macaron Moi', '#d0587a']];
+    ROW.forEach(([k, t], i) => {
+      const h = H_(k) * S1, w = aw(k, h); ROOFS.push([hx, t * h, w]);
+      L.prNames.push([hx + w * 0.15, h * 0.2725, w * 0.7, h * 0.065, NAMES[i][0], NAMES[i][1]]);   // (on the blank cream board over each shop's awning)
+      hx += w - 0.05;
+    });
+    for (const [x, y, w] of ROOFS) b.coins(x + 0.8, y + 1.0, 2, 1.2);
+    lean('pr_bay', RX + 7.0, 2.2, 1.35); b.coins(RX + 7.2, 2.6, 2, 0.8);   // (a bay tree in a tub in front of the bakery: lean on it, or go over the roofs)
+    L.prLife.push(['pr_pigeon1', ROOFS[2][0] + 1, ROOFS[2][1] + 4.0, 'fly'], ['pr_sparrow0', ROOFS[3][0], ROOFS[3][1] + 2.0, 'fly']);
+    b.arc(ROOFS[3][0] + ROOFS[3][2] - 0.4, ROOFS[3][1] + 1.2, 6, 5.5, 1.6);   // (the trail down off the roofs)
+    L.prLife.push(['pr_baker', RX - 6, 0, 'walk', 2.6], ['pr_flowerman', R1 + 2, 0, 'walk', 1.1]);
+    hop('pr_bistro', R1 + 1.4, 1.3); lean('pr_bay', R1 + 4.4, 2.2, 1.35); prop('pr_board', R1 + 7.2, 1.2);
+    hop('pr_cart', R1 + 9.0, 1.5); b.coins(R1 + 9.3, 2.6, 3, 0.8);
+    lean('pr_wallace', R1 + 13.0, 2.4, 1.35); b.coins(R1 + 13.2, 3.6, 3, 0.8);
+    back('pr_metro', R1 + 16.5, 3.4); prop('pr_plane2', R1 + 21.5, 5.2);
+    const C0 = R1 + 25.0;
+    ground(Q1, C0, 'prpave'); L.prJoins.push(C0);
+
+    // ---------- 3. the Louvre's courtyard: the palace wing behind, the glass pyramid, THE DOOR ----------
+    back('pr_wing', C0 + 1.0, 11.0);
+    hop('pr_bollard', C0 + 3.0, 0.9); lean('pr_wallace', C0 + 6.0, 2.4, 1.35); b.coins(C0 + 6.2, 3.6, 3, 0.8);
+    L.prLife.push(['pr_peck2', C0 + 9.0, 0, 'peck'], ['pr_balloonkid', C0 + 2, 0, 'walk', 1.2]);
+    const PH = 12.0, PX = C0 + 11.0, PW = aw('pr_pyramid', PH);
+    back('pr_pyramid', PX, PH, { y: -1.15 });            // (its pool and rim sink under the courtyard's stones)
+    L.prPyr = { x: PX, w: PW, h: PH };
+    const D1 = PX + PW * 0.5;                            // the pyramid's glass doors
+    b.kitDoor(D1, { inside: true }); b.kitSwap(D1, 'in'); L.prDoor1 = D1;
+    hop('pr_bollard', D1 - 4.0, 0.9); b.coins(D1 - 7.0, 2.4, 4, 0.9);
+    ground(C0, D1 + 0.5, 'prcourt');
+
+    // ---------- 4. inside the Louvre (the one inside): the hall, a deep arch, the gallery; the Winged Victory staircase (special 2) ----------
+    hop('pr_rope', D1 + 3.0, 1.0); b.coins(D1 + 3.2, 2.0, 2, 0.8);
+    hop('pr_mbench', D1 + 7.0, 0.8); lean('pr_statue', D1 + 10.4, 3.0, 1.35);
+    b.arc(D1 + 13.5, 2.0, 7, 5.0, 2.4);                  // (coins curling like the spiral stair behind)
+    const SPX = D1 + 20.0, SPW = aw('pr_sphinx', 2.0);    // the sphinx: lean on its paws, run along its back
+    back('pr_sphinx', SPX, 2.0); solid(SPX + 0.3, SPW - 0.5, 1.35, 0, { noGrab: true }); b.ledge(SPX + 0.3, 1.6, SPW - 0.5);
+    b.coins(SPX + 1.0, 2.8, 5, 1.0);
+    hop('pr_rope', SPX + SPW + 3.0, 1.0);
+    const AR = SPX + SPW + 7.0;                          // the deep arch from the hall into the gallery (the room changes in its shadow)
+    L.prArch = AR; back('pr_arch', AR - aw('pr_arch', 4.6) / 2, 4.6, { inArch: true });
+    const G0 = AR + 3.0;
+    back('pr_mona', G0 + 3.0, 2.4, { y: 1.9, hang: true }); hop('pr_rope', G0 + 2.6, 1.0); hop('pr_rope', G0 + 4.4, 1.0);
+    L.prLife.push(['pr_family', G0 - 2, 0, 'walk', 0.9]);
+    hop('pr_mbench', G0 + 8.0, 0.8); back('pr_ships', G0 + 10.5, 2.6, { y: 2.0, hang: true });
+    lean('pr_statue', G0 + 15.0, 3.0, 1.35); b.coins(G0 + 8.2, 2.0, 3, 0.9); b.coins(G0 + 15.2, 4.2, 3, 0.8);
+    // the grand staircase: two stone stair walls facing each other, the Winged Victory on the right one; wall-jump up the gap
+    const DH = 9.5, DLW = aw('pr_daruL', DH), DRW = aw('pr_daruR', DH), GAPD = 2.1;
+    const DLX = G0 + 20.0, FL = DLX + DLW * PR_ASP.daruL_face, FR = FL + GAPD, DRX = FR - DRW * PR_ASP.daruR_face;
+    back('pr_daruL', DLX, DH); back('pr_daruR', DRX, DH);
+    const TL = 0.5 * DH, TR = 0.47 * DH;                 // (the tops of the two stair walls)
+    solid(DLX + DLW * 0.2, FL - DLX - DLW * 0.2, TL - 2.2, 2.2, { noGrab: false }); b.ledge(DLX + DLW * 0.35, TL, FL - DLX - DLW * 0.35);
+    solid(FR, DRW * 0.62, TR); b.ledge(FR, TR, DRW * 0.6);
+    (L.kitClimbs = L.kitClimbs || []).push({ x: DLX, xr: FR, gap: GAPD, hL: TL, hR: TR });
+    for (let i = 0, y = 1.6; y < TL - 0.4; i++, y += 1.4) b.coins(FL + (i % 2 ? GAPD - 0.5 : 0.25), y, 1);
+    b.special(FL + GAPD / 2, TR + 2.6);                                                     // 2: over the gap, under the Winged Victory
+    const DE = FR + DRW * 0.62;
+    b.coins(DE + 0.4, TR - 0.4, 4, 0.7, -0.9);
+    lean('pr_statue', DE + 4.0, 3.0, 1.35);
+    const D2 = DE + 10.0;                                // out through the tall doors into the Tuileries
+    L.prDoor2 = D2; zone(D1, D2, 2);
+    b.kitDoor(D2, { inside: false }); b.kitSwap(D2, 'gold');
+    ground(D1 + 0.5, D2 + 0.5, 'prin');
+    L.camFloor.push([D1 - 0.5, D2 + 0.5, 0]);
+    for (const a of L.kitArt) if (a.out && a.zone === undefined) a.zone = 0;
+
+    // ---------- 5. the Tuileries: the summer funfair (the trampolines throw him up, special 3), the round pond, the big wheel ----------
+    back('pr_carrousel', D2 + 2.5, 8.0);                 // the pink arch at the garden's gate
+    L.prLife.push(['pr_boatkid', D2 + 2, 0, 'walk', 0.9], ['pr_sparrow1', D2 + 10, 9.0, 'fly'], ['pr_bfly0', D2 + 14, 2.0, 'bfly']);
+    prop('pr_chestnut', D2 + 11.0, 4.6); lean('pr_gstatue', D2 + 15.6, 3.6, 1.35); b.coins(D2 + 15.9, 3.0, 2, 0.8);
+    const T0 = D2 + 22.0, TH = 1.5, TWD = aw('pr_tramps', TH);
+    back('pr_wheel', T0 - 1.0, 9.6); L.prWheel = { x: T0 - 1.0, w: aw('pr_wheel', 9.6), h: 9.6 };
+    back('pr_tramps', T0, TH);
+    const MATS = PR_ASP.tramps_mats, MT = 0.67 * TH, BH = [3.0, 4.4, 8.6], NOTE = [1.0, 1.19, 1.41];
+    L.prTramps = MATS.map(([a0, a1], i) => ({ x: T0 + a0 * TWD, w: (a1 - a0) * TWD }));
+    L.prTramps.forEach((m, i) => { m.o = solid(m.x + 0.15, m.w - 0.3, MT, 0, { noGrab: true, bounce: BH[i], note: NOTE[i] }); });
+    for (let i = 0; i < 2; i++) { const n = L.prTramps[i + 1]; L.prTramps[i].o.hopTo = [n.x + n.w / 2, MT]; }
+    for (let i = 0; i < 2; i++) { const c = L.prTramps[i], n = L.prTramps[i + 1]; b.arc(c.x + c.w / 2 + 0.3, MT + 1.0, 3, n.x - c.x - 0.6, BH[i] * 0.6); }
+    const LT = L.prTramps[2];
+    b.special(LT.x + LT.w / 2 + 2.6, MT + BH[2] - 0.6);                                    // 3: at the top of the last trampoline's throw
+    b.arc(LT.x + LT.w / 2 + 3.6, MT + BH[2] - 1.6, 5, 4.0, -0.01);
+    const PO = T0 + TWD + 9.0, POW = aw('pr_pond', 1.6);
+    back('pr_pond', PO, 1.6); solid(PO + 0.2, POW - 0.4, 0.55, 0, { noGrab: true }); b.ledge(PO + 0.2, 0.55, POW - 0.4);
+    L.prPond = { x: PO, w: POW };
+    b.coins(PO + 1.0, 2.0, 3, 1.0);
+    lean('pr_kiosk', PO + POW + 3.0, 3.0, 1.35); b.coins(PO + POW + 3.4, 2.9, 3, 0.8);
+    back('pr_balloons', PO + POW + 7.0, 3.0); L.prBalloons = PO + POW + 8.3;
+    prop('pr_gstatue', PO + POW + 10.5, 3.6); hop('pr_chairs', PO + POW + 13.5, 1.2);
+    prop('pr_yew', PO + POW + 17.0, 3.0); prop('pr_chestnut', PO + POW + 20.0, 4.6);
+    L.prLife.push(['pr_cyclist', PO - 8, 0, 'walk', 3.2], ['pr_bfly1', PO + 6, 2.4, 'bfly']);
+    const CO = PO + POW + 26.0;
+    ground(D2 + 0.5, CO, 'prpath'); L.prJoins.push(CO);
+
+    // ---------- 6. Place de la Concorde and Pont Alexandre III: the gold-horse pillars (special 4: WALL-JUMP) ----------
+    lean('pr_wallace', CO - 2.4, 2.4, 1.35); b.coins(CO - 2.2, 3.6, 2, 0.8);
+    back('pr_obelisk', CO + 2.0, 9.6);
+    const FO = CO + 7.0, FOW = aw('pr_fountain', 4.6);
+    back('pr_fountain', FO, 4.6); solid(FO + 0.2, FOW - 0.4, 1.0, 0, { noGrab: true }); b.ledge(FO + 0.2, 1.0, FOW - 0.4);
+    L.prFount = { x: FO, w: FOW };
+    b.coins(FO + 0.8, 2.6, 4, 0.8);
+    prop('pr_lampcol', FO + FOW + 2.0, 5.0);
+    L.prLife.push(['pr_family', CO + 4, 0, 'walk', 1.0], ['pr_gull1', CO + 12, 12.0, 'fly']);
+    const PB = FO + FOW + 7.0, PLW = aw('pr_pillarL', 12.0), GP = 2.3, PRX = PB + PLW + GP, PRW = aw('pr_pillarR', H_('pr_pillarR'));
+    const PLT = 0.78 * 12.0, PRT = 0.77 * H_('pr_pillarR');   // (the tops of the stone pillars, under the gold horses)
+    back('pr_blamp', PB - 3.2, 4.4);
+    back('pr_pillarL', PB, 12.0); back('pr_pillarR', PRX, H_('pr_pillarR'));
+    solid(PB + 0.2, PLW - 0.2, PLT - 2.2, 2.2);           // (from just above his head: he runs in front of its base, its right face is the wall)
+    solid(PRX + 0.1, PRW - 0.2, 3.2); solid(PRX + 0.3, PRW - 0.6, PRT); b.ledge(PRX + 0.2, PRT, PRW - 0.4);
+    (L.kitClimbs = L.kitClimbs || []).push({ x: PB, xr: PRX, gap: GP, hL: PLT, hR: PRT });
+    for (let i = 0, y = 2.8; y < PRT - 0.6; i++, y += 1.5) b.coins(PB + PLW + (i % 2 ? GP - 0.5 : 0.25), y, 1);
+    b.special(PB + PLW + GP / 2, PLT + 1.6);                                                // 4: over the gap, between the gold horses
+    const PE = PRX + PRW;
+    for (let i = 0; i < 6; i++) b.coins(PE + 0.6 + i * 0.7, PRT - 0.3 - 0.3 * i * i, 1);    // (the trail back down)
+    back('pr_blamp', PE + 0.8, 4.4);
+    swapAt(PB + PLW + GP / 2, 'river', 'behind the gold-horse pillars, blended in over 12 units');
+
+    // ---------- 7. the river boat: down the quay steps; the boat glides along the Seine at sunset; the tower's view comes in ----------
+    const RS = PE + 6.0, QW = aw('pr_qsteps', 3.0), BD = -1.5;
+    ground(CO, RS, 'prpave');
+    back('pr_qsteps', RS - 0.4, 3.0, { y: BD - 1.2 });
+    b.slope(RS, 0.0, RS + QW * 0.6, BD); L.camFloor.push([RS, RS + QW * 0.6, 0, BD]);
+    ground(RS, RS + QW + 1.4, 'prland', BD);   // (from under the steps, so nothing shows through below them)
+    const BX = RS + QW + 1.2, BE2 = BX + 58.0;
+    const boat = { kind: 'prboat', x0: BX, pts: [[BX, BD], [BE2, BD]], v: 9.0, acc: 6.0, vEnd: 6.2, walkOut: 2.6, w0: 0.4, w1: 0, input: true, jump: 7.4, grav: 26,
+      seat: 0.0, up: 0, down: 0.75, exitY: BD, hits: [] };
+    L.rides.push(boat); L.prBoat = boat; L.prWY = WY;
+    L.camFloor.push([RS + QW * 0.6, BE2 + 6, BD]);
+    for (const [x, n, w, h] of [[BX + 8, 4, 3.0, 1.6], [BX + 18, 5, 4.0, 2.2], [BX + 29, 4, 3.0, 1.6], [BX + 38, 5, 4.0, 2.4], [BX + 48, 4, 3.0, 1.6]]) b.arc(x, BD + 1.6, n, w, h);   // (jump for them: a tap every few seconds)
+    L.prWater.push([RS + QW * 0.5, BE2 + 3.0, WY]);
+    L.prRiver = [['pr_barge', BX + 10, 0.55], ['pr_kayaks', BX + 26, 1.1], ['pr_rower', BX + 40, 0.7], ['pr_launch', BX + 52, 1.6]];   // (other boats on the far lane, all going forwards)
+    L.prLife.push(['pr_gull0', BX + 12, 9.5, 'fly'], ['pr_gull1', BX + 34, 10.5, 'fly'], ['pr_sparrow2', BX + 46, 8.0, 'fly']);
+    swapAt(BX + 30, 'dusk', 'the evening view comes in slowly over 16 units while the boat glides');
+    // the landing below the tower: the boat ties up at the pontoon and stays; up the steps to the Champ de Mars
+    const ML = BE2 - 1.0;
+    back('pr_pontoon', BE2 - 2.6, 1.4, { y: WY - 0.15 });
+    ground(BE2 - 2.2, ML + 7.4, 'prland', BD);
+    b.slope(ML + 4.6, BD, ML + 7.4, 0.0); L.camFloor.push([ML + 4.6, ML + 7.4, BD, 0]);
+    back('pr_qsteps', ML + 4.2, 3.0, { y: BD - 1.2, flip: true });
+    const CM = ML + 7.4;
+    L.prJoins.push(CM);
+
+    // ---------- 8. the Champ de Mars: Guignol, the carousel's brass ring (special 5) ----------
+    prop('pr_plane', CM + 2.0, 7.8); lean('pr_wallace', CM + 5.4, 2.4, 1.35); b.coins(CM + 5.6, 3.6, 2, 0.8);
+    const GU = CM + 9.0, GUW = aw('pr_guignol', 4.4);
+    back('pr_guignol', GU, 4.4); L.prGuignol = { x: GU, w: GUW };
+    L.prLife.push(['pr_balloonkid', GU - 6, 0, 'walk', 1.0], ['pr_bfly0', GU + 6, 2.2, 'bfly']);
+    hop('pr_pbench', GU + GUW + 1.6, 1.2); b.coins(GU + GUW + 1.8, 2.4, 3, 0.8);
+    prop('pr_flowers', GU + GUW + 5.0, 0.9);
+    const CA = GU + GUW + 9.0, CAH = 6.4, CAW = aw('pr_carousel', CAH);
+    back('pr_carousel', CA, CAH); L.prCarousel = { x: CA, w: CAW, h: CAH };
+    const CB = 0.07 * CAH, CD = 0.46 * CAH;              // (its round base step, and its upper deck)
+    solid(CA + 0.15 * CAW, 0.7 * CAW, CB, 0, { noGrab: true }); b.ledge(CA + 0.15 * CAW, CB, 0.7 * CAW);
+    b.ledge(CA + 0.12 * CAW, CD, 0.62 * CAW);
+    b.coins(CA + 0.25 * CAW, CD + 1.2, 4, 1.0);
+    b.special(CA + 0.98 * CAW, 0.64 * CAH);                                                   // 5: the brass ring on the carousel's arm
+    L.prRing = { x: CA + 0.98 * CAW, y: 0.64 * CAH };
+    lean('pr_wallace', CA + CAW + 2.6, 2.4, 1.35); prop('pr_plamp', CA + CAW + 6.0, 3.6);
+    L.prLife.push(['pr_dog', CA + CAW + 2, 0, 'walk', 1.3], ['pr_peck0', CA + CAW + 8, 0, 'peck']);
+    b.coins(CA + CAW + 3.2, 2.0, 3, 0.8);
+
+    // ---------- 9. the ending: under the giant Eiffel Tower to the flag; A sits on a picnic blanket; the tower lights up and sparkles ----------
+    const T = PR_ASP.tower, TX = CA + CAW + 12.0;
+    L.prTower = { x: TX, w: T.pr_tw_legs.w, lh: T.pr_tw_legs.h, mw: T.pr_tw_mid.w, mh: T.pr_tw_mid.h, tw: T.pr_tw_top.w, th: T.pr_tw_top.h };
+    b.coins(TX + 3.0, 2.2, 8, 1.0);                      // (a line of coins right under its arch)
+    const FX = TX + T.pr_tw_legs.w + 3.0;
+    ground(CM, FX + 40, 'prlawn');
+    b.flag(FX); L.flagY = 0;
+    prop('pr_hedge', FX + 9.0, 0.9); prop('pr_lavender', FX + 11.0, 1.0);
+    L.prLife.push(['pr_bfly1', FX + 3, 2.6, 'bfly']);
+    L.prFinale = true;
+    L.finale = FX + 4.0; L.finaleT = 9.5; L.prView = FX + 4.0;
+    L.prPicnic = FX + 3.3;
+    b.wall(FX + 30, 1, 40);
+    b.end(FX + 30);
+  },
+},
 ];
 // Tower Bridge is parked for now (Ladi 2026-10-28): its build and art stay, it just isn't in the game.
 const PARKED = ['towerbridge', 'practice'];

@@ -37,10 +37,10 @@ ALSO = ['westend']     # older trips A's World keeps as well, in their trip orde
 # each trip's picture lists in play.html (XX means `const XX_IMAGES = [...]`), plus pictures it borrows from older trips
 AREA_LISTS = {'woolwich': ['WW'], 'brixton': ['BX'], 'greenwich': ['GW2'], 'towerbridge': ['TB'], 'canarywharf': ['CW'],
               'westend': ['WE'], 'heathrow': ['HW'], 'olddubai': ['DX'], 'downtown': ['DT'], 'palm': ['PM'],
-              'marina': ['MA', 'DS'], 'desert': ['DS'], 'capetown': ['CT'], 'westminster': ['WM'], 'barcelona': ['BC'], 'sydney': ['SY'], 'rome': ['RM'], 'lagos': ['LG'], 'singapore': ['SG'], 'newyork': ['MT']}
+              'marina': ['MA', 'DS'], 'desert': ['DS'], 'capetown': ['CT'], 'westminster': ['WM'], 'barcelona': ['BC'], 'sydney': ['SY'], 'rome': ['RM'], 'lagos': ['LG'], 'singapore': ['SG'], 'newyork': ['MT'], 'paris': ['PR']}
 DUBAI_KID = ['a_run_dxb', 'a_jump_dxb', 'a_lean_dxb', 'a_side_dxb', 'dx_cat', 'dx_crow']   # A's Dubai outfit
 BORROWS = {'palm': DUBAI_KID, 'marina': DUBAI_KID + ['bx_car1'], 'desert': DUBAI_KID, 'downtown': DUBAI_KID,
-           'westminster': ['a_back_ldn'], 'barcelona': DUBAI_KID + ['dt_aback'], 'sydney': DUBAI_KID + ['dt_aback'], 'rome': ['a_back_ldn'], 'lagos': DUBAI_KID + ['dt_aback', 'ds_b_empty', 'ds_b_drive', 'ds_b_drive2', 'ds_b_air', 'ds_b_land', 'ds_b_wheel', 'ds_c1', 'ds_c2', 'ds_c3'], 'singapore': DUBAI_KID + ['dt_aback'], 'newyork': ['a_back_ldn', 'a_slide0', 'a_slide1', 'lg_okada0']}
+           'westminster': ['a_back_ldn'], 'barcelona': DUBAI_KID + ['dt_aback'], 'sydney': DUBAI_KID + ['dt_aback'], 'rome': ['a_back_ldn'], 'lagos': DUBAI_KID + ['dt_aback', 'ds_b_empty', 'ds_b_drive', 'ds_b_drive2', 'ds_b_air', 'ds_b_land', 'ds_b_wheel', 'ds_c1', 'ds_c2', 'ds_c3'], 'singapore': DUBAI_KID + ['dt_aback'], 'newyork': ['a_back_ldn', 'a_slide0', 'a_slide1', 'lg_okada0'], 'paris': DUBAI_KID + ['dt_aback']}
 
 
 def sha(path):
