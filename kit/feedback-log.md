@@ -166,3 +166,7 @@ Each entry: **level, date** — what Ladi saw → what fixed it → where to loo
 ## New York round 5 (Ladi 2026-11-12)
 - Pictures blown up far past their size look soft next to sharp ones: when a building must be much bigger, make a new picture for it.
 - Passing trains go a little slower; skating is quicker than running, so the ice feels different.
+
+## New York round 7 (Ladi 2026-11-13)
+- A long run of hopping walls is dull ("A is just jumping"): give a stretch something to play with. On Fifth Avenue and Rockefeller, kids toss snowballs up over A's path; a jump into one bursts it into 3 coins, missing one is harmless.
+- Anything A reacts to must be on screen on a phone held upright (only about 7 units show ahead of him), so the thrower stands right where the ball comes down.
