@@ -1,0 +1,10 @@
+Make exactly ONE image for this picture, nothing else. Don't write any words inside the image.
+- One picture number = one image. Never put two picture numbers in one image, never a grid or collage. An asset sheet (several pieces in one picture) is fine when the prompt asks for one.
+- Same art style in every picture: 2D side-scrolling mobile game art, flat cartoon style with thick dark outlines, clean shapes and gentle cel shading, bright and friendly, charming storybook Paris, matching A's World.
+- Light for this picture: sunset over Paris in summer: warm orange-gold sun low on the left, long soft shadows, a sky of gold, peach and soft pink, the river glittering, the first warm lights coming on in windows.
+- Modern, real Paris as it is today, at its most charming: clean, cream stone, iron balconies, red geraniums in window boxes, striped awnings, plane trees.
+- No people unless the picture asks for them (then only friendly faceless chibi people drawn like the game's child in the attached a_sheet.png, in light summer clothes, never silhouettes). No text, no letters, no numbers, no logos, no real brand, shop, cafe, hotel, museum or boat-company names, no number plates.
+
+Picture 33: Bridge and river pieces  (asset sheet, 5 pieces)
+Straight side-on view, flat orthographic, no perspective. Asset sheet of 5 separate pieces, not touching: 1) one stone arch of a Paris bridge seen from the side, wide and low over water, with an ornate railing on top, 2) the ornate cast-iron lamp posts of Pont Alexandre III with cherubs, 3) a stone staircase going down from the quay to the river, with an iron rail, 4) a wooden boat landing pontoon on the water with posts, 5) a strip of the Seine's green-blue water with sunset ripples, seamless left to right. On a solid flat magenta (#FF00FF) background, no magenta anywhere in the art, no cast shadow on the background.
+Reminder: one picture number = one image. Never put two picture numbers in one image, never a grid or collage.

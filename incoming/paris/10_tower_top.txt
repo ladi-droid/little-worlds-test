@@ -1,0 +1,10 @@
+Make exactly ONE image for this picture, nothing else. Don't write any words inside the image.
+- One picture number = one image. Never put two picture numbers in one image, never a grid or collage. An asset sheet (several pieces in one picture) is fine when the prompt asks for one.
+- Same art style in every picture: 2D side-scrolling mobile game art, flat cartoon style with thick dark outlines, clean shapes and gentle cel shading, bright and friendly, charming storybook Paris, matching A's World.
+- Light for this picture: dusk in Paris in summer: the sun just set, a sky of soft pink, lilac and deep blue, warm golden lights glowing in windows and lamps, romantic and magical, never too dark.
+- Modern, real Paris as it is today, at its most charming: clean, cream stone, iron balconies, red geraniums in window boxes, striped awnings, plane trees.
+- No people unless the picture asks for them (then only friendly faceless chibi people drawn like the game's child in the attached a_sheet.png, in light summer clothes, never silhouettes). No text, no letters, no numbers, no logos, no real brand, shop, cafe, hotel, museum or boat-company names, no number plates.
+
+Picture 10: Eiffel Tower piece 3: second floor to the tip  (very tall 1:3, on magenta)
+Straight side-on view, flat orthographic, no perspective. The Eiffel Tower seen exactly from the side, flat and symmetric, in its real bronze-brown colour, every iron lattice beam drawn crisp and clear with thick dark outlines, warm golden lights glowing all over the ironwork at dusk. ONLY the top part: from the top of the second-floor platform (bottom edge, cut perfectly straight and level, exactly as wide as the second-floor top) up the long slender lattice spire to the small top platform, the lantern and the thin antenna tip, with a warm beacon light on the very top. Nothing cut off at the top. Very large and detailed, filling the picture. On a solid flat magenta (#FF00FF) background, no magenta anywhere in the art, no cast shadow on the background.
+Reminder: one picture number = one image. Never put two picture numbers in one image, never a grid or collage.

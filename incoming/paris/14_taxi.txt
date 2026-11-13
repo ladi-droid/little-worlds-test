@@ -1,0 +1,10 @@
+Make exactly ONE image for this picture, nothing else. Don't write any words inside the image.
+- One picture number = one image. Never put two picture numbers in one image, never a grid or collage. An asset sheet (several pieces in one picture) is fine when the prompt asks for one.
+- Same art style in every picture: 2D side-scrolling mobile game art, flat cartoon style with thick dark outlines, clean shapes and gentle cel shading, bright and friendly, charming storybook Paris, matching A's World.
+- Light for this picture: a warm, sunny summer afternoon in Paris: bright sun high on the left, clear soft shadows falling to the right, a clean blue sky with a few fluffy white clouds, colours fresh, warm and cheerful.
+- Modern, real Paris as it is today, at its most charming: clean, cream stone, iron balconies, red geraniums in window boxes, striped awnings, plane trees.
+- No people unless the picture asks for them (then only friendly faceless chibi people drawn like the game's child in the attached a_sheet.png, in light summer clothes, never silhouettes). No text, no letters, no numbers, no logos, no real brand, shop, cafe, hotel, museum or boat-company names, no number plates.
+
+Picture 14: Paris taxi (three pieces)  (asset sheet, 3 pieces)
+Straight side-on view, flat orthographic, no perspective. Asset sheet, three pieces not touching: a made-up modern Paris taxi (a sleek dark-blue electric family car with a small white roof light, no writing), seen exactly from the side, a friendly faceless chibi driver at the wheel drawn like the attached a_sheet.png; 1) rear door closed, 2) the same taxi with its rear door swung open, dark inside, 3) the open rear door alone as a front slice so a child can be drawn stepping out from behind it. No writing, no numbers, no number plates, no logos. On a solid flat magenta (#FF00FF) background, no magenta anywhere in the art, no cast shadow on the background.
+Reminder: one picture number = one image. Never put two picture numbers in one image, never a grid or collage.

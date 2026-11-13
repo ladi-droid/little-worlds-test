@@ -1,0 +1,10 @@
+Make exactly ONE image for this picture, nothing else. Don't write any words inside the image.
+- One picture number = one image. Never put two picture numbers in one image, never a grid or collage. An asset sheet (several pieces in one picture) is fine when the prompt asks for one.
+- Same art style in every picture: 2D side-scrolling mobile game art, flat cartoon style with thick dark outlines, clean shapes and gentle cel shading, bright and friendly, charming storybook Paris, matching A's World.
+- Light for this picture: inside a grand museum on a summer afternoon: warm soft daylight from above, honey-coloured stone and gold frames glowing, clean and bright.
+- Modern, real Paris as it is today, at its most charming: clean, cream stone, iron balconies, red geraniums in window boxes, striped awnings, plane trees.
+- No people unless the picture asks for them (then only friendly faceless chibi people drawn like the game's child in the attached a_sheet.png, in light summer clothes, never silhouettes). No text, no letters, no numbers, no logos, no real brand, shop, cafe, hotel, museum or boat-company names, no number plates.
+
+Picture 12: Inside the Louvre: the Grand Gallery  (very wide 3:1, FULL PICTURE (no magenta))
+Straight side-on view, flat orthographic, no perspective. Full picture, no magenta. The Louvre's Grand Gallery seen straight from the side: a very long grand hall with a curved glass skylight vault above letting in soft daylight, pale walls hung with big paintings in gold frames (made-up landscapes, flowers and sailing ships, no famous faces), marble columns, white marble statues on plinths along the wall, a polished parquet floor. Two levels of paintings visible, no plain walls. The left and right ends match so it can repeat. Nothing cut off at the top.
+Reminder: one picture number = one image. Never put two picture numbers in one image, never a grid or collage.

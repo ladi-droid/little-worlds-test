@@ -1,0 +1,10 @@
+Make exactly ONE image for this picture, nothing else. Don't write any words inside the image.
+- One picture number = one image. Never put two picture numbers in one image, never a grid or collage. An asset sheet (several pieces in one picture) is fine when the prompt asks for one.
+- Same art style in every picture: 2D side-scrolling mobile game art, flat cartoon style with thick dark outlines, clean shapes and gentle cel shading, bright and friendly, charming storybook Paris, matching A's World.
+- Light for this picture: sunset over Paris in summer: warm orange-gold sun low on the left, long soft shadows, a sky of gold, peach and soft pink, the river glittering, the first warm lights coming on in windows.
+- Modern, real Paris as it is today, at its most charming: clean, cream stone, iron balconies, red geraniums in window boxes, striped awnings, plane trees.
+- No people unless the picture asks for them (then only friendly faceless chibi people drawn like the game's child in the attached a_sheet.png, in light summer clothes, never silhouettes). No text, no letters, no numbers, no logos, no real brand, shop, cafe, hotel, museum or boat-company names, no number plates.
+
+Picture 32: Pont Alexandre III pillars (climb pair)  (tall 3:4)
+Straight side-on view, flat orthographic, no perspective. The end of the Pont Alexandre III bridge seen exactly from the side: two tall square stone pillars side by side with a clear gap between them, both standing on the ground, their inner faces flat and solid so a child can wall-jump between them, carved stone ledges on each; on top of each pillar a shining gold winged horse statue. The left pillar is a little taller. Full height from the ground to the gold horses, nothing cut off. On a solid flat magenta (#FF00FF) background, no magenta anywhere in the art, no cast shadow on the background.
+Reminder: one picture number = one image. Never put two picture numbers in one image, never a grid or collage.

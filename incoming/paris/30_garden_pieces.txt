@@ -1,0 +1,10 @@
+Make exactly ONE image for this picture, nothing else. Don't write any words inside the image.
+- One picture number = one image. Never put two picture numbers in one image, never a grid or collage. An asset sheet (several pieces in one picture) is fine when the prompt asks for one.
+- Same art style in every picture: 2D side-scrolling mobile game art, flat cartoon style with thick dark outlines, clean shapes and gentle cel shading, bright and friendly, charming storybook Paris, matching A's World.
+- Light for this picture: a golden late summer afternoon in Paris: warm honey-gold sun low on the left, long soft shadows falling to the right, a warm pale-gold and blue sky with soft clouds.
+- Modern, real Paris as it is today, at its most charming: clean, cream stone, iron balconies, red geraniums in window boxes, striped awnings, plane trees.
+- No people unless the picture asks for them (then only friendly faceless chibi people drawn like the game's child in the attached a_sheet.png, in light summer clothes, never silhouettes). No text, no letters, no numbers, no logos, no real brand, shop, cafe, hotel, museum or boat-company names, no number plates.
+
+Picture 30: Tuileries garden pieces  (asset sheet of 7)
+Straight side-on view, flat orthographic, no perspective. Asset sheet of 7 separate pieces, not touching, each on a flat base, same scale as a 1.5 m child: 1) a long low round pond edge in pale stone with a central fountain jet and water inside, seen from the side (a stone rim a child can stand on), 2) a small wooden toy sailboat with a striped sail, 3) another toy sailboat with a red sail, 4) two famous green metal Tuileries garden chairs, 5) a white marble statue on a tall plinth, 6) a balloon seller's little cart with a big bunch of bright balloons tied on top, 7) a striped ice-cream kiosk with a canopy. No writing. On a solid flat magenta (#FF00FF) background, no magenta anywhere in the art, no cast shadow on the background.
+Reminder: one picture number = one image. Never put two picture numbers in one image, never a grid or collage.

@@ -1,0 +1,10 @@
+Make exactly ONE image for this picture, nothing else. Don't write any words inside the image.
+- One picture number = one image. Never put two picture numbers in one image, never a grid or collage. An asset sheet (several pieces in one picture) is fine when the prompt asks for one.
+- Same art style in every picture: 2D side-scrolling mobile game art, flat cartoon style with thick dark outlines, clean shapes and gentle cel shading, bright and friendly, charming storybook Paris, matching A's World.
+- Light for this picture: a golden late summer afternoon in Paris: warm honey-gold sun low on the left, long soft shadows falling to the right, a warm pale-gold and blue sky with soft clouds.
+- Modern, real Paris as it is today, at its most charming: clean, cream stone, iron balconies, red geraniums in window boxes, striped awnings, plane trees.
+- No people unless the picture asks for them (then only friendly faceless chibi people drawn like the game's child in the attached a_sheet.png, in light summer clothes, never silhouettes). No text, no letters, no numbers, no logos, no real brand, shop, cafe, hotel, museum or boat-company names, no number plates.
+
+Picture 31: Place de la Concorde  (asset sheet, 3 pieces)
+Straight side-on view, flat orthographic, no perspective. Asset sheet of 3 separate pieces, not touching: 1) the tall Egyptian obelisk of the Place de la Concorde with its golden pointed tip on its tall stone plinth, whole, 2) one of the Concorde fountains: a round bronze-and-gold fountain with sea figures and steady water jets falling into a wide stone basin (a basin rim a child can stand on), 3) a tall ornate gold-and-black lamp column. On a solid flat magenta (#FF00FF) background, no magenta anywhere in the art, no cast shadow on the background.
+Reminder: one picture number = one image. Never put two picture numbers in one image, never a grid or collage.

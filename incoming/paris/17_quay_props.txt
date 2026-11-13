@@ -1,0 +1,10 @@
+Make exactly ONE image for this picture, nothing else. Don't write any words inside the image.
+- One picture number = one image. Never put two picture numbers in one image, never a grid or collage. An asset sheet (several pieces in one picture) is fine when the prompt asks for one.
+- Same art style in every picture: 2D side-scrolling mobile game art, flat cartoon style with thick dark outlines, clean shapes and gentle cel shading, bright and friendly, charming storybook Paris, matching A's World.
+- Light for this picture: a warm, sunny summer afternoon in Paris: bright sun high on the left, clear soft shadows falling to the right, a clean blue sky with a few fluffy white clouds, colours fresh, warm and cheerful.
+- Modern, real Paris as it is today, at its most charming: clean, cream stone, iron balconies, red geraniums in window boxes, striped awnings, plane trees.
+- No people unless the picture asks for them (then only friendly faceless chibi people drawn like the game's child in the attached a_sheet.png, in light summer clothes, never silhouettes). No text, no letters, no numbers, no logos, no real brand, shop, cafe, hotel, museum or boat-company names, no number plates.
+
+Picture 17: Quay props sheet  (asset sheet of 8)
+Straight side-on view, flat orthographic, no perspective. Asset sheet of 8 separate Paris props, not touching, each standing on a flat base, same scale as a 1.5 m child: 1) a dark-green cast-iron Wallace drinking fountain with four little caryatid figures holding up a small dome (knee-to-waist height top to hop on), 2) an old black iron Paris lamp post with a hanging basket of red geraniums, 3) a green slatted park bench, 4) a dark-green round advertising column with a little dome roof and plain coloured posters (no words), 5) a bike rack with two plain bikes, 6) a stone bollard, 7) a round iron tree grate with a young plane tree, 8) a little flower pot of geraniums. No writing. On a solid flat magenta (#FF00FF) background, no magenta anywhere in the art, no cast shadow on the background.
+Reminder: one picture number = one image. Never put two picture numbers in one image, never a grid or collage.

@@ -1,0 +1,10 @@
+Make exactly ONE image for this picture, nothing else. Don't write any words inside the image.
+- One picture number = one image. Never put two picture numbers in one image, never a grid or collage. An asset sheet (several pieces in one picture) is fine when the prompt asks for one.
+- Same art style in every picture: 2D side-scrolling mobile game art, flat cartoon style with thick dark outlines, clean shapes and gentle cel shading, bright and friendly, charming storybook Paris, matching A's World.
+- Light for this picture: dusk in Paris in summer: the sun just set, a sky of soft pink, lilac and deep blue, warm golden lights glowing in windows and lamps, romantic and magical, never too dark.
+- Modern, real Paris as it is today, at its most charming: clean, cream stone, iron balconies, red geraniums in window boxes, striped awnings, plane trees.
+- No people unless the picture asks for them (then only friendly faceless chibi people drawn like the game's child in the attached a_sheet.png, in light summer clothes, never silhouettes). No text, no letters, no numbers, no logos, no real brand, shop, cafe, hotel, museum or boat-company names, no number plates.
+
+Picture 37: The old two-deck carousel  (wide 4:3)
+Straight side-on view, flat orthographic, no perspective. One piece: a charming old Paris carousel with two decks, seen exactly from the side: a striped red, cream and gold roof with little flags, painted horses on poles on the lower deck, a little staircase up to an upper deck with carriages, mirrors and light bulbs, and at one edge a brass arm holding out a shiny brass ring. Its steps and upper deck edge are flat so a child can climb them. Standing on a thin strip of ground. It must be CLIMBABLE: flat ledges, iron balconies, sills, awnings and a flat roof edge a small child character can land on, drawn clearly. On a solid flat magenta (#FF00FF) background, no magenta anywhere in the art, no cast shadow on the background.
+Reminder: one picture number = one image. Never put two picture numbers in one image, never a grid or collage.

@@ -1,0 +1,10 @@
+Make exactly ONE image for this picture, nothing else. Don't write any words inside the image.
+- One picture number = one image. Never put two picture numbers in one image, never a grid or collage. An asset sheet (several pieces in one picture) is fine when the prompt asks for one.
+- Same art style in every picture: 2D side-scrolling mobile game art, flat cartoon style with thick dark outlines, clean shapes and gentle cel shading, bright and friendly, charming storybook Paris, matching A's World.
+- Light for this picture: a warm, sunny summer afternoon in Paris: bright sun high on the left, clear soft shadows falling to the right, a clean blue sky with a few fluffy white clouds, colours fresh, warm and cheerful.
+- Modern, real Paris as it is today, at its most charming: clean, cream stone, iron balconies, red geraniums in window boxes, striped awnings, plane trees.
+- No people unless the picture asks for them (then only friendly faceless chibi people drawn like the game's child in the attached a_sheet.png, in light summer clothes, never silhouettes). No text, no letters, no numbers, no logos, no real brand, shop, cafe, hotel, museum or boat-company names, no number plates.
+
+Picture 22: Louvre courtyard and the glass pyramid  (asset sheet, 3 pieces)
+Straight side-on view, flat orthographic, no perspective. Asset sheet of 3 separate pieces, not touching: 1) the glass pyramid of the Louvre seen exactly from the side, its diamond-pattern glass catching the sun, with a doorway at its base, standing in a shallow triangular fountain pool with a stone rim, 2) the pyramid's doorway with the glass doors open and warm light inside, 3) the far half of that doorway (its right side frame) as its own slice so a child can be drawn going in behind it. Whole pyramid, nothing cut off. On a solid flat magenta (#FF00FF) background, no magenta anywhere in the art, no cast shadow on the background.
+Reminder: one picture number = one image. Never put two picture numbers in one image, never a grid or collage.

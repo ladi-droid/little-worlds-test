@@ -1,0 +1,46 @@
+01_far_city	
+02_mid_city	
+03_far_gold	
+04_mid_garden	
+05_far_river	
+06_mid_river	
+07_far_dusk	
+08_tower_legs	
+09_tower_middle	
+10_tower_top	
+11_inside_hall	
+12_inside_gallery	
+13_floors	
+14_taxi	a_sheet.png
+15_notre_dame	
+16_bookstalls	
+17_quay_props	
+18_haussmann_a	
+19_row_ends	
+20_stalls	a_sheet.png
+21_cafe_props	
+22_louvre_court	
+23_louvre_wing	
+24_louvre_pieces	
+25_daru_climb	
+26_louvre_arches	
+27_carrousel_arch	
+28_big_wheel	
+29_trampolines	
+30_garden_pieces	
+31_concorde	
+32_bridge_pillars	
+33_bridge_pieces	
+34_river_boat	
+35_river_life	a_sheet.png
+36_guignol	
+37_carousel	
+38_park_pieces	
+39_people	a_sheet.png
+40_a_sit	a_sheet.png
+41_trees	
+42_life	
+43_door_edges	
+44_card	
+45_sticker	
+46_stamp	stamps.png

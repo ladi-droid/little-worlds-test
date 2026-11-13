@@ -1,0 +1,10 @@
+Make exactly ONE image for this picture, nothing else. Don't write any words inside the image.
+- One picture number = one image. Never put two picture numbers in one image, never a grid or collage. An asset sheet (several pieces in one picture) is fine when the prompt asks for one.
+- Same art style in every picture: 2D side-scrolling mobile game art, flat cartoon style with thick dark outlines, clean shapes and gentle cel shading, bright and friendly, charming storybook Paris, matching A's World.
+- Light for this picture: a warm, sunny summer afternoon in Paris: bright sun high on the left, clear soft shadows falling to the right, a clean blue sky with a few fluffy white clouds, colours fresh, warm and cheerful.
+- Modern, real Paris as it is today, at its most charming: clean, cream stone, iron balconies, red geraniums in window boxes, striped awnings, plane trees.
+- No people unless the picture asks for them (then only friendly faceless chibi people drawn like the game's child in the attached a_sheet.png, in light summer clothes, never silhouettes). No text, no letters, no numbers, no logos, no real brand, shop, cafe, hotel, museum or boat-company names, no number plates.
+
+Picture 39: Paris people (all walking)  (asset sheet, 8 people)
+Straight side-on view, flat orthographic, no perspective. Asset sheet of 8 separate friendly faceless chibi people drawn like the attached a_sheet.png, in light summer clothes, all side-on and facing RIGHT, all mid-stride (walking or riding, nobody standing still): 1) an accordion player walking while playing, 2) a baker riding a bicycle with long baguettes in the front basket, 3) a person walking a small fluffy dog on a lead, 4) a child walking with a red balloon, 5) a parent and child walking holding hands, 6) a person walking with a shopping bag of flowers, 7) a child walking and pushing a toy sailboat with a long stick, 8) a cyclist on a plain bike. On a solid flat magenta (#FF00FF) background, no magenta anywhere in the art, no cast shadow on the background.
+Reminder: one picture number = one image. Never put two picture numbers in one image, never a grid or collage.

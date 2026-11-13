@@ -1,0 +1,10 @@
+Make exactly ONE image for this picture, nothing else. Don't write any words inside the image.
+- One picture number = one image. Never put two picture numbers in one image, never a grid or collage. An asset sheet (several pieces in one picture) is fine when the prompt asks for one.
+- Same art style in every picture: 2D side-scrolling mobile game art, flat cartoon style with thick dark outlines, clean shapes and gentle cel shading, bright and friendly, charming storybook Paris, matching A's World.
+- Light for this picture: a warm, sunny summer afternoon in Paris: bright sun high on the left, clear soft shadows falling to the right, a clean blue sky with a few fluffy white clouds, colours fresh, warm and cheerful.
+- Modern, real Paris as it is today, at its most charming: clean, cream stone, iron balconies, red geraniums in window boxes, striped awnings, plane trees.
+- No people unless the picture asks for them (then only friendly faceless chibi people drawn like the game's child in the attached a_sheet.png, in light summer clothes, never silhouettes). No text, no letters, no numbers, no logos, no real brand, shop, cafe, hotel, museum or boat-company names, no number plates.
+
+Picture 19: Building ends and fillers  (asset sheet, 5 pieces)
+Straight side-on view, flat orthographic, no perspective. Asset sheet of 5 separate pieces, not touching, cream Paris stone with zinc roofs: 1) a left end of a row of Paris buildings: a rounded stone corner with balconies wrapping round, 2) a right end the same, 3) a narrow three-floor building with one balcony and geraniums to fill gaps, 4) a short stone wall with an iron railing on top, knee height, 5) a tall stone gate pier with a stone urn on top. It must be CLIMBABLE: flat ledges, iron balconies, sills, awnings and a flat roof edge a small child character can land on, drawn clearly. On a solid flat magenta (#FF00FF) background, no magenta anywhere in the art, no cast shadow on the background.
+Reminder: one picture number = one image. Never put two picture numbers in one image, never a grid or collage.

@@ -1,0 +1,10 @@
+Make exactly ONE image for this picture, nothing else. Don't write any words inside the image.
+- One picture number = one image. Never put two picture numbers in one image, never a grid or collage. An asset sheet (several pieces in one picture) is fine when the prompt asks for one.
+- Same art style in every picture: 2D side-scrolling mobile game art, flat cartoon style with thick dark outlines, clean shapes and gentle cel shading, bright and friendly, charming storybook Paris, matching A's World.
+- Light for this picture: inside a grand museum on a summer afternoon: warm soft daylight from above, honey-coloured stone and gold frames glowing, clean and bright.
+- Modern, real Paris as it is today, at its most charming: clean, cream stone, iron balconies, red geraniums in window boxes, striped awnings, plane trees.
+- No people unless the picture asks for them (then only friendly faceless chibi people drawn like the game's child in the attached a_sheet.png, in light summer clothes, never silhouettes). No text, no letters, no numbers, no logos, no real brand, shop, cafe, hotel, museum or boat-company names, no number plates.
+
+Picture 24: Louvre gallery pieces  (asset sheet of 7)
+Straight side-on view, flat orthographic, no perspective. Asset sheet of 7 separate pieces, not touching, each on a flat base, same scale as a 1.5 m child: 1) a long low marble bench, 2) two brass posts with a red velvet rope between them (knee height), 3) a white marble statue of a running figure on a plinth, 4) the Mona Lisa painting in its gold frame behind a glass case on a wall panel, 5) a big painting of sailing ships in a heavy gold frame, 6) the great granite Egyptian sphinx lying on its long stone base (low and long, its back a child can run over), 7) a tall gold-and-crystal chandelier hanging on a chain from the top edge. On a solid flat magenta (#FF00FF) background, no magenta anywhere in the art, no cast shadow on the background.
+Reminder: one picture number = one image. Never put two picture numbers in one image, never a grid or collage.
