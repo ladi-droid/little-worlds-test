@@ -1,0 +1,15 @@
+Make exactly ONE image for this picture, nothing else. Don't write any words inside the image.
+- One picture number = one image. Never put two picture numbers in one image, never a grid or collage.
+- Same art style as the game: 2D mobile game art, flat cartoon style with thick dark outlines, clean shapes and gentle cel shading, bright and friendly, charming storybook Paris, matching A's World.
+- Light for this picture: a clear summer NIGHT in Paris: a deep blue sky going softly lighter blue-violet near the horizon, a few twinkling stars, a thin soft pink-violet glow low on the horizon, warm golden park lamps glowing, magical and calm, never too dark.
+- No people. No text, no letters, no numbers, no logos.
+
+Picture 51: The Champ de Mars avenue at night, tree walls opening in the middle  (very wide 3:1, FULL PICTURE, no magenta)
+Full picture, no magenta. A very wide night scene of the Champ de Mars park in Paris for the end of a side-scrolling game, perfectly SYMMETRICAL left to right:
+- The LEFT third and the RIGHT third: a long straight row of tall, neatly box-clipped trees with flat tops and straight sides (like a green wall), seen straight from the side, flat with no perspective, with green park lamp posts glowing warm gold in front at even spacing, small clipped cone-shaped yews and a low green iron hoop fence along the bottom. These two outer thirds are flat side-on rows and must look the same height all along, so they can join other side-on scenery.
+- The MIDDLE third: the tree wall opens into a wide gap, and through the gap you look straight down the long central lawn of the Champ de Mars in one-point perspective: the lawn runs away into the distance to the exact centre, mirror-matched rows of clipped trees, cone yews and glowing lamps getting smaller on both sides of it, and at the far end a low fountain with soft white jets in front of a low line of round dark-green trees and the small pale curved buildings of the Trocadero.
+- The bottom edge of the whole picture is smooth green lawn from left to right (the same green everywhere), so a side-on lawn can join it below.
+- The sky is a clear night sky: deep blue at the top going softly lighter blue-violet near the horizon, a few stars, a faint pink-violet glow low on the far horizon. The sky above the far end of the avenue is EMPTY, because a lit-up Eiffel Tower will be added there later.
+- NO Eiffel Tower anywhere, not even small, not even a shadow or outline.
+Calm, picturesque, postcard-pretty, night lights glowing.
+Reminder: one picture number = one image. Never put two picture numbers in one image, never a grid or collage.
