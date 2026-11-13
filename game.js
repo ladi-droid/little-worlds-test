@@ -4419,11 +4419,11 @@ const ALL_LEVELS = [
     back('mt_rinksteps', IK - aw('mt_rinksteps', 2.4) - 0.2, 2.4);
     const IE = IK + 72;   // (a long skate: Ladi 2026-11-12)
     ground(IK, IE, 'mtice'); L.weIce = [IK + 0.4, IE];
-    L.mtRink = [IK, IE]; L.fastZones = [[IK + 0.4, IE, 1.4]];   // (he skates faster than he runs, Ladi 2026-11-12)
+    L.mtRink = [IK, IE]; L.fastZones = [[IK + 0.4, IE, 1.2]];   // (he skates faster than he runs, Ladi 2026-11-12)
     const SK = ['mt_sk1', 'mt_sk2', 'mt_sk3', 'mt_kid', 'mt_sk2', 'mt_sk1', 'mt_sk3'];
     for (let i = 0; i < 13; i++) L.mtLife.push([SK[i % SK.length], IK + 4 + i * 4.1 + (i % 3) * 0.7, 0, 'skate']);   // lots of skaters
     b.coins(IK + 3.0, 1.4, 6, 1.4);
-    b.arc(IK + 12.0, 1.5, 5, 5.6, 3.0); b.arc(IK + 30.0, 1.5, 5, 5.6, 3.2); b.arc(IK + 44.0, 1.5, 5, 5.6, 3.0);   // jumps on the ice
+    b.arc(IK + 12.0, 1.5, 5, 4.8, 3.0); b.arc(IK + 30.0, 1.5, 5, 4.8, 3.2); b.arc(IK + 44.0, 1.5, 5, 4.8, 3.0);   // jumps on the ice
     snow(IK + 20.0); snow(IK + 37.0);   // (ploughed off the ice: sink in, jump out)
     b.coins(IK + 50.0, 1.4, 5, 1.2);
     const FL = IK + 56.0;
